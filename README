@@ -1,0 +1,44 @@
+NAME
+====
+
+youtube-dlG - GUI for youtube-dl
+
+
+DESCRIPTION
+===========
+
+A cross platform front-end GUI of the popular youtube-dl
+written in Python.
+
+
+REQUIREMENTS
+============
+
+Python (version 2.7 or 3.3+)
+http://www.python.org/
+
+wxPython
+http://wxpython.org
+
+** Optional (In order to convert video files to audio-only files)
+FFMPEG & FFPROBE
+http://www.ffmpeg.org
+
+
+PROJECT HOMEPAGE
+================
+
+Youtube-dlG: https://github.com/MrS0m30n3/youtube-dl-gui
+Youtube-dl: http://rg3.github.io/youtube-dl/
+
+
+AUTHOR
+======
+
+Sotiris Papadopoulos <ytubedlg@gmail.com>
+
+
+THANKS
+======
+
+Thanks to youtube-dl authors for creating such and amazing tool.

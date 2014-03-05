@@ -104,13 +104,13 @@ class ProcessWrapper(Thread):
     while self.proc_is_alive():
       # read output
       output = self.read()
-      if self.err:
-	CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['error', self.index])
-      else:
-	if output != '':
-	  data = self.proc_output(output)
+      if output != '':
+	data = self.proc_output(output)
+	data = self.check_data(data)
+	if self.err:
+	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['error', self.index])
+	else:
 	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
-    
     if not self.err and not self.stopped:
       CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', self.index])
     
@@ -133,6 +133,18 @@ class ProcessWrapper(Thread):
   def proc_output(self, output):
     data = self.remove_spaces(self.string_to_array(output))
     data.append(self.index)
+    return data
+    
+  def check_data(self, data):
+    ''' check data for exceptions '''
+    if len(data) > 3: 
+      if data[1] == "UnicodeWarning:":
+	self.err = False
+	return ['ignore']
+      if data[0] == "[download]" and data[1] == "Destination:":
+	return ['ignore']
+      if data[0] == "[download]" and data[1] == "100%":
+	return ['ignore']
     return data
     
   def string_to_array(self, string):

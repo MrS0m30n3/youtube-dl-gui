@@ -152,16 +152,17 @@ class MainFrame(wx.Frame):
       self.statusList._write_data(index, 5, 'Pre-Processing')
     elif msg.data[0] == '[download]':
       index = msg.data.pop()
-      if (len(msg.data[1]) <= 6 and msg.data[1] != '100%'):
-	self.statusList._write_data(index, 1, msg.data[3])
-	self.statusList._write_data(index, 2, msg.data[1])
-	self.statusList._write_data(index, 3, msg.data[7])
-	self.statusList._write_data(index, 4, msg.data[5])
-	self.statusList._write_data(index, 5, 'Downloading')
+      self.statusList._write_data(index, 1, msg.data[3])
+      self.statusList._write_data(index, 2, msg.data[1])
+      self.statusList._write_data(index, 3, msg.data[7])
+      self.statusList._write_data(index, 4, msg.data[5])
+      self.statusList._write_data(index, 5, 'Downloading')
     elif msg.data[0] == '[ffmpeg]':
       index = msg.data.pop()
       self.statusList._write_data(index, 4, '')
       self.statusList._write_data(index, 5, 'Converting to Audio')
+    else: # ['ignore'] or anything else
+      pass # do nothing
 	
   def update_handler(self, msg):
     if msg.data == 'finish':

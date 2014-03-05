@@ -73,7 +73,7 @@ class OptionsHandler():
     self.keepVideo = opts[4] in ['True']
     self.audioQuality = int(opts[5])
     self.proxy = opts[6]
-    self.savePath = opts[7]
+    self.savePath = opts[7].decode('utf8')
     self.autoUpdate = opts[8] in ['True']
     self.videoFormat = opts[9]
     self.userAgent = opts[10]
@@ -104,7 +104,7 @@ class OptionsHandler():
     f.write('KeepVideo='+str(self.keepVideo)+'\n')
     f.write('AudioQuality='+str(self.audioQuality)+'\n')
     f.write('Proxy='+str(self.proxy)+'\n')
-    f.write('SavePath='+str(self.savePath)+'\n')
+    f.write('SavePath='+self.savePath.encode('utf-8')+'\n')
     f.write('AutoUpdate='+str(self.autoUpdate)+'\n')
     f.write('VideoFormat='+str(self.videoFormat)+'\n')
     f.write('UserAgent='+str(self.userAgent)+'\n')

@@ -27,6 +27,8 @@ SIGNALS
 
 ['[ffmpeg]', ..., index]:	Post-Processing for url, index
 
+['ignore']			Do nothing
+
 EXAMPLES
 ========
 

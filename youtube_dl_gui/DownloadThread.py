@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import sys
 import subprocess
 from os import name
 from time import sleep
@@ -99,7 +100,7 @@ class ProcessWrapper(Thread):
     self.start()
     
   def run(self):
-    self.proc = subprocess.Popen(self.options + [self.url], stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=self.info)
+    self.proc = subprocess.Popen(self.get_cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=self.info)
     # while subprocess is alive and NOT the current thread
     while self.proc_is_alive():
       # read output
@@ -145,8 +146,19 @@ class ProcessWrapper(Thread):
 	return ['ignore']
       if data[0] == "[download]" and data[1] == "100%":
 	return ['ignore']
+      if data[0] == "[download]" and len(data[1]) > 10:
+	return ['ignore']
+      if data[0] == "[download]" and data[1] == "Resuming":
+	return ['ignore']
     return data
     
+  def get_cmd(self):
+    data = self.options + [self.url]
+    if OS_TYPE == 'nt':
+      enc = sys.getfilesystemencoding()
+      data = [x.encode(enc, 'ignore') for x in data]
+    return data
+  
   def string_to_array(self, string):
     return string.split(' ')
     

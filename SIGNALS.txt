@@ -4,9 +4,13 @@ Signals list, that DownloadManager thread sends (DownloadThread.py)
 HANDLER
 =======
 
-YoutubeDLGUI.py 
-  def download_handler(self, msg):
-    ...
+SignalHandler.py
+
+  class DownloadHandler()
+    def handle(self, msg):
+      .
+      .
+      .
 
 SIGNALS
 =======
@@ -21,13 +25,15 @@ SIGNALS
 
 ['error', index]:		Error occured url, index
 
-['[youtube]', ..., index]:	Pre-Processing for url, index
+['playlist', data, index]:	Playlist data for url, index
 
-['[download]', ..., index]:	Downloading url, index
+['[youtube]', index]:		Pre-Processing for url, index
 
-['[ffmpeg]', ..., index]:	Post-Processing for url, index
+['[download]', data, index]:	Downloading url, index
 
-['ignore']			Do nothing
+['[ffmpeg]', index]:		Post-Processing for url, index
+
+['ignore', index]		Do nothing
 
 EXAMPLES
 ========

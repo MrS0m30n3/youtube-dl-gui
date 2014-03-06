@@ -24,6 +24,7 @@ from .UpdateThread import UpdateThread
 from .DownloadThread import DownloadManager
 from .OptionsHandler import OptionsHandler
 from .YoutubeDLInterpreter import YoutubeDLInterpreter
+from .SignalHandler import DownloadHandler
 
 if os.name == 'nt':
   YOUTUBE_DL_FILENAME = 'youtube-dl.exe'
@@ -93,8 +94,9 @@ class MainFrame(wx.Frame):
     # set publisher for download thread
     Publisher.subscribe(self.download_handler, "download")
     
-    # init options object
+    # init Options and DownloadHandler objects
     self.optionsList = OptionsHandler()
+    self.downloadHandler = None
     
     # init some thread variables
     self.downloadThread = None
@@ -122,47 +124,16 @@ class MainFrame(wx.Frame):
     self.statusBar.SetLabel(msg)
   
   def download_handler(self, msg):
-    ''' Handles msg base into signals see SIGNALS.txt for more info'''
-    if msg.data[0] == 'finish':
-      index = msg.data.pop()
-      if index == -1:
-	self.status_bar_write('Done')
-	self.downloadButton.SetLabel('Download')
-	self.updateButton.Enable()
-	self.downloadThread = None
-	self.urlList = []
-      else:
-	self.statusList._write_data(index, 4, '')
-	self.statusList._write_data(index, 5, 'Finished')
-    elif msg.data[0] == 'close':
-      index = msg.data.pop()
-      if index == -1:
-	self.status_bar_write('Stoping downloads')
-      else:
-	self.statusList._write_data(index, 3, '')
-	self.statusList._write_data(index, 4, '')
-	self.statusList._write_data(index, 5, 'Stopped')
-    elif msg.data[0] == 'error':
-      index = msg.data.pop()
-      self.statusList._write_data(index, 3, '')
-      self.statusList._write_data(index, 4, '')
-      self.statusList._write_data(index, 5, 'Error')
-    elif msg.data[0] == '[youtube]':
-      index = msg.data.pop()
-      self.statusList._write_data(index, 5, 'Pre-Processing')
-    elif msg.data[0] == '[download]':
-      index = msg.data.pop()
-      self.statusList._write_data(index, 1, msg.data[3])
-      self.statusList._write_data(index, 2, msg.data[1])
-      self.statusList._write_data(index, 3, msg.data[7])
-      self.statusList._write_data(index, 4, msg.data[5])
-      self.statusList._write_data(index, 5, 'Downloading')
-    elif msg.data[0] == '[ffmpeg]':
-      index = msg.data.pop()
-      self.statusList._write_data(index, 4, '')
-      self.statusList._write_data(index, 5, 'Converting to Audio')
-    else: # ['ignore'] or anything else
-      pass # do nothing
+    self.downloadHandler.handle(msg)
+    if self.downloadHandler._has_closed():
+      self.status_bar_write('Stoping downloads')
+    if self.downloadHandler._has_finished():
+      self.status_bar_write('Done')
+      self.downloadButton.SetLabel('Download')
+      self.updateButton.Enable()
+      self.downloadThread = None
+      self.urlList = []
+      self.downloadHandler = None
 	
   def update_handler(self, msg):
     if msg.data == 'finish':
@@ -187,6 +158,7 @@ class MainFrame(wx.Frame):
       options = YoutubeDLInterpreter(self.optionsList, YOUTUBE_DL_FILENAME).get_options()
       self.status_bar_write('Download started')
       self.downloadThread = DownloadManager(options, self.statusList._get_items())
+      self.downloadHandler = DownloadHandler(self.statusList)
       self.downloadButton.SetLabel('Stop')
       self.updateButton.Disable()
   
@@ -238,7 +210,7 @@ class ListCtrl(wx.ListCtrl):
     self.InsertColumn(2, 'Percent', width=80)
     self.InsertColumn(3, 'ETA', width=50)
     self.InsertColumn(4, 'Speed', width=90)
-    self.InsertColumn(5, 'Status', width=120)
+    self.InsertColumn(5, 'Status', width=150)
     self.ListIndex = 0
   
   ''' Add single item on list '''

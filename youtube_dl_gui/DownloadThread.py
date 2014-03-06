@@ -9,6 +9,13 @@ from threading import Thread
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
+from .Utils import ( 
+  remove_spaces,
+  string_to_array,
+  get_encoding,
+  encode_list
+)
+
 OS_TYPE = name
 MAX_DOWNLOAD_THREADS = 3
 PUBLISHER_TOPIC = 'download'
@@ -73,17 +80,16 @@ class DownloadManager(Thread):
 
   def check_queue(self, t=1):
     for proc in self.procList:
-      if not self.running:
-	break
+      if not self.running: break
       if not proc.isAlive():
 	return proc
       sleep(t)
     return None
       
   def close(self):
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', -1])
-    self.running = False
     self.procNo = 0
+    self.running = False
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', -1])
     
 class ProcessWrapper(Thread):
   
@@ -93,21 +99,22 @@ class ProcessWrapper(Thread):
     self.index = index
     self.url = url
     self.proc = None
-    self.info = None
-    self.err = False
     self.stopped = False
-    self.set_process_info()
+    self.err = False
     self.start()
     
   def run(self):
-    self.proc = subprocess.Popen(self.get_cmd(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=self.info)
+    self.proc = subprocess.Popen(self.get_cmd(), 
+				 stdout=subprocess.PIPE,
+				 stderr=subprocess.PIPE,
+				 startupinfo=self.set_process_info())
     # while subprocess is alive and NOT the current thread
     while self.proc_is_alive():
       # read output
       output = self.read()
       if output != '':
+	# process output
 	data = self.proc_output(output)
-	data = self.check_data(data)
 	if self.err:
 	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['error', self.index])
 	else:
@@ -117,8 +124,8 @@ class ProcessWrapper(Thread):
     
   def close(self):
     self.proc.kill()
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', self.index])
     self.stopped = True
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', self.index])
   
   def proc_is_alive(self):
     return self.proc.poll() == None
@@ -132,41 +139,40 @@ class ProcessWrapper(Thread):
     return output.rstrip()
     
   def proc_output(self, output):
-    data = self.remove_spaces(self.string_to_array(output))
+    data = remove_spaces(string_to_array(output))
     data.append(self.index)
+    data = self.filter_data(data)
     return data
     
-  def check_data(self, data):
-    ''' check data for exceptions '''
+  def filter_data(self, data):
+    ''' Filters data for output exceptions '''
+    filter_list = ['Destination:', '100%', 'Resuming']
     if len(data) > 3: 
-      if data[1] == "UnicodeWarning:":
-	self.err = False
-	return ['ignore']
-      if data[0] == "[download]" and data[1] == "Destination:":
-	return ['ignore']
-      if data[0] == "[download]" and data[1] == "100%":
-	return ['ignore']
-      if data[0] == "[download]" and len(data[1]) > 10:
-	return ['ignore']
-      if data[0] == "[download]" and data[1] == "Resuming":
-	return ['ignore']
+      if data[0] == '[download]':
+	if data[1] in filter_list or len(data[1]) > 11:
+	  return ['ignore', self.index]
+	if data[1] == 'Downloading':
+	  if data[2] == 'video':
+	    return ['playlist', data[3], data[5], self.index]
+	  else:
+	    return ['ignore', self.index]
+      else:
+	if data[1] == 'UnicodeWarning:':
+	  self.err = False
+	  return ['ignore', self.index]
     return data
     
   def get_cmd(self):
-    data = self.options + [self.url]
-    if OS_TYPE == 'nt':
-      enc = sys.getfilesystemencoding()
-      data = [x.encode(enc, 'ignore') for x in data]
-    return data
+    enc = get_encoding()
+    if enc != None:
+      data = encode_list(self.options + [self.url], enc)
+    return self.options + [self.url]
   
-  def string_to_array(self, string):
-    return string.split(' ')
-    
-  def remove_spaces(self, array):
-    return [x for x in array if x != '']
-    
   def set_process_info(self):
     if OS_TYPE == 'nt':
-      self.info = subprocess.STARTUPINFO()
-      self.info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+      info = subprocess.STARTUPINFO()
+      info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+      return info
+    else:
+      return None
       

@@ -30,6 +30,7 @@ http://code.google.com/p/youtube-dlg/
 ## AUTHOR
 
 Sotiris Papadopoulos <ytubedlg@gmail.com>
+https://twitter.com/MrS0m30n3
 
 ## THANKS
 

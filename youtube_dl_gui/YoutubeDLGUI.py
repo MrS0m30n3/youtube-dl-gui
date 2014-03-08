@@ -128,6 +128,7 @@ class MainFrame(wx.Frame):
     if self.downloadHandler._has_closed():
       self.status_bar_write('Stoping downloads')
     if self.downloadHandler._has_finished():
+      self.finished_popup()
       self.status_bar_write('Done')
       self.downloadButton.SetLabel('Download')
       self.updateButton.Enable()
@@ -161,9 +162,17 @@ class MainFrame(wx.Frame):
       self.downloadHandler = DownloadHandler(self.statusList)
       self.downloadButton.SetLabel('Stop')
       self.updateButton.Disable()
+    else:
+      self.no_url_popup()
   
   def save_options(self):
     self.optionsList.save_to_file()
+  
+  def finished_popup(self):
+    wx.MessageBox('Downloads completed.', 'Info', wx.OK | wx.ICON_INFORMATION)
+  
+  def no_url_popup(self):
+    wx.MessageBox('You need to provide at least one url.', 'Error', wx.OK | wx.ICON_EXCLAMATION)
   
   def OnTrackListChange(self, event):
     if self.downloadThread != None:
@@ -194,7 +203,7 @@ class MainFrame(wx.Frame):
       self.update_youtube_dl()
   
   def OnOptions(self, event):
-    optionsFrame = OptionsFrame(self.optionsList)
+    optionsFrame = OptionsFrame(self.optionsList, self)
     optionsFrame.Show()
   
   def OnClose(self, event):

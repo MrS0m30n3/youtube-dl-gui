@@ -3,7 +3,7 @@ youtube-dlG - GUI for youtube-dl
 
 ## DESCRIPTION
 A cross platform front-end GUI of the popular youtube-dl 
-written in Python.
+written in wxPython.
 
 ## SCREENSHOT
 ![Youtube-dl-gui screenshot in slackware](http://i.imgur.com/JiT6eZW.png)
@@ -14,7 +14,7 @@ written in Python.
 http://code.google.com/p/youtube-dlg/
 
 ## REQUIREMENTS
-[Python (version 2.7 or 3.3+)](http://www.python.org)
+[Python (version 2.7+)](http://www.python.org)
 
 [wxPython](http://wxpython.org)
 

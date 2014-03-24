@@ -16,6 +16,8 @@ OptionsFrame
 
 import os
 import wx
+import subprocess
+import glob
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
@@ -39,6 +41,7 @@ VIDEOFORMATS = ["highest available",
 		"webm [640x360]",
 		"flv [400x240]",
 		"3gp [320x240]",
+		"mp4+m4a 1080p(DASH audio+video)",
 		"mp4 1080p(DASH)",
 		"mp4 720p(DASH)",
 		"mp4 480p(DASH)",
@@ -128,6 +131,17 @@ class MainFrame(wx.Frame):
     if self.downloadHandler._has_closed():
       self.status_bar_write('Stoping downloads')
     if self.downloadHandler._has_finished():
+      if self.optionsList.videoFormat == 'mp4+m4a 1080p(DASH audio+video)':
+        fullP = ''
+        if self.optionsList.savePath != '':
+          if os.name == 'nt':
+	    fullP = self.optionsList.savePath + '\\'
+          else:
+	    fullP = self.optionsList.savePath + '/'
+        for fl in glob.glob(fullP + '*.f140.m4a'):
+          os.remove(fl)
+        for fl in glob.glob(fullP + '*.f137.mp4'):
+          os.remove(fl)
       self.finished_popup()
       self.status_bar_write('Done')
       self.downloadButton.SetLabel('Download')

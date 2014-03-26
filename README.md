@@ -8,7 +8,7 @@ written in wxPython.
 ## SCREENSHOT
 ![Youtube-dl-gui screenshot in slackware](http://i.imgur.com/JiT6eZW.png)
 
-![Options window](http://i.imgur.com/3QFpaWM.png)
+![Options window](http://i.imgur.com/992tVdK.png)
 
 ## WINDOWS_SETUP
 http://code.google.com/p/youtube-dlg/

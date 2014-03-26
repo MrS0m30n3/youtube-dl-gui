@@ -1,9 +1,14 @@
 #! /usr/bin/env python
 
-import os
+from .Utils import (
+  get_HOME,
+  file_exist,
+  get_os_type,
+  fix_path
+)
 
-OS_TYPE = os.name
 SETTINGS_FILENAME = 'settings'
+LINUX_SAVEPATH = '/.config'
 
 class OptionsHandler():
   
@@ -12,7 +17,7 @@ class OptionsHandler():
   def __init__(self):
     self.load_default()
     self.set_settings_path()
-    if self.settings_file_exist():
+    if file_exist(self.settings_abs_path):
       self.load_from_file()
       
   def load_default(self):
@@ -46,17 +51,14 @@ class OptionsHandler():
     self.cmdArgs = ""
     self.dashAudioFormat = "NO SOUND"
     self.clearDashFiles = False
+    self.updatePath = ""
   
   def set_settings_path(self):
-    self.settings_abs_path = os.path.expanduser('~')
-    if OS_TYPE == 'nt':
-      self.settings_abs_path += '\\'
-    else:
-      self.settings_abs_path += '/.config/'
+    self.settings_abs_path = get_HOME()
+    if get_os_type() != 'nt':
+      self.settings_abs_path += LINUX_SAVEPATH
+    self.settings_abs_path = fix_path(self.settings_abs_path)
     self.settings_abs_path += SETTINGS_FILENAME
-  
-  def settings_file_exist(self):
-    return os.path.exists(self.settings_abs_path)
   
   def read_from_file(self):
     f = open(self.settings_abs_path, 'r')
@@ -98,6 +100,7 @@ class OptionsHandler():
     self.cmdArgs = opts[27]
     self.dashAudioFormat = opts[28]
     self.clearDashFiles = opts[29] in ['True']
+    self.updatePath = opts[30]
     
   def save_to_file(self):
     f = open(self.settings_abs_path, 'w')
@@ -131,5 +134,6 @@ class OptionsHandler():
     f.write('CmdArgs='+str(self.cmdArgs)+'\n')
     f.write('DashAudioFormat='+str(self.dashAudioFormat)+'\n')
     f.write('ClearDashFiles='+str(self.clearDashFiles)+'\n')
+    f.write('UpdatePath='+str(self.updatePath)+'\n')
     f.close()
     

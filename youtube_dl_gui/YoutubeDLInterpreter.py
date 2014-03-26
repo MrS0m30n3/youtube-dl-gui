@@ -8,10 +8,11 @@ youtube_dl.main() handle all the hard
 work) 
 '''
 
-from os import name
-from .Utils import video_is_dash
-
-OS_TYPE = name
+from .Utils import (
+  video_is_dash,
+  get_os_type,
+  fix_path
+)
 
 LANGUAGES = {"English":"en", 
 	    "Greek":"gr",
@@ -58,10 +59,11 @@ class YoutubeDLInterpreter():
     return self.opts
   
   def set_os(self):
-    if OS_TYPE == 'nt':
+    if get_os_type() == 'nt':
       self.opts = [self.youtubeDLFile]
     else:
-      self.opts = ['python', self.youtubeDLFile]
+      path = fix_path(self.optionsList.updatePath)
+      self.opts = ['python', path + self.youtubeDLFile]
   
   def set_download_opts(self):
     if (self.optionsList.rateLimit != '0' and self.optionsList.rateLimit != ''):
@@ -136,17 +138,12 @@ class YoutubeDLInterpreter():
 	self.opts.append(LANGUAGES[self.optionsList.subsLang])
   
   def set_output_opts(self):
-    fullP = ''
-    if self.optionsList.savePath != '':
-      if OS_TYPE == 'nt':
-	fullP = self.optionsList.savePath + '\\'
-      else:
-	fullP = self.optionsList.savePath + '/'
+    path = fix_path(self.optionsList.savePath)
     self.opts.append('-o')
     if self.optionsList.idAsName:
-      self.opts.append(fullP + '%(id)s.%(ext)s')
+      self.opts.append(path + '%(id)s.%(ext)s')
     else:
-      self.opts.append(fullP + '%(title)s.%(ext)s')
+      self.opts.append(path + '%(title)s.%(ext)s')
   
   def set_audio_opts(self):
     if self.optionsList.toAudio:

@@ -1,8 +1,6 @@
 #! /usr/bin/env python
 
-import sys
 import subprocess
-from os import name
 from time import sleep
 from wx import CallAfter
 from threading import Thread
@@ -14,10 +12,10 @@ from .Utils import (
   string_to_array,
   get_encoding,
   encode_list,
-  remove_file
+  remove_file,
+  get_os_type
 )
 
-OS_TYPE = name
 MAX_DOWNLOAD_THREADS = 3
 PUBLISHER_TOPIC = 'download'
 
@@ -195,7 +193,7 @@ class ProcessWrapper(Thread):
     return self.options + [self.url]
   
   def set_process_info(self):
-    if OS_TYPE == 'nt':
+    if get_os_type() == 'nt':
       info = subprocess.STARTUPINFO()
       info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
       return info

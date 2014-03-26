@@ -4,6 +4,7 @@
 This file contains all gui classes
 MainFrame
 Custom wx.ListCtrl class
+UpdateDialog
 OptionsFrame
   ConnectionPanel
   AudioPanel
@@ -14,7 +15,6 @@ OptionsFrame
   OtherPanel
 '''
 
-import os
 import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
@@ -27,10 +27,15 @@ from .YoutubeDLInterpreter import YoutubeDLInterpreter
 from .SignalHandler import DownloadHandler
 from .Utils import (
   video_is_dash,
-  have_dash_audio
+  have_dash_audio,
+  add_PATH,
+  get_HOME,
+  get_os_type,
+  file_exist,
+  fix_path
 )
 
-if os.name == 'nt':
+if get_os_type() == 'nt':
   YOUTUBE_DL_FILENAME = 'youtube-dl.exe'
 else:
   YOUTUBE_DL_FILENAME = 'youtube-dl'
@@ -65,7 +70,7 @@ class MainFrame(wx.Frame):
     wx.Frame.__init__(self, parent, id, TITLE+' '+__version__, size=(600, 410), style = wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
     
     # set sizers for status box (Windows & Linux)
-    if os.name == 'nt':
+    if get_os_type() == 'nt':
       statusListSizer = (580, 165)
       statusBarSizer = (15, 365)
     else:
@@ -112,20 +117,34 @@ class MainFrame(wx.Frame):
     # init urlList for evt_text on self.trackList
     self.urlList = []
     
+    # pop user for update path if none has entered
+    if self.optionsList.updatePath == "":
+      self.pop_update_dialog()
+      if self.optionsList.updatePath == "":
+	self.optionsList.updatePath = get_HOME()
+
+    # add youtube-dl.exe to %PATH% for windows 
+    if get_os_type() == 'nt': add_PATH(self.optionsList.updatePath)
+    
     # check & update libraries (youtube-dl)
-    self.check_if_youtube_dl_exist()
+    self.check_if_youtube_dl_exist(fix_path(self.optionsList.updatePath))
     if (self.optionsList.autoUpdate):
       self.status_bar_write("Auto update enable")
       self.update_youtube_dl()
   
-  def check_if_youtube_dl_exist(self):
-    if not os.path.exists(YOUTUBE_DL_FILENAME):
+  def pop_update_dialog(self):
+    upDialog = UpdateDialog(self.optionsList)
+    upDialog.ShowModal()
+    upDialog.Destroy()
+  
+  def check_if_youtube_dl_exist(self, path):
+    if not file_exist(path + YOUTUBE_DL_FILENAME):
       self.status_bar_write("Youtube-dl is missing, trying to download it...")
       self.update_youtube_dl()
   
   def update_youtube_dl(self):
     self.downloadButton.Disable()
-    self.updateThread = UpdateThread(YOUTUBE_DL_FILENAME)
+    self.updateThread = UpdateThread(YOUTUBE_DL_FILENAME, self.optionsList.updatePath)
   
   def status_bar_write(self, msg):
     self.statusBar.SetLabel(msg)
@@ -273,6 +292,53 @@ class ListCtrl(wx.ListCtrl):
       data['index'] = row
       items.append(data)
     return items
+
+class UpdateDialog(wx.Dialog):
+  
+  def __init__(self, optionsList, parent=None, id=-1):
+    wx.Dialog.__init__(self, parent, id, 'Update Path', size=(380, 180))
+    
+    self.optionsList = optionsList
+    self.initGUI()
+  
+  def initGUI(self):
+    panel = wx.Panel(self)
+    
+    text = '''Plase enter the path where youtube-dlG
+should download latest updates (Default is $HOME)'''
+
+    wx.StaticText(panel, -1, text, (15, 10))
+    wx.StaticText(panel, -1, 'Update Path', (15, 60))
+    self.updatePathBox = wx.TextCtrl(panel, -1, pos=(10, 80), size=(360, -1))
+    wx.StaticText(panel, -1, '*** NEED WRITE PERMISSION', (15, 110))
+    saveButton = wx.Button(panel, label='Save Path', pos=(140, 140))
+    
+    saveButton.Bind(wx.EVT_BUTTON, self.OnSave)
+    
+  def OnSave(self, event):
+    self.setPath()
+    self.Close(True)
+
+  def setPath(self):
+    self.optionsList.updatePath = self.updatePathBox.GetValue()
+    
+class UpdatePanel(wx.Panel):
+  
+  def __init__(self, parent, optionsList):
+    self.optionsList = optionsList
+    
+    wx.Panel.__init__(self, parent)
+    wx.StaticText(self, -1, 'Update Path', (25, 20))
+    self.updatePathBox = wx.TextCtrl(self, -1, pos=(20, 40), size=(450, -1))
+    self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (25, 80))
+    
+  def load_options(self):
+    self.updatePathBox.SetValue(self.optionsList.updatePath)
+    self.autoUpdateChk.SetValue(self.optionsList.autoUpdate)
+    
+  def save_options(self):
+    self.optionsList.updatePath = self.updatePathBox.GetValue()
+    self.optionsList.autoUpdate = self.autoUpdateChk.GetValue()
     
 class ConnectionPanel(wx.Panel):
   
@@ -527,7 +593,6 @@ class GeneralPanel(wx.Panel):
     wx.StaticText(self, -1, "Save Path", (15, 10))
     self.savePathBox = wx.TextCtrl(self, -1, pos=(10, 30), size=(350, -1))
     self.idAsNameChk = wx.CheckBox(self, -1, 'ID as Name', (10, 70))
-    self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (160, 70))
     self.aboutButton = wx.Button(self, label="About", pos=(380, 80), size=(100, 40))
     self.openButton = wx.Button(self, label="Open", pos=(380, 20), size=(100, 40))
     self.resetButton = wx.Button(self, label="Reset", pos=(380, 140), size=(100, 40))
@@ -589,12 +654,10 @@ For more information, please refer to <http://unlicense.org/>'''
   def load_options(self):
     self.savePathBox.SetValue(self.optList.savePath)
     self.idAsNameChk.SetValue(self.optList.idAsName)
-    self.autoUpdateChk.SetValue(self.optList.autoUpdate)
     
   def save_options(self):
     self.optList.savePath = self.savePathBox.GetValue()
     self.optList.idAsName = self.idAsNameChk.GetValue()
-    self.optList.autoUpdate = self.autoUpdateChk.GetValue()
  
 class OtherPanel(wx.Panel):
   
@@ -628,6 +691,7 @@ class OptionsFrame(wx.Frame):
     self.downloadTab = DownloadPanel(notebook, self.optionsList)
     self.subtitlesTab = SubtitlesPanel(notebook, self.optionsList)
     self.otherTab = OtherPanel(notebook, self.optionsList)
+    self.updateTab = UpdatePanel(notebook, self.optionsList)
     
     notebook.AddPage(self.generalTab, "General")
     notebook.AddPage(self.audioTab, "Audio")
@@ -635,6 +699,7 @@ class OptionsFrame(wx.Frame):
     notebook.AddPage(self.subtitlesTab, "Subtitles")
     notebook.AddPage(self.downloadTab, "Download")
     notebook.AddPage(self.connectionTab, "Connection")
+    notebook.AddPage(self.updateTab, "Update")
     notebook.AddPage(self.otherTab, "Commands")
     
     sizer = wx.BoxSizer()
@@ -661,6 +726,7 @@ class OptionsFrame(wx.Frame):
     self.downloadTab.load_options()
     self.subtitlesTab.load_options()
     self.otherTab.load_options()
+    self.updateTab.load_options()
     
   def save_all_options(self):
     self.generalTab.save_options()
@@ -670,4 +736,5 @@ class OptionsFrame(wx.Frame):
     self.downloadTab.save_options()
     self.subtitlesTab.save_options()
     self.otherTab.save_options()
+    self.updateTab.save_options()
     

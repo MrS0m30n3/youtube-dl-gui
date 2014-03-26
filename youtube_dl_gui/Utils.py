@@ -29,3 +29,27 @@ def have_dash_audio(audio):
   
 def remove_file(filename):
   os.remove(filename)
+  
+def fix_path(path):
+  if path != '':
+    if os.name == 'nt':
+      path += '\\'
+    else:
+      path += '/'
+  return path
+  
+def get_HOME():
+  return os.path.expanduser("~")
+  
+def add_PATH(path):
+  os.environ["PATH"] += os.pathsep + path
+
+def file_exist(filename):
+  return os.path.exists(filename)
+  
+def get_os_type():
+  return os.name
+  
+def makedir(path):
+  os.makedirs(path)
+  

@@ -185,6 +185,8 @@ class MainFrame(wx.Frame):
     self.urlList = []
   
   def start_download(self, trackList):
+    self.check_update_path()
+    self.check_if_youtube_dl_exist()
     self.statusList._clear_list()
     for url in trackList:
       if url != '':
@@ -337,7 +339,7 @@ class UpdatePanel(wx.Panel):
     self.optionsList = optionsList
     
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Update Path (If you edit this value restart youtube-dlG)', (25, 20))
+    wx.StaticText(self, -1, 'Update Path (Should point where youtube-dl is)', (25, 20))
     self.updatePathBox = wx.TextCtrl(self, -1, pos=(20, 40), size=(450, -1))
     self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (25, 80))
     

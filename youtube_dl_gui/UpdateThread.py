@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 from threading import Thread
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1
@@ -13,6 +14,11 @@ DOWNLOAD_TIMEOUT = 10
 class UpdateThread(Thread):
   
   def __init__(self, youtubeDLFile):
+    if os.name != 'nt':
+      home_dir = os.path.expanduser('~')
+      if not os.path.exists(home_dir + '/.cache/youtube-dl'):
+        os.makedirs(home_dir + '/.cache/youtube-dl')
+      os.chdir(home_dir + '/.cache/youtube-dl')
     super(UpdateThread, self).__init__()
     self.youtubeDLFile = youtubeDLFile
     self.url = LATEST_YOUTUBE_DL + youtubeDLFile

@@ -23,7 +23,11 @@ class OptionsHandler():
     self.keepVideo = False
     self.audioQuality = 5
     self.proxy = ""
-    self.savePath = ""
+    if os.name == 'nt':
+      self.savePath = ""
+    else:
+      home_dir = os.path.expanduser('~')
+      self.savePath = home_dir
     self.autoUpdate = False
     self.videoFormat = "highest available"
     self.userAgent = ""

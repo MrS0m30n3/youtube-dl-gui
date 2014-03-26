@@ -33,7 +33,9 @@ SIGNALS
 
 ['[ffmpeg]', index]:		Post-Processing for url, index
 
-['ignore', index]		Do nothing
+['ignore', index]:		Do nothing
+
+['remove', index]:		Removing dash audio/videos files, index
 
 EXAMPLES
 ========

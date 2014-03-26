@@ -44,6 +44,8 @@ class OptionsHandler():
     self.subsLang = "English"
     self.writeAutoSubs = False
     self.cmdArgs = ""
+    self.dashAudioFormat = "NO SOUND"
+    self.clearDashFiles = False
   
   def set_settings_path(self):
     self.settings_abs_path = os.path.expanduser('~')
@@ -94,6 +96,8 @@ class OptionsHandler():
     self.subsLang = opts[25]
     self.writeAutoSubs = opts[26] in ['True']
     self.cmdArgs = opts[27]
+    self.dashAudioFormat = opts[28]
+    self.clearDashFiles = opts[29] in ['True']
     
   def save_to_file(self):
     f = open(self.settings_abs_path, 'w')
@@ -125,5 +129,7 @@ class OptionsHandler():
     f.write('SubtitlesLanguage='+str(self.subsLang)+'\n')
     f.write('WriteAutoSubtitles='+str(self.writeAutoSubs)+'\n')
     f.write('CmdArgs='+str(self.cmdArgs)+'\n')
+    f.write('DashAudioFormat='+str(self.dashAudioFormat)+'\n')
+    f.write('ClearDashFiles='+str(self.clearDashFiles)+'\n')
     f.close()
     

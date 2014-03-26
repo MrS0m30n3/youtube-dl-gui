@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import os
 import sys
 
 def remove_spaces(array):
@@ -20,3 +21,11 @@ def get_encoding():
 def encode_list(data_list, encoding):
   return [x.encode(encoding, 'ignore') for x in data_list]
   
+def video_is_dash(video):
+  return "DASH" in video
+  
+def have_dash_audio(audio):
+  return audio != "NO SOUND"
+  
+def remove_file(filename):
+  os.remove(filename)

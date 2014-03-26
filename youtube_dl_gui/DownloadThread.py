@@ -13,7 +13,8 @@ from .Utils import (
   remove_spaces,
   string_to_array,
   get_encoding,
-  encode_list
+  encode_list,
+  remove_file
 )
 
 OS_TYPE = name
@@ -22,8 +23,9 @@ PUBLISHER_TOPIC = 'download'
 
 class DownloadManager(Thread):
   
-  def __init__(self, options, downloadlist):
+  def __init__(self, options, downloadlist, clear_dash_files):
     super(DownloadManager, self).__init__()
+    self.clear_dash_files = clear_dash_files
     self.downloadlist = downloadlist
     self.options = options
     self.running = True
@@ -44,7 +46,14 @@ class DownloadManager(Thread):
 	    self.procNo -= 1
 	# If we still running create new ProcessWrapper thread
 	if self.running:
-	  self.procList.append(ProcessWrapper(self.options, url, index))
+	  self.procList.append(
+	    ProcessWrapper(
+	      self.options,
+	      url,
+	      index,
+	      self.clear_dash_files
+	    )
+	  )
 	  self.procNo += 1
       else:
 	# Return True if at least one process is alive else return False
@@ -56,7 +65,7 @@ class DownloadManager(Thread):
     # If we reach here close down all child threads
     self.terminate_all()
     CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', -1])
-
+  
   def add_download_item(self, downloadItem):
     self.downloadlist.append(downloadItem)
     
@@ -93,11 +102,13 @@ class DownloadManager(Thread):
     
 class ProcessWrapper(Thread):
   
-  def __init__(self, options, url, index):
+  def __init__(self, options, url, index, clear_dash_files):
     super(ProcessWrapper, self).__init__()
+    self.clear_dash_files = clear_dash_files
     self.options = options
     self.index = index
     self.url = url
+    self.filenames = []
     self.proc = None
     self.stopped = False
     self.err = False
@@ -120,7 +131,20 @@ class ProcessWrapper(Thread):
 	else:
 	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
     if not self.err and not self.stopped:
+      if self.clear_dash_files: 
+	self.cleardash()
       CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', self.index])
+    
+  def extract_filename(self, data):
+    data_list = data.split(':')
+    if 'Destination' in data_list[0].split():
+      self.filenames.append(data_list[1].lstrip())
+    
+  def cleardash(self):
+    if self.filenames:
+      CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['remove', self.index])
+      for f in self.filenames:
+	remove_file(f)
     
   def close(self):
     self.proc.kill()
@@ -139,6 +163,8 @@ class ProcessWrapper(Thread):
     return output.rstrip()
     
   def proc_output(self, output):
+    if self.clear_dash_files:
+      self.extract_filename(output)
     data = remove_spaces(string_to_array(output))
     data.append(self.index)
     data = self.filter_data(data)

@@ -9,6 +9,7 @@ work)
 '''
 
 from os import name
+from .Utils import video_is_dash
 
 OS_TYPE = name
 
@@ -31,6 +32,10 @@ VIDEOFORMATS = {"highest available":"auto",
 		"mp4 720p(DASH)":"136",
 		"mp4 480p(DASH)":"135",
 		"mp4 360p(DASH)":"134"}
+		
+DASH_AUDIO_FORMATS = {"NO SOUND":"None",
+		      "DASH m4a audio 128k":"140",
+		      "DASH webm audio 48k":"171"}
 
 class YoutubeDLInterpreter():
   
@@ -98,7 +103,15 @@ class YoutubeDLInterpreter():
   def set_video_opts(self):
     if self.optionsList.videoFormat != 'highest available':
       self.opts.append('-f')
-      self.opts.append(VIDEOFORMATS[self.optionsList.videoFormat])
+      if video_is_dash(self.optionsList.videoFormat):
+	vf = VIDEOFORMATS[self.optionsList.videoFormat]
+	af = DASH_AUDIO_FORMATS[self.optionsList.dashAudioFormat]
+	if af != 'None':
+	  self.opts.append(vf+'+'+af)
+	else:
+	  self.opts.append(vf)
+      else:
+	self.opts.append(VIDEOFORMATS[self.optionsList.videoFormat])
   
   def set_playlist_opts(self):
     if (self.optionsList.startTrack != '1' and self.optionsList.startTrack != ''):

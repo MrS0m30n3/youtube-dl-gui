@@ -25,6 +25,10 @@ from .DownloadThread import DownloadManager
 from .OptionsHandler import OptionsHandler
 from .YoutubeDLInterpreter import YoutubeDLInterpreter
 from .SignalHandler import DownloadHandler
+from .Utils import (
+  video_is_dash,
+  have_dash_audio
+)
 
 if os.name == 'nt':
   YOUTUBE_DL_FILENAME = 'youtube-dl.exe'
@@ -43,6 +47,9 @@ VIDEOFORMATS = ["highest available",
 		"mp4 720p(DASH)",
 		"mp4 480p(DASH)",
 		"mp4 360p(DASH)"]
+DASH_AUDIO_FORMATS = ["NO SOUND",
+		      "DASH m4a audio 128k",
+		      "DASH webm audio 48k"]
 LANGUAGES = ["English",
 	     "Greek",
 	     "Portuguese",
@@ -158,7 +165,11 @@ class MainFrame(wx.Frame):
     if not self.statusList._is_empty():
       options = YoutubeDLInterpreter(self.optionsList, YOUTUBE_DL_FILENAME).get_options()
       self.status_bar_write('Download started')
-      self.downloadThread = DownloadManager(options, self.statusList._get_items())
+      self.downloadThread = DownloadManager(
+	options,
+	self.statusList._get_items(),
+	self.optionsList.clearDashFiles
+      )
       self.downloadHandler = DownloadHandler(self.statusList)
       self.downloadButton.SetLabel('Stop')
       self.updateButton.Disable()
@@ -342,25 +353,53 @@ class VideoPanel(wx.Panel):
     wx.Panel.__init__(self, parent)
     wx.StaticText(self, -1, 'Video Format', (15, 10))
     self.videoFormatCombo = wx.ComboBox(self, choices=VIDEOFORMATS, pos=(10, 30), size=(160, 30))
-    wx.StaticText(self, -1, 'Playlist  Options', (300, 30))
-    wx.StaticText(self, -1, 'Start', (250, 60))
-    self.startBox = wx.TextCtrl(self, -1, pos=(320, 55), size=(50, -1))
-    wx.StaticText(self, -1, 'Stop', (250, 100))
-    self.stopBox = wx.TextCtrl(self, -1, pos=(320, 95), size=(50, -1))
-    wx.StaticText(self, -1, 'Max DLs', (250, 140))
-    self.maxBox = wx.TextCtrl(self, -1, pos=(320, 135), size=(50, -1))
+    wx.StaticText(self, -1, 'DASH Audio', (15, 100))
+    self.dashAudioFormatCombo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, pos=(10, 120), size=(160, 30))
+    self.clearDashFilesChk = wx.CheckBox(self, -1, 'Clear DASH audio/video files', (10, 160))
+    wx.StaticText(self, -1, 'Playlist  Options', (350, 30))
+    wx.StaticText(self, -1, 'Start', (300, 60))
+    self.startBox = wx.TextCtrl(self, -1, pos=(370, 55), size=(50, -1))
+    wx.StaticText(self, -1, 'Stop', (300, 100))
+    self.stopBox = wx.TextCtrl(self, -1, pos=(370, 95), size=(50, -1))
+    wx.StaticText(self, -1, 'Max DLs', (300, 140))
+    self.maxBox = wx.TextCtrl(self, -1, pos=(370, 135), size=(50, -1))
+    
+    self.Bind(wx.EVT_COMBOBOX, self.OnVideoFormatPick, self.videoFormatCombo)
+    self.Bind(wx.EVT_COMBOBOX, self.OnAudioFormatPick, self.dashAudioFormatCombo)
+  
+  def OnAudioFormatPick(self, event):
+    if have_dash_audio(self.dashAudioFormatCombo.GetValue()):
+      self.clearDashFilesChk.Enable()
+    else:
+      self.clearDashFilesChk.SetValue(False)
+      self.clearDashFilesChk.Disable()
+  
+  def OnVideoFormatPick(self, event):
+    if video_is_dash(self.videoFormatCombo.GetValue()):
+      self.dashAudioFormatCombo.Enable()
+    else:
+      self.dashAudioFormatCombo.Disable()
   
   def load_options(self):
     self.videoFormatCombo.SetValue(self.optList.videoFormat)
     self.startBox.SetValue(self.optList.startTrack)
     self.stopBox.SetValue(self.optList.endTrack)
     self.maxBox.SetValue(self.optList.maxDownloads)
+    self.dashAudioFormatCombo.SetValue(self.optList.dashAudioFormat)
+    self.clearDashFilesChk.SetValue(self.optList.clearDashFiles)
+    if not video_is_dash(self.optList.videoFormat):
+      self.dashAudioFormatCombo.Disable()
+    if not have_dash_audio(self.optList.dashAudioFormat):
+      self.clearDashFilesChk.SetValue(False)
+      self.clearDashFilesChk.Disable()
     
   def save_options(self):
     self.optList.videoFormat = self.videoFormatCombo.GetValue()
     self.optList.startTrack = self.startBox.GetValue()
     self.optList.endTrack = self.stopBox.GetValue()
     self.optList.maxDownloads = self.maxBox.GetValue()
+    self.optList.dashAudioFormat = self.dashAudioFormatCombo.GetValue()
+    self.optList.clearDashFiles = self.clearDashFilesChk.GetValue()
     
 class DownloadPanel(wx.Panel):
   

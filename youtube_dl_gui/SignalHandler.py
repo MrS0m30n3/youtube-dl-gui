@@ -57,6 +57,8 @@ class IndexDownloadHandler():
       self.download(data)
     elif data[0] == '[ffmpeg]':
       self.post_proc()
+    elif data[0] == 'remove':
+      self.remove()
       
   def finish(self):
     self.ListCtrl._write_data(self.index, 4, '')
@@ -77,7 +79,7 @@ class IndexDownloadHandler():
      
   def post_proc(self):
     self.ListCtrl._write_data(self.index, 4, '')
-    self.ListCtrl._write_data(self.index, 5, 'Converting to Audio %s' % self.info)
+    self.ListCtrl._write_data(self.index, 5, 'Post-Processing %s' % self.info)
      
   def download(self, data):
     self.ListCtrl._write_data(self.index, 1, data[3])
@@ -92,4 +94,7 @@ class IndexDownloadHandler():
     self.ListCtrl._write_data(self.index, 3, '')
     self.ListCtrl._write_data(self.index, 4, '')
     self.info = '%s/%s' % (data[1], data[2])
-      
+  
+  def remove(self):
+    self.ListCtrl._write_data(self.index, 5, 'Removing DASH %s' % self.info)
+  

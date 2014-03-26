@@ -454,7 +454,11 @@ class VideoPanel(wx.Panel):
   def OnVideoFormatPick(self, event):
     if video_is_dash(self.videoFormatCombo.GetValue()):
       self.dashAudioFormatCombo.Enable()
+      if have_dash_audio(self.dashAudioFormatCombo.GetValue()):
+	self.clearDashFilesChk.Enable()
     else:
+      self.clearDashFilesChk.SetValue(False)
+      self.clearDashFilesChk.Disable()
       self.dashAudioFormatCombo.Disable()
   
   def load_options(self):

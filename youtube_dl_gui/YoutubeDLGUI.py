@@ -32,7 +32,8 @@ from .Utils import (
   get_HOME,
   get_os_type,
   file_exist,
-  fix_path
+  fix_path,
+  get_abs_path
 )
 
 if get_os_type() == 'nt':
@@ -41,7 +42,9 @@ else:
   YOUTUBE_DL_FILENAME = 'youtube-dl'
 
 TITLE = 'Youtube-dlG'
+
 AUDIOFORMATS = ["mp3", "wav", "aac", "m4a"]
+
 VIDEOFORMATS = ["highest available",
 		"mp4 [1280x720]",
 		"mp4 [640x360]",
@@ -52,9 +55,11 @@ VIDEOFORMATS = ["highest available",
 		"mp4 720p(DASH)",
 		"mp4 480p(DASH)",
 		"mp4 360p(DASH)"]
+
 DASH_AUDIO_FORMATS = ["NO SOUND",
 		      "DASH m4a audio 128k",
 		      "DASH webm audio 48k"]
+
 LANGUAGES = ["English",
 	     "Greek",
 	     "Portuguese",
@@ -107,7 +112,7 @@ class MainFrame(wx.Frame):
     Publisher.subscribe(self.download_handler, "download")
     
     # init Options and DownloadHandler objects
-    self.optionsList = OptionsHandler()
+    self.optionsList = OptionsHandler(self.status_bar_write)
     self.downloadHandler = None
     
     # init some thread variables
@@ -117,28 +122,32 @@ class MainFrame(wx.Frame):
     # init urlList for evt_text on self.trackList
     self.urlList = []
     
-    # pop user for update path if none has entered
-    if self.optionsList.updatePath == "":
-      self.pop_update_dialog()
-      if self.optionsList.updatePath == "":
-	self.optionsList.updatePath = get_HOME()
+    # fix update path
+    self.check_update_path()
 
-    # add youtube-dl.exe to %PATH% for windows 
-    if get_os_type() == 'nt': add_PATH(self.optionsList.updatePath)
-    
     # check & update libraries (youtube-dl)
-    self.check_if_youtube_dl_exist(fix_path(self.optionsList.updatePath))
+    self.check_if_youtube_dl_exist()
     if (self.optionsList.autoUpdate):
       self.status_bar_write("Auto update enable")
       self.update_youtube_dl()
+  
+  def check_update_path(self):
+    if self.optionsList.updatePath == '':
+      self.pop_update_dialog()
+      if self.optionsList.updatePath == '':
+	self.optionsList.updatePath = get_HOME()
+    self.optionsList.updatePath = get_abs_path(self.optionsList.updatePath)
+    if get_os_type() == 'nt':
+      add_PATH(self.optionsList.updatePath)
   
   def pop_update_dialog(self):
     upDialog = UpdateDialog(self.optionsList)
     upDialog.ShowModal()
     upDialog.Destroy()
   
-  def check_if_youtube_dl_exist(self, path):
-    if not file_exist(path + YOUTUBE_DL_FILENAME):
+  def check_if_youtube_dl_exist(self):
+    path = fix_path(self.optionsList.updatePath)+YOUTUBE_DL_FILENAME
+    if not file_exist(path):
       self.status_bar_write("Youtube-dl is missing, trying to download it...")
       self.update_youtube_dl()
   
@@ -328,7 +337,7 @@ class UpdatePanel(wx.Panel):
     self.optionsList = optionsList
     
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Update Path', (25, 20))
+    wx.StaticText(self, -1, 'Update Path (If you edit this value restart youtube-dlG)', (25, 20))
     self.updatePathBox = wx.TextCtrl(self, -1, pos=(20, 40), size=(450, -1))
     self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (25, 80))
     

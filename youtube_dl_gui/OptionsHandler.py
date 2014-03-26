@@ -14,7 +14,8 @@ class OptionsHandler():
   
   settings_abs_path = ''
   
-  def __init__(self):
+  def __init__(self, statusBarWrite):
+    self.statusBarWrite = statusBarWrite
     self.load_default()
     self.set_settings_path()
     if file_exist(self.settings_abs_path):
@@ -28,7 +29,7 @@ class OptionsHandler():
     self.keepVideo = False
     self.audioQuality = 5
     self.proxy = ""
-    self.savePath = ""
+    self.savePath = get_HOME()
     self.autoUpdate = False
     self.videoFormat = "highest available"
     self.userAgent = ""
@@ -55,7 +56,11 @@ class OptionsHandler():
   
   def set_settings_path(self):
     self.settings_abs_path = get_HOME()
-    if get_os_type() != 'nt':
+    ''' 
+    On Linux save settings file under $HOME/LINUX_SAVEPATH/settings.
+    On windows save settings file under %UserProfile%/settings
+    '''
+    if get_os_type() != 'nt': 
       self.settings_abs_path += LINUX_SAVEPATH
     self.settings_abs_path = fix_path(self.settings_abs_path)
     self.settings_abs_path += SETTINGS_FILENAME
@@ -70,37 +75,41 @@ class OptionsHandler():
     opts = []
     for option in self.read_from_file():
       opts.append(option.split('=')[1].rstrip('\n'))
-    self.ignoreErrors = opts[0] in ['True']
-    self.idAsName = opts[1] in ['True']
-    self.toAudio = opts[2] in ['True']
-    self.audioFormat = opts[3]
-    self.keepVideo = opts[4] in ['True']
-    self.audioQuality = int(opts[5])
-    self.proxy = opts[6]
-    self.savePath = opts[7].decode('utf8')
-    self.autoUpdate = opts[8] in ['True']
-    self.videoFormat = opts[9]
-    self.userAgent = opts[10]
-    self.referer = opts[11]
-    self.username = opts[12]
-    self.startTrack = opts[13]
-    self.endTrack = opts[14]
-    self.maxDownloads = opts[15]
-    self.rateLimit = opts[16]
-    self.retries = opts[17]
-    self.writeDescription = opts[18] in ['True']
-    self.writeInfo = opts[19] in ['True']
-    self.writeThumbnail = opts[20] in ['True']
-    self.minFileSize = opts[21]
-    self.maxFileSize = opts[22]
-    self.writeSubs = opts[23] in ['True']
-    self.writeAllSubs = opts[24] in ['True']
-    self.subsLang = opts[25]
-    self.writeAutoSubs = opts[26] in ['True']
-    self.cmdArgs = opts[27]
-    self.dashAudioFormat = opts[28]
-    self.clearDashFiles = opts[29] in ['True']
-    self.updatePath = opts[30]
+    try:
+      self.ignoreErrors = opts[0] in ['True']
+      self.idAsName = opts[1] in ['True']
+      self.toAudio = opts[2] in ['True']
+      self.audioFormat = opts[3]
+      self.keepVideo = opts[4] in ['True']
+      self.audioQuality = int(opts[5])
+      self.proxy = opts[6]
+      self.savePath = opts[7].decode('utf8')
+      self.autoUpdate = opts[8] in ['True']
+      self.videoFormat = opts[9]
+      self.userAgent = opts[10]
+      self.referer = opts[11]
+      self.username = opts[12]
+      self.startTrack = opts[13]
+      self.endTrack = opts[14]
+      self.maxDownloads = opts[15]
+      self.rateLimit = opts[16]
+      self.retries = opts[17]
+      self.writeDescription = opts[18] in ['True']
+      self.writeInfo = opts[19] in ['True']
+      self.writeThumbnail = opts[20] in ['True']
+      self.minFileSize = opts[21]
+      self.maxFileSize = opts[22]
+      self.writeSubs = opts[23] in ['True']
+      self.writeAllSubs = opts[24] in ['True']
+      self.subsLang = opts[25]
+      self.writeAutoSubs = opts[26] in ['True']
+      self.cmdArgs = opts[27]
+      self.dashAudioFormat = opts[28]
+      self.clearDashFiles = opts[29] in ['True']
+      self.updatePath = opts[30]
+    except:
+      self.statusBarWrite('Error while loading settings file')
+      self.load_default()
     
   def save_to_file(self):
     f = open(self.settings_abs_path, 'w')

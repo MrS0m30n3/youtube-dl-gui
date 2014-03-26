@@ -29,13 +29,17 @@ def have_dash_audio(audio):
   
 def remove_file(filename):
   os.remove(filename)
+
+def get_path_seperator():
+  if os.name == 'nt':
+    return '\\'
+  else:
+    return '/'
   
 def fix_path(path):
   if path != '':
-    if os.name == 'nt':
-      path += '\\'
-    else:
-      path += '/'
+    if path[-1:] != get_path_seperator():
+      path += get_path_seperator()
   return path
   
 def get_HOME():
@@ -44,6 +48,15 @@ def get_HOME():
 def add_PATH(path):
   os.environ["PATH"] += os.pathsep + path
 
+def get_abs_path(path):
+  sep = get_path_seperator()
+  path_list = path.split(sep)
+  for i in range(len(path_list)):
+    if path_list[i] == '~':
+      path_list[i] = get_HOME()
+  path = sep.join(path_list)
+  return path
+  
 def file_exist(filename):
   return os.path.exists(filename)
   

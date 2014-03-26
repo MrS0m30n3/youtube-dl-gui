@@ -71,10 +71,16 @@ class OptionsHandler():
     f.close()
     return options
   
-  def load_from_file(self):
+  def extract_options(self):
     opts = []
     for option in self.read_from_file():
-      opts.append(option.split('=')[1].rstrip('\n'))
+      opt = option.split('=')
+      if not len(opt) < 2:
+	opts.append(opt[1].rstrip('\n'))
+    return opts
+  
+  def load_from_file(self):
+    opts = self.extract_options()
     try:
       self.ignoreErrors = opts[0] in ['True']
       self.idAsName = opts[1] in ['True']

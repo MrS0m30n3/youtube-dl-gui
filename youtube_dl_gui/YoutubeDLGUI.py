@@ -168,8 +168,6 @@ class MainFrame(wx.Frame):
     self.urlList = []
   
   def start_download(self, trackList):
-    self.check_update_path()
-    self.check_if_youtube_dl_exist()
     self.statusList._clear_list()
     for url in trackList:
       if url != '':

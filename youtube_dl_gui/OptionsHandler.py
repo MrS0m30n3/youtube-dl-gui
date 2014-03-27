@@ -4,11 +4,13 @@ from .Utils import (
   get_HOME,
   file_exist,
   get_os_type,
-  fix_path
+  fix_path,
+  makedir
 )
 
 SETTINGS_FILENAME = 'settings'
-LINUX_SAVEPATH = '/.config'
+LINUX_FILES_PATH = get_HOME() + '/.youtube-dl-gui'
+WINDOWS_FILES_PATH = get_HOME() + '\\youtube-dl-gui'
 
 class OptionsHandler():
   
@@ -16,11 +18,17 @@ class OptionsHandler():
   
   def __init__(self, statusBarWrite):
     self.statusBarWrite = statusBarWrite
-    self.load_default()
     self.set_settings_path()
+    self.load_settings()
+  
+  def load_settings(self):
+    if not file_exist(self.get_config_path()):
+      makedir(self.get_config_path())
     if file_exist(self.settings_abs_path):
       self.load_from_file()
-      
+    else:
+      self.load_default()
+  
   def load_default(self):
     self.ignoreErrors = True
     self.idAsName = False
@@ -52,16 +60,16 @@ class OptionsHandler():
     self.cmdArgs = ""
     self.dashAudioFormat = "NO SOUND"
     self.clearDashFiles = False
-    self.updatePath = ""
+    self.updatePath = self.get_config_path()
+  
+  def get_config_path(self):
+    if get_os_type() == 'nt':
+      return WINDOWS_FILES_PATH
+    else:
+      return LINUX_FILES_PATH
   
   def set_settings_path(self):
-    self.settings_abs_path = get_HOME()
-    ''' 
-    On Linux save settings file under $HOME/LINUX_SAVEPATH/settings.
-    On windows save settings file under %UserProfile%/settings
-    '''
-    if get_os_type() != 'nt': 
-      self.settings_abs_path += LINUX_SAVEPATH
+    self.settings_abs_path = self.get_config_path()
     self.settings_abs_path = fix_path(self.settings_abs_path)
     self.settings_abs_path += SETTINGS_FILENAME
   
@@ -71,16 +79,16 @@ class OptionsHandler():
     f.close()
     return options
   
-  def extract_options(self):
+  def extract_options(self, options):
     opts = []
-    for option in self.read_from_file():
+    for option in options:
       opt = option.split('=')
       if not len(opt) < 2:
 	opts.append(opt[1].rstrip('\n'))
     return opts
   
   def load_from_file(self):
-    opts = self.extract_options()
+    opts = self.extract_options(self.read_from_file())
     try:
       self.ignoreErrors = opts[0] in ['True']
       self.idAsName = opts[1] in ['True']

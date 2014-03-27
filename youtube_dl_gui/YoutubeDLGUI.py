@@ -122,28 +122,11 @@ class MainFrame(wx.Frame):
     # init urlList for evt_text on self.trackList
     self.urlList = []
     
-    # fix update path
-    self.check_update_path()
-
     # check & update libraries (youtube-dl)
     self.check_if_youtube_dl_exist()
     if (self.optionsList.autoUpdate):
       self.status_bar_write("Auto update enable")
       self.update_youtube_dl()
-  
-  def check_update_path(self):
-    if self.optionsList.updatePath == '':
-      self.pop_update_dialog()
-      if self.optionsList.updatePath == '':
-	self.optionsList.updatePath = get_HOME()
-    self.optionsList.updatePath = get_abs_path(self.optionsList.updatePath)
-    if get_os_type() == 'nt':
-      add_PATH(self.optionsList.updatePath)
-  
-  def pop_update_dialog(self):
-    upDialog = UpdateDialog(self.optionsList)
-    upDialog.ShowModal()
-    upDialog.Destroy()
   
   def check_if_youtube_dl_exist(self):
     path = fix_path(self.optionsList.updatePath)+YOUTUBE_DL_FILENAME
@@ -304,44 +287,19 @@ class ListCtrl(wx.ListCtrl):
       items.append(data)
     return items
 
-class UpdateDialog(wx.Dialog):
-  
-  def __init__(self, optionsList, parent=None, id=-1):
-    wx.Dialog.__init__(self, parent, id, 'Update Path', size=(380, 180))
-    
-    self.optionsList = optionsList
-    self.initGUI()
-  
-  def initGUI(self):
-    panel = wx.Panel(self)
-    
-    text = '''Plase enter the path where youtube-dlG
-should download latest updates (Default is $HOME)'''
-
-    wx.StaticText(panel, -1, text, (15, 10))
-    wx.StaticText(panel, -1, 'Update Path', (15, 60))
-    self.updatePathBox = wx.TextCtrl(panel, -1, pos=(10, 80), size=(360, -1))
-    wx.StaticText(panel, -1, '*** NEED WRITE PERMISSION', (15, 110))
-    saveButton = wx.Button(panel, label='Save Path', pos=(140, 140))
-    
-    saveButton.Bind(wx.EVT_BUTTON, self.OnSave)
-    
-  def OnSave(self, event):
-    self.setPath()
-    self.Close(True)
-
-  def setPath(self):
-    self.optionsList.updatePath = self.updatePathBox.GetValue()
-    
 class UpdatePanel(wx.Panel):
   
   def __init__(self, parent, optionsList):
     self.optionsList = optionsList
     
+    text = '''Enter the path where youtube-dlG should store
+settings file and the latest youtube-dl.'''
+    
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Update Path (Should point where youtube-dl is)', (25, 20))
-    self.updatePathBox = wx.TextCtrl(self, -1, pos=(20, 40), size=(450, -1))
-    self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (25, 80))
+    wx.StaticText(self, -1, text, (15, 10))
+    wx.StaticText(self, -1, 'Path', (25, 60))
+    self.updatePathBox = wx.TextCtrl(self, -1, pos=(20, 80), size=(450, -1))
+    self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update', (25, 120))
     
   def load_options(self):
     self.updatePathBox.SetValue(self.optionsList.updatePath)

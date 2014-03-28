@@ -2,8 +2,9 @@
 
 import subprocess
 from time import sleep
-from wx import CallAfter
 from threading import Thread
+
+from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
@@ -161,8 +162,7 @@ class ProcessWrapper(Thread):
     return output.rstrip()
     
   def proc_output(self, output):
-    if self.clear_dash_files:
-      self.extract_filename(output)
+    if self.clear_dash_files: self.extract_filename(output)
     data = remove_spaces(string_to_array(output))
     data.append(self.index)
     data = self.filter_data(data)
@@ -189,8 +189,10 @@ class ProcessWrapper(Thread):
   def get_cmd(self):
     enc = get_encoding()
     if enc != None:
-      data = encode_list(self.options + [self.url], enc)
-    return self.options + [self.url]
+      cmd = encode_list(self.options + [self.url], enc)
+    else:
+      cmd = self.options + [self.url]
+    return cmd
   
   def set_process_info(self):
     if get_os_type() == 'nt':

@@ -18,7 +18,7 @@ DOWNLOAD_TIMEOUT = 20
 
 class UpdateThread(Thread):
   
-  def __init__(self, youtubeDLFile, updatePath):
+  def __init__(self, updatePath, youtubeDLFile):
     super(UpdateThread, self).__init__()
     self.youtubeDLFile = youtubeDLFile
     self.updatePath = fix_path(updatePath)

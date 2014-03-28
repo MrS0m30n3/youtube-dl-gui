@@ -28,7 +28,8 @@ def have_dash_audio(audio):
   return audio != "NO SOUND"
   
 def remove_file(filename):
-  os.remove(filename)
+  if file_exist(filename):
+    os.remove(filename)
 
 def get_path_seperator():
   if os.name == 'nt':

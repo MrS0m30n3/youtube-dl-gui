@@ -63,7 +63,10 @@ def file_exist(filename):
   
 def get_os_type():
   return os.name
-  
+ 
+def get_filesize(path):
+  return os.path.getsize(path)
+ 
 def makedir(path):
   os.makedirs(path)
   

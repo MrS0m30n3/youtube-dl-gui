@@ -6,6 +6,7 @@ class DownloadHandler():
     self.ListCtrl = ListCtrl
     self.finished = False
     self.close = False
+    self.error = False
     self.handlers = []
   
   def _has_closed(self):
@@ -13,11 +14,15 @@ class DownloadHandler():
  
   def _has_finished(self):
     return self.finished
+    
+  def _has_error(self):
+    return self.error
  
   def handle(self, msg):
     ''' Handles msg base to Signals.txt '''
     data = msg.data
     index = self.get_index(data)
+    self.check_for_error(data)
     if index == -1:
       if data[0] == 'finish':
 	self.finished = True
@@ -33,7 +38,11 @@ class DownloadHandler():
   
   def get_index(self, data):
     return data.pop()
-      
+
+  def check_for_error(self, data):
+    if data[0] == 'error':
+      self.error = True
+    
 class IndexDownloadHandler():
   
   def __init__(self, ListCtrl, index):

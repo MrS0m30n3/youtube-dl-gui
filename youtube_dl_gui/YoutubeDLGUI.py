@@ -27,6 +27,7 @@ from .DownloadThread import DownloadManager
 from .OptionsHandler import OptionsHandler
 from .YoutubeDLInterpreter import YoutubeDLInterpreter
 from .SignalHandler import DownloadHandler
+from .LogManager import LogManager, LogGUI
 from .Utils import (
   video_is_dash,
   have_dash_audio,
@@ -110,6 +111,13 @@ class MainFrame(wx.Frame):
     self.optionsList = OptionsHandler(self.status_bar_write)
     self.downloadHandler = None
     
+    # init log manager
+    if self.optionsList.enableLog:
+      self.logManager = LogManager(
+	self.optionsList.get_config_path(),
+	self.optionsList.writeTimeToLog
+      )
+    
     # init some thread variables
     self.downloadThread = None
     self.updateThread = None
@@ -145,8 +153,12 @@ class MainFrame(wx.Frame):
   def status_bar_write(self, msg):
     self.statusBar.SetLabel(msg)
   
-  def fin_task(self):
-    self.status_bar_write('Done')
+  def fin_task(self, error):
+    if error:
+      msg = 'An error occured while downloading. See Options>Log.'
+      self.status_bar_write(msg)
+    else:
+      self.status_bar_write('Done')
     self.downloadButton.SetLabel('Download')
     self.updateButton.Enable()
     self.downloadThread.join()
@@ -160,7 +172,7 @@ class MainFrame(wx.Frame):
     if self.downloadHandler._has_closed():
       self.status_bar_write('Stoping downloads')
     if self.downloadHandler._has_finished():
-      self.fin_task()
+      self.fin_task(self.downloadHandler._has_error())
 	
   def update_handler(self, msg):
     if msg.data == 'finish':
@@ -185,7 +197,8 @@ class MainFrame(wx.Frame):
       self.downloadThread = DownloadManager(
 	options,
 	self.statusList._get_items(),
-	self.optionsList.clearDashFiles
+	self.optionsList.clearDashFiles,
+	self.logManager
       )
       self.downloadHandler = DownloadHandler(self.statusList)
       self.downloadButton.SetLabel('Stop')
@@ -231,7 +244,7 @@ class MainFrame(wx.Frame):
       self.update_youtube_dl()
   
   def OnOptions(self, event):
-    optionsFrame = OptionsFrame(self.optionsList, self)
+    optionsFrame = OptionsFrame(self.optionsList, self, logger=self.logManager)
     optionsFrame.Show()
   
   def OnClose(self, event):
@@ -288,6 +301,72 @@ class ListCtrl(wx.ListCtrl):
       items.append(data)
     return items
 
+class LogPanel(wx.Panel):
+  
+  def __init__(self, parent, optList, log):
+    self.optList = optList
+    self.log = log
+    self.size, self.path = self.set_data()
+    
+    wx.Panel.__init__(self, parent)
+    self.enableLogChk = wx.CheckBox(self, -1, 'Enable log', (240, 20))
+    self.enableTimeChk = wx.CheckBox(self, -1, 'Write time', (240, 50))
+    self.clearLogButton = wx.Button(self, label="Clear Log", pos=(200, 90))
+    self.viewLogButton = wx.Button(self, label="View Log", pos=(300, 90))
+    wx.StaticText(self, -1, 'Path: ' + self.path, (180, 140))
+    self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (230, 170))
+    
+    self.Bind(wx.EVT_CHECKBOX, self.OnEnable, self.enableLogChk)
+    self.Bind(wx.EVT_CHECKBOX, self.OnTime, self.enableTimeChk)
+    self.Bind(wx.EVT_BUTTON, self.OnClear, self.clearLogButton)
+    self.Bind(wx.EVT_BUTTON, self.OnView, self.viewLogButton)
+  
+  def set_data(self):
+    if self.log != None:
+      size = str(self.log.log_size()) + ' Bytes'
+      path = self.log.path
+    else:
+      size = ''
+      path = ''
+    return size, path
+  
+  def OnTime(self, event):
+    if self.log != None:
+      self.log.add_time = self.enableTimeChk.GetValue()
+  
+  def OnEnable(self, event):
+    if self.enableLogChk.GetValue():
+      self.enableTimeChk.Enable()
+    else:
+      self.enableTimeChk.Disable()
+    self.restart_popup()
+  
+  def OnClear(self, event):
+    if self.log != None:
+      self.log.clear()
+      self.sizeText.SetLabel('Log Size: 0 Bytes')
+  
+  def OnView(self, event):
+    if self.log != None:
+      log_gui = LogGUI(self.path, parent=self)
+      log_gui.Show()
+  
+  def load_options(self):
+    self.enableLogChk.SetValue(self.optList.enableLog)
+    self.enableTimeChk.SetValue(self.optList.writeTimeToLog)
+    if self.optList.enableLog == False:
+      self.enableTimeChk.Disable()
+    if self.log == None:
+      self.clearLogButton.Disable()
+      self.viewLogButton.Disable()
+  
+  def save_options(self):
+    self.optList.enableLog = self.enableLogChk.GetValue()
+    self.optList.writeTimeToLog = self.enableTimeChk.GetValue()
+    
+  def restart_popup(self):
+    wx.MessageBox('Please restart ' + TITLE, 'Restart', wx.OK | wx.ICON_INFORMATION)
+    
 class UpdatePanel(wx.Panel):
   
   def __init__(self, parent, optList):
@@ -686,7 +765,7 @@ class OtherPanel(wx.Panel):
  
 class OptionsFrame(wx.Frame):
   
-  def __init__(self, optionsList, parent=None, id=-1):
+  def __init__(self, optionsList, parent=None, id=-1, logger=None):
     wx.Frame.__init__(self, parent, id, "Options", size=(580, 250))
     
     self.optionsList = optionsList
@@ -704,6 +783,7 @@ class OptionsFrame(wx.Frame):
     self.updateTab = UpdatePanel(notebook, self.optionsList)
     self.authTab = AuthenticationPanel(notebook, self.optionsList)
     self.videoselTab = PlaylistPanel(notebook, self.optionsList)
+    self.logTab = LogPanel(notebook, self.optionsList, logger)
     
     notebook.AddPage(self.generalTab, "General")
     notebook.AddPage(self.videoTab, "Video")
@@ -714,6 +794,7 @@ class OptionsFrame(wx.Frame):
     notebook.AddPage(self.connectionTab, "Connection")
     notebook.AddPage(self.authTab, "Authentication")
     notebook.AddPage(self.updateTab, "Update")
+    notebook.AddPage(self.logTab, "Log")
     notebook.AddPage(self.otherTab, "Commands")
     
     sizer = wx.BoxSizer()
@@ -753,6 +834,7 @@ please do one of the following:
     self.updateTab.load_options()
     self.authTab.load_options()
     self.videoselTab.load_options()
+    self.logTab.load_options()
     
   def save_all_options(self):
     self.generalTab.save_options()
@@ -765,4 +847,5 @@ please do one of the following:
     self.updateTab.save_options()
     self.authTab.save_options()
     self.videoselTab.save_options()
+    self.logTab.save_options()
     

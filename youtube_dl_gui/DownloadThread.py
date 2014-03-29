@@ -22,10 +22,11 @@ PUBLISHER_TOPIC = 'download'
 
 class DownloadManager(Thread):
   
-  def __init__(self, options, downloadlist, clear_dash_files):
+  def __init__(self, options, downloadlist, clear_dash_files, logmanager=None):
     super(DownloadManager, self).__init__()
     self.clear_dash_files = clear_dash_files
     self.downloadlist = downloadlist
+    self.logmanager = logmanager
     self.options = options
     self.running = True
     self.procList = []
@@ -50,7 +51,8 @@ class DownloadManager(Thread):
 	      self.options,
 	      url,
 	      index,
-	      self.clear_dash_files
+	      self.clear_dash_files,
+	      self.logmanager
 	    )
 	  )
 	  self.procNo += 1
@@ -101,11 +103,12 @@ class DownloadManager(Thread):
     
 class ProcessWrapper(Thread):
   
-  def __init__(self, options, url, index, clear_dash_files):
+  def __init__(self, options, url, index, clear_dash_files, log=None):
     super(ProcessWrapper, self).__init__()
     self.clear_dash_files = clear_dash_files
     self.options = options
     self.index = index
+    self.log = log
     self.url = url
     self.filenames = []
     self.proc = None
@@ -123,17 +126,22 @@ class ProcessWrapper(Thread):
       # read output
       output = self.read()
       if output != '':
-	# process output
-	data = self.proc_output(output)
 	if self.err:
+	  self.write_to_log(output)
 	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['error', self.index])
 	else:
+	  # process output
+	  data = self.proc_output(output)
 	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
     if not self.err and not self.stopped:
       if self.clear_dash_files: 
 	self.cleardash()
       CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', self.index])
-    
+  
+  def write_to_log(self, data):
+    if self.log != None:
+      self.log.write(data)
+  
   def extract_filename(self, data):
     data_list = data.split(':')
     if 'Destination' in data_list[0].split():

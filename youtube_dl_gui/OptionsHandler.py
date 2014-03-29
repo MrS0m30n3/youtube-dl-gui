@@ -63,6 +63,8 @@ class OptionsHandler():
     self.updatePath = self.get_config_path()
     self.autoUpdate = False
     self.cmdArgs = ""
+    self.enableLog = True
+    self.writeTimeToLog = True
   
   def get_config_path(self):
     if get_os_type() == 'nt':
@@ -133,6 +135,8 @@ class OptionsHandler():
 	self.updatePath = opts[28].decode('utf8')
 	self.autoUpdate = opts[29] in ['True']
 	self.cmdArgs = opts[30]
+	self.enableLog = opts[31] in ['True']
+	self.writeTimeToLog = opts[32] in ['True']
       except:
 	self.statusBarWrite('Error while loading settings file')
 	self.load_default()
@@ -175,5 +179,7 @@ class OptionsHandler():
     f.write('UpdatePath='+self.updatePath.encode('utf-8')+'\n')
     f.write('AutoUpdate='+str(self.autoUpdate)+'\n')
     f.write('CmdArgs='+str(self.cmdArgs)+'\n')
+    f.write('EnableLog='+str(self.enableLog)+'\n')
+    f.write('WriteTimeToLog='+str(self.writeTimeToLog)+'\n')
     f.close()
     

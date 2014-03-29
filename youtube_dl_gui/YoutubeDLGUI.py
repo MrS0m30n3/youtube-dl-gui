@@ -112,6 +112,7 @@ class MainFrame(wx.Frame):
     self.downloadHandler = None
     
     # init log manager
+    self.logManager = None
     if self.optionsList.enableLog:
       self.logManager = LogManager(
 	self.optionsList.get_config_path(),

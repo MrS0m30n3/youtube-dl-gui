@@ -143,7 +143,7 @@ class ProcessWrapper(Thread):
       self.log.write(data)
   
   def extract_filename(self, data):
-    data_list = data.split(':')
+    data_list = data.split(':', 1)
     if 'Destination' in data_list[0].split():
       self.filenames.append(data_list[1].lstrip())
     

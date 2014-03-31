@@ -34,7 +34,8 @@ from .Utils import (
   get_os_type,
   file_exist,
   fix_path,
-  get_abs_path
+  get_abs_path,
+  get_icon_path
 )
 
 if get_os_type() == 'nt':
@@ -69,7 +70,9 @@ LANGUAGES = ["English",
 	     "Russian",
 	     "Spanish",
 	     "German"]
-
+	     
+ICON = get_icon_path(['ytube.png', 'icons'], __file__)
+  
 class MainFrame(wx.Frame):
   
   def __init__(self, parent=None, id=-1):
@@ -98,7 +101,7 @@ class MainFrame(wx.Frame):
     self.Bind(wx.EVT_CLOSE, self.OnClose)
     
     # set app icon
-    icon = wx.Icon('../icons/ytube.png', wx.BITMAP_TYPE_ICO)
+    icon = wx.Icon(ICON, wx.BITMAP_TYPE_ICO)
     self.SetIcon(icon)
     
     # set publisher for update thread
@@ -734,7 +737,7 @@ For more information, please refer to <http://unlicense.org/>'''
     
     info = wx.AboutDialogInfo()
     
-    info.SetIcon(wx.Icon('../icons/ytube.png', wx.BITMAP_TYPE_ICO))
+    info.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_ICO))
     info.SetName(TITLE)
     info.SetVersion(__version__)
     info.SetDescription(description)

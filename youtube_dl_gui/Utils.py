@@ -70,3 +70,12 @@ def get_filesize(path):
 def makedir(path):
   os.makedirs(path)
   
+def get_icon_path(icon_path, file_path):
+  path = os.path.abspath(file_path)
+  path = path.split(get_path_seperator())
+  for i in range(len(icon_path)):
+    path[(i+1)*-1] = icon_path[i]
+  path = get_path_seperator().join(path)
+  return path
+  
+  

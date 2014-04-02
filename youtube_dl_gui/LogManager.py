@@ -18,17 +18,17 @@ class LogManager():
     self.path = fix_path(path) + LOG_FILENAME
     self.add_time = add_time
     self.init_log()
-    self.check_log()
+    self.auto_clear_log()
   
-  def check_log(self):
-    if self.log_size() > LOG_FILESIZE:
+  def auto_clear_log(self):
+    if self.size() > LOG_FILESIZE:
       self.clear()
   
   def init_log(self):
     if not file_exist(self.path):
       self.clear()
   
-  def log_size(self):
+  def size(self):
     return get_filesize(self.path)
   
   def clear(self):

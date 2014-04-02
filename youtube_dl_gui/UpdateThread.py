@@ -1,9 +1,10 @@
 #! /usr/bin/env python
 
-from threading import Thread
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
+
+from threading import Thread
 from urllib2 import urlopen, URLError, HTTPError
 
 from .Utils import (
@@ -27,7 +28,7 @@ class UpdateThread(Thread):
     self.start()
     
   def run(self):
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, "Downloading latest youtube-dl...")
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, "Downloading latest youtube-dl. Please wait...")
     try:
       f = urlopen(self.url, timeout=DOWNLOAD_TIMEOUT)
       with open(self.updatePath + self.youtubeDLFile, 'wb') as lf:

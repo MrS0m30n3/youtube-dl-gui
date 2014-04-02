@@ -8,13 +8,17 @@ from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
+from .SignalHandler import (
+  DataPack,
+  OutputHandler
+)
+
 from .Utils import ( 
-  remove_spaces,
-  string_to_array,
   get_encoding,
   encode_list,
   remove_file,
-  get_os_type
+  get_os_type,
+  file_exist
 )
 
 MAX_DOWNLOAD_THREADS = 3
@@ -62,12 +66,17 @@ class DownloadManager(Thread):
 	  self.running = False
 	else:
 	  sleep(1)
-    
     # If we reach here close down all child threads
     self.terminate_all()
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', -1])
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish'))
   
-  def add_download_item(self, downloadItem):
+  def downloading(self):
+    for proc in self.procList:
+      if proc.isAlive():
+	return True
+    return False
+  
+  def _add_download_item(self, downloadItem):
     self.downloadlist.append(downloadItem)
     
   def extract_data(self):
@@ -82,12 +91,6 @@ class DownloadManager(Thread):
 	proc.close()
 	proc.join()
     
-  def downloading(self):
-    for proc in self.procList:
-      if proc.isAlive():
-	return True
-    return False
-
   def check_queue(self, t=1):
     for proc in self.procList:
       if not self.running: break
@@ -99,7 +102,7 @@ class DownloadManager(Thread):
   def close(self):
     self.procNo = 0
     self.running = False
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', -1])
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('close'))
     
 class ProcessWrapper(Thread):
   
@@ -111,89 +114,69 @@ class ProcessWrapper(Thread):
     self.log = log
     self.url = url
     self.filenames = []
-    self.proc = None
     self.stopped = False
-    self.err = False
+    self.error = False
+    self.proc = None
     self.start()
     
   def run(self):
-    self.proc = subprocess.Popen(self.get_cmd(), 
-				 stdout=subprocess.PIPE,
-				 stderr=subprocess.PIPE,
-				 startupinfo=self.set_process_info())
+    self.proc = self.create_process(self.get_cmd(), self.get_process_info())
     # while subprocess is alive and NOT the current thread
     while self.proc_is_alive():
-      # read output
-      output = self.read()
-      if output != '':
-	if self.err:
-	  self.write_to_log(output)
-	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['error', self.index])
-	else:
-	  # process output
-	  data = self.proc_output(output)
-	  CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
-    if not self.err and not self.stopped:
-      if self.clear_dash_files: 
-	self.cleardash()
-      CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['finish', self.index])
+      # read stdout, stderr from proc
+      stdout, stderr = self.read()
+      if stdout != '':
+	# pass stdout to output handler
+	data = OutputHandler(stdout).get_data()
+	if self.clear_dash_files: self.add_file(data)
+	# add index to data pack
+	data.index = self.index
+	# send data back to caller
+	CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
+      if stderr != '':
+	self.error = True
+	self.write_to_log(stderr)
+    if not self.stopped:
+      if self.clear_dash_files:
+	self.clear_dash()
+      if not self.error:
+	CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish', self.index))
+      else:
+	CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('error', self.index))  
+  
+  def add_file(self, dataPack):
+    if dataPack.header == 'filename':
+      self.filenames.append(dataPack.data)
   
   def write_to_log(self, data):
     if self.log != None:
       self.log.write(data)
   
-  def extract_filename(self, data):
-    data_list = data.split(':', 1)
-    if 'Destination' in data_list[0].split():
-      self.filenames.append(data_list[1].lstrip())
-    
-  def cleardash(self):
-    if self.filenames:
-      CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['remove', self.index])
-      for f in self.filenames:
+  def clear_dash(self):
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('remove', self.index))
+    for f in self.filenames:
+      if file_exist(f):
 	remove_file(f)
     
   def close(self):
     self.proc.kill()
     self.stopped = True
-    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, ['close', self.index])
+    CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('close', self.index))
   
   def proc_is_alive(self):
     return self.proc.poll() == None
   
   def read(self):
-    output = self.proc.stdout.readline()
-    if output == '':
-      output = self.proc.stderr.readline()
-      if output != '':
-	self.err = True
-    return output.rstrip()
-    
-  def proc_output(self, output):
-    if self.clear_dash_files: self.extract_filename(output)
-    data = remove_spaces(string_to_array(output))
-    data.append(self.index)
-    data = self.filter_data(data)
-    return data
-    
-  def filter_data(self, data):
-    ''' Filters data for output exceptions '''
-    filter_list = ['Destination:', '100%', 'Resuming']
-    if len(data) > 3: 
-      if data[0] == '[download]':
-	if data[1] in filter_list or len(data[1]) > 11:
-	  return ['ignore', self.index]
-	if data[1] == 'Downloading':
-	  if data[2] == 'video':
-	    return ['playlist', data[3], data[5], self.index]
-	  else:
-	    return ['ignore', self.index]
-      else:
-	if data[1] == 'UnicodeWarning:':
-	  self.err = False
-	  return ['ignore', self.index]
-    return data
-    
+    stdout = ''
+    stderr = ''
+    stdout = self.proc.stdout.readline()
+    if stdout == '':
+      stderr = self.proc.stderr.readline()
+    return stdout.rstrip(), stderr.rstrip()
+  
+  def create_process(self, cmd, info):
+    return subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=info)
+  
   def get_cmd(self):
     enc = get_encoding()
     if enc != None:
@@ -202,7 +185,7 @@ class ProcessWrapper(Thread):
       cmd = self.options + [self.url]
     return cmd
   
-  def set_process_info(self):
+  def get_process_info(self):
     if get_os_type() == 'nt':
       info = subprocess.STARTUPINFO()
       info.dwFlags |= subprocess.STARTF_USESHOWWINDOW

@@ -73,19 +73,19 @@ class YoutubeDLInterpreter():
     self.opts.append('--newline')
   
   def set_playlist_opts(self):
-    if (self.optionsList.startTrack != '1' and self.optionsList.startTrack != ''):
+    if self.optionsList.startTrack != 1:
       self.opts.append('--playlist-start')
-      self.opts.append(self.optionsList.startTrack)
-    if (self.optionsList.endTrack != '0' and self.optionsList.endTrack != ''):
+      self.opts.append(str(self.optionsList.startTrack))
+    if self.optionsList.endTrack != 0:
       self.opts.append('--playlist-end')
-      self.opts.append(self.optionsList.endTrack)
-    if (self.optionsList.maxDownloads != '0' and self.optionsList.maxDownloads != ''):
+      self.opts.append(str(self.optionsList.endTrack))
+    if self.optionsList.maxDownloads != 0:
       self.opts.append('--max-downloads')
-      self.opts.append(self.optionsList.maxDownloads)
-    if (self.optionsList.minFileSize != '0' and self.optionsList.minFileSize != ''):
+      self.opts.append(str(self.optionsList.maxDownloads))
+    if self.optionsList.minFileSize != '0':
       self.opts.append('--min-filesize')
       self.opts.append(self.optionsList.minFileSize)
-    if (self.optionsList.maxFileSize != '0' and self.optionsList.maxFileSize != ''):
+    if self.optionsList.maxFileSize != '0':
       self.opts.append('--max-filesize')
       self.opts.append(self.optionsList.maxFileSize)
   
@@ -101,9 +101,9 @@ class YoutubeDLInterpreter():
       self.opts.append(self.optionsList.videoPass)
   
   def set_connection_opts(self):
-    if (self.optionsList.retries != '10' and self.optionsList.retries != ''):
+    if self.optionsList.retries != 10:
       self.opts.append('-R')
-      self.opts.append(self.optionsList.retries)
+      self.opts.append(str(self.optionsList.retries))
     if self.optionsList.proxy != '':
       self.opts.append('--proxy')
       self.opts.append(self.optionsList.proxy)

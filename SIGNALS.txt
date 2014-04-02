@@ -1,5 +1,6 @@
 
-Signals list, that DownloadManager thread sends (DownloadThread.py)
+Signals list that DownloadManager, ProcessWrapper 
+threads send (DownloadThread.py)
 
 HANDLER
 =======
@@ -12,39 +13,39 @@ SignalHandler.py
       .
       .
 
-SIGNALS
-=======
+HEADER
+======
 
-['finish', -1]:			All downloads have finished
+[
+'finish',	Download thread finished
+'close',	Download thread stopped by the user
+'error',	Error occured while downloading
+'playlist',	Playlist current download no/from
+'youtube',	Pre-Processing
+'download',	Download stuff [size, percent, eta, speed]
+'ffmpeg',	Post-Processing
+'ignore',	Ignore this header
+'remove',	Removing extra DASH files
+'filename',	Extract DASH extra filenames
+]
 
-['finish', index]:		Download of url in index has finished
+      
+INDEX
+=====
 
-['close', -1]:			Closing down DownloadManager thread
+index == -1:	GLOBAL
+index != -1:	URL IN COLUMN
 
-['close', index]:		Closing down url in index
+DATA
+====
 
-['error', index]:		Error occured url, index
+e.g.
+['57.3%', '20.63MiB', '542.44KiB/s', '00:16']
 
-['playlist', data, index]:	Playlist data for url, index
+DATA-PACK
+=========
 
-['[youtube]', index]:		Pre-Processing for url, index
-
-['[download]', data, index]:	Downloading url, index
-
-['[ffmpeg]', index]:		Post-Processing for url, index
-
-['ignore', index]:		Do nothing
-
-['remove', index]:		Removing dash audio/videos files, index
-
-EXAMPLES
-========
-
-['[youtube]', 'Setting', 'language', 0]
-
-['[youtube]', 'RBumgq5yVrA:', 'Downloading', 'webpage', 0]
-
-['[download]', '0.0%', 'of', '4.42MiB', 'at', '24.48KiB/s', 'ETA', '03:04', 0]
-
-['[download]', '0.1%', 'of', '4.42MiB', 'at', '63.81KiB/s', 'ETA', '01:10', 0]
+DataPack.header = header
+DataPack.index = index
+DataPack.data = data
 

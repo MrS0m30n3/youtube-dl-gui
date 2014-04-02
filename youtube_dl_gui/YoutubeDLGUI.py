@@ -157,12 +157,8 @@ class MainFrame(wx.Frame):
   def status_bar_write(self, msg):
     self.statusBar.SetLabel(msg)
   
-  def fin_task(self, error):
-    if error:
-      msg = 'An error occured while downloading. See Options>Log.'
-      self.status_bar_write(msg)
-    else:
-      self.status_bar_write('Done')
+  def fin_task(self, msg):
+    self.status_bar_write(msg)
     self.downloadButton.SetLabel('Download')
     self.updateButton.Enable()
     self.downloadThread.join()
@@ -176,7 +172,14 @@ class MainFrame(wx.Frame):
     if self.downloadHandler._has_closed():
       self.status_bar_write('Stoping downloads')
     if self.downloadHandler._has_finished():
-      self.fin_task(self.downloadHandler._has_error())
+      if self.downloadHandler._has_error():
+	if self.logManager != None:
+	  msg = 'An error occured while downloading. See Options>Log.'
+	else:
+	  msg = 'An error occured while downloading'
+      else:
+	msg = 'Done'
+      self.fin_task(msg)
 	
   def update_handler(self, msg):
     if msg.data == 'finish':
@@ -189,15 +192,17 @@ class MainFrame(wx.Frame):
   def stop_download(self):
     self.downloadThread.close()
   
-  def start_download(self, trackList):
-    self.statusList._clear_list()
+  def load_tracklist(self, trackList):
     for url in trackList:
       if url != '':
 	self.urlList.append(url)
 	self.statusList._add_item(url)
+  
+  def start_download(self):
+    self.statusList._clear_list()
+    self.load_tracklist(self.trackList.GetValue().split('\n'))
     if not self.statusList._is_empty():
       options = YoutubeDLInterpreter(self.optionsList, YOUTUBE_DL_FILENAME).get_options()
-      self.status_bar_write('Download started')
       self.downloadThread = DownloadManager(
 	options,
 	self.statusList._get_items(),
@@ -205,6 +210,7 @@ class MainFrame(wx.Frame):
 	self.logManager
       )
       self.downloadHandler = DownloadHandler(self.statusList)
+      self.status_bar_write('Download started')
       self.downloadButton.SetLabel('Stop')
       self.updateButton.Disable()
     else:
@@ -230,25 +236,24 @@ class MainFrame(wx.Frame):
 	  ''' Add url into original download list '''
 	  self.urlList.append(url)
 	  ''' Add url into statusList '''
-	  index = self.statusList._add_item(url)
+	  self.statusList._add_item(url)
 	  ''' Retrieve last item as {url:url, index:indexNo} '''
 	  item = self.statusList._get_last_item()
 	  ''' Pass that item into downloadThread '''
-	  self.downloadThread.add_download_item(item)
+	  self.downloadThread._add_download_item(item)
   
   def OnDownload(self, event):
     if self.downloadThread != None:
       self.stop_download()
     else:
-      self.start_download(self.trackList.GetValue().split('\n'))
+      self.start_download()
       
   def OnUpdate(self, event):
     if (self.downloadThread == None and self.updateThread == None):
-      self.status_bar_write("Updating youtube-dl...")
       self.update_youtube_dl()
   
   def OnOptions(self, event):
-    optionsFrame = OptionsFrame(self.optionsList, self, logger=self.logManager)
+    optionsFrame = OptionsFrame(self.optionsList, parent=self, logger=self.logManager)
     optionsFrame.Show()
   
   def OnClose(self, event):
@@ -271,7 +276,6 @@ class ListCtrl(wx.ListCtrl):
   def _add_item(self, item):
     self.InsertStringItem(self.ListIndex, item)
     self.ListIndex += 1
-    return self.ListIndex
   
   ''' Write data on index, column '''
   def _write_data(self, index, column, data):
@@ -307,10 +311,13 @@ class ListCtrl(wx.ListCtrl):
 
 class LogPanel(wx.Panel):
   
+  size = ''
+  path = ''
+  
   def __init__(self, parent, optList, log):
     self.optList = optList
     self.log = log
-    self.size, self.path = self.set_data()
+    self.set_data()
     
     wx.Panel.__init__(self, parent)
     self.enableLogChk = wx.CheckBox(self, -1, 'Enable log', (240, 20))
@@ -318,7 +325,7 @@ class LogPanel(wx.Panel):
     self.clearLogButton = wx.Button(self, label="Clear Log", pos=(200, 90))
     self.viewLogButton = wx.Button(self, label="View Log", pos=(300, 90))
     wx.StaticText(self, -1, 'Path: ' + self.path, (180, 140))
-    self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (230, 170))
+    self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (240, 170))
     
     self.Bind(wx.EVT_CHECKBOX, self.OnEnable, self.enableLogChk)
     self.Bind(wx.EVT_CHECKBOX, self.OnTime, self.enableTimeChk)
@@ -327,12 +334,8 @@ class LogPanel(wx.Panel):
   
   def set_data(self):
     if self.log != None:
-      size = str(self.log.log_size()) + ' Bytes'
-      path = self.log.path
-    else:
-      size = ''
-      path = ''
-    return size, path
+      self.size = str(self.log.size()) + ' Bytes'
+      self.path = self.log.path
   
   def OnTime(self, event):
     if self.log != None:
@@ -401,30 +404,42 @@ class PlaylistPanel(wx.Panel):
     wx.Panel.__init__(self, parent)
     wx.StaticText(self, -1, 'Playlist  Options', (100, 20))
     wx.StaticText(self, -1, 'Start', (90, 53))
-    self.startBox = wx.TextCtrl(self, -1, pos=(160, 50), size=(50, -1))
+    self.startSpnr = wx.SpinCtrl(self, -1, "", (160, 50), size=(60, -1))
     wx.StaticText(self, -1, 'Stop', (90, 83))
-    self.stopBox = wx.TextCtrl(self, -1, pos=(160, 80), size=(50, -1))
+    self.stopSpnr = wx.SpinCtrl(self, -1, "", (160, 80), size=(60, -1))
     wx.StaticText(self, -1, 'Max DLs', (90, 113))
-    self.maxBox = wx.TextCtrl(self, -1, pos=(160, 110), size=(50, -1))
+    self.maxSpnr = wx.SpinCtrl(self, -1, "", (160, 110), size=(60, -1))
     wx.StaticText(self, -1, 'Filesize (e.g. 50k or 44.6m)', (330, 20))
     wx.StaticText(self, -1, 'Min', (360, 63))
     self.minFilesizeBox = wx.TextCtrl(self, -1, pos=(400, 60), size=(70, -1))
     wx.StaticText(self, -1, 'Max', (360, 93))
     self.maxFilesizeBox = wx.TextCtrl(self, -1, pos=(400, 90), size=(70, -1))
+    self.startSpnr.SetRange(1, 999)
+    self.stopSpnr.SetRange(0, 999)
+    self.maxSpnr.SetRange(0, 999)
     
   def load_options(self):
-    self.startBox.SetValue(self.optList.startTrack)
-    self.stopBox.SetValue(self.optList.endTrack)
-    self.maxBox.SetValue(self.optList.maxDownloads)
+    self.startSpnr.SetValue(self.optList.startTrack)
+    self.stopSpnr.SetValue(self.optList.endTrack)
+    self.maxSpnr.SetValue(self.optList.maxDownloads)
     self.minFilesizeBox.SetValue(self.optList.minFileSize)
     self.maxFilesizeBox.SetValue(self.optList.maxFileSize)
     
   def save_options(self):
-    self.optList.startTrack = self.startBox.GetValue()
-    self.optList.endTrack = self.stopBox.GetValue()
-    self.optList.maxDownloads = self.maxBox.GetValue()
+    self.optList.startTrack = self.startSpnr.GetValue()
+    self.optList.endTrack = self.stopSpnr.GetValue()
+    self.optList.maxDownloads = self.maxSpnr.GetValue()
     self.optList.minFileSize = self.minFilesizeBox.GetValue()
     self.optList.maxFileSize = self.maxFilesizeBox.GetValue()
+    self.check_input()
+    
+  def check_input(self):
+    self.optList.minFileSize.replace('-', '')
+    self.optList.maxFileSize.replace('-', '')
+    if self.optList.minFileSize == '':
+      self.optList.minFileSize = '0'
+    if self.optList.maxFileSize == '':
+      self.optList.maxFileSize = '0'
     
 class ConnectionPanel(wx.Panel):
   
@@ -433,7 +448,8 @@ class ConnectionPanel(wx.Panel):
     
     wx.Panel.__init__(self, parent)
     wx.StaticText(self, -1, 'Retries', (15, 12))
-    self.retriesBox = wx.TextCtrl(self, -1, pos=(65, 10), size=(50, -1))
+    self.retriesSpnr = wx.SpinCtrl(self, -1, "", (65, 10), size=(50, -1))
+    self.retriesSpnr.SetRange(1, 99)
     wx.StaticText(self, -1, 'User Agent', (15, 50))
     self.userAgentBox = wx.TextCtrl(self, -1, pos=(10, 70), size=(320, -1))
     wx.StaticText(self, -1, 'Referer', (15, 100))
@@ -445,13 +461,13 @@ class ConnectionPanel(wx.Panel):
     self.userAgentBox.SetValue(self.optList.userAgent)
     self.refererBox.SetValue(self.optList.referer)
     self.proxyBox.SetValue(self.optList.proxy)
-    self.retriesBox.SetValue(self.optList.retries)
+    self.retriesSpnr.SetValue(self.optList.retries)
     
   def save_options(self):
     self.optList.userAgent = self.userAgentBox.GetValue()
     self.optList.referer = self.refererBox.GetValue()
     self.optList.proxy = self.proxyBox.GetValue()
-    self.optList.retries = self.retriesBox.GetValue()
+    self.optList.retries = self.retriesSpnr.GetValue()
 
 class AuthenticationPanel(wx.Panel):
   
@@ -459,9 +475,9 @@ class AuthenticationPanel(wx.Panel):
     self.optList = optList
     
     wx.Panel.__init__(self,parent)
-    wx.StaticText(self, -1, 'Username', (250, 10))
+    wx.StaticText(self, -1, 'Username', (255, 10))
     self.usernameBox = wx.TextCtrl(self, -1, pos=(175, 30), size=(230, 25))
-    wx.StaticText(self, -1, 'Password', (255, 70))
+    wx.StaticText(self, -1, 'Password', (260, 70))
     self.passwordBox = wx.TextCtrl(self, -1, pos=(175, 90), size=(230, 25), style = wx.TE_PASSWORD)
     wx.StaticText(self, -1, 'Video Password (vimeo, smotri)', (190, 130))
     self.videopassBox = wx.TextCtrl(self, -1, pos=(175, 150), size=(230, 25), style = wx.TE_PASSWORD)
@@ -482,12 +498,12 @@ class AudioPanel(wx.Panel):
     self.optList = optList
     
     wx.Panel.__init__(self, parent)
-    self.toAudioChk = wx.CheckBox(self, -1, 'Convert to Audio', (225, 10))
-    self.keepVideoChk = wx.CheckBox(self, -1, 'Keep Video', (245, 40))
+    self.toAudioChk = wx.CheckBox(self, -1, 'Convert to Audio', (220, 10))
+    self.keepVideoChk = wx.CheckBox(self, -1, 'Keep Video', (240, 40))
     wx.StaticText(self, -1, 'Audio Format', (250, 80))
     self.audioFormatCombo = wx.ComboBox(self, choices=AUDIOFORMATS, pos=(210, 100), size=(160, 30))
     wx.StaticText(self, -1, "Audio Quality 0 (best) 9 (worst)", (200, 140))
-    self.audioQualitySpnr = wx.SpinCtrl(self, -1, "", (245, 160))
+    self.audioQualitySpnr = wx.SpinCtrl(self, -1, "", (248, 160), size=(90, 20))
     self.audioQualitySpnr.SetRange(0, 9)
     
     self.Bind(wx.EVT_CHECKBOX, self.OnAudioCheck, self.toAudioChk)
@@ -686,7 +702,7 @@ class GeneralPanel(wx.Panel):
     self.parent = controlParent
     
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, "Save Path", (250, 20))
+    wx.StaticText(self, -1, "Save Path", (255, 20))
     self.savePathBox = wx.TextCtrl(self, -1, pos=(60, 50), size=(450, -1))
     self.aboutButton = wx.Button(self, label="About", pos=(70, 100), size=(110, 40))
     self.openButton = wx.Button(self, label="Open", pos=(230, 100), size=(110, 40))
@@ -741,7 +757,7 @@ For more information, please refer to <http://unlicense.org/>'''
     info.SetName(TITLE)
     info.SetVersion(__version__)
     info.SetDescription(description)
-    info.SetWebSite('https://github.com/MrS0m30n3/youtube-dl-gui')
+    info.SetWebSite('http://mrs0m30n3.github.io/youtube-dl-gui/')
     info.SetLicense(license)
     info.AddDeveloper('Sotiris Papadopoulos')
     wx.AboutBox(info)

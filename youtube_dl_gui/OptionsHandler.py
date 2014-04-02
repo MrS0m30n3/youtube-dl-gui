@@ -38,9 +38,9 @@ class OptionsHandler():
     self.keepVideo = False
     self.audioFormat = "mp3"
     self.audioQuality = 5
-    self.startTrack = "1"
-    self.endTrack = "0"
-    self.maxDownloads = "0"
+    self.startTrack = 1
+    self.endTrack = 0
+    self.maxDownloads = 0
     self.minFileSize = "0"
     self.maxFileSize = "0"
     self.writeSubs = False
@@ -53,7 +53,7 @@ class OptionsHandler():
     self.writeDescription = False
     self.writeInfo = False
     self.writeThumbnail = False
-    self.retries = "10"
+    self.retries = 10
     self.userAgent = ""
     self.referer = ""
     self.proxy = ""
@@ -112,9 +112,9 @@ class OptionsHandler():
 	self.keepVideo = opts[5] in ['True']
 	self.audioFormat = opts[6]
 	self.audioQuality = int(opts[7])
-	self.startTrack = opts[8]
-	self.endTrack = opts[9]
-	self.maxDownloads = opts[10]
+	self.startTrack = int(opts[8])
+	self.endTrack = int(opts[9])
+	self.maxDownloads = int(opts[10])
 	self.minFileSize = opts[11]
 	self.maxFileSize = opts[12]
 	self.writeSubs = opts[13] in ['True']
@@ -127,7 +127,7 @@ class OptionsHandler():
 	self.writeDescription = opts[20] in ['True']
 	self.writeInfo = opts[21] in ['True']
 	self.writeThumbnail = opts[22] in ['True']
-	self.retries = opts[23]
+	self.retries = int(opts[23])
 	self.userAgent = opts[24]
 	self.referer = opts[25]
 	self.proxy = opts[26]
@@ -138,10 +138,10 @@ class OptionsHandler():
 	self.enableLog = opts[31] in ['True']
 	self.writeTimeToLog = opts[32] in ['True']
       except:
-	self.statusBarWrite('Error while loading settings file')
+	self.statusBarWrite('Error while loading settings file. Loading default settings.')
 	self.load_default()
     else:
-      self.statusBarWrite('Old settings file loading default settings')
+      self.statusBarWrite('Old settings file. Loading default settings.')
       self.load_default()
     
   def save_to_file(self):

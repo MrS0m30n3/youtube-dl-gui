@@ -12,7 +12,6 @@ def string_to_array(string, char=' '):
 def get_encoding():
   if sys.version_info >= (3, 0):
     return None
-    
   if sys.platform == 'win32':
     return sys.getfilesystemencoding()
   else:
@@ -28,14 +27,10 @@ def have_dash_audio(audio):
   return audio != "NO SOUND"
   
 def remove_file(filename):
-  if file_exist(filename):
-    os.remove(filename)
+  os.remove(filename)
 
 def get_path_seperator():
-  if os.name == 'nt':
-    return '\\'
-  else:
-    return '/'
+  return '\\' if os.name == 'nt' else '/'
   
 def fix_path(path):
   if path != '':
@@ -50,12 +45,11 @@ def add_PATH(path):
   os.environ["PATH"] += os.pathsep + path
 
 def get_abs_path(path):
-  sep = get_path_seperator()
-  path_list = path.split(sep)
+  path_list = path.split(get_path_seperator())
   for i in range(len(path_list)):
     if path_list[i] == '~':
       path_list[i] = get_HOME()
-  path = sep.join(path_list)
+  path = get_path_seperator().join(path_list)
   return path
   
 def file_exist(filename):

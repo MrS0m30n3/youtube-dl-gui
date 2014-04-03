@@ -1,3 +1,1 @@
-* Fix UnicodeWarning error
 * Use import instead of subprocess
-

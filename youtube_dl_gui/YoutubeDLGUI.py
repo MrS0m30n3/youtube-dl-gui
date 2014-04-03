@@ -324,8 +324,9 @@ class LogPanel(wx.Panel):
     self.enableTimeChk = wx.CheckBox(self, -1, 'Write time', (240, 50))
     self.clearLogButton = wx.Button(self, label="Clear Log", pos=(200, 90))
     self.viewLogButton = wx.Button(self, label="View Log", pos=(300, 90))
-    wx.StaticText(self, -1, 'Path: ' + self.path, (180, 140))
-    self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (240, 170))
+    if self.optList.enableLog:
+      wx.StaticText(self, -1, 'Path: ' + self.path, (180, 140))
+      self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (240, 170))
     
     self.Bind(wx.EVT_CHECKBOX, self.OnEnable, self.enableLogChk)
     self.Bind(wx.EVT_CHECKBOX, self.OnTime, self.enableTimeChk)

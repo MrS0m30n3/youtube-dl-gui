@@ -275,7 +275,7 @@ class MainFrame(wx.Frame):
 
 class ListCtrl(wx.ListCtrl):
   ''' Custom ListCtrl class '''
-  def __init__(self, parent=None, id=-1, pos=(-1, -1), size=(-1, -1), style=wx.LC_ICON):
+  def __init__(self, parent=None, id=-1, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
     wx.ListCtrl.__init__(self, parent, id, pos, size, style)
     self.InsertColumn(0, 'URL', width=150)
     self.InsertColumn(1, 'Size', width=90)

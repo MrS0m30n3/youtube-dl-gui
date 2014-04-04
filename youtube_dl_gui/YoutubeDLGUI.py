@@ -280,7 +280,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
   def __init__(self, parent=None, id=-1, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
     wx.ListCtrl.__init__(self, parent, id, pos, size, style)
     ListCtrlAutoWidthMixin.__init__(self)
-    self.InsertColumn(0, 'URL', width=150)
+    self.InsertColumn(0, 'Video', width=150)
     self.InsertColumn(1, 'Size', width=80)
     self.InsertColumn(2, 'Percent', width=65)
     self.InsertColumn(3, 'ETA', width=45)

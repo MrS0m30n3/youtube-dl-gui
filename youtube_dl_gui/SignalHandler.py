@@ -2,7 +2,8 @@
 
 from .Utils import (
   remove_spaces,
-  string_to_array
+  string_to_array,
+  get_filename
 )
 
 class DownloadHandler():
@@ -72,6 +73,8 @@ class IndexDownloadHandler():
       self.post_proc()
     elif pack.header == 'remove':
       self.remove()
+    elif pack.header == 'filename':
+      self.filename(pack.data)
       
   def finish(self):
     self.ListCtrl._write_data(self.index, 4, '')
@@ -111,6 +114,9 @@ class IndexDownloadHandler():
   
   def remove(self):
     self.ListCtrl._write_data(self.index, 5, 'Removing DASH Files')
+  
+  def filename(self, fl):
+    self.ListCtrl._write_data(self.index, 0, get_filename(fl))
   
 class DataPack():
   

@@ -72,4 +72,6 @@ def get_icon_path(icon_path, file_path):
   path = get_path_seperator().join(path)
   return path
   
+def get_filename(path):
+  return path.split(get_path_seperator())[-1]
   

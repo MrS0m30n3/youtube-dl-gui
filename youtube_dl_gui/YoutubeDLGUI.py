@@ -76,22 +76,10 @@ ICON = get_icon_path(['ytube.png', 'icons'], __file__)
 class MainFrame(wx.Frame):
   
   def __init__(self, parent=None, id=-1):
-    wx.Frame.__init__(self, parent, id, TITLE+' '+__version__, size=(600, 410), style = wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER)
+    wx.Frame.__init__(self, parent, id, TITLE+' '+__version__, size=(600, 420))
     
-    # set sizers for status box (Windows & Linux)
-    statusListSizer, statusBarSizer = self.set_sizers()
-    
-    # create panel, trackList, statusBox using global statusBoxSizer
-    self.panel = wx.Panel(self)
-    wx.StaticText(self.panel, -1, "URLs", (15, 10))
-    self.trackList = wx.TextCtrl(self.panel, -1, pos=(10, 25), size=(580, 110), style = wx.TE_MULTILINE | wx.TE_DONTWRAP)
-    self.statusList = ListCtrl(self.panel, -1, pos=(10, 190), size=statusListSizer, style = wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
-    self.statusBar = wx.StaticText(self.panel, -1, 'Author: Sotiris Papadopoulos', pos=statusBarSizer)
-    
-    # create buttons
-    self.downloadButton = wx.Button(self.panel, label="Download", pos=(100, 145), size=(-1, 30))
-    self.updateButton = wx.Button(self.panel, label="Update", pos=(250, 145), size=(-1, 30))
-    self.optionsButton = wx.Button(self.panel, label="Options", pos=(390, 145), size=(-1, 30))
+    # init gui
+    self.InitGUI()
     
     # bind events
     self.Bind(wx.EVT_BUTTON, self.OnDownload, self.downloadButton)
@@ -135,14 +123,39 @@ class MainFrame(wx.Frame):
       self.status_bar_write("Auto update enable")
       self.update_youtube_dl()
   
-  def set_sizers(self):
-    if get_os_type() == 'nt':
-      statusListSizer = (580, 165)
-      statusBarSizer = (15, 365)
-    else:
-      statusListSizer = (580, 195)
-      statusBarSizer = (15, 390)
-    return statusListSizer, statusBarSizer
+  def InitGUI(self):
+    self.panel = wx.Panel(self)
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    urlTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    urlTextBox.Add(wx.StaticText(self.panel, label='URLs'), flag = wx.TOP, border=10)
+    mainBoxSizer.Add(urlTextBox, flag = wx.LEFT, border=20)
+    
+    trckListBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.trackList = wx.TextCtrl(self.panel, size=(-1, 120), style = wx.TE_MULTILINE | wx.TE_DONTWRAP)
+    trckListBox.Add(self.trackList, 1)
+    mainBoxSizer.Add(trckListBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=20)
+    
+    buttonsBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.downloadButton = wx.Button(self.panel, label='Download', size=(90, 30))
+    buttonsBox.Add(self.downloadButton)
+    self.updateButton = wx.Button(self.panel, label='Update', size=(90, 30))
+    buttonsBox.Add(self.updateButton, flag = wx.LEFT | wx.RIGHT, border=80)
+    self.optionsButton = wx.Button(self.panel, label='Options', size=(90, 30))
+    buttonsBox.Add(self.optionsButton)
+    mainBoxSizer.Add(buttonsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM | wx.TOP, border=10)
+    
+    stListBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.statusList = ListCtrl(self.panel, style = wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+    stListBox.Add(self.statusList, 1, flag = wx.EXPAND)
+    mainBoxSizer.Add(stListBox, 1, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=20)
+    
+    stBarBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.statusBar = wx.StaticText(self.panel, label='Author: Sotiris Papadopoulos')
+    stBarBox.Add(self.statusBar, flag = wx.TOP | wx.BOTTOM, border=5)
+    mainBoxSizer.Add(stBarBox, flag = wx.LEFT, border=20)
+    
+    self.panel.SetSizer(mainBoxSizer)
   
   def check_if_youtube_dl_exist(self):
     path = fix_path(self.optionsList.updatePath)+YOUTUBE_DL_FILENAME
@@ -262,7 +275,7 @@ class MainFrame(wx.Frame):
 
 class ListCtrl(wx.ListCtrl):
   ''' Custom ListCtrl class '''
-  def __init__(self, parent, id, pos, size, style):
+  def __init__(self, parent=None, id=-1, pos=(-1, -1), size=(-1, -1), style=wx.LC_ICON):
     wx.ListCtrl.__init__(self, parent, id, pos, size, style)
     self.InsertColumn(0, 'URL', width=150)
     self.InsertColumn(1, 'Size', width=90)
@@ -313,25 +326,57 @@ class LogPanel(wx.Panel):
   
   size = ''
   path = ''
+  win_box_border = 0
   
   def __init__(self, parent, optList, log):
+    wx.Panel.__init__(self, parent)
+    
+    self.SetBoxBorder()
     self.optList = optList
     self.log = log
     self.set_data()
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
     
-    wx.Panel.__init__(self, parent)
-    self.enableLogChk = wx.CheckBox(self, -1, 'Enable log', (240, 20))
-    self.enableTimeChk = wx.CheckBox(self, -1, 'Write time', (240, 50))
-    self.clearLogButton = wx.Button(self, label="Clear Log", pos=(200, 90))
-    self.viewLogButton = wx.Button(self, label="View Log", pos=(300, 90))
+    enLogBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.enableLogChk = wx.CheckBox(self, label='Enable Log')
+    enLogBox.Add(self.enableLogChk)
+    mainBoxSizer.Add(enLogBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20+self.win_box_border)
+    
+    wrTimeBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.enableTimeChk = wx.CheckBox(self, label='Write Time')
+    wrTimeBox.Add(self.enableTimeChk)
+    mainBoxSizer.Add(wrTimeBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5+self.win_box_border)
+    
+    butBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.clearLogButton = wx.Button(self, label='Clear Log')
+    butBox.Add(self.clearLogButton)
+    self.viewLogButton = wx.Button(self, label='View Log')
+    butBox.Add(self.viewLogButton, flag = wx.LEFT, border=20)
+    mainBoxSizer.Add(butBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+    
     if self.optList.enableLog:
-      wx.StaticText(self, -1, 'Path: ' + self.path, (180, 140))
-      self.sizeText = wx.StaticText(self, -1, 'Log Size: ' + self.size, (240, 170))
+      self.SetDataSizers(mainBoxSizer)
+    
+    self.SetSizer(mainBoxSizer)
     
     self.Bind(wx.EVT_CHECKBOX, self.OnEnable, self.enableLogChk)
     self.Bind(wx.EVT_CHECKBOX, self.OnTime, self.enableTimeChk)
     self.Bind(wx.EVT_BUTTON, self.OnClear, self.clearLogButton)
     self.Bind(wx.EVT_BUTTON, self.OnView, self.viewLogButton)
+  
+  def SetBoxBorder(self):
+    ''' Set border for windows '''
+    if get_os_type() == 'nt':
+      self.win_box_border = 10
+  
+  def SetDataSizers(self, box):
+    logPathText = wx.BoxSizer(wx.HORIZONTAL)
+    logPathText.Add(wx.StaticText(self, label='Path: ' + self.path))
+    box.Add(logPathText, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
+    logSizeText = wx.BoxSizer(wx.HORIZONTAL)
+    self.sizeText = wx.StaticText(self, label='Log Size: ' + self.size)
+    logSizeText.Add(self.sizeText)
+    box.Add(logSizeText, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=10)
   
   def set_data(self):
     if self.log != None:
@@ -378,16 +423,33 @@ class LogPanel(wx.Panel):
 class UpdatePanel(wx.Panel):
   
   def __init__(self, parent, optList):
+    wx.Panel.__init__(self, parent)
+    
     self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
     
     text = '''Enter the path where youtube-dlG should 
 download the latest youtube-dl.'''
     
-    wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, text, (85, 10))
-    wx.StaticText(self, -1, 'Path', (95, 60))
-    self.updatePathBox = wx.TextCtrl(self, -1, pos=(90, 80), size=(400, -1))
-    self.autoUpdateChk = wx.CheckBox(self, -1, 'Auto Update youtube-dl', (100, 130))
+    helpText = wx.BoxSizer(wx.HORIZONTAL)
+    helpText.Add(wx.StaticText(self, label=text), flag = wx.TOP, border=10)
+    mainBoxSizer.Add(helpText, flag = wx.LEFT, border=80)
+    
+    pathText = wx.BoxSizer(wx.HORIZONTAL)
+    pathText.Add(wx.StaticText(self, label='Path'), flag = wx.TOP, border=20)
+    mainBoxSizer.Add(pathText, flag = wx.LEFT, border=95)
+    
+    upPathBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.updatePathBox = wx.TextCtrl(self)
+    upPathBox.Add(self.updatePathBox, 1, flag = wx.TOP, border=5)
+    mainBoxSizer.Add(upPathBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=90)
+    
+    autoUpBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.autoUpdateChk = wx.CheckBox(self, label='Auto Update youtube-dl')
+    autoUpBox.Add(self.autoUpdateChk, flag = wx.TOP, border=30)
+    mainBoxSizer.Add(autoUpBox, flag = wx.LEFT, border=100)
+    
+    self.SetSizer(mainBoxSizer)
     
   def load_options(self):
     self.updatePathBox.SetValue(self.optList.updatePath)
@@ -400,64 +462,101 @@ download the latest youtube-dl.'''
 class PlaylistPanel(wx.Panel):
   
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Playlist  Options', (100, 20))
-    wx.StaticText(self, -1, 'Start', (90, 53))
-    self.startSpnr = wx.SpinCtrl(self, -1, "", (160, 50), size=(60, -1))
-    wx.StaticText(self, -1, 'Stop', (90, 83))
-    self.stopSpnr = wx.SpinCtrl(self, -1, "", (160, 80), size=(60, -1))
-    wx.StaticText(self, -1, 'Max DLs', (90, 113))
-    self.maxSpnr = wx.SpinCtrl(self, -1, "", (160, 110), size=(60, -1))
-    wx.StaticText(self, -1, 'Filesize (e.g. 50k or 44.6m)', (330, 20))
-    wx.StaticText(self, -1, 'Min', (360, 63))
-    self.minFilesizeBox = wx.TextCtrl(self, -1, pos=(400, 60), size=(70, -1))
-    wx.StaticText(self, -1, 'Max', (360, 93))
-    self.maxFilesizeBox = wx.TextCtrl(self, -1, pos=(400, 90), size=(70, -1))
-    self.startSpnr.SetRange(1, 999)
-    self.stopSpnr.SetRange(0, 999)
-    self.maxSpnr.SetRange(0, 999)
     
+    self.optList = optList
+    mainBoxSizer = wx.StaticBoxSizer(wx.StaticBox(self, label='Playlist Options'), wx.VERTICAL)
+    
+    mainBoxSizer.Add((-1, 10))
+    
+    startBox = wx.BoxSizer(wx.HORIZONTAL)
+    startBox.Add(wx.StaticText(self, label='Start'), flag = wx.RIGHT, border=32)
+    self.startSpnr = wx.SpinCtrl(self, size=(60, -1))
+    self.startSpnr.SetRange(1, 999)
+    startBox.Add(self.startSpnr)
+    mainBoxSizer.Add(startBox, flag = wx.TOP | wx.LEFT, border=20)
+    
+    stopBox = wx.BoxSizer(wx.HORIZONTAL)
+    stopBox.Add(wx.StaticText(self, label='Stop'), flag = wx.RIGHT, border=34)
+    self.stopSpnr = wx.SpinCtrl(self, size=(60, -1))
+    self.stopSpnr.SetRange(0, 999)
+    stopBox.Add(self.stopSpnr)
+    mainBoxSizer.Add(stopBox, flag = wx.TOP | wx.LEFT, border=20)
+    
+    maxBox = wx.BoxSizer(wx.HORIZONTAL)
+    maxBox.Add(wx.StaticText(self, label='Max DLs'), flag = wx.RIGHT, border=self.get_border())
+    self.maxSpnr = wx.SpinCtrl(self, size=(60, -1))
+    self.maxSpnr.SetRange(0, 999)
+    maxBox.Add(self.maxSpnr)
+    mainBoxSizer.Add(maxBox, flag = wx.TOP | wx.LEFT, border=20)
+    
+    self.SetSizer(mainBoxSizer)
+  
+  def get_border(self):
+    if get_os_type() == 'nt':
+      return 16
+    return 10
+  
   def load_options(self):
     self.startSpnr.SetValue(self.optList.startTrack)
     self.stopSpnr.SetValue(self.optList.endTrack)
     self.maxSpnr.SetValue(self.optList.maxDownloads)
-    self.minFilesizeBox.SetValue(self.optList.minFileSize)
-    self.maxFilesizeBox.SetValue(self.optList.maxFileSize)
     
   def save_options(self):
     self.optList.startTrack = self.startSpnr.GetValue()
     self.optList.endTrack = self.stopSpnr.GetValue()
     self.optList.maxDownloads = self.maxSpnr.GetValue()
-    self.optList.minFileSize = self.minFilesizeBox.GetValue()
-    self.optList.maxFileSize = self.maxFilesizeBox.GetValue()
-    self.check_input()
-    
-  def check_input(self):
-    self.optList.minFileSize.replace('-', '')
-    self.optList.maxFileSize.replace('-', '')
-    if self.optList.minFileSize == '':
-      self.optList.minFileSize = '0'
-    if self.optList.maxFileSize == '':
-      self.optList.maxFileSize = '0'
     
 class ConnectionPanel(wx.Panel):
   
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Retries', (15, 12))
-    self.retriesSpnr = wx.SpinCtrl(self, -1, "", (65, 10), size=(50, -1))
+    
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    retBox = wx.BoxSizer(wx.HORIZONTAL)
+    retBox.Add(wx.StaticText(self, label='Retries'), flag = wx.RIGHT, border=8)
+    self.retriesSpnr = wx.SpinCtrl(self, size=(50, -1))
     self.retriesSpnr.SetRange(1, 99)
-    wx.StaticText(self, -1, 'User Agent', (15, 50))
-    self.userAgentBox = wx.TextCtrl(self, -1, pos=(10, 70), size=(320, -1))
-    wx.StaticText(self, -1, 'Referer', (15, 100))
-    self.refererBox = wx.TextCtrl(self, -1, pos=(10, 120), size=(320, -1))
-    wx.StaticText(self, -1, 'Proxy', (15, 150))
-    self.proxyBox = wx.TextCtrl(self, -1, pos=(10, 170), size=(450, -1))
-  
+    retBox.Add(self.retriesSpnr)
+    mainBoxSizer.Add(retBox, flag = wx.LEFT | wx.TOP, border=10)
+    
+    uaText = wx.BoxSizer(wx.HORIZONTAL)
+    uaText.Add(wx.StaticText(self, label='User Agent'), flag = wx.LEFT, border=15)
+    mainBoxSizer.Add(uaText, flag = wx.TOP, border=10)
+    
+    mainBoxSizer.Add((-1, 5))
+    
+    uaBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.userAgentBox = wx.TextCtrl(self)
+    uaBox.Add(self.userAgentBox, 1, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(uaBox, flag = wx.EXPAND | wx.RIGHT, border=200)
+    
+    refText = wx.BoxSizer(wx.HORIZONTAL)
+    refText.Add(wx.StaticText(self, label='Referer'), flag = wx.LEFT, border=15)
+    mainBoxSizer.Add(refText, flag = wx.TOP, border=10)
+    
+    mainBoxSizer.Add((-1, 5))
+    
+    refBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.refererBox = wx.TextCtrl(self)
+    refBox.Add(self.refererBox, 1, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(refBox, flag = wx.EXPAND | wx.RIGHT, border=200)
+    
+    prxyText = wx.BoxSizer(wx.HORIZONTAL)
+    prxyText.Add(wx.StaticText(self, label='Proxy'), flag = wx.LEFT, border=15)
+    mainBoxSizer.Add(prxyText, flag = wx.TOP, border=10)
+    
+    mainBoxSizer.Add((-1, 5))
+    
+    prxyBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.proxyBox = wx.TextCtrl(self)
+    prxyBox.Add(self.proxyBox, 1, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(prxyBox, flag = wx.EXPAND | wx.RIGHT, border=100)
+    
+    self.SetSizer(mainBoxSizer)
+    
   def load_options(self):
     self.userAgentBox.SetValue(self.optList.userAgent)
     self.refererBox.SetValue(self.optList.referer)
@@ -473,15 +572,39 @@ class ConnectionPanel(wx.Panel):
 class AuthenticationPanel(wx.Panel):
   
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self,parent)
-    wx.StaticText(self, -1, 'Username', (255, 10))
-    self.usernameBox = wx.TextCtrl(self, -1, pos=(175, 30), size=(230, 25))
-    wx.StaticText(self, -1, 'Password', (260, 70))
-    self.passwordBox = wx.TextCtrl(self, -1, pos=(175, 90), size=(230, 25), style = wx.TE_PASSWORD)
-    wx.StaticText(self, -1, 'Video Password (vimeo, smotri)', (190, 130))
-    self.videopassBox = wx.TextCtrl(self, -1, pos=(175, 150), size=(230, 25), style = wx.TE_PASSWORD)
+    
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    usrTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    usrTextBox.Add(wx.StaticText(self, label='Username'))
+    mainBoxSizer.Add(usrTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+    
+    usrBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.usernameBox = wx.TextCtrl(self, size=(-1, 25))
+    usrBox.Add(self.usernameBox, 1, flag = wx.TOP, border=5)
+    mainBoxSizer.Add(usrBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=160)
+    
+    passTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    passTextBox.Add(wx.StaticText(self, label='Password'))
+    mainBoxSizer.Add(passTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+    
+    passBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.passwordBox = wx.TextCtrl(self, size=(-1, 25), style = wx.TE_PASSWORD)
+    passBox.Add(self.passwordBox, 1, flag = wx.TOP, border=5)
+    mainBoxSizer.Add(passBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=160)
+    
+    vPassTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    vPassTextBox.Add(wx.StaticText(self, label='Video Password (vimeo, smotri)'))
+    mainBoxSizer.Add(vPassTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+    
+    vPassBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.videopassBox = wx.TextCtrl(self, size=(-1, 25), style = wx.TE_PASSWORD)
+    vPassBox.Add(self.videopassBox, 1, flag = wx.TOP, border=5)
+    mainBoxSizer.Add(vPassBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=160)
+    
+    self.SetSizer(mainBoxSizer)
     
   def load_options(self):
     self.usernameBox.SetValue(self.optList.username)
@@ -495,20 +618,53 @@ class AuthenticationPanel(wx.Panel):
 
 class AudioPanel(wx.Panel):
   
+  win_box_border = 0
+  
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    self.toAudioChk = wx.CheckBox(self, -1, 'Convert to Audio', (220, 10))
-    self.keepVideoChk = wx.CheckBox(self, -1, 'Keep Video', (240, 40))
-    wx.StaticText(self, -1, 'Audio Format', (250, 80))
-    self.audioFormatCombo = wx.ComboBox(self, choices=AUDIOFORMATS, pos=(210, 100), size=(160, 30))
-    wx.StaticText(self, -1, "Audio Quality 0 (best) 9 (worst)", (200, 140))
-    self.audioQualitySpnr = wx.SpinCtrl(self, -1, "", (248, 160), size=(90, 20))
+    
+    self.SetBoxBorder()
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    toaBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.toAudioChk = wx.CheckBox(self, label='Convert to Audio')
+    toaBox.Add(self.toAudioChk)
+    mainBoxSizer.Add(toaBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15+self.win_box_border)
+    
+    keepVBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.keepVideoChk = wx.CheckBox(self, label='Keep Video')
+    keepVBox.Add(self.keepVideoChk)
+    mainBoxSizer.Add(keepVBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5+self.win_box_border)
+    
+    afTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    afTextBox.Add(wx.StaticText(self, label='Audio Format'))
+    mainBoxSizer.Add(afTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=10)
+    
+    afComboBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.audioFormatCombo = wx.ComboBox(self, choices=AUDIOFORMATS, size=(160, 30))
+    afComboBox.Add(self.audioFormatCombo)
+    mainBoxSizer.Add(afComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+    
+    aqTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    aqTextBox.Add(wx.StaticText(self, label='Audio Quality 0 (best) 9 (worst)'))
+    mainBoxSizer.Add(aqTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=10)
+    
+    aqComboBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.audioQualitySpnr = wx.SpinCtrl(self, size=(90, 20))
     self.audioQualitySpnr.SetRange(0, 9)
+    aqComboBox.Add(self.audioQualitySpnr)
+    mainBoxSizer.Add(aqComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+    
+    self.SetSizer(mainBoxSizer)
     
     self.Bind(wx.EVT_CHECKBOX, self.OnAudioCheck, self.toAudioChk)
     
+  def SetBoxBorder(self):
+    ''' Set border for windows '''
+    if get_os_type() == 'nt':
+      self.win_box_border = 5
+  
   def OnAudioCheck(self, event):
     if self.toAudioChk.GetValue():
       self.keepVideoChk.Enable()
@@ -538,14 +694,35 @@ class AudioPanel(wx.Panel):
 class VideoPanel(wx.Panel):
   
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Video Format', (250, 10))
-    self.videoFormatCombo = wx.ComboBox(self, choices=VIDEOFORMATS, pos=(210, 30), size=(160, 30))
-    wx.StaticText(self, -1, 'DASH Audio', (250, 80))
-    self.dashAudioFormatCombo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, pos=(210, 100), size=(160, 30))
-    self.clearDashFilesChk = wx.CheckBox(self, -1, 'Clear DASH audio/video files', (180, 150))
+    
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    vfTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    vfTextBox.Add(wx.StaticText(self, label='Video Format'))
+    mainBoxSizer.Add(vfTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
+    
+    vfComboBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.videoFormatCombo = wx.ComboBox(self, choices=VIDEOFORMATS, size=(160, 30))
+    vfComboBox.Add(self.videoFormatCombo)
+    mainBoxSizer.Add(vfComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+    
+    daTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    daTextBox.Add(wx.StaticText(self, label='DASH Audio'))
+    mainBoxSizer.Add(daTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=10)
+    
+    daComboBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.dashAudioFormatCombo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, size=(160, 30))
+    daComboBox.Add(self.dashAudioFormatCombo)
+    mainBoxSizer.Add(daComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+    
+    clrDashBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.clearDashFilesChk = wx.CheckBox(self, label='Clear DASH audio/video files')
+    clrDashBox.Add(self.clearDashFilesChk)
+    mainBoxSizer.Add(clrDashBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
+    
+    self.SetSizer(mainBoxSizer)
     
     self.Bind(wx.EVT_COMBOBOX, self.OnVideoFormatPick, self.videoFormatCombo)
     self.Bind(wx.EVT_COMBOBOX, self.OnAudioFormatPick, self.dashAudioFormatCombo)
@@ -584,22 +761,77 @@ class VideoPanel(wx.Panel):
     
 class FilesystemPanel(wx.Panel):
   
+  win_box_border = 0
+  
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    self.idAsNameChk = wx.CheckBox(self, -1, 'ID as Name', (10, 10))
-    self.ignoreErrorsChk = wx.CheckBox(self, -1, 'Ignore Errors', (10, 40))
-    self.writeDescriptionChk = wx.CheckBox(self, -1, 'Write description to file', (10, 70))
-    self.writeInfoChk = wx.CheckBox(self, -1, 'Write info to (.json) file', (10, 100))
-    self.writeThumbnailChk = wx.CheckBox(self, -1, 'Write thumbnail to disk', (10, 130))
     
+    self.SetBoxBorder()
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.HORIZONTAL)
+    leftBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    rightBoxSizer = wx.StaticBoxSizer(wx.StaticBox(self, label='Filesize (e.g. 50k or 44.6m)'), wx.VERTICAL)
+    
+    self.SetLeftBox(leftBoxSizer)
+    self.SetRightBox(rightBoxSizer)
+    
+    mainBoxSizer.Add(leftBoxSizer, 1, flag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, border=10)
+    mainBoxSizer.Add(rightBoxSizer, 1, flag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, border=10)
+    
+    self.SetSizer(mainBoxSizer)
+  
+  def SetBoxBorder(self):
+    ''' Set border for windows '''
+    if get_os_type() == 'nt':
+      self.win_box_border = 15
+  
+  def SetLeftBox(self, box):
+    idBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.idAsNameChk = wx.CheckBox(self, label='ID as Name')
+    idBox.Add(self.idAsNameChk, flag = wx.LEFT, border=5)
+    box.Add(idBox, flag = wx.TOP, border=20)
+    
+    ignrBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.ignoreErrorsChk = wx.CheckBox(self, label='Ignore Errors')
+    ignrBox.Add(self.ignoreErrorsChk, flag = wx.LEFT, border=5)
+    box.Add(ignrBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    wrtDescBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeDescriptionChk = wx.CheckBox(self, label='Write description to file')
+    wrtDescBox.Add(self.writeDescriptionChk, flag = wx.LEFT, border=5)
+    box.Add(wrtDescBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    wrtInfoBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeInfoChk = wx.CheckBox(self, label='Write info to (.json) file')
+    wrtInfoBox.Add(self.writeInfoChk, flag = wx.LEFT, border=5)
+    box.Add(wrtInfoBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    wrtThumBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeThumbnailChk = wx.CheckBox(self, label='Write thumbnail to disk')
+    wrtThumBox.Add(self.writeThumbnailChk, flag = wx.LEFT, border=5)
+    box.Add(wrtThumBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+  def SetRightBox(self, box):
+    minBox = wx.BoxSizer(wx.HORIZONTAL)
+    minBox.Add(wx.StaticText(self, label='Min'), flag = wx.RIGHT, border=12)
+    self.minFilesizeBox = wx.TextCtrl(self, size=(80, -1))
+    minBox.Add(self.minFilesizeBox)
+    box.Add(minBox, flag = wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, border=10)
+    
+    maxBox = wx.BoxSizer(wx.HORIZONTAL)
+    maxBox.Add(wx.StaticText(self, label='Max'), flag = wx.RIGHT, border=8)
+    self.maxFilesizeBox = wx.TextCtrl(self, size=(80, -1))
+    maxBox.Add(self.maxFilesizeBox)
+    box.Add(maxBox, flag = wx.TOP | wx.ALIGN_CENTER_HORIZONTAL, border=10)
+  
   def load_options(self):
     self.writeDescriptionChk.SetValue(self.optList.writeDescription)
     self.writeInfoChk.SetValue(self.optList.writeInfo)
     self.writeThumbnailChk.SetValue(self.optList.writeThumbnail)
     self.ignoreErrorsChk.SetValue(self.optList.ignoreErrors)
     self.idAsNameChk.SetValue(self.optList.idAsName)
+    self.minFilesizeBox.SetValue(self.optList.minFileSize)
+    self.maxFilesizeBox.SetValue(self.optList.maxFileSize)
     
   def save_options(self):
     self.optList.writeDescription = self.writeDescriptionChk.GetValue()
@@ -607,24 +839,69 @@ class FilesystemPanel(wx.Panel):
     self.optList.writeThumbnail = self.writeThumbnailChk.GetValue()
     self.optList.ignoreErrors = self.ignoreErrorsChk.GetValue()
     self.optList.idAsName = self.idAsNameChk.GetValue()
+    self.optList.minFileSize = self.minFilesizeBox.GetValue()
+    self.optList.maxFileSize = self.maxFilesizeBox.GetValue()
+    self.check_input()
+  
+  def check_input(self):
+    self.optList.minFileSize.replace('-', '')
+    self.optList.maxFileSize.replace('-', '')
+    if self.optList.minFileSize == '':
+      self.optList.minFileSize = '0'
+    if self.optList.maxFileSize == '':
+      self.optList.maxFileSize = '0'
   
 class SubtitlesPanel(wx.Panel):
   
+  win_box_border = 0
+  
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    self.writeSubsChk = wx.CheckBox(self, -1, 'Download subtitle file by language', (10, 10))
-    self.writeAllSubsChk = wx.CheckBox(self, -1, 'Download all available subtitles', (10, 40))
-    self.writeAutoSubsChk = wx.CheckBox(self, -1, 'Download automatic subtitle file (YOUTUBE ONLY)', (10, 70))
-    self.embedSubsChk = wx.CheckBox(self, -1, 'Embed subtitles in the video (only for mp4 videos)', (10, 100))
-    wx.StaticText(self, -1, 'Subtitles Language', (15, 135))
-    self.subsLangCombo = wx.ComboBox(self, choices=LANGUAGES, pos=(10, 155), size=(140, 30))
+    
+    self.SetBoxBorder()
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    dlSubsBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeSubsChk = wx.CheckBox(self, label='Download subtitle file by language')
+    dlSubsBox.Add(self.writeSubsChk, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(dlSubsBox, flag = wx.TOP, border=15)
+    
+    dlAllSubBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeAllSubsChk = wx.CheckBox(self, label='Download all available subtitles')
+    dlAllSubBox.Add(self.writeAllSubsChk, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(dlAllSubBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    dlAutoSubBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.writeAutoSubsChk = wx.CheckBox(self, label='Download automatic subtitle file (YOUTUBE ONLY)')
+    dlAutoSubBox.Add(self.writeAutoSubsChk, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(dlAutoSubBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    embSubBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.embedSubsChk = wx.CheckBox(self, label='Embed subtitles in the video (only for mp4 videos)')
     self.embedSubsChk.Disable()
+    embSubBox.Add(self.embedSubsChk, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(embSubBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    slangTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    slangTextBox.Add(wx.StaticText(self, label='Subtitles Language'), flag = wx.LEFT, border=15)
+    mainBoxSizer.Add(slangTextBox, flag = wx.TOP, border=10+self.win_box_border)
+    
+    slangBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.subsLangCombo = wx.ComboBox(self, choices=LANGUAGES, size=(140, 30))
+    slangBox.Add(self.subsLangCombo, flag = wx.LEFT, border=10)
+    mainBoxSizer.Add(slangBox, flag = wx.TOP, border=5)
+    
+    self.SetSizer(mainBoxSizer)
     
     self.Bind(wx.EVT_CHECKBOX, self.OnWriteSubsChk, self.writeSubsChk)
     self.Bind(wx.EVT_CHECKBOX, self.OnWriteAllSubsChk, self.writeAllSubsChk)
     self.Bind(wx.EVT_CHECKBOX, self.OnWriteAutoSubsChk, self.writeAutoSubsChk)
+  
+  def SetBoxBorder(self):
+    ''' Set border for windows '''
+    if get_os_type() == 'nt':
+      self.win_box_border = 10
   
   def subs_are_on(self):
     return self.writeAutoSubsChk.GetValue() or self.writeSubsChk.GetValue()
@@ -699,16 +976,36 @@ class SubtitlesPanel(wx.Panel):
 class GeneralPanel(wx.Panel):
   
   def __init__(self, parent, optList, controlParent):
+    wx.Panel.__init__(self, parent)
+    
     self.optList = optList
     self.parent = controlParent
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
     
-    wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, "Save Path", (255, 20))
-    self.savePathBox = wx.TextCtrl(self, -1, pos=(60, 50), size=(450, -1))
-    self.aboutButton = wx.Button(self, label="About", pos=(70, 100), size=(110, 40))
-    self.openButton = wx.Button(self, label="Open", pos=(230, 100), size=(110, 40))
-    self.resetButton = wx.Button(self, label="Reset Options", pos=(390, 100), size=(110, 40))
-    wx.StaticText(self, -1, "Settings: " + self.optList.settings_abs_path, (140, 170))
+    svTextBox = wx.BoxSizer(wx.HORIZONTAL)
+    svTextBox.Add(wx.StaticText(self, label='Save Path'))
+    mainBoxSizer.Add(svTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
+    
+    svPathBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.savePathBox = wx.TextCtrl(self)
+    svPathBox.Add(self.savePathBox, 1, flag = wx.TOP, border=10)
+    mainBoxSizer.Add(svPathBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=40)
+    
+    buttonsBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.aboutButton = wx.Button(self, label='About', size=(110, 40))
+    buttonsBox.Add(self.aboutButton)
+    self.openButton = wx.Button(self, label='Open', size=(110, 40))
+    buttonsBox.Add(self.openButton, flag = wx.LEFT | wx.RIGHT, border=50)
+    self.resetButton = wx.Button(self, label='Reset Options', size=(110, 40))
+    buttonsBox.Add(self.resetButton)
+    mainBoxSizer.Add(buttonsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM | wx.TOP, border=20)
+    
+    setngsBox = wx.BoxSizer(wx.HORIZONTAL)
+    text = 'Settings: ' + self.optList.settings_abs_path
+    setngsBox.Add(wx.StaticText(self, label=text), flag = wx.TOP, border=20)
+    mainBoxSizer.Add(setngsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, border=10)
+    
+    self.SetSizer(mainBoxSizer)
      
     self.Bind(wx.EVT_BUTTON, self.OnAbout, self.aboutButton)
     self.Bind(wx.EVT_BUTTON, self.OnOpen, self.openButton)
@@ -772,11 +1069,21 @@ For more information, please refer to <http://unlicense.org/>'''
 class OtherPanel(wx.Panel):
   
   def __init__(self, parent, optList):
-    self.optList = optList
-    
     wx.Panel.__init__(self, parent)
-    wx.StaticText(self, -1, 'Command line arguments (e.g. --help)', (25, 20))
-    self.cmdArgsBox = wx.TextCtrl(self, -1, pos=(20, 40), size=(470, -1))
+    
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    textBox = wx.BoxSizer(wx.HORIZONTAL)
+    textBox.Add(wx.StaticText(self, label='Command line arguments (e.g. --help)'), flag = wx.TOP, border=30)
+    mainBoxSizer.Add(textBox, flag = wx.LEFT, border=50)
+    
+    inputBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.cmdArgsBox = wx.TextCtrl(self)
+    inputBox.Add(self.cmdArgsBox, 1, flag = wx.TOP, border=10)
+    mainBoxSizer.Add(inputBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=50)
+    
+    self.SetSizer(mainBoxSizer)
   
   def load_options(self):
     self.cmdArgsBox.SetValue(self.optList.cmdArgs)

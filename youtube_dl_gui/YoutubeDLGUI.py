@@ -979,11 +979,11 @@ class SubtitlesPanel(wx.Panel):
   
 class GeneralPanel(wx.Panel):
   
-  def __init__(self, parent, optList, controlParent):
+  def __init__(self, parent, optList, resetHandler):
     wx.Panel.__init__(self, parent)
     
     self.optList = optList
-    self.parent = controlParent
+    self.resetHandler = resetHandler
     mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
     
     svTextBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -1016,7 +1016,7 @@ class GeneralPanel(wx.Panel):
     self.Bind(wx.EVT_BUTTON, self.OnReset, self.resetButton)
     
   def OnReset(self, event):
-    self.parent.reset()
+    self.resetHandler()
     
   def OnOpen(self, event):
     dlg = wx.DirDialog(None, "Choose directory")
@@ -1105,7 +1105,7 @@ class OptionsFrame(wx.Frame):
     panel = wx.Panel(self)
     notebook = wx.Notebook(panel)
     
-    self.generalTab = GeneralPanel(notebook, self.optionsList, self)
+    self.generalTab = GeneralPanel(notebook, self.optionsList, self.reset)
     self.audioTab = AudioPanel(notebook, self.optionsList)
     self.connectionTab = ConnectionPanel(notebook, self.optionsList)
     self.videoTab = VideoPanel(notebook, self.optionsList)

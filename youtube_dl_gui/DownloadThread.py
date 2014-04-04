@@ -44,10 +44,11 @@ class DownloadManager(Thread):
 	url, index = self.extract_data()
 	# Wait for your turn if there are not more positions in 'queue'
 	while self.procNo >= MAX_DOWNLOAD_THREADS:
-	  proc = self.check_queue(0.5)
+	  proc = self.check_queue()
 	  if proc != None:
 	    self.procList.remove(proc)
 	    self.procNo -= 1
+	  sleep(1)
 	# If we still running create new ProcessWrapper thread
 	if self.running:
 	  self.procList.append(
@@ -65,7 +66,7 @@ class DownloadManager(Thread):
 	if not self.downloading():
 	  self.running = False
 	else:
-	  sleep(1)
+	  sleep(0.1)
     # If we reach here close down all child threads
     self.terminate_all()
     CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish'))
@@ -91,12 +92,11 @@ class DownloadManager(Thread):
 	proc.close()
 	proc.join()
     
-  def check_queue(self, t=1):
+  def check_queue(self):
     for proc in self.procList:
       if not self.running: break
       if not proc.isAlive():
 	return proc
-      sleep(t)
     return None
       
   def close(self):

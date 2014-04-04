@@ -157,6 +157,35 @@ aside a.button {
   font-size: 21px;
 }
 
+a.button2 {
+  width: 134px;
+  height: 58px;
+  line-height: 1.2;
+  font-size: 23px;
+  color: #fff;
+  padding-left: 68px;
+  padding-top: 22px;
+  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
+}
+a.button2 small {
+  display: block;
+  font-size: 11px;
+}
+header a.button2 {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: transparent url(../images/github-button.png) 0 0 no-repeat;
+}
+aside a.button2 {
+  width: 138px;
+  padding-left: 64px;
+  display: block;
+  background: transparent url(../images/download-button2.png) 0 0 no-repeat;
+  margin-bottom: 20px;
+  font-size: 21px;
+}
+
 code, pre {
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   color: #222;
@@ -445,6 +474,27 @@ footer a:hover {
     font-size: 13px;
     display: inline;
   }
+  header a.button2 {
+    background-image: none;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    margin-top: 15px;
+    padding: 5px 10px;
+    position: relative;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1;
+    background-color: #9ddcff;
+    color: #2879d0;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;                     
+    border-radius: 5px;    
+  }
+  header a.button2 small {
+    font-size: 13px;
+    display: inline;
+  }
   #main-content,
   aside#sidebar {
     float: none;
@@ -458,6 +508,9 @@ footer a:hover {
     min-height: 0;
   }
   aside#sidebar a.button {
+    display: none;
+  }
+  aside#sidebar a.button2 {
     display: none;
   }
   #main-content h1:before,

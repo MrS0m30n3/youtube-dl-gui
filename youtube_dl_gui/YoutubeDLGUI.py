@@ -21,6 +21,8 @@ import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
+from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
+
 from .version import __version__
 from .UpdateThread import UpdateThread
 from .DownloadThread import DownloadManager
@@ -272,17 +274,19 @@ class MainFrame(wx.Frame):
   def OnClose(self, event):
     self.save_options()
     self.Destroy()
-
-class ListCtrl(wx.ListCtrl):
+    
+class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
   ''' Custom ListCtrl class '''
   def __init__(self, parent=None, id=-1, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
     wx.ListCtrl.__init__(self, parent, id, pos, size, style)
+    ListCtrlAutoWidthMixin.__init__(self)
     self.InsertColumn(0, 'URL', width=150)
-    self.InsertColumn(1, 'Size', width=90)
-    self.InsertColumn(2, 'Percent', width=80)
-    self.InsertColumn(3, 'ETA', width=50)
+    self.InsertColumn(1, 'Size', width=80)
+    self.InsertColumn(2, 'Percent', width=65)
+    self.InsertColumn(3, 'ETA', width=45)
     self.InsertColumn(4, 'Speed', width=90)
-    self.InsertColumn(5, 'Status', width=150)
+    self.InsertColumn(5, 'Status', width=160)
+    self.setResizeColumn(0)
     self.ListIndex = 0
   
   ''' Add single item on list '''

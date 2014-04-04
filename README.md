@@ -6,7 +6,7 @@ A cross platform front-end GUI of the popular youtube-dl
 written in wxPython.
 
 ## SCREENSHOT
-![Youtube-dl-gui screenshot in slackware](http://i.imgur.com/JiT6eZW.png)
+![Youtube-dl-gui main window](http://i.imgur.com/I4oXPWs.png)
 
 ![Options window](http://i.imgur.com/eShdoLD.png)
 
@@ -29,8 +29,11 @@ http://code.google.com/p/youtube-dlg/
 
 ## AUTHOR
 
-Sotiris Papadopoulos <ytubedlg@gmail.com>
-https://twitter.com/MrS0m30n3
+Sotiris Papadopoulos
+
+email:  <ytubedlg@gmail.com>
+
+twitter: https://twitter.com/MrS0m30n3
 
 ## THANKS
 

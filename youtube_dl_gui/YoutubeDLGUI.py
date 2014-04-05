@@ -74,7 +74,7 @@ LANGUAGES = ["English",
 	     "Spanish",
 	     "German"]
 	     
-ICON = icon_path('icons/ytube.png', __file__)
+ICON = icon_path(['icons', 'ytube.png'], __file__)
   
 class MainFrame(wx.Frame):
   

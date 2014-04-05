@@ -63,7 +63,6 @@ def makedir(path):
   os.makedirs(path)
   
 def icon_path(icon_path, file_path):
-  icon_path = icon_path.split(get_path_seperator())
   L = len(icon_path)
   file_path = os.path.abspath(file_path).split(get_path_seperator())
   for index, item in reversed(list(enumerate(icon_path))):

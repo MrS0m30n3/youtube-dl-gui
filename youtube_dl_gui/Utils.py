@@ -2,6 +2,7 @@
 
 import os
 import sys
+import locale
 
 def remove_empty_items(array):
   return [x for x in array if x != '']
@@ -11,10 +12,21 @@ def remove_spaces(string):
   
 def string_to_array(string, char=' '):
   return string.split(char)
+
+def preferredencoding():
+  try:
+    pref = locale.getpreferredencoding()
+    u'TEST'.encode(pref)
+  except:
+    pref = 'UTF-8'
+  return pref
   
 def get_encoding():
+  if sys.version_info >= (3, 0):
+    return None
   if sys.platform == 'win32':
-    return sys.getfilesystemencoding()
+    # Refer to http://stackoverflow.com/a/9951851/35070
+    return preferredencoding()
   return None
     
 def encode_list(data_list, encoding):

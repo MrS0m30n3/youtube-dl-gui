@@ -37,8 +37,8 @@ class OptionsHandler():
     self.toAudio = False
     self.keepVideo = False
     self.audioFormat = "mp3"
-    self.audioQuality = 5
-    self.outputFormat = 'title'
+    self.audioQuality = "mid"
+    self.outputFormat = "title"
     self.outputTemplate = '%(uploader)s/%(title)s.%(ext)s'
     self.startTrack = 1
     self.endTrack = 0
@@ -113,7 +113,7 @@ class OptionsHandler():
 	self.toAudio = opts[4] in ['True']
 	self.keepVideo = opts[5] in ['True']
 	self.audioFormat = opts[6]
-	self.audioQuality = int(opts[7])
+	self.audioQuality = opts[7]
 	self.outputFormat = opts[8]
 	self.outputTemplate = opts[9]
 	self.startTrack = int(opts[10])

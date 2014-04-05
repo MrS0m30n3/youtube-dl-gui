@@ -39,6 +39,10 @@ DASH_AUDIO_FORMATS = {"NO SOUND":"None",
 		      "DASH m4a audio 128k":"140",
 		      "DASH webm audio 48k":"171"}
 
+AUDIO_Q = {"high":"0",
+	   "mid":"5",
+	   "low":"9"}
+		      
 class YoutubeDLInterpreter():
   
   def __init__(self, optionsList, youtubeDLFile):
@@ -165,9 +169,9 @@ class YoutubeDLInterpreter():
       self.opts.append('-x')
       self.opts.append('--audio-format')
       self.opts.append(self.optionsList.audioFormat)
-      if self.optionsList.audioQuality != 5:
+      if self.optionsList.audioQuality != 'mid':
 	self.opts.append('--audio-quality')
-	self.opts.append(str(self.optionsList.audioQuality))
+	self.opts.append(AUDIO_Q[self.optionsList.audioQuality])
       if self.optionsList.keepVideo:
 	self.opts.append('-k')
   

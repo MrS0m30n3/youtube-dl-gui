@@ -635,6 +635,7 @@ class AuthenticationPanel(wx.Panel):
 class AudioPanel(wx.Panel):
   
   win_box_border = 0
+  quality = ['high', 'mid', 'low']
   
   def __init__(self, parent, optList):
     wx.Panel.__init__(self, parent)
@@ -663,13 +664,12 @@ class AudioPanel(wx.Panel):
     mainBoxSizer.Add(afComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
     
     aqTextBox = wx.BoxSizer(wx.HORIZONTAL)
-    aqTextBox.Add(wx.StaticText(self, label='Audio Quality 0 (best) 9 (worst)'))
+    aqTextBox.Add(wx.StaticText(self, label='Audio Quality'))
     mainBoxSizer.Add(aqTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=10)
     
     aqComboBox = wx.BoxSizer(wx.HORIZONTAL)
-    self.audioQualitySpnr = wx.SpinCtrl(self, size=(90, 20))
-    self.audioQualitySpnr.SetRange(0, 9)
-    aqComboBox.Add(self.audioQualitySpnr)
+    self.audioQualityCombo = wx.ComboBox(self, choices=self.quality, size=(80, 25))
+    aqComboBox.Add(self.audioQualityCombo)
     mainBoxSizer.Add(aqComboBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
     
     self.SetSizer(mainBoxSizer)
@@ -685,27 +685,27 @@ class AudioPanel(wx.Panel):
     if self.toAudioChk.GetValue():
       self.keepVideoChk.Enable()
       self.audioFormatCombo.Enable()
-      self.audioQualitySpnr.Enable()
+      self.audioQualityCombo.Enable()
     else:
       self.keepVideoChk.Disable()
       self.audioFormatCombo.Disable()
-      self.audioQualitySpnr.Disable()
+      self.audioQualityCombo.Disable()
   
   def load_options(self):
     self.toAudioChk.SetValue(self.optList.toAudio)
     self.keepVideoChk.SetValue(self.optList.keepVideo)
     self.audioFormatCombo.SetValue(self.optList.audioFormat)
-    self.audioQualitySpnr.SetValue(self.optList.audioQuality)
+    self.audioQualityCombo.SetValue(self.optList.audioQuality)
     if self.optList.toAudio == False:
       self.keepVideoChk.Disable()
       self.audioFormatCombo.Disable()
-      self.audioQualitySpnr.Disable()
+      self.audioQualityCombo.Disable()
   
   def save_options(self):
     self.optList.toAudio = self.toAudioChk.GetValue()
     self.optList.keepVideo = self.keepVideoChk.GetValue()
     self.optList.audioFormat = self.audioFormatCombo.GetValue()
-    self.optList.audioQuality = self.audioQualitySpnr.GetValue()
+    self.optList.audioQuality = self.audioQualityCombo.GetValue()
   
 class VideoPanel(wx.Panel):
   

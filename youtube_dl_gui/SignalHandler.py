@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 from .Utils import (
-  remove_spaces,
+  remove_empty_items,
   string_to_array,
   get_filename
 )

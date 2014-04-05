@@ -3,19 +3,19 @@
 import os
 import sys
 
-def remove_spaces(array):
+def remove_empty_items(array):
   return [x for x in array if x != '']
+
+def remove_spaces(string):
+  return string.replace(' ', '')
   
 def string_to_array(string, char=' '):
   return string.split(char)
   
 def get_encoding():
-  if sys.version_info >= (3, 0):
-    return None
   if sys.platform == 'win32':
     return sys.getfilesystemencoding()
-  else:
-    return None
+  return None
     
 def encode_list(data_list, encoding):
   return [x.encode(encoding, 'ignore') for x in data_list]
@@ -33,8 +33,7 @@ def get_path_seperator():
   return '\\' if os.name == 'nt' else '/'
   
 def fix_path(path):
-  if path != '':
-    if path[-1:] != get_path_seperator():
+  if path != '' and path[-1:] != get_path_seperator():
       path += get_path_seperator()
   return path
   
@@ -44,13 +43,12 @@ def get_HOME():
 def add_PATH(path):
   os.environ["PATH"] += os.pathsep + path
 
-def get_abs_path(path):
+def abs_path(path):
   path_list = path.split(get_path_seperator())
   for i in range(len(path_list)):
     if path_list[i] == '~':
       path_list[i] = get_HOME()
-  path = get_path_seperator().join(path_list)
-  return path
+  return get_path_seperator().join(path_list)
   
 def file_exist(filename):
   return os.path.exists(filename)
@@ -64,13 +62,13 @@ def get_filesize(path):
 def makedir(path):
   os.makedirs(path)
   
-def get_icon_path(icon_path, file_path):
-  path = os.path.abspath(file_path)
-  path = path.split(get_path_seperator())
-  for i in range(len(icon_path)):
-    path[(i+1)*-1] = icon_path[i]
-  path = get_path_seperator().join(path)
-  return path
+def icon_path(icon_path, file_path):
+  icon_path = icon_path.split(get_path_seperator())
+  L = len(icon_path)
+  file_path = os.path.abspath(file_path).split(get_path_seperator())
+  for index, item in reversed(list(enumerate(icon_path))):
+    file_path[index - L] = item
+  return get_path_seperator().join(file_path)
   
 def get_filename(path):
   return path.split(get_path_seperator())[-1]

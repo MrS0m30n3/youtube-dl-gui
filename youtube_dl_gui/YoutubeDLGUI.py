@@ -36,8 +36,9 @@ from .Utils import (
   get_os_type,
   file_exist,
   fix_path,
-  get_abs_path,
-  get_icon_path
+  abs_path,
+  icon_path,
+  remove_spaces
 )
 
 if get_os_type() == 'nt':
@@ -73,7 +74,7 @@ LANGUAGES = ["English",
 	     "Spanish",
 	     "German"]
 	     
-ICON = get_icon_path(['ytube.png', 'icons'], __file__)
+ICON = icon_path('icons/ytube.png', __file__)
   
 class MainFrame(wx.Frame):
   
@@ -209,7 +210,7 @@ class MainFrame(wx.Frame):
   
   def load_tracklist(self, trackList):
     for url in trackList:
-      url = url.replace(' ', '')
+      url = remove_spaces(url)
       if url != '':
 	self.urlList.append(url)
 	self.statusList._add_item(url)
@@ -248,7 +249,7 @@ class MainFrame(wx.Frame):
       ''' For each url in current url list '''
       for url in curList:
 	''' Remove spaces from url '''
-	url = url.replace(' ', '')
+	url = remove_spaces(url)
 	''' If url is not in self.urlList (original downloads list) and url is not empty '''
 	if url not in self.urlList and url != '':
 	  ''' Add url into original download list '''
@@ -465,7 +466,7 @@ download the latest youtube-dl.'''
     self.autoUpdateChk.SetValue(self.optList.autoUpdate)
     
   def save_options(self):
-    self.optList.updatePath = get_abs_path(self.updatePathBox.GetValue())
+    self.optList.updatePath = abs_path(self.updatePathBox.GetValue())
     self.optList.autoUpdate = self.autoUpdateChk.GetValue()
     
 class PlaylistPanel(wx.Panel):
@@ -1073,7 +1074,7 @@ For more information, please refer to <http://unlicense.org/>'''
     self.savePathBox.SetValue(self.optList.savePath)
     
   def save_options(self):
-    self.optList.savePath = get_abs_path(self.savePathBox.GetValue())
+    self.optList.savePath = abs_path(self.savePathBox.GetValue())
  
 class OtherPanel(wx.Panel):
   

@@ -28,7 +28,7 @@ from .UpdateThread import UpdateThread
 from .DownloadThread import DownloadManager
 from .OptionsHandler import OptionsHandler
 from .YoutubeDLInterpreter import YoutubeDLInterpreter
-from .SignalHandler import DownloadHandler
+from .OutputHandler import DownloadHandler
 from .LogManager import LogManager, LogGUI
 from .Utils import (
   video_is_dash,

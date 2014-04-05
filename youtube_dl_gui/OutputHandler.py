@@ -140,7 +140,7 @@ class OutputHandler():
   def __init__(self, stdout):
     dataPack = None
     
-    self.stdout = remove_spaces(string_to_array(stdout))
+    self.stdout = remove_empty_items(string_to_array(stdout))
     # extract header from stdout
     header = self.extract_header()
     # extract special headers filename, playlist

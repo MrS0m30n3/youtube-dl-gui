@@ -8,7 +8,7 @@ from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
-from .SignalHandler import (
+from .OutputHandler import (
   DataPack,
   OutputHandler
 )

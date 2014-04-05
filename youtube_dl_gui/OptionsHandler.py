@@ -141,7 +141,7 @@ class OptionsHandler():
 	self.statusBarWrite('Error while loading settings file. Loading default settings.')
 	self.load_default()
     else:
-      self.statusBarWrite('Old settings file. Loading default settings.')
+      self.statusBarWrite('Settings file version problem. Loading default settings.')
       self.load_default()
     
   def save_to_file(self):

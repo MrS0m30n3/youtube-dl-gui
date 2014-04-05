@@ -10,7 +10,7 @@ from wx.lib.pubsub import pub as Publisher
 
 from .OutputHandler import (
   DataPack,
-  OutputHandler
+  OutputFormatter
 )
 
 from .Utils import ( 
@@ -126,8 +126,8 @@ class ProcessWrapper(Thread):
       # read stdout, stderr from proc
       stdout, stderr = self.read()
       if stdout != '':
-	# pass stdout to output handler
-	data = OutputHandler(stdout).get_data()
+	# pass stdout to output formatter
+	data = OutputFormatter(stdout).get_data()
 	if self.clear_dash_files: self.add_file(data)
 	# add index to data pack
 	data.index = self.index

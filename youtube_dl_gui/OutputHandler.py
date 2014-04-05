@@ -135,7 +135,7 @@ class DataPack():
     self.index = index
     self.data = data
     
-class OutputHandler():
+class OutputFormatter():
   
   def __init__(self, stdout):
     dataPack = None

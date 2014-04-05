@@ -3,6 +3,7 @@
 import os
 import sys
 import locale
+import subprocess
 
 def remove_empty_items(array):
   return [x for x in array if x != '']
@@ -83,4 +84,10 @@ def icon_path(icon_path, file_path):
   
 def get_filename(path):
   return path.split(get_path_seperator())[-1]
+  
+def open_dir(path):
+  if os.name == 'nt':
+    os.startfile(path)
+  else:
+    subprocess.call(('xdg-open', path))
   

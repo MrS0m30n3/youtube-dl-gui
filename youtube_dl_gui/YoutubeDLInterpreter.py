@@ -153,10 +153,12 @@ class YoutubeDLInterpreter():
   def set_output_opts(self):
     path = fix_path(self.optionsList.savePath)
     self.opts.append('-o')
-    if self.optionsList.idAsName:
+    if self.optionsList.outputFormat == 'id':
       self.opts.append(path + '%(id)s.%(ext)s')
-    else:
+    elif self.optionsList.outputFormat == 'title':
       self.opts.append(path + '%(title)s.%(ext)s')
+    elif self.optionsList.outputFormat == 'custom':
+      self.opts.append(path + self.optionsList.outputTemplate)
   
   def set_audio_opts(self):
     if self.optionsList.toAudio:

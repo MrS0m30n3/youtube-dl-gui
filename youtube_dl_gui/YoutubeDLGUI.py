@@ -38,6 +38,7 @@ from .Utils import (
   fix_path,
   abs_path,
   icon_path,
+  open_dir,
   remove_spaces
 )
 
@@ -182,6 +183,11 @@ class MainFrame(wx.Frame):
     self.downloadHandler = None
     self.urlList = []
     self.finished_popup()
+    self.open_destination_dir()
+    
+  def open_destination_dir(self):
+    if self.optionsList.openDownloadDir:
+      open_dir(self.optionsList.savePath)
   
   def download_handler(self, msg):
     self.downloadHandler.handle(msg)
@@ -768,6 +774,92 @@ class VideoPanel(wx.Panel):
     self.optList.videoFormat = self.videoFormatCombo.GetValue()
     self.optList.dashAudioFormat = self.dashAudioFormatCombo.GetValue()
     self.optList.clearDashFiles = self.clearDashFilesChk.GetValue()
+
+class OutputPanel(wx.Panel):
+  
+  win_box_border = 0
+  
+  def __init__(self, parent, optList):
+    wx.Panel.__init__(self, parent)
+    
+    self.SetBoxBorder()
+    self.optList = optList
+    mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+    
+    idBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.idAsNameChk = wx.CheckBox(self, label='ID as Name')
+    idBox.Add(self.idAsNameChk, flag = wx.LEFT, border=5)
+    mainBoxSizer.Add(idBox, flag = wx.TOP, border=15)
+    
+    titleBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.titleBoxChk = wx.CheckBox(self, label='Title as Name')
+    titleBox.Add(self.titleBoxChk, flag = wx.LEFT, border=5)
+    mainBoxSizer.Add(titleBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    customChkBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.customTitleChk = wx.CheckBox(self, label='Custom Template (youtube-dl)')
+    customChkBox.Add(self.customTitleChk, flag = wx.LEFT, border=5)
+    mainBoxSizer.Add(customChkBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    mainBoxSizer.Add((-1, 10))
+    
+    customBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.customTitleBox = wx.TextCtrl(self)
+    customBox.Add(self.customTitleBox, 1, flag = wx.RIGHT, border=300)
+    mainBoxSizer.Add(customBox, flag = wx.EXPAND | wx.LEFT, border=5)
+  
+    self.SetSizer(mainBoxSizer)
+    
+    self.Bind(wx.EVT_CHECKBOX, self.OnId, self.idAsNameChk)
+    self.Bind(wx.EVT_CHECKBOX, self.OnTitle, self.titleBoxChk)
+    self.Bind(wx.EVT_CHECKBOX, self.OnCustom, self.customTitleChk)
+  
+  def OnId(self, event):
+    self.group_load('id')
+
+  def OnTitle(self, event):
+    self.group_load('title')
+  
+  def OnCustom(self, event):
+    self.group_load('custom')
+    
+  def SetBoxBorder(self):
+    ''' Set border for windows '''
+    if get_os_type() == 'nt':
+      self.win_box_border = 10
+  
+  def group_load(self, oformat):
+    if oformat == 'id':
+      self.idAsNameChk.SetValue(True)
+      self.titleBoxChk.SetValue(False)
+      self.customTitleChk.SetValue(False)
+      self.customTitleBox.Disable()
+    elif oformat == 'title':
+      self.idAsNameChk.SetValue(False)
+      self.titleBoxChk.SetValue(True)
+      self.customTitleChk.SetValue(False)
+      self.customTitleBox.Disable()
+    elif oformat == 'custom':
+      self.idAsNameChk.SetValue(False)
+      self.titleBoxChk.SetValue(False)
+      self.customTitleChk.SetValue(True)
+      self.customTitleBox.Enable()
+  
+  def get_output_format(self):
+    if self.idAsNameChk.GetValue():
+      return 'id'
+    elif self.titleBoxChk.GetValue():
+      return 'title'
+    elif self.customTitleChk.GetValue():
+      return 'custom'
+  
+  def load_options(self):
+    self.group_load(self.optList.outputFormat)
+    self.customTitleBox.SetValue(self.optList.outputTemplate)
+  
+  def save_options(self):
+    self.optList.outputTemplate = self.customTitleBox.GetValue()
+    self.optList.outputFormat = self.get_output_format()
     
 class FilesystemPanel(wx.Panel):
   
@@ -796,15 +888,10 @@ class FilesystemPanel(wx.Panel):
       self.win_box_border = 15
   
   def SetLeftBox(self, box):
-    idBox = wx.BoxSizer(wx.HORIZONTAL)
-    self.idAsNameChk = wx.CheckBox(self, label='ID as Name')
-    idBox.Add(self.idAsNameChk, flag = wx.LEFT, border=5)
-    box.Add(idBox, flag = wx.TOP, border=20)
-    
     ignrBox = wx.BoxSizer(wx.HORIZONTAL)
     self.ignoreErrorsChk = wx.CheckBox(self, label='Ignore Errors')
     ignrBox.Add(self.ignoreErrorsChk, flag = wx.LEFT, border=5)
-    box.Add(ignrBox, flag = wx.TOP, border=5+self.win_box_border)
+    box.Add(ignrBox, flag = wx.TOP, border=20)
     
     wrtDescBox = wx.BoxSizer(wx.HORIZONTAL)
     self.writeDescriptionChk = wx.CheckBox(self, label='Write description to file')
@@ -820,6 +907,11 @@ class FilesystemPanel(wx.Panel):
     self.writeThumbnailChk = wx.CheckBox(self, label='Write thumbnail to disk')
     wrtThumBox.Add(self.writeThumbnailChk, flag = wx.LEFT, border=5)
     box.Add(wrtThumBox, flag = wx.TOP, border=5+self.win_box_border)
+    
+    openDirBox = wx.BoxSizer(wx.HORIZONTAL)
+    self.openDirChk = wx.CheckBox(self, label='Open destination folder when done')
+    openDirBox.Add(self.openDirChk, flag = wx.LEFT, border=5)
+    box.Add(openDirBox, flag = wx.TOP, border=5+self.win_box_border)
     
   def SetRightBox(self, box):
     minBox = wx.BoxSizer(wx.HORIZONTAL)
@@ -839,7 +931,7 @@ class FilesystemPanel(wx.Panel):
     self.writeInfoChk.SetValue(self.optList.writeInfo)
     self.writeThumbnailChk.SetValue(self.optList.writeThumbnail)
     self.ignoreErrorsChk.SetValue(self.optList.ignoreErrors)
-    self.idAsNameChk.SetValue(self.optList.idAsName)
+    self.openDirChk.SetValue(self.optList.openDownloadDir)
     self.minFilesizeBox.SetValue(self.optList.minFileSize)
     self.maxFilesizeBox.SetValue(self.optList.maxFileSize)
     
@@ -848,7 +940,7 @@ class FilesystemPanel(wx.Panel):
     self.optList.writeInfo = self.writeInfoChk.GetValue()
     self.optList.writeThumbnail = self.writeThumbnailChk.GetValue()
     self.optList.ignoreErrors = self.ignoreErrorsChk.GetValue()
-    self.optList.idAsName = self.idAsNameChk.GetValue()
+    self.optList.openDownloadDir = self.openDirChk.GetValue()
     self.optList.minFileSize = self.minFilesizeBox.GetValue()
     self.optList.maxFileSize = self.maxFilesizeBox.GetValue()
     self.check_input()
@@ -1122,10 +1214,12 @@ class OptionsFrame(wx.Frame):
     self.authTab = AuthenticationPanel(notebook, self.optionsList)
     self.videoselTab = PlaylistPanel(notebook, self.optionsList)
     self.logTab = LogPanel(notebook, self.optionsList, logger)
+    self.outputTab = OutputPanel(notebook, self.optionsList)
     
     notebook.AddPage(self.generalTab, "General")
     notebook.AddPage(self.videoTab, "Video")
     notebook.AddPage(self.audioTab, "Audio")
+    notebook.AddPage(self.outputTab, "Output")
     notebook.AddPage(self.videoselTab, "Playlist")
     notebook.AddPage(self.subtitlesTab, "Subtitles")
     notebook.AddPage(self.filesysTab, "Filesystem")
@@ -1173,6 +1267,7 @@ please do one of the following:
     self.authTab.load_options()
     self.videoselTab.load_options()
     self.logTab.load_options()
+    self.outputTab.load_options()
     
   def save_all_options(self):
     self.generalTab.save_options()
@@ -1186,4 +1281,5 @@ please do one of the following:
     self.authTab.save_options()
     self.videoselTab.save_options()
     self.logTab.save_options()
+    self.outputTab.save_options()
     

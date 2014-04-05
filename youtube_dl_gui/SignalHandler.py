@@ -13,7 +13,11 @@ class DownloadHandler():
     self.finished = False
     self.closed = False
     self.error = False
-    self.handlers = []
+    self.init_handlers()
+  
+  def init_handlers(self):
+    ''' Initialise handlers '''
+    self.handlers = [None for i in range(self.ListCtrl.ListIndex)]
   
   def _has_closed(self):
     return self.closed
@@ -24,26 +28,32 @@ class DownloadHandler():
   def _has_error(self):
     return self.error
  
+  def _add_empty_handler(self):
+    self.handlers.append(None)
+ 
   def handle(self, msg):
     ''' Handles msg base to Signals.txt '''
     pack = msg.data
-    index = pack.index
-    ''' Manage global index = -1 '''
-    if index == -1:
-      if pack.header == 'close':
-	self.closed = True
-      elif pack.header == 'finish':
-	self.finished = True
+    if pack.index == -1:
+      self.global_handler(pack)
     else:
-      ''' Manage handlers for its index '''
-      if index == len(self.handlers): 
-	''' Create new IndexDownloadHandler and add it to handlers '''
-	self.handlers.append(IndexDownloadHandler(self.ListCtrl, index))
-      ''' Let IndexDownloadHandler handle message data for current index '''
-      self.handlers[index].handle(pack)
-      if self.handlers[index].has_error():
-	self.error = True
- 
+      self.index_handler(pack)
+	
+  def global_handler(self, pack):
+    ''' Manage global index = -1 '''
+    if pack.header == 'close':
+      self.closed = True
+    elif pack.header == 'finish':
+      self.finished = True
+
+  def index_handler(self, pack):
+    ''' Manage handlers base on index '''
+    if self.handlers[pack.index] == None:
+      self.handlers[pack.index] = IndexDownloadHandler(self.ListCtrl, pack.index)
+    self.handlers[pack.index].handle(pack)
+    if self.handlers[pack.index].has_error():
+      self.error = True
+      
 class IndexDownloadHandler():
   
   def __init__(self, ListCtrl, index):

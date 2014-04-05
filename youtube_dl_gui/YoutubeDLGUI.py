@@ -250,6 +250,8 @@ class MainFrame(wx.Frame):
 	if url not in self.urlList and url != '':
 	  ''' Add url into original download list '''
 	  self.urlList.append(url)
+	  ''' Add handler for url '''
+	  self.downloadHandler._add_empty_handler()
 	  ''' Add url into statusList '''
 	  self.statusList._add_item(url)
 	  ''' Retrieve last item as {url:url, index:indexNo} '''

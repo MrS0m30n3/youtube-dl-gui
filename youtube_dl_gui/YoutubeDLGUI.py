@@ -209,6 +209,7 @@ class MainFrame(wx.Frame):
   
   def load_tracklist(self, trackList):
     for url in trackList:
+      url = url.replace(' ', '')
       if url != '':
 	self.urlList.append(url)
 	self.statusList._add_item(url)
@@ -246,6 +247,8 @@ class MainFrame(wx.Frame):
       curList = self.trackList.GetValue().split('\n')
       ''' For each url in current url list '''
       for url in curList:
+	''' Remove spaces from url '''
+	url = url.replace(' ', '')
 	''' If url is not in self.urlList (original downloads list) and url is not empty '''
 	if url not in self.urlList and url != '':
 	  ''' Add url into original download list '''

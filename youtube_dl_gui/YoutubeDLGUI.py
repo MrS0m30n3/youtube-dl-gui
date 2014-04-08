@@ -877,21 +877,21 @@ class FilesystemPanel(wx.Panel):
     self.SetLeftBox(leftBoxSizer)
     self.SetRightBox(rightBoxSizer)
     
-    mainBoxSizer.Add(leftBoxSizer, 1, flag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, border=10)
-    mainBoxSizer.Add(rightBoxSizer, 1, flag = wx.EXPAND | wx.ALL | wx.ALIGN_CENTER, border=10)
+    mainBoxSizer.Add(leftBoxSizer, 1, flag = wx.EXPAND | wx.ALL, border=10)
+    mainBoxSizer.Add(rightBoxSizer, 1, flag = wx.EXPAND | wx.ALL, border=10)
     
     self.SetSizer(mainBoxSizer)
   
   def SetBoxBorder(self):
     ''' Set border for windows '''
     if get_os_type() == 'nt':
-      self.win_box_border = 15
+      self.win_box_border = 10
   
   def SetLeftBox(self, box):
     ignrBox = wx.BoxSizer(wx.HORIZONTAL)
     self.ignoreErrorsChk = wx.CheckBox(self, label='Ignore Errors')
     ignrBox.Add(self.ignoreErrorsChk, flag = wx.LEFT, border=5)
-    box.Add(ignrBox, flag = wx.TOP, border=20)
+    box.Add(ignrBox, flag = wx.TOP, border=15)
     
     wrtDescBox = wx.BoxSizer(wx.HORIZONTAL)
     self.writeDescriptionChk = wx.CheckBox(self, label='Write description to file')
@@ -1003,7 +1003,7 @@ class SubtitlesPanel(wx.Panel):
   def SetBoxBorder(self):
     ''' Set border for windows '''
     if get_os_type() == 'nt':
-      self.win_box_border = 10
+      self.win_box_border = 5
   
   def subs_are_on(self):
     return self.writeAutoSubsChk.GetValue() or self.writeSubsChk.GetValue()
@@ -1100,12 +1100,12 @@ class GeneralPanel(wx.Panel):
     buttonsBox.Add(self.openButton, flag = wx.LEFT | wx.RIGHT, border=50)
     self.resetButton = wx.Button(self, label='Reset Options', size=(110, 40))
     buttonsBox.Add(self.resetButton)
-    mainBoxSizer.Add(buttonsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM | wx.TOP, border=20)
+    mainBoxSizer.Add(buttonsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
     
     setngsBox = wx.BoxSizer(wx.HORIZONTAL)
     text = 'Settings: ' + self.optList.settings_abs_path
-    setngsBox.Add(wx.StaticText(self, label=text), flag = wx.TOP, border=20)
-    mainBoxSizer.Add(setngsBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.BOTTOM, border=10)
+    setngsBox.Add(wx.StaticText(self, label=text), flag = wx.TOP, border=30)
+    mainBoxSizer.Add(setngsBox, flag = wx.ALIGN_CENTER_HORIZONTAL)
     
     self.SetSizer(mainBoxSizer)
      
@@ -1196,7 +1196,7 @@ class OtherPanel(wx.Panel):
 class OptionsFrame(wx.Frame):
   
   def __init__(self, optionsList, parent=None, id=-1, logger=None):
-    wx.Frame.__init__(self, parent, id, "Options", size=(580, 250))
+    wx.Frame.__init__(self, parent, id, "Options", size=self.SetFrameSizer())
     
     self.optionsList = optionsList
     
@@ -1236,7 +1236,13 @@ class OptionsFrame(wx.Frame):
     self.Bind(wx.EVT_CLOSE, self.OnClose)
     
     self.load_all_options()
-    
+  
+  def SetFrameSizer(self):
+    if get_os_type() == 'nt':
+      return (580, 270)
+    else:
+      return (580, 250)
+  
   def OnClose(self, event):
     self.save_all_options()
     if not file_exist(fix_path(self.optionsList.updatePath)+YOUTUBE_DL_FILENAME):

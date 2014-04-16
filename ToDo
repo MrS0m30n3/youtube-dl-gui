@@ -1,2 +1,4 @@
 * Use import instead of subprocess
 * New layout for MainFrame
+* Build portable version for Windows
+* Keep single app instance 

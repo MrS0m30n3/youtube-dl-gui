@@ -37,7 +37,6 @@ from .Utils import (
   file_exist,
   fix_path,
   abs_path,
-  icon_path,
   open_dir,
   remove_spaces
 )
@@ -75,7 +74,7 @@ LANGUAGES = ["English",
 	     "Spanish",
 	     "German"]
 	     
-ICON = icon_path(['icons', 'ytube.png'], __file__)
+ICON = 'icons/youtube-dl-gui.png'
   
 class MainFrame(wx.Frame):
   

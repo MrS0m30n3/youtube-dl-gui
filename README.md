@@ -13,6 +13,11 @@ written in wxPython.
 ## WINDOWS_SETUP
 http://code.google.com/p/youtube-dlg/
 
+## LINUX_PACKAGES
+**Ubuntu**: http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/
+
+**Arch**: https://aur.archlinux.org/packages/youtube-dl-gui-git/
+
 ## REQUIREMENTS
 [Python (version 2.7+)](http://www.python.org)
 

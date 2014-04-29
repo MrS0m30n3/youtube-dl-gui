@@ -157,33 +157,24 @@ aside a.button {
   font-size: 21px;
 }
 
-a.button2 {
-  width: 134px;
-  height: 58px;
-  line-height: 1.2;
-  font-size: 23px;
-  color: #fff;
-  padding-left: 68px;
-  padding-top: 22px;
-  font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
+aside a.button_zip {
+  background: transparent url(../images/download-button-zip.png) 0 0 no-repeat;
 }
-a.button2 small {
-  display: block;
-  font-size: 11px;
+
+aside a.button_tar {
+  background: transparent url(../images/download-button-tar.png) 0 0 no-repeat;
 }
-header a.button2 {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background: transparent url(../images/github-button.png) 0 0 no-repeat;
+
+aside a.button_win {
+  background: transparent url(../images/download-button-win.png) 0 0 no-repeat;
 }
-aside a.button2 {
-  width: 138px;
-  padding-left: 64px;
-  display: block;
-  background: transparent url(../images/download-button2.png) 0 0 no-repeat;
-  margin-bottom: 20px;
-  font-size: 21px;
+
+aside a.button_arch {
+  background: transparent url(../images/download-button-arch.png) 0 0 no-repeat;
+}
+
+aside a.button_deb {
+  background: transparent url(../images/download-button-deb.png) 0 0 no-repeat;
 }
 
 code, pre {

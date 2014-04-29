@@ -28,7 +28,7 @@ http://code.google.com/p/youtube-dlg/
 
 ## PROJECT HOMEPAGE
 
-**Youtube-dlG**: https://github.com/MrS0m30n3/youtube-dl-gui
+**Youtube-dlG**: http://mrs0m30n3.github.io/youtube-dl-gui/
 
 **Youtube-dl**: http://rg3.github.io/youtube-dl/
 

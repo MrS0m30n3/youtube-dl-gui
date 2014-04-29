@@ -31,22 +31,27 @@ from .YoutubeDLInterpreter import YoutubeDLInterpreter
 from .OutputHandler import DownloadHandler
 from .LogManager import LogManager, LogGUI
 from .Utils import (
-  video_is_dash,
-  have_dash_audio,
-  get_os_type,
-  file_exist,
-  fix_path,
-  abs_path,
-  open_dir,
-  remove_spaces
+    video_is_dash,
+    have_dash_audio,
+    get_os_type,
+    file_exist,
+    fix_path,
+    abs_path,
+    open_dir,
+    remove_spaces
+)
+from .data import (
+    __author__,
+    __projecturl__,
+    __appname__,
+    __licensefull__,
+    __descriptionfull__
 )
 
 if get_os_type() == 'nt':
   YOUTUBE_DL_FILENAME = 'youtube-dl.exe'
 else:
   YOUTUBE_DL_FILENAME = 'youtube-dl'
-
-TITLE = 'Youtube-dlG'
 
 AUDIOFORMATS = ["mp3", "wav", "aac", "m4a"]
 
@@ -79,7 +84,7 @@ ICON = 'icons/youtube-dl-gui.png'
 class MainFrame(wx.Frame):
   
   def __init__(self, parent=None, id=-1):
-    wx.Frame.__init__(self, parent, id, TITLE+' '+__version__, size=(600, 420))
+    wx.Frame.__init__(self, parent, id, __appname__+' '+__version__, size=(600, 420))
     
     # init gui
     self.InitGUI()
@@ -154,7 +159,7 @@ class MainFrame(wx.Frame):
     mainBoxSizer.Add(stListBox, 1, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=20)
     
     stBarBox = wx.BoxSizer(wx.HORIZONTAL)
-    self.statusBar = wx.StaticText(self.panel, label='Author: Sotiris Papadopoulos')
+    self.statusBar = wx.StaticText(self.panel, label='Author: '+__author__)
     stBarBox.Add(self.statusBar, flag = wx.TOP | wx.BOTTOM, border=5)
     mainBoxSizer.Add(stBarBox, flag = wx.LEFT, border=20)
     
@@ -433,7 +438,7 @@ class LogPanel(wx.Panel):
     self.optList.writeTimeToLog = self.enableTimeChk.GetValue()
     
   def restart_popup(self):
-    wx.MessageBox('Please restart ' + TITLE, 'Restart', wx.OK | wx.ICON_INFORMATION)
+    wx.MessageBox('Please restart ' + __appname__, 'Restart', wx.OK | wx.ICON_INFORMATION)
     
 class UpdatePanel(wx.Panel):
   
@@ -1122,43 +1127,15 @@ class GeneralPanel(wx.Panel):
     dlg.Destroy()
     
   def OnAbout(self, event):
-    description = '''A cross platform front-end GUI of 
-the popular youtube-dl written in Python.'''
-    
-    license = '''This is free and unencumbered software released into the public domain.
-
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
-
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-For more information, please refer to <http://unlicense.org/>'''
-    
     info = wx.AboutDialogInfo()
     
     info.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_ICO))
-    info.SetName(TITLE)
+    info.SetName(__appname__)
     info.SetVersion(__version__)
-    info.SetDescription(description)
-    info.SetWebSite('http://mrs0m30n3.github.io/youtube-dl-gui/')
-    info.SetLicense(license)
-    info.AddDeveloper('Sotiris Papadopoulos')
+    info.SetDescription(__descriptionfull__)
+    info.SetWebSite(__projecturl__)
+    info.SetLicense(__licensefull__)
+    info.AddDeveloper(__author__)
     wx.AboutBox(info)
     
   def load_options(self):
@@ -1251,7 +1228,7 @@ class OptionsFrame(wx.Frame):
   def wrong_youtubedl_path(self):
     text = '''The path under Options>Update is invalid
 please do one of the following:
-  *) restart youtube-dlG
+  *) restart program
   *) click the update button
   *) change the path to point where youtube-dl is'''
     wx.MessageBox(text, 'Error', wx.OK | wx.ICON_EXCLAMATION)

@@ -1,28 +1,25 @@
 #! /usr/bin/env python
 
 from distutils.core import setup
-from youtube_dl_gui import version
+from youtube_dl_gui import (
+    __author__,
+    __appname__,
+    __contact__,
+    __version__,
+    __license__,
+    __projecturl__,
+    __description__,
+    __descriptionfull__
+)
 
-name = 'Youtube-DLG'
-desc = 'Youtube-dl GUI'
-ldesc = 'A cross platform front-end GUI of the popular youtube-dl written in wxPython'
-license = 'UNLICENSE'
-platform = 'Cross-Platform'
-author = 'Sotiris Papadopoulos'
-author_email = 'ytubedlg@gmail.com'
-project_url = 'http://mrs0m30n3.github.io/youtube-dl-gui/'
-packages = ['youtube_dl_gui']
-data_files = [('lib/python2.7/site-packages/youtube_dl_gui/icons', 
-		['youtube_dl_gui/icons/youtube-dl-gui.png'])]
-
-setup(name=name,
-      version=version.__version__,
-      description=desc,
-      long_description=ldesc,
-      license=license,
-      platforms=platform,
-      author=author,
-      author_email=author_email,
-      url=project_url,
-      packages=packages,
-      data_files=data_files)
+setup(name=__appname__,
+      version=__version__,
+      description=__description__,
+      long_description=__descriptionfull__,
+      license=__license__,
+      author=__author__,
+      author_email=__contact__,
+      url=__projecturl__,
+      packages=['youtube_dl_gui'],
+      data_files=[('lib/python2.7/site-packages/youtube_dl_gui/icons', 
+                   ['youtube_dl_gui/icons/youtube-dl-gui.png'])])

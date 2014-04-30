@@ -7,8 +7,8 @@ import subprocess
 
 import os.remove as remove_file
 import os.path.exists as file_exist
-import os.path.getsize as get_file_size
-import os.makedirs as make_dir
+import os.path.getsize as get_filesize
+import os.makedirs as makedir
 
 
 def remove_empty_items(array):
@@ -71,8 +71,6 @@ def abs_path(filename):
 def get_os_type():
     return os.name
 
-def get_filesize(path):
-    return os.path.getsize(path)
 
 def get_filename(path):
     return path.split(get_path_seperator())[-1]

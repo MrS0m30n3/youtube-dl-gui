@@ -48,21 +48,23 @@ def get_path_seperator():
 def fix_path(path):
     if path != '' and path[-1:] != get_path_seperator():
         path += get_path_seperator()
-    return path
-
-def get_HOME():
-    return os.path.expanduser("~")
-
-def add_PATH(path):
-    os.environ["PATH"] += os.pathsep + path
-
-def abs_path(path):
     path_list = path.split(get_path_seperator())
     for i in range(len(path_list)):
         if path_list[i] == '~':
             path_list[i] = get_HOME()
     return get_path_seperator().join(path_list)
 
+def get_HOME():
+    return os.path.expanduser("~")
+
+def add_PATH(path):
+    os.environ["PATH"] += os.pathsep + path
+    
+def abs_path(filename):
+    path = os.path.abspath(filename).split(get_path_seperator())
+    path.pop()
+    return get_path_seperator().join(path)
+    
 def file_exist(filename):
     return os.path.exists(filename)
 

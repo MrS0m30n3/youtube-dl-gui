@@ -1,22 +1,5 @@
 #! /usr/bin/env python
 
-'''
-This file contains all gui classes
-MainFrame
-Custom wx.ListCtrl class
-OptionsFrame
-  GeneralPanel
-  AudioPanel
-  ConnectionPanel
-  VideoPanel
-  FilesystemPanel
-  SubtitlesPanel
-  OtherPanel
-  UpdatePanel
-  AuthenticationPanel
-  PlaylistPanel
-'''
-
 import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
@@ -79,7 +62,7 @@ LANGUAGES = ["English",
              "Spanish",
              "German"]
 
-ICON = 'icons/youtube-dl-gui.png'
+ICON = fix_path(abs_path(__file__))+'icons/youtube-dl-gui.png'
 
 class MainFrame(wx.Frame):
 
@@ -479,7 +462,7 @@ class UpdatePanel(wx.Panel):
         self.autoUpdateChk.SetValue(self.optList.autoUpdate)
 
     def save_options(self):
-        self.optList.updatePath = abs_path(self.updatePathBox.GetValue())
+        self.optList.updatePath = fix_path(self.updatePathBox.GetValue())
         self.optList.autoUpdate = self.autoUpdateChk.GetValue()
 
 class PlaylistPanel(wx.Panel):
@@ -1145,7 +1128,7 @@ class GeneralPanel(wx.Panel):
         self.savePathBox.SetValue(self.optList.savePath)
 
     def save_options(self):
-        self.optList.savePath = abs_path(self.savePathBox.GetValue())
+        self.optList.savePath = fix_path(self.savePathBox.GetValue())
 
 class OtherPanel(wx.Panel):
 

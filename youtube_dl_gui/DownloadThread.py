@@ -33,6 +33,7 @@ class DownloadManager(Thread):
         self.logmanager = logmanager
         self.options = options
         self.running = True
+        self.kill = False
         self.procList = []
         self.procNo = 0
         self.start()
@@ -69,7 +70,8 @@ class DownloadManager(Thread):
                     sleep(0.1)
         # If we reach here close down all child threads
         self.terminate_all()
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish'))
+        if not self.kill:
+            CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish'))
 
     def downloading(self):
         for proc in self.procList:
@@ -98,8 +100,9 @@ class DownloadManager(Thread):
             if not proc.isAlive():
                 return proc
         return None
-
-    def close(self):
+        
+    def close(self, kill=False):
+        self.kill = kill
         self.procNo = 0
         self.running = False
         CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('close'))

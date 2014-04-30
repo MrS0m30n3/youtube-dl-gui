@@ -288,6 +288,9 @@ class MainFrame(wx.Frame):
         optionsFrame.Show()
 
     def OnClose(self, event):
+        if self.downloadThread != None:
+            self.downloadThread.close(kill=True)
+            self.downloadThread.join()
         self.save_options()
         self.Destroy()
 

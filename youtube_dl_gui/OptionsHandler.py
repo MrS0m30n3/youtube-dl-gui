@@ -149,6 +149,8 @@ class OptionsHandler():
             self.load_default()
 
     def save_to_file(self):
+        if not file_exist(self.get_config_path()):
+            makedir(self.get_config_path())
         f = open(self.settings_abs_path, 'w')
         f.write('Version='+__version__+'\n')
         f.write('SavePath='+self.savePath.encode('utf-8')+'\n')

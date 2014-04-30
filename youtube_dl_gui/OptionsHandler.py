@@ -6,7 +6,8 @@ from .Utils import (
   file_exist,
   get_os_type,
   fix_path,
-  makedir
+  makedir,
+  abs_path
 )
 
 SETTINGS_FILENAME = 'settings'
@@ -62,8 +63,7 @@ class OptionsHandler():
         self.username = ""
         self.password = ""
         self.videoPass = ""
-        self.updatePath = self.get_config_path()
-        self.autoUpdate = False
+        self.updatePath = abs_path(__file__)
         self.cmdArgs = ""
         self.enableLog = True
         self.writeTimeToLog = True
@@ -136,11 +136,9 @@ class OptionsHandler():
                 self.referer = opts[27]
                 self.proxy = opts[28]
                 self.username = opts[29]
-                self.updatePath = opts[30].decode('utf8')
-                self.autoUpdate = opts[31] in ['True']
-                self.cmdArgs = opts[32]
-                self.enableLog = opts[33] in ['True']
-                self.writeTimeToLog = opts[34] in ['True']
+                self.cmdArgs = opts[30]
+                self.enableLog = opts[31] in ['True']
+                self.writeTimeToLog = opts[32] in ['True']
             except:
                 self.statusBarWrite('Error while loading settings file. Loading default settings.')
                 self.load_default()
@@ -184,8 +182,6 @@ class OptionsHandler():
         f.write('Proxy='+str(self.proxy)+'\n')
         f.write('Username='+str(self.username)+'\n')
         # We dont store password & videoPass for security reasons
-        f.write('UpdatePath='+self.updatePath.encode('utf-8')+'\n')
-        f.write('AutoUpdate='+str(self.autoUpdate)+'\n')
         f.write('CmdArgs='+str(self.cmdArgs)+'\n')
         f.write('EnableLog='+str(self.enableLog)+'\n')
         f.write('WriteTimeToLog='+str(self.writeTimeToLog)+'\n')

@@ -7,11 +7,7 @@ from wx.lib.pubsub import pub as Publisher
 from threading import Thread
 from urllib2 import urlopen, URLError, HTTPError
 
-from .Utils import (
-  fix_path,
-  file_exist,
-  makedir
-)
+from .Utils import fix_path
 
 LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
 PUBLISHER_TOPIC = 'update'
@@ -24,7 +20,6 @@ class UpdateThread(Thread):
         self.youtubeDLFile = youtubeDLFile
         self.updatePath = fix_path(updatePath)
         self.url = LATEST_YOUTUBE_DL + youtubeDLFile
-        self.check_path()
         self.start()
 
     def run(self):
@@ -38,7 +33,3 @@ class UpdateThread(Thread):
             msg = 'Youtube-dl download failed ' + str(e)
         CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, msg)
         CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, 'finish')
-
-    def check_path(self):
-        if not file_exist(self.updatePath):
-            makedir(self.updatePath)

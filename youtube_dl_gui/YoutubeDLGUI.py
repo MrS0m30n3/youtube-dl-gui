@@ -110,9 +110,6 @@ class MainFrame(wx.Frame):
 
         # check & update libraries (youtube-dl)
         self.check_if_youtube_dl_exist()
-        if (self.optionsList.autoUpdate):
-            self.status_bar_write("Auto update enable")
-            self.update_youtube_dl()
 
     def InitGUI(self):
         self.panel = wx.Panel(self)
@@ -425,45 +422,6 @@ class LogPanel(wx.Panel):
 
     def restart_popup(self):
         wx.MessageBox('Please restart ' + __appname__, 'Restart', wx.OK | wx.ICON_INFORMATION)
-
-class UpdatePanel(wx.Panel):
-
-    def __init__(self, parent, optList):
-        wx.Panel.__init__(self, parent)
-
-        self.optList = optList
-        mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
-
-        text = '''Enter the path where youtube-dlG should
-    download the latest youtube-dl.'''
-
-        helpText = wx.BoxSizer(wx.HORIZONTAL)
-        helpText.Add(wx.StaticText(self, label=text), flag = wx.TOP, border=10)
-        mainBoxSizer.Add(helpText, flag = wx.LEFT, border=80)
-
-        pathText = wx.BoxSizer(wx.HORIZONTAL)
-        pathText.Add(wx.StaticText(self, label='Path'), flag = wx.TOP, border=20)
-        mainBoxSizer.Add(pathText, flag = wx.LEFT, border=95)
-
-        upPathBox = wx.BoxSizer(wx.HORIZONTAL)
-        self.updatePathBox = wx.TextCtrl(self)
-        upPathBox.Add(self.updatePathBox, 1, flag = wx.TOP, border=5)
-        mainBoxSizer.Add(upPathBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=90)
-
-        autoUpBox = wx.BoxSizer(wx.HORIZONTAL)
-        self.autoUpdateChk = wx.CheckBox(self, label='Auto Update youtube-dl')
-        autoUpBox.Add(self.autoUpdateChk, flag = wx.TOP, border=30)
-        mainBoxSizer.Add(autoUpBox, flag = wx.LEFT, border=100)
-
-        self.SetSizer(mainBoxSizer)
-
-    def load_options(self):
-        self.updatePathBox.SetValue(self.optList.updatePath)
-        self.autoUpdateChk.SetValue(self.optList.autoUpdate)
-
-    def save_options(self):
-        self.optList.updatePath = fix_path(self.updatePathBox.GetValue())
-        self.optList.autoUpdate = self.autoUpdateChk.GetValue()
 
 class PlaylistPanel(wx.Panel):
 
@@ -1172,7 +1130,6 @@ class OptionsFrame(wx.Frame):
         self.filesysTab = FilesystemPanel(notebook, self.optionsList)
         self.subtitlesTab = SubtitlesPanel(notebook, self.optionsList)
         self.otherTab = OtherPanel(notebook, self.optionsList)
-        self.updateTab = UpdatePanel(notebook, self.optionsList)
         self.authTab = AuthenticationPanel(notebook, self.optionsList)
         self.videoselTab = PlaylistPanel(notebook, self.optionsList)
         self.logTab = LogPanel(notebook, self.optionsList, logger)
@@ -1187,7 +1144,6 @@ class OptionsFrame(wx.Frame):
         notebook.AddPage(self.filesysTab, "Filesystem")
         notebook.AddPage(self.connectionTab, "Connection")
         notebook.AddPage(self.authTab, "Authentication")
-        notebook.AddPage(self.updateTab, "Update")
         notebook.AddPage(self.logTab, "Log")
         notebook.AddPage(self.otherTab, "Commands")
 
@@ -1207,17 +1163,7 @@ class OptionsFrame(wx.Frame):
 
     def OnClose(self, event):
         self.save_all_options()
-        if not file_exist(fix_path(self.optionsList.updatePath)+YOUTUBE_DL_FILENAME):
-            self.wrong_youtubedl_path()
         self.Destroy()
-
-    def wrong_youtubedl_path(self):
-        text = '''The path under Options>Update is invalid
-    please do one of the following:
-      *) restart program
-      *) click the update button
-      *) change the path to point where youtube-dl is'''
-        wx.MessageBox(text, 'Error', wx.OK | wx.ICON_EXCLAMATION)
 
     def reset(self):
         self.optionsList.load_default()
@@ -1231,7 +1177,6 @@ class OptionsFrame(wx.Frame):
         self.filesysTab.load_options()
         self.subtitlesTab.load_options()
         self.otherTab.load_options()
-        self.updateTab.load_options()
         self.authTab.load_options()
         self.videoselTab.load_options()
         self.logTab.load_options()
@@ -1245,7 +1190,6 @@ class OptionsFrame(wx.Frame):
         self.filesysTab.save_options()
         self.subtitlesTab.save_options()
         self.otherTab.save_options()
-        self.updateTab.save_options()
         self.authTab.save_options()
         self.videoselTab.save_options()
         self.logTab.save_options()

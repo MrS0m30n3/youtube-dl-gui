@@ -63,7 +63,7 @@ class OptionsHandler():
         self.username = ""
         self.password = ""
         self.videoPass = ""
-        self.updatePath = abs_path(__file__)
+        self.updatePath = self.get_config_path()
         self.cmdArgs = ""
         self.enableLog = True
         self.writeTimeToLog = True

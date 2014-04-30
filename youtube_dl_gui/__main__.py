@@ -12,4 +12,3 @@ import youtube_dl_gui
 
 if __name__ == '__main__':
     youtube_dl_gui.main()
-    

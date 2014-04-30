@@ -21,5 +21,5 @@ setup(name=__appname__,
       author_email=__contact__,
       url=__projecturl__,
       packages=['youtube_dl_gui'],
-      data_files=[('lib/python2.7/site-packages/youtube_dl_gui/icons', 
+      data_files=[('lib/python2.7/site-packages/youtube_dl_gui/icons',
                    ['youtube_dl_gui/icons/youtube-dl-gui.png'])])

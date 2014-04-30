@@ -3,11 +3,11 @@
 from sys import exit
 
 try:
-  import wx
+    import wx
 except ImportError, e:
-  print '[ERROR]', e
-  print 'Please install latest wx.Python'
-  exit(1)
+    print '[ERROR]', e
+    print 'Please install latest wx.Python'
+    exit(1)
 
 from .YoutubeDLGUI import MainFrame
 from .version import __version__
@@ -23,9 +23,8 @@ from .data import (
 )
 
 def main():
-  app = wx.App()
-  frame = MainFrame()
-  frame.Centre()
-  frame.Show()
-  app.MainLoop()
-  
+    app = wx.App()
+    frame = MainFrame()
+    frame.Centre()
+    frame.Show()
+    app.MainLoop()

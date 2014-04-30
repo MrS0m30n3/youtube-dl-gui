@@ -108,9 +108,6 @@ class MainFrame(wx.Frame):
         # init urlList for evt_text on self.trackList
         self.urlList = []
 
-        # check & update libraries (youtube-dl)
-        self.check_if_youtube_dl_exist()
-
     def InitGUI(self):
         self.panel = wx.Panel(self)
         mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
@@ -209,6 +206,9 @@ class MainFrame(wx.Frame):
         self.statusList._clear_list()
         self.load_tracklist(self.trackList.GetValue().split('\n'))
         if not self.statusList._is_empty():
+            self.check_if_youtube_dl_exist()
+            if self.updateThread is not None:
+                self.updateThread.join()
             options = YoutubeDLInterpreter(self.optionsList, YOUTUBE_DL_FILENAME).get_options()
             self.downloadThread = DownloadManager(
               options,

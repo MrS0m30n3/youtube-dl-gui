@@ -17,6 +17,7 @@ WINDOWS_FILES_PATH = get_HOME() + '\\youtube-dl-gui'
 class OptionsHandler():
 
     settings_abs_path = ''
+    sensitive_keys = ('sudo_password', 'password', 'video_password')
 
     def __init__(self):
         self.set_settings_path()
@@ -84,7 +85,13 @@ class OptionsHandler():
         for key in self.options:
             if key not in settings_dictionary:
                 return False
+        if len(settings_dictionary) != len(self.options):
+            return False
         return True
+        
+    def remove_sensitive_data(self):
+        for key in self.sensitive_keys:
+            self.options[key] = ''
         
     def load_from_file(self):
         with open(self.settings_abs_path, 'rb') as f:
@@ -100,5 +107,6 @@ class OptionsHandler():
     def save_to_file(self):
         check_path(self.get_config_path())
         with open(self.settings_abs_path, 'wb') as f:
+            self.remove_sensitive_data()
             json.dump(self.options, f, indent=4, separators=(',', ': '))
  

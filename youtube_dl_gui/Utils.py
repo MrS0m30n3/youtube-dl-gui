@@ -48,7 +48,7 @@ def video_is_dash(video):
     return "DASH" in video
 
 def have_dash_audio(audio):
-    return audio != "NO SOUND"
+    return audio != "none"
 
 def get_path_seperator():
     return '\\' if os_type == 'nt' else '/'

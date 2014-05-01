@@ -32,7 +32,7 @@ class OptionsHandler():
         self.options = {
                 'save_path': get_HOME(),
                 'video_format': 'default',
-                'dash_audio_format': 'NO SOUND',
+                'dash_audio_format': 'none',
                 'clear_dash_files': False,
                 'to_audio': False,
                 'keep_video': False,

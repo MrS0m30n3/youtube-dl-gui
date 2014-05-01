@@ -49,7 +49,7 @@ VIDEOFORMATS = ["default",
                 "mp4 480p(DASH)",
                 "mp4 360p(DASH)"]
 
-DASH_AUDIO_FORMATS = ["NO SOUND",
+DASH_AUDIO_FORMATS = ["none",
                       "DASH m4a audio 128k",
                       "DASH webm audio 48k"]
 

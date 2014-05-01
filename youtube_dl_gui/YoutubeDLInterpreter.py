@@ -35,7 +35,7 @@ VIDEOFORMATS = {"default":"0",
                 "mp4 480p(DASH)":"135",
                 "mp4 360p(DASH)":"134"}
 
-DASH_AUDIO_FORMATS = {"NO SOUND":"None",
+DASH_AUDIO_FORMATS = {"none":"none",
                       "DASH m4a audio 128k":"140",
                       "DASH webm audio 48k":"171"}
 
@@ -124,7 +124,7 @@ class YoutubeDLInterpreter():
             if video_is_dash(self.optManager.options['video_format']):
                 vf = VIDEOFORMATS[self.optManager.options['video_format']]
                 af = DASH_AUDIO_FORMATS[self.optManager.options['dash_audio_format']]
-                if af != 'None':
+                if af != 'none':
                     self.opts.append(vf+'+'+af)
                 else:
                     self.opts.append(vf)

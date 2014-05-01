@@ -86,3 +86,14 @@ def check_path(path):
     if not file_exist(path):
         makedir(path)
         
+def shutdown_sys(password=''):
+    if os_type == 'nt':
+        subprocess.call(['shutdown', '/s', '/t', '1'])
+    else:
+        if password == '':
+            subprocess.call(['/sbin/shutdown', '-h', 'now'])
+        else:
+            p = subprocess.Popen(['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
+                                 stdin=subprocess.PIPE)
+            p.communicate(password+'\n')
+            

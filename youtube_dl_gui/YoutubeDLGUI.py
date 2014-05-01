@@ -21,7 +21,8 @@ from .Utils import (
     fix_path,
     abs_path,
     open_dir,
-    remove_spaces
+    remove_spaces,
+    shutdown_sys
 )
 from .data import (
     __author__,
@@ -163,9 +164,12 @@ class MainFrame(wx.Frame):
         self.downloadThread = None
         self.downloadHandler = None
         self.urlList = []
-        self.finished_popup()
-        self.open_destination_dir()
-
+        if self.optManager.options['shutdown']:
+            shutdown_sys(self.optManager.options['sudo_password'])
+        else:
+            self.finished_popup()
+            self.open_destination_dir()
+            
     def open_destination_dir(self):
         if self.optManager.options['open_dl_dir']:
             open_dir(self.optManager.options['save_path'])
@@ -371,7 +375,7 @@ class LogPanel(wx.Panel):
         ''' Set border for windows '''
         if os_type == 'nt':
             self.win_box_border = 10
-
+            
     def SetDataSizers(self, box):
         logPathText = wx.BoxSizer(wx.HORIZONTAL)
         logPathText.Add(wx.StaticText(self, label='Path: ' + self.path))
@@ -423,6 +427,51 @@ class LogPanel(wx.Panel):
     def restart_popup(self):
         wx.MessageBox('Please restart ' + __appname__, 'Restart', wx.OK | wx.ICON_INFORMATION)
 
+class ShutdownPanel(wx.Panel):
+    
+    def __init__(self, parent, optManager):
+        wx.Panel.__init__(self, parent)
+        
+        self.optManager = optManager
+        mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
+        
+        shutdownBox = wx.BoxSizer(wx.HORIZONTAL)
+        self.shutdownChk = wx.CheckBox(self, label='Shutdown when finished')
+        shutdownBox.Add(self.shutdownChk)
+        mainBoxSizer.Add(shutdownBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=30)
+        
+        sudoTextBox = wx.BoxSizer(wx.HORIZONTAL)
+        sudoTextBox.Add(wx.StaticText(self, label='SUDO password'))
+        mainBoxSizer.Add(sudoTextBox, flag = wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)
+        
+        sudoBox = wx.BoxSizer(wx.HORIZONTAL)
+        self.sudoPassBox = wx.TextCtrl(self, size=(-1, 25), style = wx.TE_PASSWORD)
+        sudoBox.Add(self.sudoPassBox, 1, flag = wx.TOP, border=5)
+        mainBoxSizer.Add(sudoBox, flag = wx.EXPAND | wx.LEFT | wx.RIGHT, border=160)
+        
+        self.SetSizer(mainBoxSizer)
+        
+        self.Bind(wx.EVT_CHECKBOX, self.OnShutdownCheck, self.shutdownChk)
+        
+    def OnShutdownCheck(self, event):
+        if os_type != 'nt':
+            if self.shutdownChk.GetValue():
+                self.sudoPassBox.Enable()
+            else:
+                self.sudoPassBox.Disable()
+        
+    def load_options(self):
+        self.shutdownChk.SetValue(self.optManager.options['shutdown'])
+        self.sudoPassBox.SetValue(self.optManager.options['sudo_password'])
+        if os_type == 'nt':
+            self.sudoPassBox.Disable()
+        if self.optManager.options['shutdown'] == False:
+            self.sudoPassBox.Disable()
+    
+    def save_options(self):
+        self.optManager.options['shutdown'] = self.shutdownChk.GetValue()
+        self.optManager.options['sudo_password'] = self.sudoPassBox.GetValue()
+        
 class PlaylistPanel(wx.Panel):
 
     def __init__(self, parent, optManager):
@@ -1141,6 +1190,7 @@ class OptionsFrame(wx.Frame):
         self.videoselTab = PlaylistPanel(notebook, self.optManager)
         self.logTab = LogPanel(notebook, self.optManager, logger)
         self.outputTab = OutputPanel(notebook, self.optManager)
+        self.shutdownTab = ShutdownPanel(notebook, self.optManager)
 
         notebook.AddPage(self.generalTab, "General")
         notebook.AddPage(self.videoTab, "Video")
@@ -1150,6 +1200,7 @@ class OptionsFrame(wx.Frame):
         notebook.AddPage(self.subtitlesTab, "Subtitles")
         notebook.AddPage(self.filesysTab, "Filesystem")
         notebook.AddPage(self.connectionTab, "Connection")
+        notebook.AddPage(self.shutdownTab, "Shutdown")
         notebook.AddPage(self.authTab, "Authentication")
         notebook.AddPage(self.logTab, "Log")
         notebook.AddPage(self.otherTab, "Commands")
@@ -1188,6 +1239,7 @@ class OptionsFrame(wx.Frame):
         self.videoselTab.load_options()
         self.logTab.load_options()
         self.outputTab.load_options()
+        self.shutdownTab.load_options()
 
     def save_all_options(self):
         self.generalTab.save_options()
@@ -1201,3 +1253,4 @@ class OptionsFrame(wx.Frame):
         self.videoselTab.save_options()
         self.logTab.save_options()
         self.outputTab.save_options()
+        self.shutdownTab.save_options()

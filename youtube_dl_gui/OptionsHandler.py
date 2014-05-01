@@ -60,6 +60,8 @@ class OptionsHandler():
                 'user_agent': '',
                 'referer': '',
                 'proxy': '',
+                'shutdown': False,
+                'sudo_password': '',
                 'username': '',
                 'password': '',
                 'video_password': '',

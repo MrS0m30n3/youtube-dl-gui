@@ -9,10 +9,10 @@ work)
 '''
 
 from .Utils import (
-  video_is_dash,
-  get_os_type,
-  fix_path,
-  add_PATH
+    video_is_dash,
+    os_type,
+    fix_path,
+    add_PATH
 )
 
 LANGUAGES = {"English":"en",
@@ -65,7 +65,7 @@ class YoutubeDLInterpreter():
         return self.opts
 
     def set_os(self):
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.opts = [self.youtubeDLFile]
             add_PATH(self.optManager.options['youtubedl_path'])
         else:

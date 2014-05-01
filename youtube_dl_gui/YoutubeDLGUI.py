@@ -16,7 +16,7 @@ from .LogManager import LogManager, LogGUI
 from .Utils import (
     video_is_dash,
     have_dash_audio,
-    get_os_type,
+    os_type,
     file_exist,
     fix_path,
     abs_path,
@@ -31,7 +31,7 @@ from .data import (
     __descriptionfull__
 )
 
-if get_os_type() == 'nt':
+if os_type == 'nt':
     YOUTUBE_DL_FILENAME = 'youtube-dl.exe'
 else:
     YOUTUBE_DL_FILENAME = 'youtube-dl'
@@ -369,7 +369,7 @@ class LogPanel(wx.Panel):
 
     def SetBoxBorder(self):
         ''' Set border for windows '''
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.win_box_border = 10
 
     def SetDataSizers(self, box):
@@ -457,7 +457,7 @@ class PlaylistPanel(wx.Panel):
         self.SetSizer(mainBoxSizer)
 
     def get_border(self):
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             return 16
         return 10
 
@@ -626,7 +626,7 @@ class AudioPanel(wx.Panel):
 
     def SetBoxBorder(self):
         ''' Set border for windows '''
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.win_box_border = 5
 
     def OnAudioCheck(self, event):
@@ -773,7 +773,7 @@ class OutputPanel(wx.Panel):
 
     def SetBoxBorder(self):
         ''' Set border for windows '''
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.win_box_border = 10
 
     def group_load(self, oformat):
@@ -832,7 +832,7 @@ class FilesystemPanel(wx.Panel):
 
     def SetBoxBorder(self):
         ''' Set border for windows '''
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.win_box_border = 10
 
     def SetLeftBox(self, box):
@@ -950,7 +950,7 @@ class SubtitlesPanel(wx.Panel):
 
     def SetBoxBorder(self):
         ''' Set border for windows '''
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             self.win_box_border = 5
 
     def subs_are_on(self):
@@ -1156,7 +1156,7 @@ class OptionsFrame(wx.Frame):
         self.load_all_options()
 
     def SetFrameSizer(self):
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             return (580, 270)
         else:
             return (580, 250)

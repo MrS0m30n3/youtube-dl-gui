@@ -9,16 +9,16 @@ from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
 from .OutputHandler import (
-  DataPack,
-  OutputFormatter
+    DataPack,
+    OutputFormatter
 )
 
 from .Utils import (
-  get_encoding,
-  encode_list,
-  remove_file,
-  get_os_type,
-  file_exist
+    get_encoding,
+    encode_list,
+    remove_file,
+    os_type,
+    file_exist
 )
 
 MAX_DOWNLOAD_THREADS = 3
@@ -189,7 +189,7 @@ class ProcessWrapper(Thread):
         return cmd
 
     def get_process_info(self):
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             return info

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 from .Utils import (
-  remove_empty_items,
-  string_to_array,
-  get_filename
+    remove_empty_items,
+    string_to_array,
+    get_filename
 )
 
 class DownloadHandler():

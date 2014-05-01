@@ -4,9 +4,9 @@ import wx
 
 from time import strftime
 from .Utils import (
-  fix_path,
-  file_exist,
-  get_filesize
+    fix_path,
+    file_exist,
+    get_filesize
 )
 
 LOG_FILENAME = 'log'

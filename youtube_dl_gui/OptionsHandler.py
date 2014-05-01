@@ -3,11 +3,11 @@
 import json
 
 from .Utils import (
-  get_HOME,
-  file_exist,
-  get_os_type,
-  fix_path,
-  check_path
+    get_HOME,
+    file_exist,
+    os_type,
+    fix_path,
+    check_path
 )
 
 SETTINGS_FILENAME = 'settings.json'
@@ -69,7 +69,7 @@ class OptionsHandler():
         }
         
     def get_config_path(self):
-        if get_os_type() == 'nt':
+        if os_type == 'nt':
             return WINDOWS_FILES_PATH
         return LINUX_FILES_PATH
 

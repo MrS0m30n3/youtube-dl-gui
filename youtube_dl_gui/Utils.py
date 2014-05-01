@@ -7,7 +7,8 @@ import subprocess
 
 from os import (
     remove as remove_file,
-    makedirs as makedir
+    makedirs as makedir,
+    name as os_type,
 )
 
 from os.path import (
@@ -50,7 +51,7 @@ def have_dash_audio(audio):
     return audio != "NO SOUND"
 
 def get_path_seperator():
-    return '\\' if os.name == 'nt' else '/'
+    return '\\' if os_type == 'nt' else '/'
 
 def fix_path(path):
     if path != '' and path[-1:] != get_path_seperator():
@@ -72,14 +73,11 @@ def abs_path(filename):
     path.pop()
     return get_path_seperator().join(path)
     
-def get_os_type():
-    return os.name
-
 def get_filename(path):
     return path.split(get_path_seperator())[-1]
 
 def open_dir(path):
-    if os.name == 'nt':
+    if os_type == 'nt':
         os.startfile(path)
     else:
         subprocess.call(('xdg-open', path))

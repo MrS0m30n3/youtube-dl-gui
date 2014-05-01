@@ -45,9 +45,9 @@ AUDIO_Q = {"high":"0",
 
 class YoutubeDLInterpreter():
 
-    def __init__(self, optionsList, youtubeDLFile):
+    def __init__(self, optManager, youtubeDLFile):
         self.youtubeDLFile = youtubeDLFile
-        self.optionsList = optionsList
+        self.optManager = optManager
         self.opts = []
         self.set_os()
         self.set_progress_opts()
@@ -67,9 +67,9 @@ class YoutubeDLInterpreter():
     def set_os(self):
         if get_os_type() == 'nt':
             self.opts = [self.youtubeDLFile]
-            add_PATH(self.optionsList.updatePath)
+            add_PATH(self.optManager.options['youtubedl_path'])
         else:
-            path = fix_path(self.optionsList.updatePath)
+            path = fix_path(self.optManager.options['youtubedl_path'])
             self.opts = ['python', path + self.youtubeDLFile]
 
     def set_progress_opts(self):
@@ -77,105 +77,105 @@ class YoutubeDLInterpreter():
         self.opts.append('--newline')
 
     def set_playlist_opts(self):
-        if self.optionsList.startTrack != 1:
+        if self.optManager.options['playlist_start'] != 1:
             self.opts.append('--playlist-start')
-            self.opts.append(str(self.optionsList.startTrack))
-        if self.optionsList.endTrack != 0:
+            self.opts.append(str(self.optManager.options['playlist_start']))
+        if self.optManager.options['playlist_end'] != 0:
             self.opts.append('--playlist-end')
-            self.opts.append(str(self.optionsList.endTrack))
-        if self.optionsList.maxDownloads != 0:
+            self.opts.append(str(self.optManager.options['playlist_end']))
+        if self.optManager.options['max_downloads'] != 0:
             self.opts.append('--max-downloads')
-            self.opts.append(str(self.optionsList.maxDownloads))
-        if self.optionsList.minFileSize != '0':
+            self.opts.append(str(self.optManager.options['max_downloads']))
+        if self.optManager.options['min_filesize'] != '0':
             self.opts.append('--min-filesize')
-            self.opts.append(self.optionsList.minFileSize)
-        if self.optionsList.maxFileSize != '0':
+            self.opts.append(self.optManager.options['min_filesize'])
+        if self.optManager.options['max_filesize'] != '0':
             self.opts.append('--max-filesize')
-            self.opts.append(self.optionsList.maxFileSize)
+            self.opts.append(self.optManager.options['max_filesize'])
 
     def set_auth_opts(self):
-        if self.optionsList.username != '':
+        if self.optManager.options['username'] != '':
             self.opts.append('-u')
-            self.opts.append(self.optionsList.username)
-        if self.optionsList.password != '':
+            self.opts.append(self.optManager.options['username'])
+        if self.optManager.options['password'] != '':
             self.opts.append('-p')
-            self.opts.append(self.optionsList.password)
-        if self.optionsList.videoPass != '':
+            self.opts.append(self.optManager.options['password'])
+        if self.optManager.options['video_password'] != '':
             self.opts.append('--video-password')
-            self.opts.append(self.optionsList.videoPass)
+            self.opts.append(self.optManager.options['video_password'])
 
     def set_connection_opts(self):
-        if self.optionsList.retries != 10:
+        if self.optManager.options['retries'] != 10:
             self.opts.append('-R')
-            self.opts.append(str(self.optionsList.retries))
-        if self.optionsList.proxy != '':
+            self.opts.append(str(self.optManager.options['retries']))
+        if self.optManager.options['proxy'] != '':
             self.opts.append('--proxy')
-            self.opts.append(self.optionsList.proxy)
-        if self.optionsList.userAgent != '':
+            self.opts.append(self.optManager.options['proxy'])
+        if self.optManager.options['user_agent'] != '':
             self.opts.append('--user-agent')
-            self.opts.append(self.optionsList.userAgent)
-        if self.optionsList.referer != '':
+            self.opts.append(self.optManager.options['user_agent'])
+        if self.optManager.options['referer'] != '':
             self.opts.append('--referer')
-            self.opts.append(self.optionsList.referer)
+            self.opts.append(self.optManager.options['referer'])
 
     def set_video_opts(self):
-        if self.optionsList.videoFormat != 'default':
+        if self.optManager.options['video_format'] != 'default':
             self.opts.append('-f')
-            if video_is_dash(self.optionsList.videoFormat):
-                vf = VIDEOFORMATS[self.optionsList.videoFormat]
-                af = DASH_AUDIO_FORMATS[self.optionsList.dashAudioFormat]
+            if video_is_dash(self.optManager.options['video_format']):
+                vf = VIDEOFORMATS[self.optManager.options['video_format']]
+                af = DASH_AUDIO_FORMATS[self.optManager.options['dash_audio_format']]
                 if af != 'None':
                     self.opts.append(vf+'+'+af)
                 else:
                     self.opts.append(vf)
             else:
-                self.opts.append(VIDEOFORMATS[self.optionsList.videoFormat])
+                self.opts.append(VIDEOFORMATS[self.optManager.options['video_format']])
 
     def set_filesystem_opts(self):
-        if self.optionsList.ignoreErrors:
+        if self.optManager.options['ignore_errors']:
             self.opts.append('-i')
-        if self.optionsList.writeDescription:
+        if self.optManager.options['write_description']:
             self.opts.append('--write-description')
-        if self.optionsList.writeInfo:
+        if self.optManager.options['write_info']:
             self.opts.append('--write-info-json')
-        if self.optionsList.writeThumbnail:
+        if self.optManager.options['write_thumbnail']:
             self.opts.append('--write-thumbnail')
 
     def set_subtitles_opts(self):
-        if self.optionsList.writeAllSubs:
+        if self.optManager.options['write_all_subs']:
             self.opts.append('--all-subs')
-        if (self.optionsList.writeAutoSubs):
+        if self.optManager.options['write_auto_subs']:
             self.opts.append('--write-auto-sub')
-        if self.optionsList.writeSubs:
+        if self.optManager.options['write_subs']:
             self.opts.append('--write-sub')
-            if self.optionsList.subsLang != 'English':
+            if self.optManager.options['subs_lang'] != 'English':
                 self.opts.append('--sub-lang')
-                self.opts.append(LANGUAGES[self.optionsList.subsLang])
-        if self.optionsList.embedSubs:
+                self.opts.append(LANGUAGES[self.optManager.options['subs_lang']])
+        if self.optManager.options['embed_subs']:
             self.opts.append('--embed-subs')
 
     def set_output_opts(self):
-        path = fix_path(self.optionsList.savePath)
+        path = fix_path(self.optManager.options['save_path'])
         self.opts.append('-o')
-        if self.optionsList.outputFormat == 'id':
+        if self.optManager.options['output_format'] == 'id':
             self.opts.append(path + '%(id)s.%(ext)s')
-        elif self.optionsList.outputFormat == 'title':
+        elif self.optManager.options['output_format'] == 'title':
             self.opts.append(path + '%(title)s.%(ext)s')
-        elif self.optionsList.outputFormat == 'custom':
-            self.opts.append(path + self.optionsList.outputTemplate)
+        elif self.optManager.options['output_format'] == 'custom':
+            self.opts.append(path + self.optManager.options['output_template'])
 
     def set_audio_opts(self):
-        if self.optionsList.toAudio:
+        if self.optManager.options['to_audio']:
             self.opts.append('-x')
             self.opts.append('--audio-format')
-            self.opts.append(self.optionsList.audioFormat)
-            if self.optionsList.audioQuality != 'mid':
+            self.opts.append(self.optManager.options['audio_format'])
+            if self.optManager.options['audio_quality'] != 'mid':
                 self.opts.append('--audio-quality')
-                self.opts.append(AUDIO_Q[self.optionsList.audioQuality])
-            if self.optionsList.keepVideo:
+                self.opts.append(AUDIO_Q[self.optManager.options['audio_quality']])
+            if self.optManager.options['keep_video']:
                 self.opts.append('-k')
 
     def set_other_opts(self):
-        if self.optionsList.cmdArgs != '':
-            for option in self.optionsList.cmdArgs.split():
+        if self.optManager.options['cmd_args'] != '':
+            for option in self.optManager.options['cmd_args'].split():
                 self.opts.append(option)

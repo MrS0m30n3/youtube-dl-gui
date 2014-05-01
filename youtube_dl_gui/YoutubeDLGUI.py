@@ -1215,9 +1215,9 @@ class OptionsFrame(wx.Frame):
 
     def SetFrameSizer(self):
         if os_type == 'nt':
-            return (580, 270)
+            return (640, 270)
         else:
-            return (580, 250)
+            return (640, 250)
 
     def OnClose(self, event):
         self.save_all_options()

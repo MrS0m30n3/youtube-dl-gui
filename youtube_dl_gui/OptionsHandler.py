@@ -38,6 +38,7 @@ class OptionsHandler():
                 'keep_video': False,
                 'audio_format': 'mp3',
                 'audio_quality': 'mid',
+                'restrict_filenames': False,
                 'output_format': 'title',
                 'output_template': '%(uploader)s/%(title)s.%(ext)s',
                 'playlist_start': 1,
@@ -50,8 +51,8 @@ class OptionsHandler():
                 'write_auto_subs': False,
                 'embed_subs': False,
                 'subs_lang': 'English',
-                'open_dl_dir': False,
                 'ignore_errors': True,
+                'open_dl_dir': False,
                 'write_description': False,
                 'write_info': False,
                 'write_thumbnail': False,
@@ -76,10 +77,21 @@ class OptionsHandler():
     def set_settings_path(self):
         self.settings_abs_path = fix_path(self.get_config_path()) + SETTINGS_FILENAME
 
+    def settings_are_valid(self, settings_dictionary):
+        ''' Check settings.json dictionary '''
+        for key in self.options:
+            if key not in settings_dictionary:
+                return False
+        return True
+        
     def load_from_file(self):
         with open(self.settings_abs_path, 'rb') as f:
             try:
-                self.options = json.load(f)
+                options = json.load(f)
+                if self.settings_are_valid(options):
+                    self.options = options
+                else:
+                    self.load_default()
             except:
                 self.load_default()
 

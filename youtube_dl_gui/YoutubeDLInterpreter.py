@@ -75,7 +75,7 @@ class YoutubeDLInterpreter():
     def set_progress_opts(self):
         ''' Do NOT change this option '''
         self.opts.append('--newline')
-
+        
     def set_playlist_opts(self):
         if self.optManager.options['playlist_start'] != 1:
             self.opts.append('--playlist-start')
@@ -163,6 +163,8 @@ class YoutubeDLInterpreter():
             self.opts.append(path + '%(title)s.%(ext)s')
         elif self.optManager.options['output_format'] == 'custom':
             self.opts.append(path + self.optManager.options['output_template'])
+        if self.optManager.options['restrict_filenames']:
+            self.opts.append('--restrict-filenames')
 
     def set_audio_opts(self):
         if self.optManager.options['to_audio']:

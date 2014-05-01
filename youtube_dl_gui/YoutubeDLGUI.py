@@ -734,10 +734,15 @@ class OutputPanel(wx.Panel):
         self.optManager = optManager
         mainBoxSizer = wx.BoxSizer(wx.VERTICAL)
 
+        restrictBox = wx.BoxSizer(wx.HORIZONTAL)
+        self.restrictFilenamesChk = wx.CheckBox(self, label='Restrict filenames (ASCII)')
+        restrictBox.Add(self.restrictFilenamesChk, flag = wx.LEFT, border=5)
+        mainBoxSizer.Add(restrictBox, flag = wx.TOP, border=15)
+        
         idBox = wx.BoxSizer(wx.HORIZONTAL)
         self.idAsNameChk = wx.CheckBox(self, label='ID as Name')
         idBox.Add(self.idAsNameChk, flag = wx.LEFT, border=5)
-        mainBoxSizer.Add(idBox, flag = wx.TOP, border=15)
+        mainBoxSizer.Add(idBox, flag = wx.TOP, border=5+self.win_box_border)
 
         titleBox = wx.BoxSizer(wx.HORIZONTAL)
         self.titleBoxChk = wx.CheckBox(self, label='Title as Name')
@@ -804,10 +809,12 @@ class OutputPanel(wx.Panel):
     def load_options(self):
         self.group_load(self.optManager.options['output_format'])
         self.customTitleBox.SetValue(self.optManager.options['output_template'])
+        self.restrictFilenamesChk.SetValue(self.optManager.options['restrict_filenames'])
 
     def save_options(self):
         self.optManager.options['output_template'] = self.customTitleBox.GetValue()
         self.optManager.options['output_format'] = self.get_output_format()
+        self.optManager.options['restrict_filenames'] = self.restrictFilenamesChk.GetValue()
 
 class FilesystemPanel(wx.Panel):
 
@@ -836,10 +843,10 @@ class FilesystemPanel(wx.Panel):
             self.win_box_border = 10
 
     def SetLeftBox(self, box):
-        ignrBox = wx.BoxSizer(wx.HORIZONTAL)
+        ignoreBox = wx.BoxSizer(wx.HORIZONTAL)
         self.ignoreErrorsChk = wx.CheckBox(self, label='Ignore Errors')
-        ignrBox.Add(self.ignoreErrorsChk, flag = wx.LEFT, border=5)
-        box.Add(ignrBox, flag = wx.TOP, border=15)
+        ignoreBox.Add(self.ignoreErrorsChk, flag = wx.LEFT, border=5)
+        box.Add(ignoreBox, flag = wx.TOP, border=15)
 
         wrtDescBox = wx.BoxSizer(wx.HORIZONTAL)
         self.writeDescriptionChk = wx.CheckBox(self, label='Write description to file')

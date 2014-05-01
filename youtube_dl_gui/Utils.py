@@ -5,11 +5,15 @@ import sys
 import locale
 import subprocess
 
-import os.remove as remove_file
-import os.path.exists as file_exist
-import os.path.getsize as get_filesize
-import os.makedirs as makedir
+from os import (
+    remove as remove_file,
+    makedirs as makedir
+)
 
+from os.path import (
+    exists as file_exist,
+    getsize as get_filesize
+)
 
 def remove_empty_items(array):
     return [x for x in array if x != '']
@@ -71,7 +75,6 @@ def abs_path(filename):
 def get_os_type():
     return os.name
 
-
 def get_filename(path):
     return path.split(get_path_seperator())[-1]
 
@@ -80,3 +83,8 @@ def open_dir(path):
         os.startfile(path)
     else:
         subprocess.call(('xdg-open', path))
+
+def check_path(path):
+    if not file_exist(path):
+        makedir(path)
+        

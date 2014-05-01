@@ -5,6 +5,12 @@ import sys
 import locale
 import subprocess
 
+import os.remove as remove_file
+import os.path.exists as file_exist
+import os.path.getsize as get_filesize
+import os.makedirs as makedir
+
+
 def remove_empty_items(array):
     return [x for x in array if x != '']
 
@@ -39,9 +45,6 @@ def video_is_dash(video):
 def have_dash_audio(audio):
     return audio != "NO SOUND"
 
-def remove_file(filename):
-    os.remove(filename)
-
 def get_path_seperator():
     return '\\' if os.name == 'nt' else '/'
 
@@ -65,17 +68,9 @@ def abs_path(filename):
     path.pop()
     return get_path_seperator().join(path)
     
-def file_exist(filename):
-    return os.path.exists(filename)
-
 def get_os_type():
     return os.name
 
-def get_filesize(path):
-    return os.path.getsize(path)
-
-def makedir(path):
-    os.makedirs(path)
 
 def get_filename(path):
     return path.split(get_path_seperator())[-1]

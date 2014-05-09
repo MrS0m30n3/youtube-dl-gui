@@ -86,6 +86,13 @@ def check_path(path):
     if not file_exist(path):
         makedir(path)
         
+def get_user_config_path():
+    if os_type == 'nt':
+        path = os.getenv('APPDATA')
+    else:
+        path = fix_path(get_HOME()) + '.config'
+    return path
+        
 def shutdown_sys(password=''):
     if os_type == 'nt':
         subprocess.call(['shutdown', '/s', '/t', '1'])

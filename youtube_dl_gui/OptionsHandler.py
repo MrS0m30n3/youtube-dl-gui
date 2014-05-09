@@ -2,7 +2,10 @@
 
 import json
 
+from data import __appname__
+
 from .Utils import (
+    get_user_config_path,
     get_HOME,
     file_exist,
     os_type,
@@ -11,8 +14,7 @@ from .Utils import (
 )
 
 SETTINGS_FILENAME = 'settings.json'
-LINUX_FILES_PATH = get_HOME() + '/.youtube-dl-gui'
-WINDOWS_FILES_PATH = get_HOME() + '\\youtube-dl-gui'
+CONFIG_PATH = fix_path(get_user_config_path()) + __appname__.lower()
 
 class OptionsHandler():
 
@@ -73,9 +75,7 @@ class OptionsHandler():
         }
         
     def get_config_path(self):
-        if os_type == 'nt':
-            return WINDOWS_FILES_PATH
-        return LINUX_FILES_PATH
+        return CONFIG_PATH
 
     def set_settings_path(self):
         self.settings_abs_path = fix_path(self.get_config_path()) + SETTINGS_FILENAME

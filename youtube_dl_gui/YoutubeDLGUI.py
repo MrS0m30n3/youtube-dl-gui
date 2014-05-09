@@ -143,11 +143,13 @@ class MainFrame(wx.Frame):
 
         self.panel.SetSizer(mainBoxSizer)
 
-    def check_if_youtube_dl_exist(self):
-        path = fix_path(self.optManager.options['youtubedl_path'])+YOUTUBE_DL_FILENAME
-        if not file_exist(path):
-            self.status_bar_write("Youtube-dl is missing, trying to download it...")
-            self.update_youtube_dl()
+    def youtubedl_exist(self):
+        path = fix_path(self.optManager.options['youtubedl_path'])
+        path += YOUTUBE_DL_FILENAME
+
+        if file_exist(path):
+            return True
+        return False
 
     def update_youtube_dl(self):
         self.downloadButton.Disable()
@@ -210,9 +212,6 @@ class MainFrame(wx.Frame):
         self.statusList._clear_list()
         self.load_tracklist(self.trackList.GetValue().split('\n'))
         if not self.statusList._is_empty():
-            self.check_if_youtube_dl_exist()
-            if self.updateThread is not None:
-                self.updateThread.join()
             options = YoutubeDLInterpreter(self.optManager, YOUTUBE_DL_FILENAME).get_options()
             self.downloadThread = DownloadManager(
               options,
@@ -230,12 +229,22 @@ class MainFrame(wx.Frame):
     def save_options(self):
         self.optManager.save_to_file()
 
+    def youtubedl_is_missing(self):
+        if self.download_ydl_popup().ShowModal() == wx.ID_YES:
+            self.update_youtube_dl()
+        
     def finished_popup(self):
         wx.MessageBox('Downloads completed.', 'Info', wx.OK | wx.ICON_INFORMATION)
 
     def no_url_popup(self):
         wx.MessageBox('You need to provide at least one url.', 'Error', wx.OK | wx.ICON_EXCLAMATION)
 
+    def download_ydl_popup(self):
+        return wx.MessageDialog(self,
+                                'Youtube-dl is missing.\nWould you like to download it?',
+                                'Error',
+                                wx.YES_NO | wx.ICON_ERROR)
+        
     def OnTrackListChange(self, event):
         if self.downloadThread != None:
             ''' Get current url list from trackList textCtrl '''
@@ -261,7 +270,10 @@ class MainFrame(wx.Frame):
         if self.downloadThread != None:
             self.stop_download()
         else:
-            self.start_download()
+            if self.youtubedl_exist():
+                self.start_download()
+            else:
+                self.youtubedl_is_missing()
 
     def OnUpdate(self, event):
         if (self.downloadThread == None and self.updateThread == None):

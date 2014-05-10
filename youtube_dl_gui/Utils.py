@@ -37,7 +37,6 @@ def get_encoding():
     if sys.version_info >= (3, 0):
         return None
     if sys.platform == 'win32':
-        # Refer to http://stackoverflow.com/a/9951851/35070
         return preferredencoding()
     return None
 
@@ -85,6 +84,12 @@ def open_dir(path):
 def check_path(path):
     if not file_exist(path):
         makedir(path)
+        
+def get_youtubedl_filename():
+    youtubedl_fl = 'youtube-dl'
+    if os_type == 'nt':
+        youtubedl_fl += '.exe'
+    return youtubedl_fl
         
 def get_user_config_path():
     if os_type == 'nt':

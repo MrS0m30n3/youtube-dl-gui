@@ -10,8 +10,7 @@ from .version import __version__
 from .UpdateThread import UpdateThread
 from .DownloadThread import DownloadManager
 from .OptionsHandler import OptionsHandler
-from .YoutubeDLInterpreter import YoutubeDLInterpreter
-from .OutputHandler import DownloadHandler
+
 from .LogManager import LogManager, LogGUI
 from .Utils import (
     video_is_dash,
@@ -88,11 +87,11 @@ class MainFrame(wx.Frame):
         Publisher.subscribe(self.update_handler, "update")
 
         # set publisher for download thread
-        Publisher.subscribe(self.download_handler, "download")
+        Publisher.subscribe(self.download_handler, "download_manager")
+        Publisher.subscribe(self.download_handler, "download_thread")
 
-        # init Options and DownloadHandler objects
+        # init Options
         self.optManager = OptionsHandler()
-        self.downloadHandler = None
 
         # init log manager
         self.logManager = None
@@ -158,13 +157,11 @@ class MainFrame(wx.Frame):
     def status_bar_write(self, msg):
         self.statusBar.SetLabel(msg)
 
-    def fin_task(self, msg):
-        self.status_bar_write(msg)
+    def fin_tasks(self):
         self.downloadButton.SetLabel('Download')
         self.updateButton.Enable()
         self.downloadThread.join()
         self.downloadThread = None
-        self.downloadHandler = None
         self.urlList = []
         if self.optManager.options['shutdown']:
             shutdown_sys(self.optManager.options['sudo_password'])
@@ -177,18 +174,18 @@ class MainFrame(wx.Frame):
             open_dir(self.optManager.options['save_path'])
 
     def download_handler(self, msg):
-        self.downloadHandler.handle(msg)
-        if self.downloadHandler._has_closed():
-            self.status_bar_write('Stoping downloads')
-        if self.downloadHandler._has_finished():
-            if self.downloadHandler._has_error():
-                if self.logManager != None:
-                    msg = 'An error occured while downloading. See Options>Log.'
-                else:
-                    msg = 'An error occured while downloading'
-            else:
-                msg = 'Done'
-            self.fin_task(msg)
+        topic = msg.topic[0]
+        data = msg.data
+        
+        if topic == 'download_thread':
+            self.statusList.write(data)
+            
+        if topic == 'download_manager':
+            if data == 'close':
+                self.status_bar_write('Stopping downloads')
+            elif data == 'finish':
+                self.status_bar_write('Done')
+                self.fin_tasks()
 
     def update_handler(self, msg):
         if msg.data == 'finish':
@@ -206,20 +203,19 @@ class MainFrame(wx.Frame):
             url = remove_spaces(url)
             if url != '':
                 self.urlList.append(url)
-                self.statusList._add_item(url)
+                self.statusList.add_item(url)
 
     def start_download(self):
-        self.statusList._clear_list()
+        self.statusList.clear_list()
         self.load_tracklist(self.trackList.GetValue().split('\n'))
-        if not self.statusList._is_empty():
-            options = YoutubeDLInterpreter(self.optManager, YOUTUBE_DL_FILENAME).get_options()
+        if not self.statusList.is_empty():
+
             self.downloadThread = DownloadManager(
-              options,
-              self.statusList._get_items(),
-              self.optManager.options['clear_dash_files'],
+              self.statusList.get_items(),
+              self.optManager,
               self.logManager
             )
-            self.downloadHandler = DownloadHandler(self.statusList)
+            
             self.status_bar_write('Download started')
             self.downloadButton.SetLabel('Stop')
             self.updateButton.Disable()
@@ -257,12 +253,10 @@ class MainFrame(wx.Frame):
                 if url not in self.urlList and url != '':
                     ''' Add url into original download list '''
                     self.urlList.append(url)
-                    ''' Add handler for url '''
-                    self.downloadHandler._add_empty_handler()
                     ''' Add url into statusList '''
-                    self.statusList._add_item(url)
+                    self.statusList.add_item(url)
                     ''' Retrieve last item as {url:url, index:indexNo} '''
-                    item = self.statusList._get_last_item()
+                    item = self.statusList.get_last_item()
                     ''' Pass that item into downloadThread '''
                     self.downloadThread._add_download_item(item)
 
@@ -291,7 +285,19 @@ class MainFrame(wx.Frame):
         self.Destroy()
 
 class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
+    
     ''' Custom ListCtrl class '''
+    
+    # Hold column for each data
+    DATA_COLUMNS = {
+        'filename': 0,
+        'filesize': 1,
+        'percent': 2,
+        'status': 5,
+        'speed': 4,
+        'eta': 3
+    }
+    
     def __init__(self, parent=None, id=-1, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, id, pos, size, style)
         ListCtrlAutoWidthMixin.__init__(self)
@@ -302,44 +308,53 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self.InsertColumn(4, 'Speed', width=90)
         self.InsertColumn(5, 'Status', width=160)
         self.setResizeColumn(0)
-        self.ListIndex = 0
+        self.list_index = 0
 
-    ''' Add single item on list '''
-    def _add_item(self, item):
-        self.InsertStringItem(self.ListIndex, item)
-        self.ListIndex += 1
+    def write(self, data):
+        ''' Write data on ListCtrl '''
+        index = data['index']
+        
+        for key in data:
+            if key in self.DATA_COLUMNS:
+                self._write_data(data[key], index, self.DATA_COLUMNS[key])
+        
+    def add_item(self, item):
+        ''' Add single item on ListCtrl '''
+        self.InsertStringItem(self.list_index, item)
+        self.list_index += 1
 
-    ''' Write data on index, column '''
-    def _write_data(self, index, column, data):
-        self.SetStringItem(index, column, data)
-
-    ''' Clear list and set index to 0'''
-    def _clear_list(self):
+    def clear_list(self):
         self.DeleteAllItems()
-        self.ListIndex = 0
+        self.list_index = 0
 
-    ''' Return True if list is empty '''
-    def _is_empty(self):
-        return self.ListIndex == 0
+    def is_empty(self):
+        return self.list_index == 0
+        
+    def get_items(self, start_index=0):
+        ''' Return list of items starting from start_index '''
+        items = []
+        for row in range(start_index, self.list_index):
+            item = self._get_item(row)
+            items.append(item)
+        return items
+        
+    def get_last_item(self):
+        ''' Return last item of ListCtrl '''
+        return self._get_item(self.list_index - 1)
+        
+    def _write_data(self, data, row, column):
+        ''' Write data on row, column '''
+        if isinstance(data, basestring):
+            self.SetStringItem(row, column, data)
 
-    ''' Get last item inserted, Returns dictionary '''
-    def _get_last_item(self):
+    def _get_item(self, index):
+        ''' Return single item from index '''
         data = {}
-        last_item = self.GetItem(itemId=self.ListIndex-1, col=0)
-        data['url'] = last_item.GetText()
-        data['index'] = self.ListIndex-1
+        item = self.GetItem(itemId=index, col=0)
+        data['url'] = item.GetText()
+        data['index'] = index
         return data
 
-    ''' Retrieve all items [start, self.ListIndex), Returns list '''
-    def _get_items(self, start=0):
-        items = []
-        for row in range(start, self.ListIndex):
-            item = self.GetItem(itemId=row, col=0)
-            data = {}
-            data['url'] = item.GetText()
-            data['index'] = row
-            items.append(data)
-        return items
 
 class LogPanel(wx.Panel):
 

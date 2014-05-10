@@ -1,18 +1,8 @@
 #! /usr/bin/env python
 
-'''
-Parse OptionHandler object into list
-and call youtube_dl.main(list) using
-subprocess (we use this method to let
-youtube_dl.main() handle all the hard
-work)
-'''
-
 from .Utils import (
     video_is_dash,
-    os_type,
-    fix_path,
-    add_PATH
+    fix_path
 )
 
 LANGUAGES = {"English":"en",
@@ -45,11 +35,9 @@ AUDIO_Q = {"high":"0",
 
 class YoutubeDLInterpreter():
 
-    def __init__(self, optManager, youtubeDLFile):
-        self.youtubeDLFile = youtubeDLFile
+    def __init__(self, optManager):
         self.optManager = optManager
         self.opts = []
-        self.set_os()
         self.set_progress_opts()
         self.set_output_opts()
         self.set_auth_opts()
@@ -63,14 +51,6 @@ class YoutubeDLInterpreter():
 
     def get_options(self):
         return self.opts
-
-    def set_os(self):
-        if os_type == 'nt':
-            self.opts = [self.youtubeDLFile]
-            add_PATH(self.optManager.options['youtubedl_path'])
-        else:
-            path = fix_path(self.optManager.options['youtubedl_path'])
-            self.opts = ['python', path + self.youtubeDLFile]
 
     def set_progress_opts(self):
         ''' Do NOT change this option '''

@@ -35,6 +35,9 @@ class LogManager():
         with open(self.path, 'w') as fl:
             fl.write('')
 
+    def log(self, data):
+        self.write(data)
+            
     def write(self, data):
         with open(self.path, 'a') as fl:
             if self.add_time:

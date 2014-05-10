@@ -8,7 +8,6 @@ from .Utils import (
     get_user_config_path,
     get_HOME,
     file_exist,
-    os_type,
     fix_path,
     check_path
 )

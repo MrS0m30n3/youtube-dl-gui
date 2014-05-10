@@ -1,6 +1,5 @@
 #! /usr/bin/env python
 
-import subprocess
 from time import sleep
 from threading import Thread
 
@@ -8,30 +7,27 @@ from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
-from .OutputHandler import (
-    DataPack,
-    OutputFormatter
-)
+from .YoutubeDLInterpreter import YoutubeDLInterpreter
+from .DownloadObject import DownloadObject
 
 from .Utils import (
-    get_encoding,
-    encode_list,
+    get_youtubedl_filename,
     remove_file,
-    os_type,
-    file_exist
+    file_exist,
+    fix_path
 )
 
-MAX_DOWNLOAD_THREADS = 3
-PUBLISHER_TOPIC = 'download'
 
 class DownloadManager(Thread):
 
-    def __init__(self, options, downloadlist, clear_dash_files, logmanager=None):
+    PUBLISHER_TOPIC = 'download_manager'
+    MAX_DOWNLOAD_THREADS = 3
+
+    def __init__(self, downloadlist, opt_manager, logmanager=None):
         super(DownloadManager, self).__init__()
-        self.clear_dash_files = clear_dash_files
         self.downloadlist = downloadlist
+        self.opt_manager = opt_manager
         self.logmanager = logmanager
-        self.options = options
         self.running = True
         self.kill = False
         self.procList = []
@@ -44,7 +40,7 @@ class DownloadManager(Thread):
                 # Extract url, index from data
                 url, index = self.extract_data()
                 # Wait for your turn if there are not more positions in 'queue'
-                while self.procNo >= MAX_DOWNLOAD_THREADS:
+                while self.procNo >= self.MAX_DOWNLOAD_THREADS:
                     proc = self.check_queue()
                     if proc != None:
                         self.procList.remove(proc)
@@ -53,11 +49,10 @@ class DownloadManager(Thread):
                 # If we still running create new ProcessWrapper thread
                 if self.running:
                     self.procList.append(
-                      ProcessWrapper(
-                        self.options,
+                      DownloadThread(
                         url,
                         index,
-                        self.clear_dash_files,
+                        self.opt_manager,
                         self.logmanager
                       )
                     )
@@ -71,7 +66,7 @@ class DownloadManager(Thread):
         # If we reach here close down all child threads
         self.terminate_all()
         if not self.kill:
-            CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish'))
+            self._callafter('finish')
 
     def downloading(self):
         for proc in self.procList:
@@ -100,98 +95,100 @@ class DownloadManager(Thread):
             if not proc.isAlive():
                 return proc
         return None
-        
+       
+    def _callafter(self, data):
+        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
+       
     def close(self, kill=False):
         self.kill = kill
         self.procNo = 0
         self.running = False
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('close'))
+        self._callafter('close')
 
-class ProcessWrapper(Thread):
-
-    def __init__(self, options, url, index, clear_dash_files, log=None):
-        super(ProcessWrapper, self).__init__()
-        self.clear_dash_files = clear_dash_files
-        self.options = options
+class DownloadThread(Thread):
+    
+    '''
+    Params
+        url: URL to download.
+        index: ListCtrl index for the current DownloadThread.
+        opt_manager: OptionsHandler.OptionsHandler object.
+        log_manager: Any logger which implements log().
+        
+    Accessible Methods
+        close()
+            Params: None
+    '''
+    
+    PUBLISHER_TOPIC = 'download_thread'
+    
+    def __init__(self, url, index, opt_manager, log_manager=None):
+        super(DownloadThread, self).__init__()
+        self.log_manager = log_manager
+        self.opt_manager = opt_manager
         self.index = index
-        self.log = log
         self.url = url
-        self.filenames = []
-        self.stopped = False
-        self.error = False
-        self.proc = None
+        self._dl_object = None
         self.start()
-
+        
     def run(self):
-        self.proc = self.create_process(self.get_cmd(), self.get_process_info())
-        # while subprocess is alive and NOT the current thread
-        while self.proc_is_alive():
-            # read stdout, stderr from proc
-            stdout, stderr = self.read()
-            if stdout != '':
-                # pass stdout to output formatter
-                data = OutputFormatter(stdout).get_data()
-                if self.clear_dash_files: self.add_file(data)
-                # add index to data pack
-                data.index = self.index
-                # send data back to caller
-                CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, data)
-            if stderr != '':
-                self.error = True
-                self.write_to_log(stderr)
-        if not self.stopped:
-            if self.clear_dash_files:
-                self.clear_dash()
-            if not self.error:
-                CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('finish', self.index))
-            else:
-                CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('error', self.index))
-
-    def add_file(self, dataPack):
-        if dataPack.header == 'filename':
-            self.filenames.append(dataPack.data)
-
-    def write_to_log(self, data):
-        if self.log != None:
-            self.log.write(data)
-
-    def clear_dash(self):
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('remove', self.index))
-        for f in self.filenames:
-            if file_exist(f):
-                remove_file(f)
-
+        youtubedl_path = self._get_youtubedl_path()
+        options = YoutubeDLInterpreter(self.opt_manager).get_options()
+        
+        self._dl_object = DownloadObject(youtubedl_path, self._data_hook, self.log_manager)
+        
+        success = self._dl_object.download(self.url, options)
+        
+        if self.opt_manager.options['clear_dash_files']:
+            self._clear_dash()
+            
+        if success:
+            self._callafter(self._get_status_pack('Finished'))
+        else:
+            self._callafter(self._get_status_pack('Error'))
+    
     def close(self):
-        self.proc.kill()
-        self.stopped = True
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, DataPack('close', self.index))
+        if self._dl_object is not None:
+            self._callafter(self._get_status_pack('Stopping'))
+            self._dl_object.stop()
+    
+    def _clear_dash(self):
+        ''' Clear DASH files after ffmpeg mux '''
+        for fl in self._dl_object.files_list:
+            if file_exist(fl):
+                remove_file(fl)
 
-    def proc_is_alive(self):
-        return self.proc.poll() == None
+    def _data_hook(self, data):
+        ''' Add download index and send data back to caller '''
+        data['index'] = self.index
+        data['status'] = self._get_status(data)
+        self._callafter(data)
 
-    def read(self):
-        stdout = ''
-        stderr = ''
-        stdout = self.proc.stdout.readline()
-        if stdout == '':
-            stderr = self.proc.stderr.readline()
-        return stdout.rstrip(), stderr.rstrip()
-
-    def create_process(self, cmd, info):
-        return subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, startupinfo=info)
-
-    def get_cmd(self):
-        enc = get_encoding()
-        if enc != None:
-            cmd = encode_list(self.options + [self.url], enc)
+    def _callafter(self, data):
+        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
+        
+    def _get_status_pack(self, message):
+        ''' Return simple status pack '''
+        data = {'index': self.index, 'status': message}
+        return data
+        
+    def _get_status(self, data):
+        ''' Return download process status '''
+        if data['playlist_index'] is not None:
+            playlist_info = '%s/%s' % (data['playlist_index'], data['playlist_size'])
         else:
-            cmd = self.options + [self.url]
-        return cmd
-
-    def get_process_info(self):
-        if os_type == 'nt':
-            info = subprocess.STARTUPINFO()
-            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            return info
-        else:
-            return None
+            playlist_info = ''
+        
+        if data['status'] == 'pre_process':
+            msg = 'Pre-Processing %s' % playlist_info
+        elif data['status'] == 'download':
+            msg = 'Downloading %s' % playlist_info
+        elif data['status'] == 'post_process':
+            msg = 'Post-Processing %s' % playlist_info
+        
+        return msg
+        
+    def _get_youtubedl_path(self):
+        ''' Retrieve youtube-dl path '''
+        path = self.opt_manager.options['youtubedl_path']
+        path = fix_path(path) + get_youtubedl_filename()
+        return path

@@ -1228,8 +1228,8 @@ class OptionsFrame(wx.Frame):
         notebook.AddPage(self.subtitles_tab, "Subtitles")
         notebook.AddPage(self.filesystem_tab, "Filesystem")
         notebook.AddPage(self.shutdown_tab, "Shutdown")
-        notebook.AddPage(self.connection_tab, "Connection")
         notebook.AddPage(self.auth_tab, "Authentication")
+        notebook.AddPage(self.connection_tab, "Connection")
         notebook.AddPage(self.log_tab, "Log")
         notebook.AddPage(self.other_tab, "Commands")
 

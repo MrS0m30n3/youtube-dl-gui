@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+from time import time
+
 import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
@@ -19,6 +21,7 @@ from .Utils import (
     audio_is_dash,
     shutdown_sys,
     file_exist,
+    get_time,
     fix_path,
     abs_path,
     open_dir,
@@ -88,6 +91,8 @@ class MainFrame(wx.Frame):
         Publisher.subscribe(self.download_handler, "download_thread")
 
         # init variables
+        self.successful_downloads = 0
+        self.timer = 0
         self.ori_url_list = []
         self.opt_manager = None
         self.log_manager = None
@@ -170,10 +175,12 @@ class MainFrame(wx.Frame):
     def reset(self):
         ''' Reset GUI and variables '''
         self.download_button.SetLabel('Download')
+        self.successful_downloads = 0
         self.update_button.Enable()
         self.download_thread.join()
         self.download_thread = None
         self.ori_url_list = []
+        self.timer = 0
         
     def fin_tasks(self):
         if self.opt_manager.options['shutdown']:
@@ -186,16 +193,39 @@ class MainFrame(wx.Frame):
         if self.opt_manager.options['open_dl_dir']:
             open_dir(self.opt_manager.options['save_path'])
 
+    def fin_message(self):
+        current_time = time()
+        dtime = get_time(current_time - self.timer)
+        
+        msg = 'Downloaded %s url(s) in ' % self.successful_downloads
+        
+        days = int(dtime['days'])
+        hours = int(dtime['hours'])
+        minutes = int(dtime['minutes'])
+        seconds = int(dtime['seconds'])
+        
+        if days != 0:
+            msg += '%s days, ' % days
+        if hours != 0:
+            msg += '%s hours, ' % hours
+        if minutes != 0:
+            msg += '%s minutes, ' % minutes
+        msg += '%s seconds ' % seconds
+        
+        self.status_bar_write(msg)
+            
     def download_handler(self, msg):
         topic = msg.topic[0]
         data = msg.data
 
         # Report downloading videos number
         videos_no = self.download_thread.get_items_counter()
-        self.status_bar_write('Downloading %s videos' % videos_no)
+        self.status_bar_write('Downloading %s url(s)' % videos_no)
         
         if topic == 'download_thread':
             self.status_list.write(data)
+            if data['status'] == 'Finished':
+                self.successful_downloads += 1
 
         if topic == 'download_manager':
             if data == 'closing':
@@ -204,7 +234,7 @@ class MainFrame(wx.Frame):
                 self.status_bar_write('Downloads stopped')
                 self.reset()
             if data == 'finished':
-                self.status_bar_write('Done')
+                self.fin_message()
                 self.reset()
                 self.fin_tasks()
 
@@ -243,6 +273,7 @@ class MainFrame(wx.Frame):
                 self.log_manager
             )
 
+            self.timer = time()
             self.status_bar_write('Download started')
             self.download_button.SetLabel('Stop')
             self.update_button.Disable()

@@ -4,9 +4,8 @@ from sys import exit
 
 try:
     import wx
-except ImportError, e:
-    print '[ERROR]', e
-    print 'Please install latest wx.Python'
+except ImportError as e:
+    print e
     exit(1)
 
 from .YoutubeDLGUI import MainFrame
@@ -21,6 +20,7 @@ from .data import (
     __descriptionfull__,
     __licensefull__
 )
+
 
 def main():
     app = wx.App()

@@ -8,37 +8,44 @@ from threading import Thread
 from urllib2 import urlopen, URLError, HTTPError
 
 from .Utils import (
-    fix_path,
-    file_exist,
-    makedir
+    get_youtubedl_filename,
+    check_path,
+    fix_path
 )
 
-LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
-PUBLISHER_TOPIC = 'update'
-DOWNLOAD_TIMEOUT = 20
 
 class UpdateThread(Thread):
 
-    def __init__(self, updatePath, youtubeDLFile):
+    LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
+    PUBLISHER_TOPIC = 'update'
+    DOWNLOAD_TIMEOUT = 20
+
+    def __init__(self, download_path):
         super(UpdateThread, self).__init__()
-        self.youtubeDLFile = youtubeDLFile
-        self.updatePath = fix_path(updatePath)
-        self.url = LATEST_YOUTUBE_DL + youtubeDLFile
-        self.check_path()
+        self.download_path = fix_path(download_path)
+        self._youtubedl_file = get_youtubedl_filename()
         self.start()
 
     def run(self):
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, "Downloading latest youtube-dl. Please wait...")
+        self._callafter("Downloading latest youtube-dl. Please wait...")
+
+        dl_url = self.LATEST_YOUTUBE_DL + self._youtubedl_file
+        dst_file = self.download_path + self._youtubedl_file
+
+        check_path(self.download_path)
+
         try:
-            f = urlopen(self.url, timeout=DOWNLOAD_TIMEOUT)
-            with open(self.updatePath + self.youtubeDLFile, 'wb') as lf:
-                lf.write(f.read())
+            f = urlopen(dl_url, timeout=self.DOWNLOAD_TIMEOUT)
+
+            with open(dst_file, 'wb') as bf:
+                bf.write(f.read())
+
             msg = 'Youtube-dl downloaded correctly'
         except (HTTPError, URLError, IOError) as e:
             msg = 'Youtube-dl download failed ' + str(e)
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, msg)
-        CallAfter(Publisher.sendMessage, PUBLISHER_TOPIC, 'finish')
 
-    def check_path(self):
-        if not file_exist(self.updatePath):
-            makedir(self.updatePath)
+        self._callafter(msg)
+        self._callafter('finish')
+
+    def _callafter(self, data):
+        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)

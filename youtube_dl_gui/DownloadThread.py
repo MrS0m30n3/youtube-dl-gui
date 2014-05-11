@@ -7,7 +7,7 @@ from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
-from .YoutubeDLInterpreter import YoutubeDLInterpreter
+from .YDLOptionsParser import OptionsParser
 from .DownloadObject import DownloadObject
 
 from .Utils import (
@@ -23,104 +23,100 @@ class DownloadManager(Thread):
     PUBLISHER_TOPIC = 'download_manager'
     MAX_DOWNLOAD_THREADS = 3
 
-    def __init__(self, downloadlist, opt_manager, logmanager=None):
+    def __init__(self, download_list, opt_manager, log_manager=None):
         super(DownloadManager, self).__init__()
-        self.downloadlist = downloadlist
+        self.download_list = download_list
         self.opt_manager = opt_manager
-        self.logmanager = logmanager
-        self.running = True
-        self.kill = False
-        self.procList = []
-        self.procNo = 0
+        self.log_manager = log_manager
+        self._threads_lst = []
+        self._running = True
+        self._kill = False
         self.start()
 
     def run(self):
-        while self.running:
-            if self.downloadlist:
-                # Extract url, index from data
-                url, index = self.extract_data()
-                # Wait for your turn if there are not more positions in 'queue'
-                while self.procNo >= self.MAX_DOWNLOAD_THREADS:
-                    proc = self.check_queue()
-                    if proc != None:
-                        self.procList.remove(proc)
-                        self.procNo -= 1
-                    sleep(1)
-                # If we still running create new ProcessWrapper thread
-                if self.running:
-                    self.procList.append(
-                      DownloadThread(
-                        url,
-                        index,
-                        self.opt_manager,
-                        self.logmanager
-                      )
-                    )
-                    self.procNo += 1
+        while self._running:
+            # If download list is not empty
+            if self.download_list:
+                url, index = self._extract_data()
+
+                self._check_download_queue()
+
+                if self._running:
+                    self._download(url, index)
             else:
-                # Return True if at least one process is alive else return False
                 if not self.downloading():
-                    self.running = False
+                    self._running = False
                 else:
                     sleep(0.1)
-        # If we reach here close down all child threads
-        self.terminate_all()
-        if not self.kill:
+
+        self._terminate_all()
+        if not self._kill:
             self._callafter('finish')
 
     def downloading(self):
-        for proc in self.procList:
-            if proc.isAlive():
+        ''' Return True if at least one download thread is alive '''
+        for thread in self._threads_lst:
+            if thread.is_alive():
                 return True
         return False
 
-    def _add_download_item(self, downloadItem):
-        self.downloadlist.append(downloadItem)
+    def add_download_item(self, item):
+        ''' Add download item on download list '''
+        self.download_list.append(item)
 
-    def extract_data(self):
-        data = self.downloadlist.pop(0)
+    def close(self, kill=False):
+        self._callafter('close')
+        self._running = False
+        self._kill = kill
+
+    def _download(self, url, index):
+        ''' Download given url '''
+        dl_thread = DownloadThread(url, index, self.opt_manager, self.log_manager)
+        self._threads_lst.append(dl_thread)
+
+    def _extract_data(self):
+        ''' Extract url, index from download list '''
+        data = self.download_list.pop(0)
         url = data['url']
         index = data['index']
         return url, index
 
-    def terminate_all(self):
-        for proc in self.procList:
-            if proc.isAlive():
-                proc.close()
-                proc.join()
+    def _terminate_all(self):
+        ''' Close down all download threads '''
+        for thread in self._threads_lst:
+            if thread.is_alive():
+                thread.close()
+                thread.join()
 
-    def check_queue(self):
-        for proc in self.procList:
-            if not self.running: break
-            if not proc.isAlive():
-                return proc
-        return None
-       
+    def _check_download_queue(self):
+        while len(self._threads_lst) >= self.MAX_DOWNLOAD_THREADS:
+            sleep(1)
+            for thread in self._threads_lst:
+                if not self._running:
+                    return
+                if not thread.is_alive():
+                    self._threads_lst.remove(thread)
+
     def _callafter(self, data):
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
-       
-    def close(self, kill=False):
-        self.kill = kill
-        self.procNo = 0
-        self.running = False
-        self._callafter('close')
+
 
 class DownloadThread(Thread):
-    
+
     '''
     Params
         url: URL to download.
         index: ListCtrl index for the current DownloadThread.
         opt_manager: OptionsHandler.OptionsHandler object.
         log_manager: Any logger which implements log().
-        
+
     Accessible Methods
         close()
             Params: None
     '''
-    
+
     PUBLISHER_TOPIC = 'download_thread'
-    
+
     def __init__(self, url, index, opt_manager, log_manager=None):
         super(DownloadThread, self).__init__()
         self.log_manager = log_manager
@@ -129,28 +125,32 @@ class DownloadThread(Thread):
         self.url = url
         self._dl_object = None
         self.start()
-        
+
     def run(self):
         youtubedl_path = self._get_youtubedl_path()
-        options = YoutubeDLInterpreter(self.opt_manager).get_options()
-        
+        options = OptionsParser(self.opt_manager).parse()
+
         self._dl_object = DownloadObject(youtubedl_path, self._data_hook, self.log_manager)
-        
-        success = self._dl_object.download(self.url, options)
-        
+
+        return_code = self._dl_object.download(self.url, options)
+
         if self.opt_manager.options['clear_dash_files']:
             self._clear_dash()
-            
-        if success:
+
+        if return_code == self._dl_object.OK:
             self._callafter(self._get_status_pack('Finished'))
-        else:
+
+        elif return_code == self._dl_object.ERROR:
             self._callafter(self._get_status_pack('Error'))
-    
+
+        elif return_code == self._dl_object.ALREADY:
+            self._callafter(self._get_status_pack('Already-Downloaded'))
+
     def close(self):
         if self._dl_object is not None:
             self._callafter(self._get_status_pack('Stopping'))
             self._dl_object.stop()
-    
+
     def _clear_dash(self):
         ''' Clear DASH files after ffmpeg mux '''
         for fl in self._dl_object.files_list:
@@ -165,28 +165,30 @@ class DownloadThread(Thread):
 
     def _callafter(self, data):
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
-        
+
     def _get_status_pack(self, message):
         ''' Return simple status pack '''
         data = {'index': self.index, 'status': message}
         return data
-        
+
     def _get_status(self, data):
         ''' Return download process status '''
         if data['playlist_index'] is not None:
             playlist_info = '%s/%s' % (data['playlist_index'], data['playlist_size'])
         else:
             playlist_info = ''
-        
+
         if data['status'] == 'pre_process':
             msg = 'Pre-Processing %s' % playlist_info
         elif data['status'] == 'download':
             msg = 'Downloading %s' % playlist_info
         elif data['status'] == 'post_process':
             msg = 'Post-Processing %s' % playlist_info
-        
+        else:
+            msg = ''
+
         return msg
-        
+
     def _get_youtubedl_path(self):
         ''' Retrieve youtube-dl path '''
         path = self.opt_manager.options['youtubedl_path']

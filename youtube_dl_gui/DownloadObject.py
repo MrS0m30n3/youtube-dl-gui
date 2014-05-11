@@ -24,7 +24,12 @@ class DownloadObject(object):
         download()
             Params: URL to download
                     Options list e.g. ['--help']
-            Return: On download error return False else True.
+            Return: See downlaoad() return codes
+
+            Return-Codes:
+                OK : 'Url downloaded successfully'
+                ERROR : 'Error occured while downloading'
+                ALREADY: 'Url is already downloaded'
 
         stop()
             Params: None
@@ -37,6 +42,11 @@ class DownloadObject(object):
         See self._init_data().
     '''
 
+    # download() return codes
+    OK = 0
+    ERROR = 1
+    ALREADY = -1
+
     STDERR_IGNORE = ''  # Default filter for our self._log() method
 
     def __init__(self, youtubedl_path, data_hook=None, logger=None):
@@ -44,6 +54,7 @@ class DownloadObject(object):
         self.data_hook = data_hook
         self.logger = logger
         self.files_list = []
+        self._return_code = 0
         self._proc = None
         self._init_data()
 
@@ -61,8 +72,7 @@ class DownloadObject(object):
         }
 
     def download(self, url, options):
-        ''' Download url using given options list. '''
-        error = False
+        self._return_code = self.OK
 
         cmd = self._get_cmd(url, options)
         cmd = self._encode_cmd(cmd)
@@ -77,7 +87,7 @@ class DownloadObject(object):
             synced = self._sync_data(data)
 
             if stderr != '':
-                error = True
+                self._return_code = self.ERROR
 
             if self.logger is not None:
                 self._log(stderr)
@@ -85,10 +95,9 @@ class DownloadObject(object):
             if self.data_hook is not None and synced:
                 self._hook_data()
 
-        return (not error)
+        return self._return_code
 
     def stop(self):
-        ''' Stop download process. '''
         if self._proc is not None:
             self._proc.kill()
 
@@ -104,13 +113,17 @@ class DownloadObject(object):
                 # Keep only the filename not the path on data['filename']
                 data['filename'] = get_filename(data['filename'])
 
+            if key == 'status':
+                # Set self._return_code to already downloaded
+                if data[key] == 'already_downloaded':
+                    self._return_code = self.ALREADY
+
             self._data[key] = data[key]
             synced = True
 
         return synced
 
     def _add_on_files_list(self, filename):
-        ''' Add filename on files_list. '''
         self.files_list.append(filename)
 
     def _log(self, data):
@@ -137,7 +150,6 @@ class DownloadObject(object):
         return stdout, stderr
 
     def _read_stdout(self):
-        ''' Read subprocess stdout. '''
         if self._proc is None:
             return ''
 
@@ -145,7 +157,6 @@ class DownloadObject(object):
         return stdout.rstrip()
 
     def _read_stderr(self):
-        ''' Read subprocess stderr. '''
         if self._proc is None:
             return ''
 
@@ -199,9 +210,11 @@ def extract_data(stdout):
     if header == 'download':
         data_dictionary['status'] = 'download'
 
+        # Get filename
         if stdout[0] == 'Destination:':
             data_dictionary['filename'] = ' '.join(stdout[1:])
 
+        # Get progress info
         elif '%' in stdout[0]:
             if stdout[0] == '100%':
                 data_dictionary['speed'] = ''
@@ -211,9 +224,14 @@ def extract_data(stdout):
                 data_dictionary['speed'] = stdout[4]
                 data_dictionary['eta'] = stdout[6]
 
+        # Get playlist info
         elif stdout[0] == 'Downloading' and stdout[1] == 'video':
             data_dictionary['playlist_index'] = stdout[2]
             data_dictionary['playlist_size'] = stdout[4]
+
+        # Get file already downloaded status
+        elif stdout[-1] == 'downloaded':
+            data_dictionary['status'] = 'already_downloaded'
 
     if header == 'ffmpeg':
         data_dictionary['status'] = 'post_process'

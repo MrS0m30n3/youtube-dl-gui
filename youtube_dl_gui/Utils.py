@@ -12,68 +12,74 @@ from os import (
 )
 
 from os.path import (
-    exists as file_exist,
-    getsize as get_filesize
+    getsize as get_filesize,
+    exists as file_exist
 )
 
-def remove_empty_items(array):
-    return [x for x in array if x != '']
-
-def remove_spaces(string):
-    return string.replace(' ', '')
-
-def string_to_array(string, char=' '):
-    return string.split(char)
-
-def preferredencoding():
-    try:
-        pref = locale.getpreferredencoding()
-        u'TEST'.encode(pref)
-    except:
-        pref = 'UTF-8'
-    return pref
 
 def get_encoding():
     if sys.version_info >= (3, 0):
         return None
+
     if sys.platform == 'win32':
-        return preferredencoding()
+        try:
+            enc = locale.getpreferredencoding()
+            u'TEST'.encode(enc)
+        except:
+            enc = 'UTF-8'
+        return enc
     return None
 
-def encode_list(data_list, encoding):
-    return [x.encode(encoding, 'ignore') for x in data_list]
+
+def encode_list(lst, encoding):
+    return [item.encode(encoding, 'ignore') for item in lst]
+
 
 def video_is_dash(video):
     return "DASH" in video
 
-def have_dash_audio(audio):
+
+def audio_is_dash(audio):
     return audio != "none"
 
-def get_path_seperator():
+
+def path_seperator():
+    ''' Return path seperator for current OS '''
     return '\\' if os_type == 'nt' else '/'
 
-def fix_path(path):
-    if path != '' and path[-1:] != get_path_seperator():
-        path += get_path_seperator()
-    path_list = path.split(get_path_seperator())
-    for i in range(len(path_list)):
-        if path_list[i] == '~':
-            path_list[i] = get_HOME()
-    return get_path_seperator().join(path_list)
 
-def get_HOME():
+def fix_path(path):
+    ''' Add path seperator at the end of the path
+    if not exist and replace ~ with user $HOME '''
+    if path == '':
+        return path
+
+    if path[-1:] != path_seperator():
+        path += path_seperator()
+
+    path_list = path.split(path_seperator())
+    for index, item in enumerate(path_list):
+        if item == '~':
+            path_list[index] = get_home()
+
+    path = path_seperator().join(path_list)
+    return path
+
+
+def get_home():
     return os.path.expanduser("~")
 
-def add_PATH(path):
-    os.environ["PATH"] += os.pathsep + path
-    
+
 def abs_path(filename):
-    path = os.path.abspath(filename).split(get_path_seperator())
+    path = os.path.realpath(os.path.abspath(filename))
+    path = path.split(path_seperator())
     path.pop()
-    return get_path_seperator().join(path)
-    
+    return path_seperator().join(path)
+
+
 def get_filename(path):
-    return path.split(get_path_seperator())[-1]
+    return path.split(path_seperator())[-1]
+
 
 def open_dir(path):
     if os_type == 'nt':
@@ -81,23 +87,27 @@ def open_dir(path):
     else:
         subprocess.call(('xdg-open', path))
 
+
 def check_path(path):
     if not file_exist(path):
         makedir(path)
-        
+
+
 def get_youtubedl_filename():
     youtubedl_fl = 'youtube-dl'
     if os_type == 'nt':
         youtubedl_fl += '.exe'
     return youtubedl_fl
-        
+
+
 def get_user_config_path():
     if os_type == 'nt':
         path = os.getenv('APPDATA')
     else:
-        path = fix_path(get_HOME()) + '.config'
+        path = fix_path(get_home()) + '.config'
     return path
-        
+
+
 def shutdown_sys(password=''):
     if os_type == 'nt':
         subprocess.call(['shutdown', '/s', '/t', '1'])
@@ -105,7 +115,8 @@ def shutdown_sys(password=''):
         if password == '':
             subprocess.call(['/sbin/shutdown', '-h', 'now'])
         else:
-            p = subprocess.Popen(['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
-                                 stdin=subprocess.PIPE)
-            p.communicate(password+'\n')
-            
+            p = subprocess.Popen(
+                ['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
+                stdin=subprocess.PIPE
+            )
+            p.communicate(password + '\n')

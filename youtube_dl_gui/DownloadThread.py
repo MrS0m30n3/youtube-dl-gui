@@ -28,6 +28,7 @@ class DownloadManager(Thread):
         self.download_list = download_list
         self.opt_manager = opt_manager
         self.log_manager = log_manager
+        self.stopped = False
         self._threads_lst = []
         self._running = True
         self._kill = False
@@ -68,6 +69,7 @@ class DownloadManager(Thread):
         self._callafter('close')
         self._running = False
         self._kill = kill
+        self.stopped = True
 
     def _download(self, url, index):
         ''' Download given url '''

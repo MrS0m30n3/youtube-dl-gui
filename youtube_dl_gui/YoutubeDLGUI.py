@@ -167,13 +167,15 @@ class MainFrame(wx.Frame):
     def status_bar_write(self, msg):
         self.status_bar.SetLabel(msg)
 
-    def fin_tasks(self):
+    def reset(self):
+        ''' Reset GUI and variables '''
         self.download_button.SetLabel('Download')
         self.update_button.Enable()
         self.download_thread.join()
         self.download_thread = None
         self.ori_url_list = []
-
+        
+    def fin_tasks(self):
         if self.opt_manager.options['shutdown']:
             shutdown_sys(self.opt_manager.options['sudo_password'])
         else:
@@ -194,9 +196,12 @@ class MainFrame(wx.Frame):
         if topic == 'download_manager':
             if data == 'close':
                 self.status_bar_write('Stopping downloads')
-            elif data == 'finish':
+            if data == 'finish':
                 self.status_bar_write('Done')
-                self.fin_tasks()
+                stopped = self.download_thread.stopped
+                self.reset()
+                if not stopped:
+                    self.fin_tasks()
 
     def update_handler(self, msg):
         if msg.data == 'finish':

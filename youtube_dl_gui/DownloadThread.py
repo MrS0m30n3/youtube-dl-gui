@@ -28,8 +28,8 @@ class DownloadManager(Thread):
         self.download_list = download_list
         self.opt_manager = opt_manager
         self.log_manager = log_manager
-        self.stopped = False
         self._threads_lst = []
+        self._stopped = False
         self._running = True
         self._kill = False
         self.start()
@@ -51,8 +51,12 @@ class DownloadManager(Thread):
                     sleep(0.1)
 
         self._terminate_all()
+        
         if not self._kill:
-            self._callafter('finish')
+            if self._stopped:
+                self._callafter('closed')
+            else:
+                self._callafter('finished')
 
     def downloading(self):
         ''' Return True if at least one download thread is alive '''
@@ -66,10 +70,10 @@ class DownloadManager(Thread):
         self.download_list.append(item)
 
     def close(self, kill=False):
-        self._callafter('close')
+        self._callafter('closing')
         self._running = False
+        self._stopped = True
         self._kill = kill
-        self.stopped = True
 
     def _download(self, url, index):
         ''' Download given url '''
@@ -139,18 +143,18 @@ class DownloadThread(Thread):
         if self.opt_manager.options['clear_dash_files']:
             self._clear_dash()
 
-        if return_code == self._dl_object.OK:
-            self._callafter(self._get_status_pack('Finished'))
-
-        elif return_code == self._dl_object.ERROR:
-            self._callafter(self._get_status_pack('Error'))
-
-        elif return_code == self._dl_object.ALREADY:
-            self._callafter(self._get_status_pack('Already-Downloaded'))
+        if return_code == DownloadObject.OK:
+            self._callafter({'status': 'Finished'})
+        elif return_code == DownloadObject.ERROR:
+            self._callafter({'status': 'Error', 'speed': '', 'eta': ''})
+        elif return_code == DownloadObject.STOPPED:
+            self._callafter({'status': 'Stopped', 'speed': '', 'eta': ''})
+        elif return_code == DownloadObject.ALREADY:
+            self._callafter({'status': 'Already-Downloaded'})
 
     def close(self):
         if self._dl_object is not None:
-            self._callafter(self._get_status_pack('Stopping'))
+            self._callafter({'status': 'Stopping'})
             self._dl_object.stop()
 
     def _clear_dash(self):
@@ -160,21 +164,17 @@ class DownloadThread(Thread):
                 remove_file(fl)
 
     def _data_hook(self, data):
-        ''' Add download index and send data back to caller '''
-        data['index'] = self.index
+        ''' Extract process status and call CallAfter '''
         data['status'] = self._get_status(data)
         self._callafter(data)
 
     def _callafter(self, data):
+        ''' Add self.index on data and send data back to caller '''
+        data['index'] = self.index
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
 
-    def _get_status_pack(self, message):
-        ''' Return simple status pack '''
-        data = {'index': self.index, 'status': message}
-        return data
-
     def _get_status(self, data):
-        ''' Return download process status '''
+        ''' Return download process status from data['status'] '''
         if data['playlist_index'] is not None:
             playlist_info = '%s/%s' % (data['playlist_index'], data['playlist_size'])
         else:
@@ -196,3 +196,4 @@ class DownloadThread(Thread):
         path = self.opt_manager.options['youtubedl_path']
         path = fix_path(path) + get_youtubedl_filename()
         return path
+

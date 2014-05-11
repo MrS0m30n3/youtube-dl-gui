@@ -24,13 +24,11 @@ class DownloadObject(object):
         download()
             Params: URL to download
                     Options list e.g. ['--help']
-            Return: See downlaoad() return codes
-
-            Return-Codes:
-                OK : 'Url downloaded successfully'
-                ERROR : 'Error occured while downloading'
-                ALREADY: 'Url is already downloaded'
-
+            
+            Return: DownlaodObject.OK
+                    DownloadObject.ERROR
+                    DownloadObject.STOPPED
+                    DownloadObject.ALREADY
         stop()
             Params: None
 
@@ -39,15 +37,21 @@ class DownloadObject(object):
                     instance has downloaded.
 
     Data_hook Keys
-        See self._init_data().
+        'playlist_index',
+        'playlist_size',
+        'filesize',
+        'filename',
+        'percent',
+        'status',
+        'speed',
+        'eta'
     '''
 
     # download() return codes
     OK = 0
     ERROR = 1
-    ALREADY = -1
-
-    STDERR_IGNORE = ''  # Default filter for our self._log() method
+    STOPPED = 2
+    ALREADY = 3
 
     def __init__(self, youtubedl_path, data_hook=None, logger=None):
         self.youtubedl_path = youtubedl_path
@@ -84,15 +88,13 @@ class DownloadObject(object):
             stdout, stderr = self._read()
 
             data = extract_data(stdout)
-            synced = self._sync_data(data)
+            updated = self._update_data(data)
 
             if stderr != '':
                 self._return_code = self.ERROR
-
-            if self.logger is not None:
                 self._log(stderr)
 
-            if self.data_hook is not None and synced:
+            if updated:
                 self._hook_data()
 
         return self._return_code
@@ -100,12 +102,14 @@ class DownloadObject(object):
     def stop(self):
         if self._proc is not None:
             self._proc.kill()
+            self._return_code = self.STOPPED
 
-    def _sync_data(self, data):
-        ''' Sync data between extract_data() dictionary and self._data.
-        Return True if synced else return False.
+    def _update_data(self, data):
+        ''' Update self._data from data.
+        Return True if updated else return False.
         '''
-        synced = False
+        updated = False
+        
         for key in data:
             if key == 'filename':
                 # Save full file path on files_list
@@ -117,22 +121,25 @@ class DownloadObject(object):
                 # Set self._return_code to already downloaded
                 if data[key] == 'already_downloaded':
                     self._return_code = self.ALREADY
+                    # Trash that key
+                    data[key] = None
 
             self._data[key] = data[key]
-            synced = True
+            updated = True
 
-        return synced
+        return updated
 
     def _add_on_files_list(self, filename):
         self.files_list.append(filename)
 
     def _log(self, data):
-        if data != self.STDERR_IGNORE:
+        if self.logger is not None:
             self.logger.log(data)
 
     def _hook_data(self):
         ''' Pass self._data back to data_hook. '''
-        self.data_hook(self._data)
+        if self.data_hook is not None:
+            self.data_hook(self._data)
 
     def _proc_is_alive(self):
         ''' Return True if self._proc is alive. '''
@@ -218,6 +225,7 @@ def extract_data(stdout):
         elif '%' in stdout[0]:
             if stdout[0] == '100%':
                 data_dictionary['speed'] = ''
+                data_dictionary['eta'] = ''
             else:
                 data_dictionary['percent'] = stdout[0]
                 data_dictionary['filesize'] = stdout[2]
@@ -240,3 +248,4 @@ def extract_data(stdout):
         data_dictionary['status'] = 'pre_process'
 
     return data_dictionary
+

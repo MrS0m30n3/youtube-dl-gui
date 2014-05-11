@@ -194,14 +194,15 @@ class MainFrame(wx.Frame):
             self.status_list.write(data)
 
         if topic == 'download_manager':
-            if data == 'close':
+            if data == 'closing':
                 self.status_bar_write('Stopping downloads')
-            if data == 'finish':
-                self.status_bar_write('Done')
-                stopped = self.download_thread.stopped
+            if data == 'closed':
+                self.status_bar_write('Downloads stopped')
                 self.reset()
-                if not stopped:
-                    self.fin_tasks()
+            if data == 'finished':
+                self.status_bar_write('Done')
+                self.reset()
+                self.fin_tasks()
 
     def update_handler(self, msg):
         if msg.data == 'finish':

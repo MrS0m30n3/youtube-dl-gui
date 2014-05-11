@@ -190,6 +190,10 @@ class MainFrame(wx.Frame):
         topic = msg.topic[0]
         data = msg.data
 
+        # Report downloading videos number
+        videos_no = self.download_thread.get_items_counter()
+        self.status_bar_write('Downloading %s videos' % videos_no)
+        
         if topic == 'download_thread':
             self.status_list.write(data)
 

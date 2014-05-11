@@ -38,12 +38,15 @@ class DownloadManager(Thread):
         while self._running:
             # If download list is not empty
             if self.download_list:
-                url, index = self._extract_data()
+                dl_item = self.download_list[0]
+                index = dl_item['index']
+                url = dl_item['url']
 
                 self._check_download_queue()
 
                 if self._running:
                     self._download(url, index)
+                    self.download_list.pop(0)
             else:
                 if not self.downloading():
                     self._running = False
@@ -69,6 +72,14 @@ class DownloadManager(Thread):
         ''' Add download item on download list '''
         self.download_list.append(item)
 
+    def get_items_counter(self):
+        ''' Return download videos counter '''
+        counter = 0
+        for thread in self._threads_lst:
+            if thread.is_alive():
+                counter += 1
+        return len(self.download_list) + counter
+        
     def close(self, kill=False):
         self._callafter('closing')
         self._running = False
@@ -79,13 +90,6 @@ class DownloadManager(Thread):
         ''' Download given url '''
         dl_thread = DownloadThread(url, index, self.opt_manager, self.log_manager)
         self._threads_lst.append(dl_thread)
-
-    def _extract_data(self):
-        ''' Extract url, index from download list '''
-        data = self.download_list.pop(0)
-        url = data['url']
-        index = data['index']
-        return url, index
 
     def _terminate_all(self):
         ''' Close down all download threads '''

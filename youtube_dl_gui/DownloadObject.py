@@ -212,40 +212,43 @@ def extract_data(stdout):
     if len(stdout) == 0:
         return data_dictionary
 
-    header = stdout.pop(0).replace('[', '').replace(']', '')
+    header = stdout.pop(0)
 
-    if header == 'download':
-        data_dictionary['status'] = 'download'
+    if header[0] == '[' and header[-1] == ']':
+        header = header.replace('[', '').replace(']', '')
+        
+        if header == 'download':
+            data_dictionary['status'] = 'download'
 
-        # Get filename
-        if stdout[0] == 'Destination:':
-            data_dictionary['filename'] = ' '.join(stdout[1:])
+            # Get filename
+            if stdout[0] == 'Destination:':
+                data_dictionary['filename'] = ' '.join(stdout[1:])
 
-        # Get progress info
-        elif '%' in stdout[0]:
-            if stdout[0] == '100%':
-                data_dictionary['speed'] = ''
-                data_dictionary['eta'] = ''
-            else:
-                data_dictionary['percent'] = stdout[0]
-                data_dictionary['filesize'] = stdout[2]
-                data_dictionary['speed'] = stdout[4]
-                data_dictionary['eta'] = stdout[6]
+            # Get progress info
+            if '%' in stdout[0]:
+                if stdout[0] == '100%':
+                    data_dictionary['speed'] = ''
+                    data_dictionary['eta'] = ''
+                else:
+                    data_dictionary['percent'] = stdout[0]
+                    data_dictionary['filesize'] = stdout[2]
+                    data_dictionary['speed'] = stdout[4]
+                    data_dictionary['eta'] = stdout[6]
 
-        # Get playlist info
-        elif stdout[0] == 'Downloading' and stdout[1] == 'video':
-            data_dictionary['playlist_index'] = stdout[2]
-            data_dictionary['playlist_size'] = stdout[4]
+            # Get playlist info
+            if stdout[0] == 'Downloading' and stdout[1] == 'video':
+                data_dictionary['playlist_index'] = stdout[2]
+                data_dictionary['playlist_size'] = stdout[4]
 
-        # Get file already downloaded status
-        elif stdout[-1] == 'downloaded':
-            data_dictionary['status'] = 'already_downloaded'
+            # Get file already downloaded status
+            if stdout[-1] == 'downloaded':
+                data_dictionary['status'] = 'already_downloaded'
 
-    if header == 'ffmpeg':
-        data_dictionary['status'] = 'post_process'
-
-    if header == 'youtube':
-        data_dictionary['status'] = 'pre_process'
+        elif header == 'ffmpeg':
+            data_dictionary['status'] = 'post_process'
+            
+        else:
+            data_dictionary['status'] = 'pre_process'
 
     return data_dictionary
 

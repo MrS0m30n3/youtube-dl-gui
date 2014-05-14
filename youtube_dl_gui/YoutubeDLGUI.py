@@ -81,7 +81,8 @@ class MainFrame(wx.Frame):
         self.init_gui()
 
         # set app icon
-        self.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_PNG))
+        if ICON is not None:
+            self.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_PNG))
 
         # set publisher for update thread
         Publisher.subscribe(self.update_handler, "update")

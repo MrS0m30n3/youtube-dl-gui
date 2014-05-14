@@ -229,7 +229,7 @@ class MainFrame(wx.Frame):
 
         if topic == 'download_thread':
             self.status_list.write(data)
-            if data['status'] == 'Finished':
+            if data['status'] == 'Finished' or data['status'] == 'Already-Downloaded':
                 self.successful_downloads += 1
 
         if topic == 'download_manager':

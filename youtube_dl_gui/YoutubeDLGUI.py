@@ -195,6 +195,10 @@ class MainFrame(wx.Frame):
             open_dir(self.opt_manager.options['save_path'])
 
     def fin_message(self):
+        if self.successful_downloads == 0:
+            self.status_bar_write('Done')
+            return
+
         current_time = time()
         dtime = get_time(current_time - self.timer)
 

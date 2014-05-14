@@ -16,6 +16,8 @@ from os.path import (
     exists as file_exist
 )
 
+from .data import __appname__
+
 
 def get_encoding():
     if sys.version_info >= (3, 0):
@@ -145,7 +147,7 @@ def get_time(seconds):
 
 
 def get_icon_path():
-    ''' Return icon path else return None. Search package_path/icons, 
+    ''' Return icon path else return None. Search package_path/icons, settings_path/icons
     $HOME/.icons, $XDG_DATA_DIRS/icons, /usr/share/pixmaps in that order'''
     SIZES = ('256x256', '128x128', '64x64', '32x32', '16x16')
     ICON_NAME = 'youtube-dl-gui_'
@@ -171,6 +173,15 @@ def get_icon_path():
         path.pop()
         path = path_seperator().join(path)
 
+    # Settings path icons/
+    path = fix_path(get_user_config_path()) + __appname__.lower()
+    path = fix_path(path) + 'icons'
+    for icon in ICONS_LIST:
+        temp_path = fix_path(path) + icon
+        
+        if file_exist(temp_path):
+            return temp_path
+
     # $HOME/.icons 
     path = fix_path(get_home()) + '.icons'
 
@@ -178,7 +189,7 @@ def get_icon_path():
         temp_path = fix_path(path) + icon
 
         if file_exist(temp_path):
-            return path
+            return temp_path
 
     # $XDG_DATA_DIRS/icons
     path = os.getenv('XDG_DATA_DIRS')

@@ -19,11 +19,11 @@ from .Utils import (
     get_user_config_path,
     video_is_dash,
     audio_is_dash,
+    get_icon_path,
     shutdown_sys,
     file_exist,
     get_time,
     fix_path,
-    abs_path,
     open_dir,
     os_type
 )
@@ -67,7 +67,7 @@ SUBS_LANG = [
     "German"
 ]
 
-ICON = fix_path(abs_path(__file__)) + 'icons/youtube-dl-gui.ico'
+ICON = get_icon_path()
 
 CONFIG_PATH = fix_path(get_user_config_path()) + __appname__.lower()
 
@@ -81,7 +81,7 @@ class MainFrame(wx.Frame):
         self.init_gui()
 
         # set app icon
-        self.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_ICO))
+        self.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_PNG))
 
         # set publisher for update thread
         Publisher.subscribe(self.update_handler, "update")

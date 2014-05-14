@@ -142,3 +142,64 @@ def get_time(seconds):
         dtime['seconds'] = seconds % 86400 % 3600 % 60
 
     return dtime
+
+
+def get_icon_path():
+    ''' Return icon path else return None. Search package_path/icons, 
+    $HOME/.icons, $XDG_DATA_DIRS/icons, /usr/share/pixmaps in that order'''
+    SIZES = ('256x256', '128x128', '64x64', '32x32', '16x16')
+    ICON_NAME = 'youtube-dl-gui_'
+    ICON_EXTENSION = '.png'
+
+    ICONS_LIST = [ICON_NAME + s + ICON_EXTENSION for s in SIZES]
+
+    # Package path backwards 2 times
+    # e.g. /home/user/test/t1/t2
+    # /home/user/test/t1/t2/icons
+    # /home/user/test/t1/icons
+    path = abs_path(__file__)
+    for i in range(2):
+        temp_path = fix_path(path) + 'icons'
+
+        for icon in ICONS_LIST:
+            p = fix_path(temp_path) + icon
+
+            if file_exist(p):
+                return p
+
+        path = path.split(path_seperator())
+        path.pop()
+        path = path_seperator().join(path)
+
+    # $HOME/.icons 
+    path = fix_path(get_home()) + '.icons'
+
+    for icon in ICONS_LIST:
+        temp_path = fix_path(path) + icon
+
+        if file_exist(temp_path):
+            return path
+
+    # $XDG_DATA_DIRS/icons
+    path = os.getenv('XDG_DATA_DIRS')
+    for temp_path in path.split(':'):
+        temp_path = fix_path(temp_path) + 'icons'
+        temp_path = fix_path(temp_path) + 'hicolor'
+
+        for size in SIZES:
+            p = fix_path(temp_path) + size
+            p = fix_path(p) + 'apps'
+            p = fix_path(p) + ICON_NAME + size + ICON_EXTENSION
+
+            if file_exist(p):
+                return p
+
+    # /usr/share/pixmaps
+    path = '/usr/share/pixmaps/'
+    for icon in ICONS_LIST:
+        temp_path = path + icon
+
+        if file_exist(temp_path):
+            return temp_path
+
+    return None

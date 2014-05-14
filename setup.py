@@ -22,4 +22,4 @@ setup(name=__appname__,
       url=__projecturl__,
       packages=['youtube_dl_gui'],
       data_files=[('lib/python2.7/site-packages/youtube_dl_gui/icons',
-                   ['youtube_dl_gui/icons/youtube-dl-gui.png'])])
+                   ['youtube_dl_gui/icons/youtube-dl-gui.ico'])])

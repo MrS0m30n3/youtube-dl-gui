@@ -67,7 +67,7 @@ SUBS_LANG = [
     "German"
 ]
 
-ICON = fix_path(abs_path(__file__)) + 'icons/youtube-dl-gui.png'
+ICON = fix_path(abs_path(__file__)) + 'icons/youtube-dl-gui.ico'
 
 CONFIG_PATH = fix_path(get_user_config_path()) + __appname__.lower()
 

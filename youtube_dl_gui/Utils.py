@@ -125,7 +125,7 @@ def shutdown_sys(password=''):
 def get_time(seconds):
     ''' Return day, hours, minutes, seconds from given seconds'''
     dtime = {'seconds': 0, 'minutes': 0, 'hours': 0, 'days': 0}
-    
+
     if seconds < 60:
         dtime['seconds'] = seconds
     elif seconds < 3600:
@@ -140,6 +140,5 @@ def get_time(seconds):
         dtime['hours'] = seconds % 86400 / 3600
         dtime['minutes'] = seconds % 86400 % 3600 / 60
         dtime['seconds'] = seconds % 86400 % 3600 % 60
-        
-    return dtime
 
+    return dtime

@@ -54,7 +54,7 @@ class DownloadManager(Thread):
                     sleep(0.1)
 
         self._terminate_all()
-        
+
         if not self._kill:
             if self._stopped:
                 self._callafter('closed')
@@ -79,7 +79,7 @@ class DownloadManager(Thread):
             if thread.is_alive():
                 counter += 1
         return len(self.download_list) + counter
-        
+
     def close(self, kill=False):
         self._callafter('closing')
         self._running = False
@@ -200,4 +200,3 @@ class DownloadThread(Thread):
         path = self.opt_manager.options['youtubedl_path']
         path = fix_path(path) + get_youtubedl_filename()
         return path
-

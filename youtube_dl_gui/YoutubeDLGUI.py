@@ -181,11 +181,11 @@ class MainFrame(wx.Frame):
         self.download_thread = None
         self.ori_url_list = []
         self.timer = 0
-        
+
     def fin_tasks(self):
         if self.opt_manager.options['shutdown']:
             ''' Store sudo password in a temp variable
-            because we will call _remove_sensitive_data() in 
+            because we will call _remove_sensitive_data() in
             self.opt_manager.save_to_file() '''
             sudo_password = self.opt_manager.options['sudo_password']
             self.save_options()
@@ -201,14 +201,14 @@ class MainFrame(wx.Frame):
     def fin_message(self):
         current_time = time()
         dtime = get_time(current_time - self.timer)
-        
+
         msg = 'Downloaded %s url(s) in ' % self.successful_downloads
-        
+
         days = int(dtime['days'])
         hours = int(dtime['hours'])
         minutes = int(dtime['minutes'])
         seconds = int(dtime['seconds'])
-        
+
         if days != 0:
             msg += '%s days, ' % days
         if hours != 0:
@@ -216,9 +216,9 @@ class MainFrame(wx.Frame):
         if minutes != 0:
             msg += '%s minutes, ' % minutes
         msg += '%s seconds ' % seconds
-        
+
         self.status_bar_write(msg)
-            
+
     def download_handler(self, msg):
         topic = msg.topic[0]
         data = msg.data
@@ -226,7 +226,7 @@ class MainFrame(wx.Frame):
         # Report downloading videos number
         videos_no = self.download_thread.get_items_counter()
         self.status_bar_write('Downloading %s url(s)' % videos_no)
-        
+
         if topic == 'download_thread':
             self.status_list.write(data)
             if data['status'] == 'Finished':
@@ -559,27 +559,27 @@ class PlaylistPanel(wx.Panel):
         StartTextBox = wx.BoxSizer(wx.HORIZONTAL)
         StartTextBox.Add(wx.StaticText(self, label='Playlist Start'))
         MainBoxSizer.Add(StartTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
-        
+
         StartBox = wx.BoxSizer(wx.HORIZONTAL)
         self.start_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.start_spinner.SetRange(1, 999)
         StartBox.Add(self.start_spinner)
         MainBoxSizer.Add(StartBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
-        
+
         StopTextBox = wx.BoxSizer(wx.HORIZONTAL)
         StopTextBox.Add(wx.StaticText(self, label='Playlist Stop'))
         MainBoxSizer.Add(StopTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
-        
+
         StopBox = wx.BoxSizer(wx.HORIZONTAL)
         self.stop_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.stop_spinner.SetRange(0, 999)
         StopBox.Add(self.stop_spinner)
         MainBoxSizer.Add(StopBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
-        
+
         MaxTextBox = wx.BoxSizer(wx.HORIZONTAL)
         MaxTextBox.Add(wx.StaticText(self, label='Max Downloads'))
         MainBoxSizer.Add(MaxTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
-        
+
         MaxBox = wx.BoxSizer(wx.HORIZONTAL)
         self.max_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.max_spinner.SetRange(0, 999)
@@ -1000,7 +1000,7 @@ class FilesystemPanel(wx.Panel):
         WriteThumnailBox = wx.BoxSizer(wx.HORIZONTAL)
         self.write_thumbnail_checkbox = wx.CheckBox(self, label='Write thumbnail to disk')
         WriteThumnailBox.Add(self.write_thumbnail_checkbox, flag=wx.LEFT, border=5)
-        box.Add(WriteThumnailBox, flag=wx.TOP, border=5 + self.win_border)        
+        box.Add(WriteThumnailBox, flag=wx.TOP, border=5 + self.win_border)
 
     def set_right_box(self, box):
         MinBox = wx.BoxSizer(wx.HORIZONTAL)

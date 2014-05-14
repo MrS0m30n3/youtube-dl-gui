@@ -24,7 +24,7 @@ class DownloadObject(object):
         download()
             Params: URL to download
                     Options list e.g. ['--help']
-            
+
             Return: DownlaodObject.OK
                     DownloadObject.ERROR
                     DownloadObject.STOPPED
@@ -109,7 +109,7 @@ class DownloadObject(object):
         Return True if updated else return False.
         '''
         updated = False
-        
+
         for key in data:
             if key == 'filename':
                 # Save full file path on files_list
@@ -216,7 +216,7 @@ def extract_data(stdout):
 
     if header[0] == '[' and header[-1] == ']':
         header = header.replace('[', '').replace(']', '')
-        
+
         if header == 'download':
             data_dictionary['status'] = 'download'
 
@@ -246,9 +246,8 @@ def extract_data(stdout):
 
         elif header == 'ffmpeg':
             data_dictionary['status'] = 'post_process'
-            
+
         else:
             data_dictionary['status'] = 'pre_process'
 
     return data_dictionary
-

@@ -83,8 +83,8 @@ class OptionsHandler(object):
         check_path(self.config_path)
 
         with open(self.settings_file, 'wb') as f:
-            self._remove_sensitive_data()
-            json.dump(self.options, f, indent=4, separators=(',', ': '))
+            options = self._get_options()
+            json.dump(options, f, indent=4, separators=(',', ': '))
 
     def _settings_are_valid(self, settings_dictionary):
         ''' Check settings.json dictionary and raise WrongSettings Exception '''
@@ -95,10 +95,16 @@ class OptionsHandler(object):
             if key not in settings_dictionary:
                 raise WrongSettings()
 
-    def _remove_sensitive_data(self):
-        ''' Remove sensitive data from self.options (passwords, etc) '''
-        for key in self.SENSITIVE_KEYS:
-            self.options[key] = ''
+    def _get_options(self):
+        ''' Return options dictionary without SENSITIVE_KEYS '''
+        temp_options = {}
+        for key in self.options:
+            if key in self.SENSITIVE_KEYS:
+                temp_options[key] = ''
+            else:
+                temp_options[key] = self.options[key]
+
+        return temp_options
 
     def _get_settings_file(self):
         ''' Return abs path to settings file '''

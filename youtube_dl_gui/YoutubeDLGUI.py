@@ -184,12 +184,8 @@ class MainFrame(wx.Frame):
 
     def fin_tasks(self):
         if self.opt_manager.options['shutdown']:
-            ''' Store sudo password in a temp variable
-            because we will call _remove_sensitive_data() in
-            self.opt_manager.save_to_file() '''
-            sudo_password = self.opt_manager.options['sudo_password']
             self.save_options()
-            shutdown_sys(sudo_password)
+            shutdown_sys(self.opt_manager.options['sudo_password'])
         else:
             self.finished_popup()
             self.open_destination_dir()

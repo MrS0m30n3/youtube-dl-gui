@@ -155,12 +155,13 @@ def get_icon_path():
 
     ICONS_LIST = [ICON_NAME + s + ICON_EXTENSION for s in SIZES]
 
-    # Package path backwards 2 times
-    # e.g. /home/user/test/t1/t2
+    # Package path backwards 3 times
+    # e.g. /home/user/test/t1/t2/t3
+    # /home/user/test/t1/t2/t3/icons
     # /home/user/test/t1/t2/icons
-    # /home/user/test/t1/icons
+    # /home/user/tet/t1/icons
     path = abs_path(__file__)
-    for i in range(2):
+    for i in range(3):
         temp_path = fix_path(path) + 'icons'
 
         for icon in ICONS_LIST:
@@ -193,17 +194,18 @@ def get_icon_path():
 
     # $XDG_DATA_DIRS/icons
     path = os.getenv('XDG_DATA_DIRS')
-    for temp_path in path.split(':'):
-        temp_path = fix_path(temp_path) + 'icons'
-        temp_path = fix_path(temp_path) + 'hicolor'
+    if path is not None:
+        for temp_path in path.split(':'):
+            temp_path = fix_path(temp_path) + 'icons'
+            temp_path = fix_path(temp_path) + 'hicolor'
 
-        for size in SIZES:
-            p = fix_path(temp_path) + size
-            p = fix_path(p) + 'apps'
-            p = fix_path(p) + ICON_NAME + size + ICON_EXTENSION
+            for size in SIZES:
+                p = fix_path(temp_path) + size
+                p = fix_path(p) + 'apps'
+                p = fix_path(p) + ICON_NAME + size + ICON_EXTENSION
 
-            if file_exist(p):
-                return p
+                if file_exist(p):
+                    return p
 
     # /usr/share/pixmaps
     path = '/usr/share/pixmaps/'

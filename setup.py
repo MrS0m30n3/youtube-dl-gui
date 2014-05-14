@@ -13,6 +13,9 @@ from youtube_dl_gui import (
     __descriptionfull__
 )
 
+icons_path = '/usr/local/share/icons/hicolor/'
+youtube_dl_icons = 'youtube_dl_gui/icons/youtube-dl-gui_'
+
 setup(
     name=__appname__,
     author=__author__,
@@ -24,19 +27,10 @@ setup(
     long_description=__descriptionfull__,
     packages=['youtube_dl_gui'],
     data_files=[
-        (
-            'lib/python2.7/site-packages/youtube_dl_gui/icons',
-            [
-                'youtube_dl_gui/icons/youtube-dl-gui.ico',
-                'youtube_dl_gui/icons/youtube-dl-gui_16x16.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_24x24.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_32x32.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_48x48.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_64x64.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_96x96.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_128x128.png',
-                'youtube_dl_gui/icons/youtube-dl-gui_256x256.png'
-            ]
-        )
+        (icons_path + '16x16/apps', [youtube_dl_icons + '16x16.png']),
+        (icons_path + '32x32/apps', [youtube_dl_icons + '32x32.png']),
+        (icons_path + '64x64/apps', [youtube_dl_icons + '64x64.png']),
+        (icons_path + '128x128/apps', [youtube_dl_icons + '128x128.png']),
+        (icons_path + '256x256/apps', [youtube_dl_icons + '256x256.png'])
     ]
 )

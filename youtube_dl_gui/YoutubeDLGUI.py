@@ -547,45 +547,46 @@ class ShutdownPanel(wx.Panel):
 
 class PlaylistPanel(wx.Panel):
 
-    win_border = 0
-
     def __init__(self, parent, opt_manager):
         wx.Panel.__init__(self, parent)
-
-        self.set_win_border()
 
         self.opt_manager = opt_manager
 
         MainBoxSizer = wx.StaticBoxSizer(wx.StaticBox(self, label='Playlist Options'), wx.VERTICAL)
 
-        MainBoxSizer.Add((-1, 10))
+        MainBoxSizer.Add((-1, 5))
 
+        StartTextBox = wx.BoxSizer(wx.HORIZONTAL)
+        StartTextBox.Add(wx.StaticText(self, label='Playlist Start'))
+        MainBoxSizer.Add(StartTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+        
         StartBox = wx.BoxSizer(wx.HORIZONTAL)
-        StartBox.Add(wx.StaticText(self, label='Start'), flag=wx.RIGHT, border=32)
-        self.start_spinner = wx.SpinCtrl(self, size=(60, -1))
+        self.start_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.start_spinner.SetRange(1, 999)
         StartBox.Add(self.start_spinner)
-        MainBoxSizer.Add(StartBox, flag=wx.TOP | wx.LEFT, border=20)
-
+        MainBoxSizer.Add(StartBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+        
+        StopTextBox = wx.BoxSizer(wx.HORIZONTAL)
+        StopTextBox.Add(wx.StaticText(self, label='Playlist Stop'))
+        MainBoxSizer.Add(StopTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+        
         StopBox = wx.BoxSizer(wx.HORIZONTAL)
-        StopBox.Add(wx.StaticText(self, label='Stop'), flag=wx.RIGHT, border=34)
-        self.stop_spinner = wx.SpinCtrl(self, size=(60, -1))
+        self.stop_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.stop_spinner.SetRange(0, 999)
         StopBox.Add(self.stop_spinner)
-        MainBoxSizer.Add(StopBox, flag=wx.TOP | wx.LEFT, border=20)
-
+        MainBoxSizer.Add(StopBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
+        
+        MaxTextBox = wx.BoxSizer(wx.HORIZONTAL)
+        MaxTextBox.Add(wx.StaticText(self, label='Max Downloads'))
+        MainBoxSizer.Add(MaxTextBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
+        
         MaxBox = wx.BoxSizer(wx.HORIZONTAL)
-        MaxBox.Add(wx.StaticText(self, label='Max DLs'), flag=wx.RIGHT, border=10 + self.win_border)
-        self.max_spinner = wx.SpinCtrl(self, size=(60, -1))
+        self.max_spinner = wx.SpinCtrl(self, size=(70, 20))
         self.max_spinner.SetRange(0, 999)
         MaxBox.Add(self.max_spinner)
-        MainBoxSizer.Add(MaxBox, flag=wx.TOP | wx.LEFT, border=20)
+        MainBoxSizer.Add(MaxBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=5)
 
         self.SetSizer(MainBoxSizer)
-
-    def set_win_border(self):
-        if os_type == 'nt':
-            self.win_border = 6
 
     def load_options(self):
         self.start_spinner.SetValue(self.opt_manager.options['playlist_start'])
@@ -981,6 +982,11 @@ class FilesystemPanel(wx.Panel):
         IgnoreErrorsBox.Add(self.ignore_errors_checkbox, flag=wx.LEFT, border=5)
         box.Add(IgnoreErrorsBox, flag=wx.TOP, border=15)
 
+        OpenDirBox = wx.BoxSizer(wx.HORIZONTAL)
+        self.open_dir_checkbox = wx.CheckBox(self, label='Open destination folder when done')
+        OpenDirBox.Add(self.open_dir_checkbox, flag=wx.LEFT, border=5)
+        box.Add(OpenDirBox, flag=wx.TOP, border=5 + self.win_border)
+
         WriteDescBox = wx.BoxSizer(wx.HORIZONTAL)
         self.writeDescriptionChk = wx.CheckBox(self, label='Write description to file')
         WriteDescBox.Add(self.writeDescriptionChk, flag=wx.LEFT, border=5)
@@ -994,12 +1000,7 @@ class FilesystemPanel(wx.Panel):
         WriteThumnailBox = wx.BoxSizer(wx.HORIZONTAL)
         self.write_thumbnail_checkbox = wx.CheckBox(self, label='Write thumbnail to disk')
         WriteThumnailBox.Add(self.write_thumbnail_checkbox, flag=wx.LEFT, border=5)
-        box.Add(WriteThumnailBox, flag=wx.TOP, border=5 + self.win_border)
-
-        OpenDirBox = wx.BoxSizer(wx.HORIZONTAL)
-        self.open_dir_checkbox = wx.CheckBox(self, label='Open destination folder when done')
-        OpenDirBox.Add(self.open_dir_checkbox, flag=wx.LEFT, border=5)
-        box.Add(OpenDirBox, flag=wx.TOP, border=5 + self.win_border)
+        box.Add(WriteThumnailBox, flag=wx.TOP, border=5 + self.win_border)        
 
     def set_right_box(self, box):
         MinBox = wx.BoxSizer(wx.HORIZONTAL)

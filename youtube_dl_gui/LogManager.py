@@ -31,7 +31,7 @@ class LogManager(object):
         self._write('', 'w')
 
     def log(self, data):
-        self._write(data, 'a')
+        self._write(data + '\n', 'a')
 
     def _write(self, data, mode):
         check_path(self.config_path)
@@ -40,7 +40,7 @@ class LogManager(object):
             if self.add_time:
                 t = '[%s] ' % strftime('%c')
                 fl.write(t)
-            fl.write(data + '\n')
+            fl.write(data)
 
     def _auto_clear_log(self):
         if self.size() > self.MAX_FILESIZE:

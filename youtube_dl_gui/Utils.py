@@ -16,8 +16,6 @@ from os.path import (
     exists as file_exist
 )
 
-from .data import __appname__
-
 
 def get_encoding():
     if sys.version_info >= (3, 0):
@@ -147,44 +145,17 @@ def get_time(seconds):
 
 
 def get_icon_path():
-    ''' Return icon path else return None. Search package_path/icons, settings_path/icons
-    $HOME/.icons, $XDG_DATA_DIRS/icons, /usr/share/pixmaps in that order'''
+    ''' Return path to the icon file if exist else return None.
+    Search __main__ dir, $XDG_DATA_DIRS, /usr/share/pixmaps in that order '''
+
     SIZES = ('256x256', '128x128', '64x64', '32x32', '16x16')
-    ICON_NAME = 'youtube-dl-gui_'
-    ICON_EXTENSION = '.png'
+    ICON_NAME = 'youtube-dl-gui_%s.png'
 
-    ICONS_LIST = [ICON_NAME + s + ICON_EXTENSION for s in SIZES]
+    ICONS_LIST = [ICON_NAME % size for size in SIZES]
 
-    # Package path backwards 3 times
-    # e.g. /home/user/test/t1/t2/t3
-    # /home/user/test/t1/t2/t3/icons
-    # /home/user/test/t1/t2/icons
-    # /home/user/tet/t1/icons
-    path = abs_path(__file__)
-    for i in range(3):
-        temp_path = fix_path(path) + 'icons'
-
-        for icon in ICONS_LIST:
-            p = fix_path(temp_path) + icon
-
-            if file_exist(p):
-                return p
-
-        path = path.split(path_seperator())
-        path.pop()
-        path = path_seperator().join(path)
-
-    # Settings path icons/
-    path = fix_path(get_user_config_path()) + __appname__.lower()
+    # __main__ dir
+    path = abs_path(sys.argv[0])
     path = fix_path(path) + 'icons'
-    for icon in ICONS_LIST:
-        temp_path = fix_path(path) + icon
-        
-        if file_exist(temp_path):
-            return temp_path
-
-    # $HOME/.icons 
-    path = fix_path(get_home()) + '.icons'
 
     for icon in ICONS_LIST:
         temp_path = fix_path(path) + icon
@@ -202,7 +173,7 @@ def get_icon_path():
             for size in SIZES:
                 p = fix_path(temp_path) + size
                 p = fix_path(p) + 'apps'
-                p = fix_path(p) + ICON_NAME + size + ICON_EXTENSION
+                p = fix_path(p) + ICON_NAME % size
 
                 if file_exist(p):
                     return p

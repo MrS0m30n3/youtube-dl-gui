@@ -1199,7 +1199,7 @@ class GeneralPanel(wx.Panel):
     def OnAbout(self, event):
         info = wx.AboutDialogInfo()
 
-        info.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_ICO))
+        info.SetIcon(wx.Icon(ICON, wx.BITMAP_TYPE_PNG))
         info.SetName(__appname__)
         info.SetVersion(__version__)
         info.SetDescription(__descriptionfull__)

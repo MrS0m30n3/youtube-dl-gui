@@ -439,7 +439,7 @@ class LogPanel(wx.Panel):
         ButtonsBox.Add(self.view_log_button, flag=wx.LEFT, border=20)
         MainBoxSizer.Add(ButtonsBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=15)
 
-        if self.opt_manager.options['enable_log']:
+        if logger is not None:
             LogPathBox = wx.BoxSizer(wx.HORIZONTAL)
             LogPathBox.Add(wx.StaticText(self, label='Path: ' + self.get_path()))
             MainBoxSizer.Add(LogPathBox, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.TOP, border=20)

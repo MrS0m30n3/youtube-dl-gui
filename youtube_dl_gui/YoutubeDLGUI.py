@@ -984,7 +984,7 @@ class FilesystemPanel(wx.Panel):
         box.Add(IgnoreErrorsBox, flag=wx.TOP, border=15)
 
         OpenDirBox = wx.BoxSizer(wx.HORIZONTAL)
-        self.open_dir_checkbox = wx.CheckBox(self, label='Open destination folder when done')
+        self.open_dir_checkbox = wx.CheckBox(self, label='Open download folder')
         OpenDirBox.Add(self.open_dir_checkbox, flag=wx.LEFT, border=5)
         box.Add(OpenDirBox, flag=wx.TOP, border=5 + self.win_border)
 

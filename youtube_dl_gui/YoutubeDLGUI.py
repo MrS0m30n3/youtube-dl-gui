@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python2
 
 from time import time
 
@@ -332,6 +332,8 @@ class MainFrame(wx.Frame):
         if self.download_thread is not None:
             self.download_thread.close(kill=True)
             self.download_thread.join()
+        if self.update_thread is not None:
+            self.update_thread.join()
         self.save_options()
         self.Destroy()
 

@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python2
 
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1

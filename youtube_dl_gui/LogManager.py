@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python2
 
 import wx
 
@@ -20,6 +20,7 @@ class LogManager(object):
         self.config_path = config_path
         self.add_time = add_time
         self.log_file = self._get_log_file()
+        self._init_log()
         self._auto_clear_log()
 
     def size(self):
@@ -42,6 +43,10 @@ class LogManager(object):
                 fl.write(t)
             fl.write(data)
 
+    def _init_log(self):
+        if not file_exist(self.log_file):
+            self._write('', 'w')
+            
     def _auto_clear_log(self):
         if self.size() > self.MAX_FILESIZE:
             self.clear()

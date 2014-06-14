@@ -35,7 +35,7 @@ from .data import (
     __descriptionfull__
 )
 
-AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a"]
+AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis"]
 
 VIDEO_FORMATS = [
     "default",

@@ -1,13 +1,11 @@
 #!/usr/bin/env python2
 
-import subprocess
+''' Python module to download videos using youtube-dl & subprocess. '''
 
-from .Utils import (
-    get_encoding,
-    get_filename,
-    encode_list,
-    os_type
-)
+import os
+import sys
+import locale
+import subprocess
 
 
 class DownloadObject(object):
@@ -32,7 +30,14 @@ class DownloadObject(object):
         stop()
             Params: None
 
-    Acessible Variables
+            Return: None
+
+        clear_dash()
+            Params: None
+
+            Return: None
+
+    Properties
         files_list: Python list that contains all the files DownloadObject
                     instance has downloaded.
 
@@ -57,13 +62,11 @@ class DownloadObject(object):
         self.youtubedl_path = youtubedl_path
         self.data_hook = data_hook
         self.logger = logger
-        self.files_list = []
-        self._return_code = 0
-        self._proc = None
-        self._init_data()
 
-    def _init_data(self):
-        ''' Keep the __init__() clean. '''
+        self._return_code = 0
+        self._files_list = []
+        self._proc = None
+
         self._data = {
             'playlist_index': None,
             'playlist_size': None,
@@ -75,34 +78,47 @@ class DownloadObject(object):
             'eta': None
         }
 
+    @property
+    def files_list(self):
+        ''' Return list that contains all files
+        DownloadObject has downloaded.
+        '''
+        return self._files_list
+
     def download(self, url, options):
+        ''' Download given url using youtube-dl &
+        return self._return_code.
+        '''
         self._return_code = self.OK
 
         cmd = self._get_cmd(url, options)
-        cmd = self._encode_cmd(cmd)
-        info = self._get_process_info()
-
-        self._proc = self._create_process(cmd, info)
+        self._create_process(cmd)
 
         while self._proc_is_alive():
             stdout, stderr = self._read()
 
             data = extract_data(stdout)
-            updated = self._update_data(data)
+
+            if self._update_data(data):
+                self._hook_data()
 
             if stderr != '':
                 self._return_code = self.ERROR
                 self._log(stderr)
 
-            if updated:
-                self._hook_data()
-
         return self._return_code
 
     def stop(self):
-        if self._proc is not None:
+        ''' Stop downloading. '''
+        if self._proc_is_alive():
             self._proc.kill()
             self._return_code = self.STOPPED
+
+    def clear_dash(self):
+        ''' Clear DASH files after ffmpeg mux. '''
+        for dash_file in self._files_list:
+            if os.path.exists(dash_file):
+                os.remove(dash_file)
 
     def _update_data(self, data):
         ''' Update self._data from data.
@@ -112,27 +128,31 @@ class DownloadObject(object):
 
         for key in data:
             if key == 'filename':
-                # Save full file path on files_list
+                # Save full file path on self._files_list
                 self._add_on_files_list(data['filename'])
-                # Keep only the filename not the path on data['filename']
-                data['filename'] = get_filename(data['filename'])
+                # Keep only the filename on data['filename']
+                data['filename'] = os.path.basename(data['filename'])
 
             if key == 'status':
                 # Set self._return_code to already downloaded
-                if data[key] == 'already_downloaded':
+                if data[key] == 'Already Downloaded':
                     self._return_code = self.ALREADY
                     # Trash that key
                     data[key] = None
 
             self._data[key] = data[key]
-            updated = True
+
+            if not updated:
+                updated = True
 
         return updated
 
     def _add_on_files_list(self, filename):
-        self.files_list.append(filename)
+        ''' Add filename on self._files_list. '''
+        self._files_list.append(filename)
 
     def _log(self, data):
+        ''' Log data using self.logger. '''
         if self.logger is not None:
             self.logger.log(data)
 
@@ -145,109 +165,106 @@ class DownloadObject(object):
         ''' Return True if self._proc is alive. '''
         if self._proc is None:
             return False
+
         return self._proc.poll() is None
 
     def _read(self):
         ''' Read subprocess stdout, stderr. '''
-        stdout = self._read_stdout()
+        stdout = stderr = ''
+
+        stdout = self._read_stream(self._proc.stdout)
+
         if stdout == '':
-            stderr = self._read_stderr()
-        else:
-            stderr = ''
+            stderr = self._read_stream(self._proc.stderr)
+
         return stdout, stderr
 
-    def _read_stdout(self):
+    def _read_stream(self, stream):
+        ''' Read subprocess stream. '''
         if self._proc is None:
             return ''
 
-        stdout = self._proc.stdout.readline()
-        return stdout.rstrip()
-
-    def _read_stderr(self):
-        if self._proc is None:
-            return ''
-
-        stderr = self._proc.stderr.readline()
-        return stderr.rstrip()
-
-    def _create_process(self, cmd, info):
-        return subprocess.Popen(cmd,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE,
-                                startupinfo=info)
+        data = stream.readline()
+        return data.rstrip()
 
     def _get_cmd(self, url, options):
         ''' Return command for subprocess. '''
-        if os_type == 'nt':
+        if os.name == 'nt':
             cmd = [self.youtubedl_path] + options + [url]
         else:
             cmd = ['python', self.youtubedl_path] + options + [url]
+
         return cmd
 
-    def _encode_cmd(self, cmd):
-        ''' Encode command for subprocess.
-        Refer to http://stackoverflow.com/a/9951851/35070
-        '''
-        encoding = get_encoding()
-        if encoding is not None:
-            cmd = encode_list(cmd, encoding)
-        return cmd
+    def _create_process(self, cmd):
+        ''' Create new subprocess. '''
+        encoding = info = None
 
-    def _get_process_info(self):
-        ''' Hide subprocess window on Windows. '''
-        if os_type == 'nt':
+        # Hide subprocess window on Windows
+        if os.name == 'nt':
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            return info
-        else:
-            return None
+
+        # Encode command for subprocess
+        # Refer to http://stackoverflow.com/a/9951851/35070
+        if sys.version_info < (3, 0) and sys.platform == 'win32':
+            try:
+                encoding = locale.getpreferredencoding()
+                u'TEST'.encode(encoding)
+            except:
+                encoding = 'UTF-8'
+
+        if encoding is not None:
+            cmd = [item.encode(encoding, 'ignore') for item in cmd]
+
+        self._proc = subprocess.Popen(cmd,
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE,
+                                      startupinfo=info)
 
 
 def extract_data(stdout):
     ''' Extract data from youtube-dl stdout. '''
     data_dictionary = {}
 
-    stdout = [s for s in stdout.split(' ') if s != '']
+    stdout = [string for string in stdout.split(' ') if string != '']
 
     if len(stdout) == 0:
         return data_dictionary
 
     header = stdout.pop(0)
 
-    if header[0] == '[' and header[-1] == ']':
-        header = header.replace('[', '').replace(']', '')
+    if header == '[download]':
+        data_dictionary['status'] = 'Downloading'
 
-        if header == 'download':
-            data_dictionary['status'] = 'download'
+        # Get filename
+        if stdout[0] == 'Destination:':
+            data_dictionary['filename'] = ' '.join(stdout[1:])
 
-            # Get filename
-            if stdout[0] == 'Destination:':
-                data_dictionary['filename'] = ' '.join(stdout[1:])
+        # Get progress info
+        if '%' in stdout[0]:
+            if stdout[0] == '100%':
+                data_dictionary['speed'] = ''
+                data_dictionary['eta'] = ''
+            else:
+                data_dictionary['percent'] = stdout[0]
+                data_dictionary['filesize'] = stdout[2]
+                data_dictionary['speed'] = stdout[4]
+                data_dictionary['eta'] = stdout[6]
 
-            # Get progress info
-            if '%' in stdout[0]:
-                if stdout[0] == '100%':
-                    data_dictionary['speed'] = ''
-                    data_dictionary['eta'] = ''
-                else:
-                    data_dictionary['percent'] = stdout[0]
-                    data_dictionary['filesize'] = stdout[2]
-                    data_dictionary['speed'] = stdout[4]
-                    data_dictionary['eta'] = stdout[6]
+        # Get playlist info
+        if stdout[0] == 'Downloading' and stdout[1] == 'video':
+            data_dictionary['playlist_index'] = stdout[2]
+            data_dictionary['playlist_size'] = stdout[4]
 
-            # Get playlist info
-            if stdout[0] == 'Downloading' and stdout[1] == 'video':
-                data_dictionary['playlist_index'] = stdout[2]
-                data_dictionary['playlist_size'] = stdout[4]
+        # Get file already downloaded status
+        if stdout[-1] == 'downloaded':
+            data_dictionary['status'] = 'Already Downloaded'
 
-            # Get file already downloaded status
-            if stdout[-1] == 'downloaded':
-                data_dictionary['status'] = 'already_downloaded'
+    elif header == '[ffmpeg]':
+        data_dictionary['status'] = 'Post Processing'
 
-        elif header == 'ffmpeg':
-            data_dictionary['status'] = 'post_process'
-
-        else:
-            data_dictionary['status'] = 'pre_process'
+    else:
+        data_dictionary['status'] = 'Pre Processing'
 
     return data_dictionary

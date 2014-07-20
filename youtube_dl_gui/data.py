@@ -10,7 +10,8 @@ __description__ = 'Youtube-dl GUI'
 __descriptionfull__ = '''A cross platform front-end GUI of the popular
 youtube-dl written in wxPython'''
 
-__licensefull__ = '''This is free and unencumbered software released into the public domain.
+__licensefull__ = '''
+This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
 distribute this software, either in source code form or as a compiled

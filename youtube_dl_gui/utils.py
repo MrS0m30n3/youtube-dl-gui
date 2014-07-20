@@ -1,51 +1,20 @@
 #!/usr/bin/env python2
 
+''' Contains youtube-dlG util functions. '''
+
 import os
 import sys
-import locale
 import subprocess
 
-from os import (
-    remove as remove_file,
-    makedirs as makedir,
-    name as os_type,
-)
 
-from os.path import (
-    getsize as get_filesize,
-    exists as file_exist
-)
-
-
-def get_encoding():
-    if sys.version_info >= (3, 0):
-        return None
-
-    if sys.platform == 'win32':
-        try:
-            enc = locale.getpreferredencoding()
-            u'TEST'.encode(enc)
-        except:
-            enc = 'UTF-8'
-        return enc
-    return None
-
-
-def encode_list(lst, encoding):
-    return [item.encode(encoding, 'ignore') for item in lst]
-
-
-def video_is_dash(video):
-    return "DASH" in video
-
-
-def audio_is_dash(audio):
-    return audio != "none"
+def is_dash(word):
+    ''' Return True if "DASH" in word. '''
+    return "DASH" in word
 
 
 def path_seperator():
-    ''' Return path seperator for current OS '''
-    return '\\' if os_type == 'nt' else '/'
+    ''' Return path seperator for current OS. '''
+    return '\\' if os.name == 'nt' else '/'
 
 
 def fix_path(path):
@@ -58,72 +27,79 @@ def fix_path(path):
         path += path_seperator()
 
     path_list = path.split(path_seperator())
+
     for index, item in enumerate(path_list):
         if item == '~':
             path_list[index] = get_home()
 
     path = path_seperator().join(path_list)
+
     return path
 
 
 def get_home():
+    ''' Return user $HOME path. '''
     return os.path.expanduser("~")
 
 
 def abs_path(filename):
+    ''' Return absolute path. '''
     path = os.path.realpath(os.path.abspath(filename))
-    path = path.split(path_seperator())
-    path.pop()
-    return path_seperator().join(path)
-
-
-def get_filename(path):
-    return path.split(path_seperator())[-1]
+    return os.path.dirname(path)
 
 
 def open_dir(path):
-    if os_type == 'nt':
+    ''' Open path using default file navigator. '''
+    if os.name == 'nt':
         os.startfile(path)
     else:
         subprocess.call(('xdg-open', path))
 
 
 def check_path(path):
-    if not file_exist(path):
-        makedir(path)
+    ''' Create path if not exist. '''
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 
 def get_youtubedl_filename():
+    ''' Return youtube-dl executable name. '''
     youtubedl_fl = 'youtube-dl'
-    if os_type == 'nt':
+    if os.name == 'nt':
         youtubedl_fl += '.exe'
+
     return youtubedl_fl
 
 
-def get_user_config_path():
-    if os_type == 'nt':
+def get_config_path():
+    ''' Return user config path. Windows=AppData, Linux=~/.config. '''
+    if os.name == 'nt':
         path = os.getenv('APPDATA')
     else:
         path = fix_path(get_home()) + '.config'
+
     return path
 
 
 def shutdown_sys(password=''):
-    if os_type == 'nt':
+    ''' Shutdown system. !!!On Linux you need to provide
+    password for sudo if you dont have admin prev.
+    '''
+    if os.name == 'nt':
         subprocess.call(['shutdown', '/s', '/t', '1'])
     else:
         if password == '':
             subprocess.call(['/sbin/shutdown', '-h', 'now'])
         else:
-            p = subprocess.Popen(
+            shutdown_proc = subprocess.Popen(
                 ['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
                 stdin=subprocess.PIPE
             )
-            p.communicate(password + '\n')
+            shutdown_proc.communicate(password + '\n')
 
 
 def get_time(seconds):
-    ''' Return day, hours, minutes, seconds from given seconds'''
+    ''' Return day, hours, minutes, seconds from given seconds. '''
     dtime = {'seconds': 0, 'minutes': 0, 'hours': 0, 'days': 0}
 
     if seconds < 60:
@@ -146,7 +122,7 @@ def get_time(seconds):
 
 def get_icon_path():
     ''' Return path to the icon file if exist else return None.
-    Search __main__ dir, $XDG_DATA_DIRS, /usr/share/pixmaps in that order '''
+    Search __main__ dir, $XDG_DATA_DIRS, /usr/share/pixmaps in that order. '''
 
     SIZES = ('256x256', '128x128', '64x64', '32x32', '16x16')
     ICON_NAME = 'youtube-dl-gui_%s.png'
@@ -154,36 +130,34 @@ def get_icon_path():
     ICONS_LIST = [ICON_NAME % size for size in SIZES]
 
     # __main__ dir
-    path = abs_path(sys.argv[0])
-    path = fix_path(path) + 'icons'
+    path = os.path.join(abs_path(sys.argv[0]), 'icons')
 
     for icon in ICONS_LIST:
-        temp_path = fix_path(path) + icon
+        icon_path = os.path.join(path, icon)
 
-        if file_exist(temp_path):
-            return temp_path
+        if os.path.exists(icon_path):
+            return icon_path
 
     # $XDG_DATA_DIRS/icons
     path = os.getenv('XDG_DATA_DIRS')
+
     if path is not None:
         for temp_path in path.split(':'):
-            temp_path = fix_path(temp_path) + 'icons'
-            temp_path = fix_path(temp_path) + 'hicolor'
+            temp_path = os.path.join(temp_path, 'icons', 'hicolor')
 
             for size in SIZES:
-                p = fix_path(temp_path) + size
-                p = fix_path(p) + 'apps'
-                p = fix_path(p) + ICON_NAME % size
+                icon_path = os.path.join(temp_path, size, 'apps')
+                icon_path = fix_path(icon_path) + ICON_NAME % size
 
-                if file_exist(p):
-                    return p
+                if os.path.exists(icon_path):
+                    return icon_path
 
     # /usr/share/pixmaps
     path = '/usr/share/pixmaps/'
     for icon in ICONS_LIST:
-        temp_path = path + icon
+        icon_path = path + icon
 
-        if file_exist(temp_path):
-            return temp_path
+        if os.path.exists(icon_path):
+            return icon_path
 
     return None

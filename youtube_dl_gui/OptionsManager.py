@@ -1,27 +1,59 @@
 #!/usr/bin/env python2
 
-import json
+''' Youtube-dlG module to handle settings. '''
 
-from .Utils import (
+import json
+import os.path
+
+from .utils import (
     check_path,
-    file_exist,
     get_home,
     fix_path
 )
 
 
-class OptionsHandler(object):
+class OptionsManager(object):
+
+    '''
+    Manage youtube-dlG settings.
+
+    Params:
+        config_path: Absolute path where OptionsManager
+                     should store settings file.
+
+    Accessible Methods
+        load_default()
+            Params: None
+
+            Return: None
+
+        load_from_file()
+            Params: None
+
+            Return: None
+
+        save_to_file()
+            Params: None
+
+            Return: None
+
+    Accessible Variables
+        settings_file: Absolute path to settings file.
+        options: Python dictionary that contains all the options.
+    '''
 
     SETTINGS_FILENAME = 'settings.json'
     SENSITIVE_KEYS = ('sudo_password', 'password', 'video_password')
 
     def __init__(self, config_path):
         self.config_path = config_path
-        self.settings_file = self._get_settings_file()
+        self.settings_file = fix_path(config_path) + self.SETTINGS_FILENAME
+        self.options = {}
         self.load_default()
         self.load_from_file()
 
     def load_default(self):
+        ''' Load default options. '''
         self.options = {
             'save_path': get_home(),
             'video_format': 'default',
@@ -65,39 +97,44 @@ class OptionsHandler(object):
         }
 
     def load_from_file(self):
-        if not file_exist(self.settings_file):
-            self.load_default()
+        ''' Load options from settings file. '''
+        if not os.path.exists(self.settings_file):
             return
 
-        with open(self.settings_file, 'rb') as f:
+        with open(self.settings_file, 'rb') as settings_file:
             try:
-                options = json.load(f)
-
-                # Raise WrongSettings Exception if NOT
-                self._settings_are_valid(options)
-                self.options = options
+                options = json.load(settings_file)
             except:
                 self.load_default()
 
+        if self._settings_are_valid(options):
+            self.options = options
+
     def save_to_file(self):
+        ''' Save options to settings file. '''
         check_path(self.config_path)
 
-        with open(self.settings_file, 'wb') as f:
+        with open(self.settings_file, 'wb') as settings_file:
             options = self._get_options()
-            json.dump(options, f, indent=4, separators=(',', ': '))
+            json.dump(options,
+                      settings_file,
+                      indent=4,
+                      separators=(',', ': '))
 
     def _settings_are_valid(self, settings_dictionary):
-        ''' Check settings.json dictionary and raise WrongSettings Exception '''
-        if len(settings_dictionary) != len(self.options):
-            raise WrongSettings()
-
+        ''' Check settings.json dictionary. Return True if
+        settings.json dictionary is valid, else return False.
+        '''
         for key in self.options:
             if key not in settings_dictionary:
-                raise WrongSettings()
+                return False
+
+        return True
 
     def _get_options(self):
-        ''' Return options dictionary without SENSITIVE_KEYS '''
+        ''' Return options dictionary without SENSITIVE_KEYS. '''
         temp_options = {}
+
         for key in self.options:
             if key in self.SENSITIVE_KEYS:
                 temp_options[key] = ''
@@ -105,15 +142,3 @@ class OptionsHandler(object):
                 temp_options[key] = self.options[key]
 
         return temp_options
-
-    def _get_settings_file(self):
-        ''' Return abs path to settings file '''
-        return fix_path(self.config_path) + self.SETTINGS_FILENAME
-
-
-class WrongSettings(Exception):
-    ''' Wrong settings exception.
-
-    This exception will be raised if settings dictionary is not valid.
-    '''
-    pass

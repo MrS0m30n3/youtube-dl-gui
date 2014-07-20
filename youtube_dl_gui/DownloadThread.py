@@ -1,202 +1,263 @@
 #!/usr/bin/env python2
 
-from time import sleep
+''' Youtube-dlG module to download videos & handle each download. '''
+
+import time
 from threading import Thread
 
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
-from .YDLOptionsParser import OptionsParser
+from .OptionsParser import OptionsParser
 from .DownloadObject import DownloadObject
 
-from .Utils import (
+from .utils import (
     get_youtubedl_filename,
-    remove_file,
-    file_exist,
     fix_path
 )
 
 
 class DownloadManager(Thread):
 
-    PUBLISHER_TOPIC = 'download_manager'
+    '''
+    Manage youtube-dlG download list.
+
+    Params
+        threads_list: Python list that contains DownloadThread objects.
+
+        update_thread: UpdateThread.py thread.
+        
+    Accessible Methods
+        close()
+            Params: None
+
+            Return: None
+
+        add_thread()
+            Params: DownloadThread object
+
+            Return: None
+
+        alive_threads()
+            Params: None
+
+            Return: Number of alive threads.
+
+        not_finished()
+            Params: None
+
+            Return: Number of threads not finished yet.
+
+    Properties
+        successful_downloads: Number of successful downloads.
+        time: Time (seconds) it took for all downloads to complete.
+    '''
+
+    PUBLISHER_TOPIC = 'dlmanager'
     MAX_DOWNLOAD_THREADS = 3
 
-    def __init__(self, download_list, opt_manager, log_manager=None):
+    def __init__(self, threads_list, update_thread=None):
         super(DownloadManager, self).__init__()
-        self.download_list = download_list
-        self.opt_manager = opt_manager
-        self.log_manager = log_manager
-        self._threads_lst = []
-        self._stopped = False
+        self.threads_list = threads_list
+        self.update_thread = update_thread
+        self._successful_downloads = 0
         self._running = True
-        self._kill = False
+        self._time = 0
         self.start()
 
     def run(self):
-        while self._running:
-            # If download list is not empty
-            if self.download_list:
-                dl_item = self.download_list[0]
-                index = dl_item['index']
-                url = dl_item['url']
+        if self.update_thread is not None:
+            self.update_thread.join()
+        
+        self._time = time.time()
 
-                self._check_download_queue()
+        # Main loop
+        while self._running and not self._threads_finished():
+            for thread in self.threads_list:
+                if not self._running:
+                    break
 
-                if self._running:
-                    self._download(url, index)
-                    self.download_list.pop(0)
-            else:
-                if not self.downloading():
-                    self._running = False
-                else:
-                    sleep(0.1)
+                self._start_thread(thread)
+                
+            time.sleep(0.1)
 
-        self._terminate_all()
-
-        if not self._kill:
-            if self._stopped:
-                self._callafter('closed')
-            else:
-                self._callafter('finished')
-
-    def downloading(self):
-        ''' Return True if at least one download thread is alive '''
-        for thread in self._threads_lst:
+        # Make sure no child thread is alive
+        for thread in self.threads_list:
             if thread.is_alive():
-                return True
-        return False
-
-    def add_download_item(self, item):
-        ''' Add download item on download list '''
-        self.download_list.append(item)
-
-    def get_items_counter(self):
-        ''' Return download videos counter '''
-        counter = 0
-        for thread in self._threads_lst:
-            if thread.is_alive():
-                counter += 1
-        return len(self.download_list) + counter
-
-    def close(self, kill=False):
-        self._callafter('closing')
-        self._running = False
-        self._stopped = True
-        self._kill = kill
-
-    def _download(self, url, index):
-        ''' Download given url '''
-        dl_thread = DownloadThread(url, index, self.opt_manager, self.log_manager)
-        self._threads_lst.append(dl_thread)
-
-    def _terminate_all(self):
-        ''' Close down all download threads '''
-        for thread in self._threads_lst:
-            if thread.is_alive():
-                thread.close()
                 thread.join()
 
-    def _check_download_queue(self):
-        while len(self._threads_lst) >= self.MAX_DOWNLOAD_THREADS:
-            sleep(1)
-            for thread in self._threads_lst:
-                if not self._running:
-                    return
-                if not thread.is_alive():
-                    self._threads_lst.remove(thread)
+            # Collect thread status
+            if thread.status == 0:
+                self._successful_downloads += 1
+
+        self._time = time.time() - self._time
+
+        if not self._running:
+            self._callafter('closed')
+        else:
+            self._callafter('finished')
+
+    @property
+    def time(self):
+        ''' Return time it took for every download to finish. '''
+        return self._time
+
+    @property
+    def successful_downloads(self):
+        ''' Return number of successful downloads. '''
+        return self._successful_downloads
+
+    def close(self):
+        ''' Close DownloadManager. '''
+        self._callafter('closing')
+        self._running = False
+        for thread in self.threads_list:
+            thread.close()
+
+    def add_thread(self, thread):
+        ''' Add new DownloadThread on self.threads_list. '''
+        self.threads_list.append(thread)
+
+    def alive_threads(self):
+        ''' Return number of alive threads in self.threads_list. '''
+        counter = 0
+
+        for thread in self.threads_list:
+            if thread.is_alive():
+                counter += 1
+
+        return counter
+
+    def not_finished(self):
+        ''' Return number of threads not finished. '''
+        counter = 0
+
+        for thread in self.threads_list:
+            if thread.ident is None or thread.is_alive():
+                counter += 1
+
+        return counter
+
+    def _start_thread(self, thread):
+        ''' Start given thread if not download queue full. '''
+        while self.alive_threads() >= self.MAX_DOWNLOAD_THREADS:
+            time.sleep(1)
+
+            if not self._running:
+                break
+
+        # If thread has not started
+        if thread.ident is None and self._running:
+            thread.start()
+
+    def _threads_finished(self):
+        ''' Return True if all threads in self.threads_list have finished. '''
+        for thread in self.threads_list:
+            # If thread has not started or thread is alive
+            if thread.ident is None or thread.is_alive():
+                return False
+
+        return True
 
     def _callafter(self, data):
+        ''' CallAfter wrapper. '''
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
 
 
 class DownloadThread(Thread):
 
     '''
+    DownloadObject Thread wrapper for youtube-dlg.
+
     Params
-        url: URL to download.
-        index: ListCtrl index for the current DownloadThread.
-        opt_manager: OptionsHandler.OptionsHandler object.
+        url: Video url to download.
+        index: ListCtrl corresponding row for current thread.
+        opt_manager: OptionsManager.OptionsManager object.
         log_manager: Any logger which implements log().
 
     Accessible Methods
         close()
             Params: None
+
+            Return: None
+
+    Properties
+        status: Thread status.
     '''
 
-    PUBLISHER_TOPIC = 'download_thread'
+    PUBLISHER_TOPIC = 'dlthread'
 
     def __init__(self, url, index, opt_manager, log_manager=None):
         super(DownloadThread, self).__init__()
-        self.log_manager = log_manager
-        self.opt_manager = opt_manager
-        self.index = index
         self.url = url
-        self._dl_object = None
-        self.start()
+        self.index = index
+        self.opt_manager = opt_manager
+        self.log_manager = log_manager
+        self._downloader = None
+        self._status = 0
 
     def run(self):
-        youtubedl_path = self._get_youtubedl_path()
+        self._downloader = DownloadObject(
+            self._get_youtubedl_path(),
+            self._data_hook,
+            self.log_manager
+        )
+
         options = OptionsParser(self.opt_manager).parse()
 
-        self._dl_object = DownloadObject(youtubedl_path, self._data_hook, self.log_manager)
-
-        return_code = self._dl_object.download(self.url, options)
+        return_code = self._downloader.download(self.url, options)
 
         if self.opt_manager.options['clear_dash_files']:
-            self._clear_dash()
+            self._downloader.clear_dash()
 
         if return_code == DownloadObject.OK:
             self._callafter({'status': 'Finished'})
         elif return_code == DownloadObject.ERROR:
             self._callafter({'status': 'Error', 'speed': '', 'eta': ''})
+            self._status = 1
         elif return_code == DownloadObject.STOPPED:
             self._callafter({'status': 'Stopped', 'speed': '', 'eta': ''})
+            self._status = 1
         elif return_code == DownloadObject.ALREADY:
             self._callafter({'status': 'Already-Downloaded'})
 
-    def close(self):
-        if self._dl_object is not None:
-            self._callafter({'status': 'Stopping'})
-            self._dl_object.stop()
+    @property
+    def status(self):
+        ''' Return thread status. Use this property after
+        thread has joined. (self._status != 0) indicates there was
+        an error.
+        '''
+        return self._status
 
-    def _clear_dash(self):
-        ''' Clear DASH files after ffmpeg mux '''
-        for fl in self._dl_object.files_list:
-            if file_exist(fl):
-                remove_file(fl)
+    def close(self):
+        ''' Close download thread. '''
+        if self._downloader is not None:
+            self._downloader.stop()
 
     def _data_hook(self, data):
-        ''' Extract process status and call CallAfter '''
-        data['status'] = self._get_status(data)
+        ''' Merge playlist_info with data['status'] and
+        pass data to self._callafter.
+        '''
+        playlist_info = ''
+
+        if data['playlist_index'] is not None:
+            playlist_info = data['playlist_index']
+            playlist_info += '/'
+            playlist_info += data['playlist_size']
+
+        if data['status'] is not None:
+            data['status'] = data['status'] + ' ' + playlist_info
+
         self._callafter(data)
 
     def _callafter(self, data):
-        ''' Add self.index on data and send data back to caller '''
+        ''' Add self.index on data and send data back to caller. '''
         data['index'] = self.index
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
 
-    def _get_status(self, data):
-        ''' Return download process status from data['status'] '''
-        if data['playlist_index'] is not None:
-            playlist_info = '%s/%s' % (data['playlist_index'], data['playlist_size'])
-        else:
-            playlist_info = ''
-
-        if data['status'] == 'pre_process':
-            msg = 'Pre-Processing %s' % playlist_info
-        elif data['status'] == 'download':
-            msg = 'Downloading %s' % playlist_info
-        elif data['status'] == 'post_process':
-            msg = 'Post-Processing %s' % playlist_info
-        else:
-            msg = ''
-
-        return msg
-
     def _get_youtubedl_path(self):
-        ''' Retrieve youtube-dl path '''
+        ''' Retrieve youtube-dl path. '''
         path = self.opt_manager.options['youtubedl_path']
         path = fix_path(path) + get_youtubedl_filename()
         return path

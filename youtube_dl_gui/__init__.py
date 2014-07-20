@@ -1,28 +1,32 @@
 #!/usr/bin/env python2
 
-from sys import exit
+''' Youtube-dlg __init__ file. '''
+
+import sys
 
 try:
     import wx
 except ImportError as e:
     print e
-    exit(1)
+    sys.exit(1)
 
-from .YoutubeDLGUI import MainFrame
+from .MainFrame import MainFrame
 from .version import __version__
+
 from .data import (
     __author__,
-    __contact__,
-    __projecturl__,
     __appname__,
+    __contact__,
     __license__,
+    __projecturl__,
+    __licensefull__,
     __description__,
     __descriptionfull__,
-    __licensefull__
 )
 
 
 def main():
+    ''' Call youtube-dlg main window. '''
     app = wx.App()
     frame = MainFrame()
     frame.Centre()

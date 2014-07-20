@@ -1,7 +1,7 @@
-* Refactor & test code
 * Bump version 0.3.7
 * Build 0.3.7 setup for Windows
 * Build 0.3.7 portable for Windows
 
 * Use import instead of subprocess
 * New layout for MainFrame
+* New app icon

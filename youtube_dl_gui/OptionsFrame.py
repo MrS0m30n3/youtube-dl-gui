@@ -958,9 +958,11 @@ class GeneralPanel(wx.Panel):
         ''' Event handler about button. '''
         info = wx.AboutDialogInfo()
 
-        icon = wx.Icon(get_icon_path(), wx.BITMAP_TYPE_PNG)
-
-        info.SetIcon(icon)
+        # Load about icon
+        app_icon = get_icon_path()
+        if app_icon is not None:
+            info.SetIcon(wx.Icon(app_icon, wx.BITMAP_TYPE_PNG))
+        
         info.SetName(__appname__)
         info.SetVersion(__version__)
         info.SetDescription(__descriptionfull__)

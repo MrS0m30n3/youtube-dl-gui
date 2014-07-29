@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
+import os
 import sys
-from os import name
 
 PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == 'py2exe'
 
@@ -56,7 +56,12 @@ if PY2EXE:
     icons_path = 'icons'
 else:
     # On windows you have to copy the icons manually if you dont use py2exe
-    icons_path = '/usr/local/share/icons/hicolor/'
+    xdg_data_dirs = os.getenv('XDG_DATA_DIRS')
+    
+    if xdg_data_dirs is None:
+        icons_path = '/usr/share/pixmaps/'
+    else:
+        icons_path = '/usr/local/share/icons/hicolor/'
 
 # Set params
 if PY2EXE:
@@ -72,10 +77,13 @@ if PY2EXE:
     }
 else:
     data_files = []
-    if name != 'nt':
-        for index, size in enumerate(ICONS_SIZE):
-            data_file = (icons_path + size + '/apps', [ICONS_LIST[index]])
-            data_files.append(data_file)
+    if os.name != 'nt':
+        if xdg_data_dirs is not None:
+            for index, size in enumerate(ICONS_SIZE):
+                data_file = (icons_path + size + '/apps', [ICONS_LIST[index]])
+                data_files.append(data_file)
+        else:
+            data_files = [(icons_path, ICONS_LIST)]
 
     params = {
         'data_files': data_files

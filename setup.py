@@ -25,7 +25,7 @@ from youtube_dl_gui import (
     __descriptionfull__
 )
 
-ICONS_SIZE = ('16x16', '32x32', '64x64', '128x128', '256x256')
+ICONS_SIZE = ('16x16', '32x32', '48x48', '64x64', '128x128', '256x256')
 ICONS_NAME = 'youtube_dl_gui/icons/youtube-dl-gui_%s.png'
 
 ICONS_LIST = [ICONS_NAME % size for size in ICONS_SIZE]

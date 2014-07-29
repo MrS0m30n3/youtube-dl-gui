@@ -124,7 +124,7 @@ def get_icon_path():
     ''' Return path to the icon file if exist else return None.
     Search __main__ dir, $XDG_DATA_DIRS, /usr/share/pixmaps in that order. '''
 
-    SIZES = ('256x256', '128x128', '64x64', '32x32', '16x16')
+    SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
     ICON_NAME = 'youtube-dl-gui_%s.png'
 
     ICONS_LIST = [ICON_NAME % size for size in SIZES]

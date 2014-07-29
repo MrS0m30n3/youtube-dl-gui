@@ -34,21 +34,50 @@ AUDIO_FORMATS = [
 
 VIDEO_FORMATS = [
     "default",
-    "mp4 [1280x720]",
-    "mp4 [640x360]",
-    "webm [640x360]",
-    "flv [400x240]",
+    "3gp [176x144]",
     "3gp [320x240]",
-    "mp4 1080p(DASH)",
-    "mp4 720p(DASH)",
-    "mp4 480p(DASH)",
-    "mp4 360p(DASH)"
+    "flv [400x240]",
+    "flv [640x360]",
+    "flv [854x480]",
+    "webm [640x360]",
+    "webm [854x480]",
+    "webm [1280x720]",
+    "webm [1920x1080]",
+    "mp4 [640x360]",
+    "mp4 [1280x720]",
+    "mp4 [1920x1080]",
+    "mp4 [4096x3072]",
+    "mp4 144p (DASH)",
+    "mp4 240p (DASH)",
+    "mp4 360p (DASH)",
+    "mp4 480p (DASH)",
+    "mp4 720p (DASH)",
+    "mp4 1080p (DASH)",
+    "mp4 1440p (DASH)",
+    "mp4 2160p (DASH)",
+    "webm 240p (DASH)",
+    "webm 360p (DASH)",
+    "webm 480p (DASH)",
+    "webm 720p (DASH)",
+    "webm 1080p (DASH)",
+    "webm 1440p (DASH)",
+    "webm 2160p (DASH)",
+    "mp4 360p (3D)",
+    "mp4 480p (3D)",
+    "mp4 720p (3D)",
+    "mp4 1080p (3D)",
+    "webm 360p (3D)",
+    "webm 480p (3D)",
+    "webm 720p (3D)"
 ]
 
 DASH_AUDIO_FORMATS = [
     "none",
-    "DASH m4a audio 128k",
-    "DASH webm audio 48k"
+    "m4a 48k (DASH)",
+    "m4a 128k (DASH)",
+    "m4a 256k (DASH)",
+    "webm 48k (DASH)",
+    "webm 256k (DASH)"
 ]
 
 SUBS_LANG = [
@@ -539,8 +568,8 @@ class VideoPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(160, 30))
-        self.dash_audio_combo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, size=(160, 30))
+        self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(180, 30))
+        self.dash_audio_combo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, size=(180, 30))
         self.clear_dash_checkbox = wx.CheckBox(self, label='Clear DASH audio/video files', size=WX_CHECKBOX_SIZE)
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)

@@ -20,21 +20,50 @@ SUBS_LANG = {
 
 VIDEO_FORMATS = {
     "default": "0",
-    "mp4 [1280x720]": "22",
-    "mp4 [640x360]": "18",
-    "webm [640x360]": "43",
-    "flv [400x240]": "5",
+    "3gp [176x144]": "17",
     "3gp [320x240]": "36",
-    "mp4 1080p(DASH)": "137",
-    "mp4 720p(DASH)": "136",
-    "mp4 480p(DASH)": "135",
-    "mp4 360p(DASH)": "134"
+    "flv [400x240]": "5",
+    "flv [640x360]": "34",
+    "flv [854x480]": "35",
+    "webm [640x360]": "43",
+    "webm [854x480]": "44",
+    "webm [1280x720]": "45",
+    "webm [1920x1080]": "46",
+    "mp4 [640x360]": "18",
+    "mp4 [1280x720]": "22",
+    "mp4 [1920x1080]": "37",
+    "mp4 [4096x3072]": "38",
+    "mp4 144p (DASH)": "160",
+    "mp4 240p (DASH)": "133",
+    "mp4 360p (DASH)": "134",
+    "mp4 480p (DASH)": "135",
+    "mp4 720p (DASH)": "136",
+    "mp4 1080p (DASH)": "137",
+    "mp4 1440p (DASH)": "264",
+    "mp4 2160p (DASH)": "138",
+    "webm 240p (DASH)": "242",
+    "webm 360p (DASH)": "243",
+    "webm 480p (DASH)": "244",
+    "webm 720p (DASH)": "247",
+    "webm 1080p (DASH)": "248",
+    "webm 1440p (DASH)": "271",
+    "webm 2160p (DASH)": "272",
+    "mp4 360p (3D)": "82",
+    "mp4 480p (3D)": "83",
+    "mp4 720p (3D)": "84",
+    "mp4 1080p (3D)": "85",
+    "webm 360p (3D)": "100",
+    "webm 480p (3D)": "101",
+    "webm 720p (3D)": "102"
 }
 
 DASH_AUDIO_FORMATS = {
-    "none": "none",
-    "DASH m4a audio 128k": "140",
-    "DASH webm audio 48k": "171"
+    "none": "0",
+    "m4a 48k (DASH)": "139",
+    "m4a 128k (DASH)": "140",
+    "m4a 256k (DASH)": "141",
+    "webm 48k (DASH)": "171",
+    "webm 256k (DASH)": "172"
 }
 
 AUDIO_QUALITY = {

@@ -532,11 +532,9 @@ class AudioPanel(wx.Panel):
     def OnAudioCheck(self, event):
         ''' Event handler for self.to_audio_checkbox. '''
         if self.to_audio_checkbox.GetValue():
-            self.keep_video_checkbox.Enable()
             self.audio_format_combo.Enable()
             self.audio_quality_combo.Enable()
         else:
-            self.keep_video_checkbox.Disable()
             self.audio_format_combo.Disable()
             self.audio_quality_combo.Disable()
 
@@ -570,7 +568,6 @@ class VideoPanel(wx.Panel):
 
         self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(180, 30))
         self.dash_audio_combo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, size=(180, 30))
-        self.clear_dash_checkbox = wx.CheckBox(self, label='Clear DASH audio/video files', size=WX_CHECKBOX_SIZE)
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -582,21 +579,10 @@ class VideoPanel(wx.Panel):
         main_sizer.Add(wx.StaticText(self, label='DASH Audio'), flag=wx.ALIGN_CENTER_HORIZONTAL)
         main_sizer.AddSpacer(5)
         main_sizer.Add(self.dash_audio_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(20)
-        main_sizer.Add(self.clear_dash_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
         self.Bind(wx.EVT_COMBOBOX, self.OnVideoFormatPick, self.video_format_combo)
-        self.Bind(wx.EVT_COMBOBOX, self.OnAudioFormatPick, self.dash_audio_combo)
-
-    def OnAudioFormatPick(self, event):
-        ''' Event handler for self.dash_audio_combo. '''
-        if is_dash(self.dash_audio_combo.GetValue()):
-            self.clear_dash_checkbox.Enable()
-        else:
-            self.clear_dash_checkbox.SetValue(False)
-            self.clear_dash_checkbox.Disable()
 
     def OnVideoFormatPick(self, event):
         ''' Event handler for self.video_format_combo. '''
@@ -604,22 +590,17 @@ class VideoPanel(wx.Panel):
             self.dash_audio_combo.Enable()
         else:
             self.dash_audio_combo.Disable()
-            self.clear_dash_checkbox.Disable()
-            self.clear_dash_checkbox.SetValue(False)
-        self.OnAudioFormatPick(None)
 
     def load_options(self, opt_manager):
         ''' Load panel options from OptionsHandler object. '''
         self.video_format_combo.SetValue(opt_manager.options['video_format'])
         self.dash_audio_combo.SetValue(opt_manager.options['dash_audio_format'])
-        self.clear_dash_checkbox.SetValue(opt_manager.options['clear_dash_files'])
         self.OnVideoFormatPick(None)
 
     def save_options(self, opt_manager):
         ''' Save panel options to OptionsHandler object. '''
         opt_manager.options['video_format'] = self.video_format_combo.GetValue()
         opt_manager.options['dash_audio_format'] = self.dash_audio_combo.GetValue()
-        opt_manager.options['clear_dash_files'] = self.clear_dash_checkbox.GetValue()
 
 
 class OutputPanel(wx.Panel):

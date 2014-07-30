@@ -208,9 +208,6 @@ class DownloadThread(Thread):
 
         return_code = self._downloader.download(self.url, options)
 
-        if self.opt_manager.options['clear_dash_files']:
-            self._downloader.clear_dash()
-
         if return_code == DownloadObject.OK:
             self._callafter({'status': 'Finished'})
         elif return_code == DownloadObject.ERROR:

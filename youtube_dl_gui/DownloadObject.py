@@ -32,11 +32,6 @@ class DownloadObject(object):
 
             Return: None
 
-        clear_dash()
-            Params: None
-
-            Return: None
-
     Properties
         files_list: Python list that contains all the files DownloadObject
                     instance has downloaded.
@@ -113,12 +108,6 @@ class DownloadObject(object):
         if self._proc_is_alive():
             self._proc.kill()
             self._return_code = self.STOPPED
-
-    def clear_dash(self):
-        ''' Clear DASH files after ffmpeg mux. '''
-        for dash_file in self._files_list:
-            if os.path.exists(dash_file):
-                os.remove(dash_file)
 
     def _update_data(self, data):
         ''' Update self._data from data.

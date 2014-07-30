@@ -58,7 +58,6 @@ class OptionsManager(object):
             'save_path': get_home(),
             'video_format': 'default',
             'dash_audio_format': 'none',
-            'clear_dash_files': False,
             'to_audio': False,
             'keep_video': False,
             'audio_format': 'mp3',

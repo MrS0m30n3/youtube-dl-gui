@@ -210,8 +210,8 @@ class OptionsParser():
             if self._options['audio_quality'] != 'mid':
                 self.options_list.append('--audio-quality')
                 self.options_list.append(AUDIO_QUALITY[self._options['audio_quality']])
-            if self._options['keep_video']:
-                self.options_list.append('-k')
+        if self._options['keep_video']:
+            self.options_list.append('-k')
 
     def _set_other_options(self):
         if self._options['cmd_args'] != '':

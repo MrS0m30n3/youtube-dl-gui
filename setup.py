@@ -58,7 +58,7 @@ if PY2EXE:
     fallback_icons_path = ''
 else:
     # On windows you have to copy the icons manually if you dont use py2exe
-    icons_path = '/usr/local/share/icons/hicolor/'
+    icons_path = '/usr/share/icons/hicolor/'
     
     fallback_icons_path = '/usr/share/pixmaps/'
 

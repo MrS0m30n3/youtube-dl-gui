@@ -3,8 +3,7 @@
 ''' Parse OptionsManager.options. '''
 
 from .utils import (
-    fix_path,
-    is_dash
+    fix_path
 )
 
 SUBS_LANG = {
@@ -20,6 +19,7 @@ SUBS_LANG = {
 
 VIDEO_FORMATS = {
     "default": "0",
+    "none": "0",
     "3gp [176x144]": "17",
     "3gp [320x240]": "36",
     "flv [400x240]": "5",
@@ -54,16 +54,12 @@ VIDEO_FORMATS = {
     "mp4 1080p (3D)": "85",
     "webm 360p (3D)": "100",
     "webm 480p (3D)": "101",
-    "webm 720p (3D)": "102"
-}
-
-DASH_AUDIO_FORMATS = {
-    "none": "0",
-    "m4a 48k (DASH)": "139",
-    "m4a 128k (DASH)": "140",
-    "m4a 256k (DASH)": "141",
-    "webm 48k (DASH)": "171",
-    "webm 256k (DASH)": "172"
+    "webm 720p (3D)": "102",
+    "m4a 48k (DASH AUDIO)": "139",
+    "m4a 128k (DASH AUDIO)": "140",
+    "m4a 256k (DASH AUDIO)": "141",
+    "webm 48k (DASH AUDIO)": "171",
+    "webm 256k (DASH AUDIO)": "172"
 }
 
 AUDIO_QUALITY = {
@@ -151,12 +147,11 @@ class OptionsParser():
             self.options_list.append('-f')
 
             video_format = VIDEO_FORMATS[self._options['video_format']]
-
-            if is_dash(self._options['video_format']):
-                if is_dash(self._options['dash_audio_format']):
-                    dash_format = DASH_AUDIO_FORMATS[self._options['dash_audio_format']]
-
-                    video_format += '+' + dash_format
+            second_video_format = VIDEO_FORMATS[self._options['second_video_format']]
+            
+            if video_format != "0":
+                if second_video_format != "0":
+                    video_format += '+' + second_video_format
 
             self.options_list.append(video_format)
 

@@ -57,7 +57,7 @@ class OptionsManager(object):
         self.options = {
             'save_path': get_home(),
             'video_format': 'default',
-            'dash_audio_format': 'none',
+            'second_video_format': 'none',
             'to_audio': False,
             'keep_video': False,
             'audio_format': 'mp3',

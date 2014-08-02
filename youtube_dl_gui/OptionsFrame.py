@@ -10,8 +10,7 @@ from .LogManager import LogGUI
 from .version import __version__
 from .utils import (
     get_icon_path,
-    fix_path,
-    is_dash
+    fix_path
 )
 
 from .data import (
@@ -32,8 +31,7 @@ AUDIO_FORMATS = [
     "vorbis"
 ]
 
-VIDEO_FORMATS = [
-    "default",
+FORMATS = [
     "3gp [176x144]",
     "3gp [320x240]",
     "flv [400x240]",
@@ -68,17 +66,17 @@ VIDEO_FORMATS = [
     "mp4 1080p (3D)",
     "webm 360p (3D)",
     "webm 480p (3D)",
-    "webm 720p (3D)"
+    "webm 720p (3D)",
+    "m4a 48k (DASH AUDIO)",
+    "m4a 128k (DASH AUDIO)",
+    "m4a 256k (DASH AUDIO)",
+    "webm 48k (DASH AUDIO)",
+    "webm 256k (DASH AUDIO)"
 ]
 
-DASH_AUDIO_FORMATS = [
-    "none",
-    "m4a 48k (DASH)",
-    "m4a 128k (DASH)",
-    "m4a 256k (DASH)",
-    "webm 48k (DASH)",
-    "webm 256k (DASH)"
-]
+VIDEO_FORMATS = ["default"] + FORMATS
+
+SECOND_VIDEO_FORMATS = ["none"] + FORMATS
 
 SUBS_LANG = [
     "English",
@@ -566,19 +564,19 @@ class VideoPanel(wx.Panel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent)
 
-        self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(180, 30))
-        self.dash_audio_combo = wx.ComboBox(self, choices=DASH_AUDIO_FORMATS, size=(180, 30))
+        self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(200, 30))
+        self.second_video_format_combo = wx.ComboBox(self, choices=SECOND_VIDEO_FORMATS, size=(200, 30))
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(20)
+        main_sizer.AddSpacer(30)
         main_sizer.Add(wx.StaticText(self, label='Video Format'), flag=wx.ALIGN_CENTER_HORIZONTAL)
         main_sizer.AddSpacer(5)
         main_sizer.Add(self.video_format_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
         main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='DASH Audio'), flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.Add(wx.StaticText(self, label='Mix Video Format'), flag=wx.ALIGN_CENTER_HORIZONTAL)
         main_sizer.AddSpacer(5)
-        main_sizer.Add(self.dash_audio_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.Add(self.second_video_format_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
@@ -586,21 +584,21 @@ class VideoPanel(wx.Panel):
 
     def OnVideoFormatPick(self, event):
         ''' Event handler for self.video_format_combo. '''
-        if is_dash(self.video_format_combo.GetValue()):
-            self.dash_audio_combo.Enable()
+        if self.video_format_combo.GetValue() != 'default':
+            self.second_video_format_combo.Enable()
         else:
-            self.dash_audio_combo.Disable()
+            self.second_video_format_combo.Disable()
 
     def load_options(self, opt_manager):
         ''' Load panel options from OptionsHandler object. '''
         self.video_format_combo.SetValue(opt_manager.options['video_format'])
-        self.dash_audio_combo.SetValue(opt_manager.options['dash_audio_format'])
+        self.second_video_format_combo.SetValue(opt_manager.options['second_video_format'])
         self.OnVideoFormatPick(None)
 
     def save_options(self, opt_manager):
         ''' Save panel options to OptionsHandler object. '''
         opt_manager.options['video_format'] = self.video_format_combo.GetValue()
-        opt_manager.options['dash_audio_format'] = self.dash_audio_combo.GetValue()
+        opt_manager.options['second_video_format'] = self.second_video_format_combo.GetValue()
 
 
 class OutputPanel(wx.Panel):

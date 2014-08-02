@@ -7,11 +7,6 @@ import sys
 import subprocess
 
 
-def is_dash(word):
-    ''' Return True if "DASH" in word. '''
-    return "DASH" in word
-
-
 def path_seperator():
     ''' Return path seperator for current OS. '''
     return '\\' if os.name == 'nt' else '/'

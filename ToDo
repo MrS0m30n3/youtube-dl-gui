@@ -1,9 +1,9 @@
 * Redesign options window
-* Refactor setup.py
 
 * Bump version 0.3.7
 * Build 0.3.7 setup for Windows
 * Build 0.3.7 portable for Windows
 
-* Use import instead of subprocess
+* Refactor setup.py
 * New layout for MainFrame
+* Use import instead of subprocess

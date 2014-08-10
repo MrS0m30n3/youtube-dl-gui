@@ -4,6 +4,8 @@
 * Build 0.3.7 setup for Windows
 * Build 0.3.7 portable for Windows
 
+* Add language configuration option
+
 * Refactor setup.py
 * New layout for MainFrame
 * Use import instead of subprocess

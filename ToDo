@@ -1,11 +1,13 @@
+* Add missing icon on options frame
+* Refactor my ugly code
 * Redesign options window
-
-* Bump version 0.3.7
-* Build 0.3.7 setup for Windows
-* Build 0.3.7 portable for Windows
 
 * Add language configuration option
 
-* Refactor setup.py
+* Bump version 0.3.7
+* Build 0.3.7 setup for Windows (Remove the old settings file)
+* Build 0.3.7 portable for Windows
+
 * New layout for MainFrame
+* Add context menu (issue #16)
 * Use import instead of subprocess

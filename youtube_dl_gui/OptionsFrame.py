@@ -128,6 +128,11 @@ class OptionsFrame(wx.Frame):
 
         self.opt_manager = opt_manager
 
+        # Add icon
+        icon = get_icon_path()
+        if icon is not None:
+            self.SetIcon(wx.Icon(icon, wx.BITMAP_TYPE_PNG))
+        
         # Create GUI
         panel = wx.Panel(self)
         notebook = wx.Notebook(panel)

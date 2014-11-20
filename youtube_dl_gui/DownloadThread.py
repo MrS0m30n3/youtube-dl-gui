@@ -10,7 +10,7 @@ from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
 from .OptionsParser import OptionsParser
-from .DownloadObject import DownloadObject
+from .DownloadObject import YoutubeDLDownloader
 
 from .utils import (
     get_youtubedl_filename,
@@ -168,7 +168,7 @@ class DownloadManager(Thread):
 class DownloadThread(Thread):
 
     '''
-    DownloadObject Thread wrapper for youtube-dlg.
+    YoutubeDLDownloader Thread wrapper for youtube-dlg.
 
     Params
         url: Video url to download.
@@ -198,7 +198,7 @@ class DownloadThread(Thread):
         self._status = 0
 
     def run(self):
-        self._downloader = DownloadObject(
+        self._downloader = YoutubeDLDownloader(
             self._get_youtubedl_path(),
             self._data_hook,
             self.log_manager
@@ -208,15 +208,15 @@ class DownloadThread(Thread):
 
         return_code = self._downloader.download(self.url, options)
 
-        if return_code == DownloadObject.OK:
+        if return_code == YoutubeDLDownloader.OK:
             self._callafter({'status': 'Finished'})
-        elif return_code == DownloadObject.ERROR:
+        elif return_code == YoutubeDLDownloader.ERROR:
             self._callafter({'status': 'Error', 'speed': '', 'eta': ''})
             self._status = 1
-        elif return_code == DownloadObject.STOPPED:
+        elif return_code == YoutubeDLDownloader.STOPPED:
             self._callafter({'status': 'Stopped', 'speed': '', 'eta': ''})
             self._status = 1
-        elif return_code == DownloadObject.ALREADY:
+        elif return_code == YoutubeDLDownloader.ALREADY:
             self._callafter({'status': 'Already-Downloaded'})
 
     @property

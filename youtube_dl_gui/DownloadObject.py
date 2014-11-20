@@ -8,15 +8,16 @@ import locale
 import subprocess
 
 
-class DownloadObject(object):
+class YoutubeDLDownloader(object):
 
     '''
+    OUT_OF_DATE
     Download videos using youtube-dl & subprocess.
 
     Params
         youtubedl_path: Absolute path of youtube-dl.
         data_hook: Can be any function with one parameter, the data.
-        logger: Can be any logger which implements log().
+        log_manager: Can be any log_manager which implements log().
 
     Accessible Methods
         download()
@@ -24,17 +25,13 @@ class DownloadObject(object):
                     Options list e.g. ['--help']
 
             Return: DownlaodObject.OK
-                    DownloadObject.ERROR
-                    DownloadObject.STOPPED
-                    DownloadObject.ALREADY
+                    YoutubeDLDownloader.ERROR
+                    YoutubeDLDownloader.STOPPED
+                    YoutubeDLDownloader.ALREADY
         stop()
             Params: None
 
             Return: None
-
-    Properties
-        files_list: Python list that contains all the files DownloadObject
-                    instance has downloaded.
 
     Data_hook Keys
         'playlist_index',
@@ -53,15 +50,13 @@ class DownloadObject(object):
     STOPPED = 2
     ALREADY = 3
 
-    def __init__(self, youtubedl_path, data_hook=None, logger=None):
+    def __init__(self, youtubedl_path, data_hook=None, log_manager=None):
         self.youtubedl_path = youtubedl_path
+        self.log_manager = log_manager
         self.data_hook = data_hook
-        self.logger = logger
 
         self._return_code = 0
-        self._files_list = []
         self._proc = None
-
         self._data = {
             'playlist_index': None,
             'playlist_size': None,
@@ -72,13 +67,6 @@ class DownloadObject(object):
             'speed': None,
             'eta': None
         }
-
-    @property
-    def files_list(self):
-        ''' Return list that contains all files
-        DownloadObject has downloaded.
-        '''
-        return self._files_list
 
     def download(self, url, options):
         ''' Download given url using youtube-dl &
@@ -97,7 +85,7 @@ class DownloadObject(object):
             if self._update_data(data):
                 self._hook_data()
 
-            if stderr != '':
+            if stderr:
                 self._return_code = self.ERROR
                 self._log(stderr)
 
@@ -117,17 +105,14 @@ class DownloadObject(object):
 
         for key in data:
             if key == 'filename':
-                # Save full file path on self._files_list
-                self._add_on_files_list(data['filename'])
                 # Keep only the filename on data['filename']
                 data['filename'] = os.path.basename(data['filename'])
 
-            if key == 'status':
+            if key == 'status' and data['status'] == 'Already Downloaded':
                 # Set self._return_code to already downloaded
-                if data[key] == 'Already Downloaded':
-                    self._return_code = self.ALREADY
-                    # Trash that key
-                    data[key] = None
+                # and trash that key
+                self._return_code = self.ALREADY
+                data['status'] = None
 
             self._data[key] = data[key]
 
@@ -136,14 +121,10 @@ class DownloadObject(object):
 
         return updated
 
-    def _add_on_files_list(self, filename):
-        ''' Add filename on self._files_list. '''
-        self._files_list.append(filename)
-
     def _log(self, data):
-        ''' Log data using self.logger. '''
-        if self.logger is not None:
-            self.logger.log(data)
+        ''' Log data using self.log_manager. '''
+        if self.log_manager is not None:
+            self.log_manager.log(data)
 
     def _hook_data(self):
         ''' Pass self._data back to data_hook. '''
@@ -163,7 +144,7 @@ class DownloadObject(object):
 
         stdout = self._read_stream(self._proc.stdout)
 
-        if stdout == '':
+        if not stdout:
             stderr = self._read_stream(self._proc.stderr)
 
         return stdout, stderr
@@ -173,8 +154,7 @@ class DownloadObject(object):
         if self._proc is None:
             return ''
 
-        data = stream.readline()
-        return data.rstrip()
+        return stream.readline().rstrip()
 
     def _get_cmd(self, url, options):
         ''' Return command for subprocess. '''
@@ -214,7 +194,7 @@ class DownloadObject(object):
 
 def extract_data(stdout):
     ''' Extract data from youtube-dl stdout. '''
-    data_dictionary = {}
+    data_dictionary = dict()
 
     stdout = [string for string in stdout.split(' ') if string != '']
 

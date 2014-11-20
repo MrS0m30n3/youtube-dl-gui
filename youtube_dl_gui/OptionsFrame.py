@@ -225,7 +225,7 @@ class LogPanel(wx.Panel):
         # Create extra items
         if logger is not None:
             path_text = wx.StaticText(self, label="Path: " + self.logger.log_file)
-            self.log_size = wx.StaticText(self, label="Log Size %s Bytes" % self.logger.size())
+            self.log_size = wx.StaticText(self, label="Log Size %s Bytes" % self.logger.log_size())
 
             main_sizer.AddSpacer(20)
             main_sizer.Add(path_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
@@ -270,7 +270,7 @@ class LogPanel(wx.Panel):
         ''' Event handler for self.clear_button. '''
         if self.logger is not None:
             self.logger.clear()
-            self.log_size.SetLabel("Log Size %s Bytes" % self.logger.size())
+            self.log_size.SetLabel("Log Size %s Bytes" % self.logger.log_size())
 
     def OnView(self, event):
         ''' Event handler for self.view_button. '''

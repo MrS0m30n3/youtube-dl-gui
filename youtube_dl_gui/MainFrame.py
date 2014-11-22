@@ -29,264 +29,288 @@ from .data import (
     __appname__
 )
 
-CONFIG_PATH = os.path.join(get_config_path(), __appname__.lower())
-
 
 class MainFrame(wx.Frame):
 
     ''' Youtube-dlG main frame. '''
 
-    def __init__(self, parent=None):
-        wx.Frame.__init__(self, parent, -1, __appname__, size=(650, 440))
-
-        self.init_gui()
-
-        icon = get_icon_path()
-        if icon is not None:
-            self.SetIcon(wx.Icon(icon, wx.BITMAP_TYPE_PNG))
-
-        Publisher.subscribe(self.update_handler, "update")
-        Publisher.subscribe(self.download_handler, "dlmanager")
-        Publisher.subscribe(self.download_handler, "dlthread")
-
-        self.opt_manager = OptionsManager(CONFIG_PATH)
+    FRAME_SIZE = (700, 490)
+    TEXTCTRL_SIZE = (-1, 120)
+    BUTTONS_SIZE = (90, 30)
+    BUTTONS_SPACE = 80
+    SIZE_20 = 20
+    SIZE_10 = 10
+    SIZE_5 = 5
+    
+    URLS_LABEL = "URLs"
+    DOWNLOAD_LABEL = "Download"
+    UPDATE_LABEL = "Update"
+    OPTIONS_LABEL = "Options"
+    ERROR_LABEL = "Error"
+    STOP_LABEL = "Stop"
+    INFO_LABEL = "Info"
+    WELCOME_MSG = "Author: {0}"
+    SUCC_REPORT_MSG = ("Successfully downloaded {0} url(s) in {1} "
+                       "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
+    DL_COMPLETED_MSG = "Download completed"
+    URL_REPORT_MSG = "Downloading {0} url(s)"
+    CLOSING_MSG = "Stopping downloads"
+    CLOSED_MSG = "Downloads stopped"
+    PROVIDE_URL_MSG = "You need to provide at least one url"
+    DOWNLOAD_STARTED = "Download started"
+    
+    VIDEO_LABEL = "Video"
+    SIZE_LABEL = "Size"
+    PERCENT_LABEL = "Percent"
+    ETA_LABEL = "ETA"
+    SPEED_LABEL = "Speed"
+    STATUS_LABEL = "Status"
+    
+    STATUSLIST_COLUMNS = (
+        ('filename', 0, VIDEO_LABEL, 150, True),
+        ('filesize', 1, SIZE_LABEL, 80, False),
+        ('percent', 2, PERCENT_LABEL, 65, False),
+        ('eta', 3, ETA_LABEL, 45, False),
+        ('speed', 4, SPEED_LABEL, 90, False),
+        ('status', 5, STATUS_LABEL, 160, False)
+    )
+    
+    def __init__(self, opt_manager, log_manager, parent=None):
+        wx.Frame.__init__(self, parent, title=__appname__, size=self.FRAME_SIZE)
+        self.opt_manager = opt_manager
+        self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        self.log_manager = None
-
-        if self.opt_manager.options['enable_log']:
-            self.log_manager = LogManager(
-                CONFIG_PATH,
-                self.opt_manager.options['log_time']
-            )
-
-    def init_gui(self):
-        ''' Initialize youtube-dlG GUI components & sizers. '''
-        panel = wx.Panel(self)
-
+        app_icon = get_icon_path()
+        
+        # Set app icon
+        if app_icon is not None:
+            self.SetIcon(wx.Icon(app_icon, wx.BITMAP_TYPE_PNG))
+        
         # Create components
-        self.url_list = wx.TextCtrl(panel,
-                                    size=(-1, 120),
-                                    style=wx.TE_MULTILINE | wx.TE_DONTWRAP)
+        self._panel = wx.Panel(self)
 
-        self.download_button = wx.Button(panel, label='Download', size=(90, 30))
-        self.update_button = wx.Button(panel, label='Update', size=(90, 30))
-        self.options_button = wx.Button(panel, label='Options', size=(90, 30))
+        self._url_text = self._create_statictext(self.URLS_LABEL)
+        self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP,
+                                               self._on_urllist_edit)
 
-        self.status_list = ListCtrl(panel,
-                                    style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
-        self.status_bar = wx.StaticText(panel, label='Author: ' + __author__)
+        self._download_btn = self._create_button(self.DOWNLOAD_LABEL, self._on_download)
+        self._update_btn = self._create_button(self.UPDATE_LABEL, self._on_update)
+        self._options_btn = self._create_button(self.OPTIONS_LABEL, self._on_options)
 
-        # Set sizers
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
+                                     parent=self._panel,
+                                     style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        self._status_bar = self._create_statictext(self.WELCOME_MSG.format(__author__))
 
-        main_sizer.AddSpacer(10)
+        # Bind extra events
+        self.Bind(wx.EVT_CLOSE, self._on_close)
+        
+        self._set_sizers()
 
-        # URLs label
-        main_sizer.Add(wx.StaticText(panel, label='URLs'), flag=wx.LEFT, border=20)
+        # Set threads wx.CallAfter handlers using subscribe
+        self._set_publisher(self._update_handler, 'update')
+        self._set_publisher(self._status_list_handler, 'dlthread')
+        self._set_publisher(self._download_manager_handler, 'dlmanager')
 
-        # URLs list
-        horizontal_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        horizontal_sizer.Add(self.url_list, 1)
-        main_sizer.Add(horizontal_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=20)
+    def _set_publisher(self, handler, topic):
+        Publisher.subscribe(handler, topic)
+        
+    def _create_statictext(self, label):
+        statictext = wx.StaticText(self._panel, label=label)
+        return statictext
+        
+    def _create_textctrl(self, style=None, event_handler=None):
+        if style is None:
+            textctrl = wx.TextCtrl(self._panel, size=self.TEXTCTRL_SIZE)
+        else:
+            textctrl = wx.TextCtrl(self._panel, size=self.TEXTCTRL_SIZE, style=style)
+            
+        if event_handler is not None:
+            textctrl.Bind(wx.EVT_TEXT, event_handler)
+            
+        return textctrl
+        
+    def _create_button(self, label, event_handler=None):
+        btn = wx.Button(self._panel, label=label, size=self.BUTTONS_SIZE)
+        
+        if event_handler is not None:
+            btn.Bind(wx.EVT_BUTTON, event_handler)
+            
+        return btn
+        
+    def _create_popup(self, text, title, style):
+        ''' Create popup message. '''
+        wx.MessageBox(text, title, style)
+        
+    def _set_sizers(self):
+        hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(10)
+        vertical_sizer.AddSpacer(self.SIZE_10)
 
-        # Buttons
-        horizontal_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        horizontal_sizer.Add(self.download_button)
-        horizontal_sizer.Add(self.update_button, flag=wx.LEFT | wx.RIGHT, border=80)
-        horizontal_sizer.Add(self.options_button)
-        main_sizer.Add(horizontal_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        vertical_sizer.Add(self._url_text)
+        vertical_sizer.Add(self._url_list, flag=wx.EXPAND)
+        
+        vertical_sizer.AddSpacer(self.SIZE_10)
 
-        main_sizer.AddSpacer(10)
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_sizer.Add(self._download_btn)
+        buttons_sizer.Add(self._update_btn, flag=wx.LEFT | wx.RIGHT, border=self.BUTTONS_SPACE)
+        buttons_sizer.Add(self._options_btn)
+        vertical_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
-        # Status list
-        horizontal_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        horizontal_sizer.Add(self.status_list, 1, flag=wx.EXPAND)
-        main_sizer.Add(horizontal_sizer, 1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=20)
+        vertical_sizer.AddSpacer(self.SIZE_10)
 
-        main_sizer.AddSpacer(5)
+        vertical_sizer.Add(self._status_list, 1, wx.EXPAND)
+        
+        vertical_sizer.AddSpacer(self.SIZE_5)
 
-        # Status bar
-        main_sizer.Add(self.status_bar, flag=wx.LEFT, border=20)
+        vertical_sizer.Add(self._status_bar)
 
-        main_sizer.AddSpacer(5)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        
+        hor_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, border=self.SIZE_20)
 
-        panel.SetSizer(main_sizer)
+        self._panel.SetSizer(hor_sizer)
 
-        # Bind events
-        self.Bind(wx.EVT_BUTTON, self.OnDownload, self.download_button)
-        self.Bind(wx.EVT_BUTTON, self.OnUpdate, self.update_button)
-        self.Bind(wx.EVT_BUTTON, self.OnOptions, self.options_button)
-        self.Bind(wx.EVT_TEXT, self.OnListCtrlEdit, self.url_list)
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
-
-    def youtubedl_exist(self):
+    def _youtubedl_exist(self):
         ''' Return True if youtube-dl executable exists. '''
         path = os.path.join(self.opt_manager.options['youtubedl_path'],
                             get_youtubedl_filename())
 
         return os.path.exists(path)
 
-    def update_youtubedl(self, quiet=False):
+    def _update_youtubedl(self, quiet=False):
         ''' Update youtube-dl executable. '''
         if not quiet:
-            self.update_button.Disable()
-            self.download_button.Disable()
+            self._update_btn.Disable()
+            self._download_btn.Disable()
 
-        self.update_thread = UpdateThread(
-            self.opt_manager.options['youtubedl_path'],
-            quiet
-        )
+        self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'], quiet)
 
-    def status_bar_write(self, msg):
-        ''' Write msg to self.status_bar. '''
-        self.status_bar.SetLabel(msg)
+    def _status_bar_write(self, msg):
+        ''' Write msg to self._status_bar. '''
+        self._status_bar.SetLabel(msg)
 
-    def reset(self):
+    def _reset_buttons(self):
         ''' Reset GUI and variables after download process. '''
-        self.download_button.SetLabel('Download')
-        self.update_button.Enable()
-        self.download_manager.join()
-        self.download_manager = None
+        self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
+        self._download_btn.Enable()
+        self._update_btn.Enable()
 
-    def print_stats(self):
-        ''' Print stats to self.status_bar after downloading. '''
-        successful_downloads = self.download_manager.successful_downloads
+    def _print_stats(self):
+        ''' Print stats to self._status_bar after downloading. '''
+        suc_downloads = self.download_manager.successful_downloads
         dtime = get_time(self.download_manager.time)
-
-        msg = 'Successfully downloaded %s url(s) in ' % successful_downloads
 
         days = int(dtime['days'])
         hours = int(dtime['hours'])
         minutes = int(dtime['minutes'])
         seconds = int(dtime['seconds'])
 
-        if days != 0:
-            msg += '%s days, ' % days
-        if hours != 0:
-            msg += '%s hours, ' % hours
-        if minutes != 0:
-            msg += '%s minutes, ' % minutes
-        msg += '%s seconds ' % seconds
+        msg = self.SUCC_REPORT_MSG.format(suc_downloads, days, hours, minutes, seconds)
 
-        self.status_bar_write(msg)
+        self._status_bar_write(msg)
 
-    def fin_tasks(self):
+    def _after_download(self):
         ''' Run tasks after download process has finished. '''
         if self.opt_manager.options['shutdown']:
             self.opt_manager.save_to_file()
             shutdown_sys(self.opt_manager.options['sudo_password'])
         else:
-            self.create_popup('Downloads completed', 'Info', wx.OK | wx.ICON_INFORMATION)
+            self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
             if self.opt_manager.options['open_dl_dir']:
                 open_dir(self.opt_manager.options['save_path'])
 
-    def download_handler(self, msg):
-        ''' Handle messages from DownloadManager & DownloadThread. '''
-        topic = msg.topic[0]
+    def _status_list_handler(self, msg):
+        data = msg.data
+        
+        self._status_list.write(data)
+        
+        # Report urls been downloaded
+        msg = self.URL_REPORT_MSG.format(self.download_manager.not_finished())
+        self._status_bar_write(msg)
+                
+    def _download_manager_handler(self, msg):
+        ''' Handle messages from DownloadManager. '''
         data = msg.data
 
-        if topic == 'dlthread':
-            self.status_list.write(data)
+        if data == 'finished':
+            self._print_stats()
+            self._reset_buttons()
+            self.download_manager = None
+            self._after_download()
+        elif data == 'closed':
+            self._status_bar_write(self.CLOSED_MSG)
+            self._reset_buttons()
+            self.download_manager = None
+        else:
+            self._status_bar_write(self.CLOSING_MSG)
 
-            msg = 'Downloading %s url(s)' % self.download_manager.not_finished()
-            self.status_bar_write(msg)
-
-        if topic == 'dlmanager':
-            if data == 'closing':
-                self.status_bar_write('Stopping downloads')
-            if data == 'closed':
-                self.status_bar_write('Downloads stopped')
-                self.reset()
-            if data == 'finished':
-                self.print_stats()
-                self.reset()
-                self.fin_tasks()
-
-    def update_handler(self, msg):
+    def _update_handler(self, msg):
         ''' Handle messages from UpdateThread. '''
-        if msg.data == 'finish':
-            self.download_button.Enable()
-            self.update_button.Enable()
-            self.update_thread.join()
+        data = msg.data
+        
+        if data == 'finish':
+            self._reset_buttons()
             self.update_thread = None
         else:
-            self.status_bar_write(msg.data)
+            self._status_bar_write(data)
 
-    def load_on_list(self, url):
-        ''' Load url on ListCtrl. Return True if url
-        loaded successfully, else return False.
-        '''
-        url = url.replace(' ', '')
-
-        if url != '' and not self.status_list.has_url(url):
-            self.status_list.add_url(url)
-            return True
-
-        return False
-
-    def start_download(self):
+    def _get_urls(self):
+        return self._url_list.GetValue().split('\n')
+            
+    def _start_download(self):
         ''' Handle pre-download tasks & start download process. '''
-        self.status_list.clear()
+        self._status_list.clear()
+        self._status_list.load_urls(self._get_urls())
 
-        if not self.youtubedl_exist():
-                self.update_youtubedl(True)
-        
-        for url in self.url_list.GetValue().split('\n'):
-            self.load_on_list(url)
-
-        if self.status_list.is_empty():
-            self.create_popup(
-                'You need to provide at least one url',
-                'Error',
-                wx.OK | wx.ICON_EXCLAMATION
-            )
+        if self._status_list.is_empty():
+            self._create_popup(self.PROVIDE_URL_MSG,
+                               self.ERROR_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
         else:
-            threads_list = []
-            for item in self.status_list.get_items():
-                threads_list.append(self.create_thread(item))
+            if not self._youtubedl_exist():
+                self._update_youtubedl(True)
+            
+            threads_list = [self._create_thread(item) for item in self._status_list.get_items()]
 
             self.download_manager = DownloadManager(threads_list, self.update_thread)
 
-            self.status_bar_write('Download started')
-            self.download_button.SetLabel('Stop')
-            self.update_button.Disable()
+            self._status_bar_write(self.DOWNLOAD_STARTED)
+            self._download_btn.SetLabel(self.STOP_LABEL)
+            self._update_btn.Disable()
 
-    def create_thread(self, item):
+    def _create_thread(self, item):
         ''' Return DownloadThread created from item. '''
         return DownloadThread(item['url'],
                               item['index'],
                               self.opt_manager,
                               self.log_manager)
 
-    def create_popup(self, text, title, style):
-        ''' Create popup message. '''
-        wx.MessageBox(text, title, style)
-
-    def OnListCtrlEdit(self, event):
+    def _add_thread(self, item):
+        thread = self._create_thread(item)
+        self.download_manager.add_thread(thread)
+                              
+    def _on_urllist_edit(self, event):
         ''' Dynamically add url for download.'''
         if self.download_manager is not None:
-            for url in self.url_list.GetValue().split('\n'):
-                # If url successfully loaded on list
-                if self.load_on_list(url):
-                    thread = self.create_thread(self.status_list.get_last_item())
-                    self.download_manager.add_thread(thread)
+            self._status_list.load_urls(self._get_urls(), self._add_thread)
 
-    def OnDownload(self, event):
-        ''' Event handler method for self.download_button. '''
+    def _on_download(self, event):
+        ''' Event handler method for self._download_btn. '''
         if self.download_manager is None:
-            self.start_download()
+            self._start_download()
         else:
             self.download_manager.close()
 
-    def OnUpdate(self, event):
-        ''' Event handler method for self.update_button. '''
-        self.update_youtubedl()
+    def _on_update(self, event):
+        ''' Event handler method for self._update_btn. '''
+        self._update_youtubedl()
 
-    def OnOptions(self, event):
-        ''' Event handler method for self.options_button. '''
+    def _on_options(self, event):
+        ''' Event handler method for self._options_btn. '''
         options_frame = OptionsFrame(
             self.opt_manager,
             parent=self,
@@ -294,7 +318,7 @@ class MainFrame(wx.Frame):
         )
         options_frame.Show()
 
-    def OnClose(self, event):
+    def _on_close(self, event):
         ''' Event handler method (wx.EVT_CLOSE). '''
         if self.download_manager is not None:
             self.download_manager.close()
@@ -349,35 +373,35 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             Return: Last item inserted in ListCtrl
     '''
 
-    # Hold column for each data
-    DATA_COLUMNS = {
-        'filename': 0,
-        'filesize': 1,
-        'percent': 2,
-        'status': 5,
-        'speed': 4,
-        'eta': 3
-    }
-
-    def __init__(self, parent=None, style=0):
-        wx.ListCtrl.__init__(self, parent, -1, wx.DefaultPosition, wx.DefaultSize, style)
+    def __init__(self, columns, *args, **kwargs):
+        wx.ListCtrl.__init__(self, *args, **kwargs)
         ListCtrlAutoWidthMixin.__init__(self)
-        self.InsertColumn(0, 'Video', width=150)
-        self.InsertColumn(1, 'Size', width=80)
-        self.InsertColumn(2, 'Percent', width=65)
-        self.InsertColumn(3, 'ETA', width=45)
-        self.InsertColumn(4, 'Speed', width=90)
-        self.InsertColumn(5, 'Status', width=160)
-        self.setResizeColumn(0)
+        self.columns = columns
         self._list_index = 0
-        self._url_list = []
+        self._url_list = list()
+        self._set_columns()
 
     def write(self, data):
         ''' Write data on ListCtrl row-column. '''
         for key in data:
-            if key in self.DATA_COLUMNS:
-                self._write_data(data[key], data['index'], self.DATA_COLUMNS[key])
+            for column in self.columns:
+                if key == column[0]:
+                    self._write_data(data[key], data['index'], column[1])
+                    break
 
+    def load_urls(self, url_list, func=None):
+        for url in url_list:
+            url = url.replace(' ', '')
+            
+            if url and not self.has_url(url):
+                self.add_url(url)
+                
+                if func is not None:
+                    # Custom hack to add url into download_manager
+                    # i am gonna change this
+                    item = self._get_item(self._list_index - 1)
+                    func(item)
+                
     def has_url(self, url):
         ''' Return True if url in ListCtrl, else return False. '''
         return url in self._url_list
@@ -392,7 +416,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         ''' Clear ListCtrl & reset self._list_index. '''
         self.DeleteAllItems()
         self._list_index = 0
-        self._url_list = []
+        self._url_list = list()
 
     def is_empty(self):
         ''' Return True if list is empty. '''
@@ -408,10 +432,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         return items
 
-    def get_last_item(self):
-        ''' Return last item of ListCtrl '''
-        return self._get_item(self._list_index - 1)
-
     def _write_data(self, data, row, column):
         ''' Write data on row, column. '''
         if isinstance(data, basestring):
@@ -419,8 +439,13 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def _get_item(self, index):
         ''' Return single item base on index. '''
-        data = {}
-        item = self.GetItem(itemId=index, col=0)
-        data['url'] = item.GetText()
-        data['index'] = index
+        item = self.GetItem(itemId=index, col=0)        
+        data = dict(url=item.GetText(), index=index)
         return data
+        
+    def _set_columns(self):
+        for column in self.columns:
+            self.InsertColumn(column[1], column[2], width=column[3])
+            if column[4]:
+                self.setResizeColumn(column[1])
+        

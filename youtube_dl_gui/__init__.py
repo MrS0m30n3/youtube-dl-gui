@@ -3,6 +3,7 @@
 ''' Youtube-dlg __init__ file. '''
 
 import sys
+import os.path
 
 try:
     import wx
@@ -24,11 +25,23 @@ from .data import (
     __descriptionfull__,
 )
 
+from .utils import get_config_path
+from .OptionsManager import OptionsManager
+from .LogManager import LogManager
+
 
 def main():
     ''' Call youtube-dlg main window. '''
+    config_path = os.path.join(get_config_path(), __appname__.lower())
+    
+    opt_manager = OptionsManager(config_path)
+    log_manager = None
+    
+    if opt_manager.options['enable_log']:
+        log_manager = LogManager(config_path, opt_manager.options['log_time'])
+    
     app = wx.App()
-    frame = MainFrame()
+    frame = MainFrame(opt_manager, log_manager)
     frame.Centre()
     frame.Show()
     app.MainLoop()

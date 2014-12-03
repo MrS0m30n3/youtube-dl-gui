@@ -81,11 +81,11 @@ class MainFrame(wx.Frame):
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        app_icon = get_icon_path()
+        self.app_icon = get_icon_path()
         
-        # Set app icon
-        if app_icon is not None:
-            self.SetIcon(wx.Icon(app_icon, wx.BITMAP_TYPE_PNG))
+        if self.app_icon is not None:
+            self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
+            self.SetIcon(self.app_icon)
         
         # Create components
         self._panel = wx.Panel(self)
@@ -311,11 +311,7 @@ class MainFrame(wx.Frame):
 
     def _on_options(self, event):
         ''' Event handler method for self._options_btn. '''
-        options_frame = OptionsFrame(
-            self.opt_manager,
-            parent=self,
-            logger=self.log_manager
-        )
+        options_frame = OptionsFrame(self)
         options_frame.Show()
 
     def _on_close(self, event):

@@ -74,10 +74,6 @@ FORMATS = [
     "webm 256k (DASH AUDIO)"
 ]
 
-VIDEO_FORMATS = ["default"] + FORMATS
-
-SECOND_VIDEO_FORMATS = ["none"] + FORMATS
-
 SUBS_LANG = [
     "English",
     "Greek",
@@ -88,12 +84,6 @@ SUBS_LANG = [
     "Spanish",
     "German"
 ]
-
-# Set wx.CheckBox height for Windows & Linux
-# so it looks the same on both platforms
-WX_CHECKBOX_SIZE = (-1, -1)
-if name == 'nt':
-    WX_CHECKBOX_SIZE = (-1, 25)
 
 
 class OptionsFrame(wx.Frame):
@@ -122,35 +112,52 @@ class OptionsFrame(wx.Frame):
 
             Return: None
     '''
+    FRAME_SIZE = (640, 270)
 
-    def __init__(self, opt_manager, parent=None, logger=None):
-        wx.Frame.__init__(self, parent, -1, "Options", size=(640, 270))
+    FRAME_TITLE = "Options"
 
-        self.opt_manager = opt_manager
+    GENERAL_TAB = "General"
+    VIDEO_TAB = "Video"
+    AUDIO_TAB = "Audio"
+    PLAYLIST_TAB = "Playlist"
+    OUTPUT_TAB = "Output"
+    SUBTITLES_TAB = "Subtitles"
+    FILESYS_TAB = "Filesystem"
+    SHUTDOWN_TAB = "Shutdown"
+    AUTH_TAB = "Authentication"
+    CONNECTION_TAB = "Connection"
+    LOG_TAB = "Log"
+    CMD_TAB = "Commands"
 
-        # Add icon
-        icon = get_icon_path()
-        if icon is not None:
-            self.SetIcon(wx.Icon(icon, wx.BITMAP_TYPE_PNG))
-        
+    def __init__(self, parent):
+        wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=self.FRAME_SIZE)
+        self.opt_manager = parent.opt_manager
+        self.log_manager = parent.log_manager
+        self.app_icon = parent.app_icon
+
+        if self.app_icon is not None:
+            self.SetIcon(self.app_icon)
+
         # Create GUI
         panel = wx.Panel(self)
         notebook = wx.Notebook(panel)
 
         # Create Tabs
+        tab_args = (self, notebook)
+        
         self.tabs = (
-            (GeneralPanel(notebook, self.opt_manager, self.reset), "General"),
-            (VideoPanel(notebook), "Video"),
-            (AudioPanel(notebook), "Audio"),
-            (PlaylistPanel(notebook), "Playlist"),
-            (OutputPanel(notebook), "Output"),
-            (SubtitlesPanel(notebook), "Subtitles"),
-            (FilesystemPanel(notebook), "Filesystem"),
-            (ShutdownPanel(notebook), "Shutdown"),
-            (AuthenticationPanel(notebook), "Authentication"),
-            (ConnectionPanel(notebook), "Connection"),
-            (LogPanel(notebook, logger), "Log"),
-            (OtherPanel(notebook), "Commands")
+            (GeneralTab(*tab_args), self.GENERAL_TAB),
+            (VideoTab(*tab_args), self.VIDEO_TAB),
+            (AudioTab(*tab_args), self.AUDIO_TAB),
+            (PlaylistTab(*tab_args), self.PLAYLIST_TAB),
+            (OutputTab(*tab_args), self.OUTPUT_TAB),
+            (SubtitlesTab(*tab_args), self.SUBTITLES_TAB),
+            (FilesystemTab(*tab_args), self.FILESYS_TAB),
+            (ShutdownTab(*tab_args), self.SHUTDOWN_TAB),
+            (AuthenticationTab(*tab_args), self.AUTH_TAB),
+            (ConnectionTab(*tab_args), self.CONNECTION_TAB),
+            (LogTab(*tab_args), self.LOG_TAB),
+            (CMDTab(*tab_args), self.CMD_TAB)
         )
 
         # Add tabs on notebook
@@ -161,11 +168,11 @@ class OptionsFrame(wx.Frame):
         sizer.Add(notebook, 1, wx.EXPAND)
         panel.SetSizer(sizer)
 
-        self.Bind(wx.EVT_CLOSE, self.OnClose)
+        self.Bind(wx.EVT_CLOSE, self._on_close)
 
         self.load_all_options()
 
-    def OnClose(self, event):
+    def _on_close(self, event):
         ''' Event handler for wx.EVT_CLOSE. '''
         self.save_all_options()
         self.Destroy()
@@ -178,15 +185,118 @@ class OptionsFrame(wx.Frame):
     def load_all_options(self):
         ''' Load tabs options. '''
         for tab, _ in self.tabs:
-            tab.load_options(self.opt_manager)
+            tab.load_options()
 
     def save_all_options(self):
         ''' Save tabs options '''
         for tab, _ in self.tabs:
-            tab.save_options(self.opt_manager)
+            tab.save_options()
 
 
-class LogPanel(wx.Panel):
+class TabPanel(wx.Panel):
+
+    # Set wx.CheckBox height for Windows & Linux
+    # so it looks the same on both platforms
+    CHECKBOX_SIZE = (-1, -1)
+    if name == 'nt':
+        CHECKBOX_SIZE = (-1, 25)
+
+    BUTTONS_SIZE = (-1, -1)
+    TEXTCTRL_SIZE = (-1, -1)
+    SPINCTRL_SIZE = (70, 20)
+
+    SIZE_80 = 80
+    SIZE_50 = 50
+    SIZE_40 = 40
+    SIZE_30 = 30
+    SIZE_20 = 20
+    SIZE_15 = 15
+    SIZE_10 = 10
+    SIZE_5 = 5
+
+    def __init__(self, parent, notebook):
+        wx.Panel.__init__(self, notebook)
+        self.opt_manager = parent.opt_manager
+        self.log_manager = parent.log_manager
+        self.app_icon = parent.app_icon
+        
+        self.reset_handler = parent.reset
+        
+    def create_button(self, label, event_handler=None):
+        button = wx.Button(self, label=label, size=self.BUTTONS_SIZE)
+
+        if event_handler is not None:
+            button.Bind(wx.EVT_BUTTON, event_handler)
+
+        return button
+
+    def create_checkbox(self, label, event_handler=None):
+        checkbox = wx.CheckBox(self, label=label, size=self.CHECKBOX_SIZE)
+
+        if event_handler is not None:
+            checkbox.Bind(wx.EVT_CHECKBOX, event_handler)
+
+        return checkbox
+
+    def create_textctrl(self, style=None):
+        if style is None:
+            textctrl = wx.TextCtrl(self, size=self.TEXTCTRL_SIZE)
+        else:
+            textctrl = wx.TextCtrl(self, size=self.TEXTCTRL_SIZE, style=style)
+
+        return textctrl
+
+    def create_combobox(self, choices, size=(-1, -1), event_handler=None):
+        combobox = wx.ComboBox(self, choices=choices, size=size)
+
+        if event_handler is not None:
+            combobox.Bind(wx.EVT_COMBOBOX, event_handler)
+
+        return combobox
+
+    def create_dirdialog(self, label):
+        dlg = wx.DirDialog(self, label)
+        return dlg
+        
+    def create_radiobutton(self, label, event_handler=None, style=None):
+        if style is None:
+            radiobutton = wx.RadioButton(self, label=label)
+        else:
+            radiobutton = wx.RadioButton(self, label=label, style=style)
+
+        if event_handler is not None:
+            radiobutton.Bind(wx.EVT_RADIOBUTTON, event_handler)
+
+        return radiobutton
+
+    def create_spinctrl(self, spin_range=(0, 999)):
+        spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
+        spinctrl.SetRange(*spin_range)
+
+        return spinctrl
+
+    def create_statictext(self, label):
+        statictext = wx.StaticText(self, label=label)
+        return statictext
+
+    def create_popup(self, text, title, style):
+        ''' Create popup. '''
+        wx.MessageBox(text, title, style)
+
+    def _set_sizer(self):
+        pass
+
+    def _disable_items(self):
+        pass
+    
+    def load_options(self):
+        pass
+    
+    def save_options(self):
+        pass
+    
+
+class LogTab(TabPanel):
 
     '''
     Options frame log tab panel.
@@ -195,102 +305,103 @@ class LogPanel(wx.Panel):
         parent: wx.Panel parent.
         logger: LogManager.LogManager.object.
     '''
+    ENABLE_LABEL = "Enable Log"
+    WRITE_LABEL = "Write Time"
+    CLEAR_LABEL = "Clear Log"
+    VIEW_LABEL = "View Log"
+    PATH_LABEL = "Path: {0}"
+    LOGSIZE_LABEL = "Log Size: {0} Bytes"
+    RESTART_LABEL = "Restart"
+    RESTART_MSG = "Please restart {0}"
 
-    def __init__(self, parent, logger):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, *args, **kwargs):
+        super(LogTab, self).__init__(*args, **kwargs)
 
-        self.logger = logger
+        self.enable_checkbox = self.create_checkbox(self.ENABLE_LABEL, self._on_enable)
+        self.time_checkbox = self.create_checkbox(self.WRITE_LABEL, self._on_time)
+        self.clear_button = self.create_button(self.CLEAR_LABEL, self._on_clear)
+        self.view_button = self.create_button(self.VIEW_LABEL, self._on_view)
 
-        # Create components
-        self.enable_checkbox = wx.CheckBox(self, label='Enable Log', size=WX_CHECKBOX_SIZE)
-        self.time_checkbox = wx.CheckBox(self, label='Write Time', size=WX_CHECKBOX_SIZE)
-        self.clear_button = wx.Button(self, label='Clear Log')
-        self.view_button = wx.Button(self, label='View Log')
+        self.log_path = self.create_statictext(self.PATH_LABEL.format(self._get_logpath()))
+        self.log_size = self.create_statictext(self.LOGSIZE_LABEL.format(self._get_logsize()))
 
-        if self.logger is None:
-            self.time_checkbox.Disable()
-            self.clear_button.Disable()
-            self.view_button.Disable()
+        self._set_sizer()
+        self._disable_items()
 
-        # Set BoxSizer
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(20)
+        main_sizer.AddSpacer(self.SIZE_20)
         main_sizer.Add(self.enable_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
+        main_sizer.AddSpacer(self.SIZE_5)
         main_sizer.Add(self.time_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(self._create_buttons_sizer(), flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_15)
 
-        # Create extra items
-        if logger is not None:
-            path_text = wx.StaticText(self, label="Path: " + self.logger.log_file)
-            self.log_size = wx.StaticText(self, label="Log Size %s Bytes" % self.logger.log_size())
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_sizer.Add(self.clear_button)
+        buttons_sizer.AddSpacer(self.SIZE_20)
+        buttons_sizer.Add(self.view_button)
 
-            main_sizer.AddSpacer(20)
-            main_sizer.Add(path_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
-            main_sizer.AddSpacer(10)
-            main_sizer.Add(self.log_size, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
+
+        main_sizer.AddSpacer(self.SIZE_20)
+        main_sizer.Add(self.log_path, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(self.log_size, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-        # Set Events
-        self.Bind(wx.EVT_CHECKBOX, self.OnEnable, self.enable_checkbox)
-        self.Bind(wx.EVT_CHECKBOX, self.OnTime, self.time_checkbox)
-        self.Bind(wx.EVT_BUTTON, self.OnClear, self.clear_button)
-        self.Bind(wx.EVT_BUTTON, self.OnView, self.view_button)
+    def _disable_items(self):
+        if self.log_manager is None:
+            self.time_checkbox.Disable()
+            self.clear_button.Disable()
+            self.view_button.Disable()
+            self.log_path.Hide()
+            self.log_size.Hide()
 
-    def _create_buttons_sizer(self):
-        ''' Create buttons BoxSizer. '''
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(self.clear_button)
-        sizer.AddSpacer(20)
-        sizer.Add(self.view_button)
+    def _get_logpath(self):
+        if self.log_manager is None:
+            return ''
+        return self.log_manager.log_file
 
-        return sizer
+    def _get_logsize(self):
+        if self.log_manager is None:
+            return 0
+        return self.log_manager.log_size()
 
-    def _create_popup(self, text, title, style):
-        ''' Create popup. '''
-        wx.MessageBox(text, title, style)
-
-    def OnTime(self, event):
+    def _on_time(self, event):
         ''' Event handler for self.time_checkbox. '''
-        if self.logger is not None:
-            self.logger.add_time = self.time_checkbox.GetValue()
+        self.log_manager.add_time = self.time_checkbox.GetValue()
 
-    def OnEnable(self, event):
+    def _on_enable(self, event):
         ''' Event handler for self.enable_checkbox. '''
-        self._create_popup(
-            'Please restart ' + __appname__,
-            'Restart',
-            wx.OK | wx.ICON_INFORMATION
-        )
+        self.create_popup(self.RESTART_MSG.format(__appname__),
+                          self.RESTART_LABEL,
+                          wx.OK | wx.ICON_INFORMATION)
 
-    def OnClear(self, event):
+    def _on_clear(self, event):
         ''' Event handler for self.clear_button. '''
-        if self.logger is not None:
-            self.logger.clear()
-            self.log_size.SetLabel("Log Size %s Bytes" % self.logger.log_size())
+        self.log_manager.clear()
+        self.log_size.SetLabel(self.LOGSIZE_LABEL.format(self._get_logsize()))
 
-    def OnView(self, event):
+    def _on_view(self, event):
         ''' Event handler for self.view_button. '''
-        if self.logger is not None:
-            logger_gui = LogGUI(self)
-            logger_gui.Show()
-            logger_gui.load(self.logger.log_file)
+        logger_gui = LogGUI(self)
+        logger_gui.Show()
+        logger_gui.load(self.log_manager.log_file)
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.enable_checkbox.SetValue(opt_manager.options['enable_log'])
-        self.time_checkbox.SetValue(opt_manager.options['log_time'])
+        self.enable_checkbox.SetValue(self.opt_manager.options['enable_log'])
+        self.time_checkbox.SetValue(self.opt_manager.options['log_time'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['enable_log'] = self.enable_checkbox.GetValue()
-        opt_manager.options['log_time'] = self.time_checkbox.GetValue()
+        self.opt_manager.options['enable_log'] = self.enable_checkbox.GetValue()
+        self.opt_manager.options['log_time'] = self.time_checkbox.GetValue()
 
 
-class ShutdownPanel(wx.Panel):
+class ShutdownTab(TabPanel):
 
     '''
     Options frame shutdown tab panel.
@@ -298,45 +409,55 @@ class ShutdownPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    TEXTCTRL_SIZE = (250, 25)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    SHUTDOWN_LABEL = "Shutdown when finished"
+    SUDO_LABEL = "SUDO password"
 
-        self.shutdown_checkbox = wx.CheckBox(self, label='Shutdown when finished', size=WX_CHECKBOX_SIZE)
-        self.sudo_pass_box = wx.TextCtrl(self, size=(250, 25), style=wx.TE_PASSWORD)
+    def __init__(self, *args, **kwargs):
+        super(ShutdownTab, self).__init__(*args, **kwargs)
 
+        self.shutdown_checkbox = self.create_checkbox(self.SHUTDOWN_LABEL, self._on_shutdown_check)
+        self.sudo_text = self.create_statictext(self.SUDO_LABEL)
+        self.sudo_box = self.create_textctrl(wx.TE_PASSWORD)
+
+        self._set_sizer()
+        self._disable_items()
+
+    def _disable_items(self):
+        if name == 'nt':
+            self.sudo_text.Hide()
+            self.sudo_box.Hide()
+
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(40)
+        main_sizer.AddSpacer(self.SIZE_40)
         main_sizer.Add(self.shutdown_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(20)
-        main_sizer.Add(wx.StaticText(self, label='SUDO password'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.sudo_pass_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_20)
+        main_sizer.Add(self.sudo_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.sudo_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnShutdownCheck, self.shutdown_checkbox)
-
-    def OnShutdownCheck(self, event):
+    def _on_shutdown_check(self, event):
         ''' Event handler for self.shutdown_checkbox. '''
-        if name != 'nt':
-            self.sudo_pass_box.Enable(self.shutdown_checkbox.GetValue())
+        self.sudo_box.Enable(self.shutdown_checkbox.GetValue())
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.shutdown_checkbox.SetValue(opt_manager.options['shutdown'])
-        self.sudo_pass_box.SetValue(opt_manager.options['sudo_password'])
-        if name == 'nt' or not opt_manager.options['shutdown']:
-            self.sudo_pass_box.Disable()
+        self.shutdown_checkbox.SetValue(self.opt_manager.options['shutdown'])
+        self.sudo_box.SetValue(self.opt_manager.options['sudo_password'])
+        self._on_shutdown_check(None)
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['shutdown'] = self.shutdown_checkbox.GetValue()
-        opt_manager.options['sudo_password'] = self.sudo_pass_box.GetValue()
+        self.opt_manager.options['shutdown'] = self.shutdown_checkbox.GetValue()
+        self.opt_manager.options['sudo_password'] = self.sudo_box.GetValue()
 
 
-class PlaylistPanel(wx.Panel):
+class PlaylistTab(TabPanel):
 
     '''
     Options frame playlist tab panel.
@@ -344,48 +465,55 @@ class PlaylistPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    START_LABEL = "Playlist Start"
+    STOP_LABEL = "Playlist Stop"
+    MAX_LABEL = "Max Downloads"
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, *args, **kwargs):
+        super(PlaylistTab, self).__init__(*args, **kwargs)
 
-        self.start_spinner = wx.SpinCtrl(self, size=(70, 20))
-        self.start_spinner.SetRange(1, 999)
-        self.stop_spinner = wx.SpinCtrl(self, size=(70, 20))
-        self.stop_spinner.SetRange(0, 999)
-        self.max_spinner = wx.SpinCtrl(self, size=(70, 20))
-        self.max_spinner.SetRange(0, 999)
+        self.start_spinctrl = self.create_spinctrl((1, 999))
+        self.stop_spinctrl = self.create_spinctrl()
+        self.max_spinctrl = self.create_spinctrl()
 
+        self.start_text = self.create_statictext(self.START_LABEL)
+        self.stop_text = self.create_statictext(self.STOP_LABEL)
+        self.max_text = self.create_statictext(self.MAX_LABEL)
+
+        self._set_sizer()
+
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(20)
-        main_sizer.Add(wx.StaticText(self, label='Playlist Start'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.start_spinner, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(wx.StaticText(self, label='Playlist Stop'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.stop_spinner, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(wx.StaticText(self, label='Max Downloads'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.max_spinner, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_20)
+        main_sizer.Add(self.start_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.start_spinctrl, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_15)
+        main_sizer.Add(self.stop_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.stop_spinctrl, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_15)
+        main_sizer.Add(self.max_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.max_spinctrl, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.start_spinner.SetValue(opt_manager.options['playlist_start'])
-        self.stop_spinner.SetValue(opt_manager.options['playlist_end'])
-        self.max_spinner.SetValue(opt_manager.options['max_downloads'])
+        self.start_spinctrl.SetValue(self.opt_manager.options['playlist_start'])
+        self.stop_spinctrl.SetValue(self.opt_manager.options['playlist_end'])
+        self.max_spinctrl.SetValue(self.opt_manager.options['max_downloads'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['playlist_start'] = self.start_spinner.GetValue()
-        opt_manager.options['playlist_end'] = self.stop_spinner.GetValue()
-        opt_manager.options['max_downloads'] = self.max_spinner.GetValue()
+        self.opt_manager.options['playlist_start'] = self.start_spinctrl.GetValue()
+        self.opt_manager.options['playlist_end'] = self.stop_spinctrl.GetValue()
+        self.opt_manager.options['max_downloads'] = self.max_spinctrl.GetValue()
 
 
-class ConnectionPanel(wx.Panel):
+class ConnectionTab(TabPanel):
 
     '''
     Options frame connection tab panel.
@@ -393,64 +521,75 @@ class ConnectionPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    SPINCTRL_SIZE = (50, -1)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    RETRIES_LABEL = "Retries"
+    USERAGENT_LABEL = "User Agent"
+    REF_LABEL = "Referer"
+    PROXY_LABEL = "Proxy"
+
+    def __init__(self, *args, **kwargs):
+        super(ConnectionTab, self).__init__(*args, **kwargs)
 
         # Create components
-        self.retries_spinner = wx.SpinCtrl(self, size=(50, -1))
-        self.retries_spinner.SetRange(1, 99)
-        self.user_agent_box = wx.TextCtrl(self, size=(550, -1))
-        self.referer_box = wx.TextCtrl(self, size=(550, -1))
-        self.proxy_box = wx.TextCtrl(self, size=(550, -1))
+        self.retries_spinctrl = self.create_spinctrl((1, 99))
+        self.useragent_box = self.create_textctrl()
+        self.referer_box = self.create_textctrl()
+        self.proxy_box = self.create_textctrl()
 
-        # Set BoxSizer
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.retries_text = self.create_statictext(self.RETRIES_LABEL)
+        self.useragent_text = self.create_statictext(self.USERAGENT_LABEL)
+        self.referer_text = self.create_statictext(self.REF_LABEL)
+        self.proxy_text = self.create_statictext(self.PROXY_LABEL)
 
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(self._create_retries_sizer())
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='User Agent'), flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.user_agent_box, flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Referer'), flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.referer_box, flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Proxy'), flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.proxy_box, flag=wx.LEFT, border=10)
+        self._set_sizer()
+
+    def _set_sizer(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.AddSpacer(self.SIZE_10)
+
+        retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        retries_sizer.Add(self.retries_text)
+        retries_sizer.AddSpacer(self.SIZE_5)
+        retries_sizer.Add(self.retries_spinctrl)
+        vertical_sizer.Add(retries_sizer)
+
+        vertical_sizer.AddSpacer(self.SIZE_10)
+        vertical_sizer.Add(self.useragent_text)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.useragent_box, flag=wx.EXPAND)
+        vertical_sizer.AddSpacer(self.SIZE_10)
+        vertical_sizer.Add(self.referer_text)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.referer_box, flag=wx.EXPAND)
+        vertical_sizer.AddSpacer(self.SIZE_10)
+        vertical_sizer.Add(self.proxy_text)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.proxy_box, flag=wx.EXPAND)
+
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(vertical_sizer, 1, flag=wx.RIGHT, border=self.SIZE_40)
 
         self.SetSizer(main_sizer)
 
-    def _create_retries_sizer(self):
-        ''' Create retries BoxSizer. '''
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sizer.AddSpacer(10)
-        sizer.Add(wx.StaticText(self, label='Retries'))
-        sizer.AddSpacer(5)
-        sizer.Add(self.retries_spinner)
-
-        return sizer
-
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.proxy_box.SetValue(opt_manager.options['proxy'])
-        self.referer_box.SetValue(opt_manager.options['referer'])
-        self.retries_spinner.SetValue(opt_manager.options['retries'])
-        self.user_agent_box.SetValue(opt_manager.options['user_agent'])
+        self.proxy_box.SetValue(self.opt_manager.options['proxy'])
+        self.referer_box.SetValue(self.opt_manager.options['referer'])
+        self.retries_spinctrl.SetValue(self.opt_manager.options['retries'])
+        self.useragent_box.SetValue(self.opt_manager.options['user_agent'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['proxy'] = self.proxy_box.GetValue()
-        opt_manager.options['referer'] = self.referer_box.GetValue()
-        opt_manager.options['retries'] = self.retries_spinner.GetValue()
-        opt_manager.options['user_agent'] = self.user_agent_box.GetValue()
+        self.opt_manager.options['proxy'] = self.proxy_box.GetValue()
+        self.opt_manager.options['referer'] = self.referer_box.GetValue()
+        self.opt_manager.options['retries'] = self.retries_spinctrl.GetValue()
+        self.opt_manager.options['user_agent'] = self.useragent_box.GetValue()
 
 
-class AuthenticationPanel(wx.Panel):
+class AuthenticationTab(TabPanel):
 
     '''
     Options frame authentication tab panel.
@@ -458,45 +597,57 @@ class AuthenticationPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    TEXTCTRL_SIZE = (250, 25)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    USERNAME_LABEL = "Username"
+    PASSWORD_LABEL = "Password"
+    VIDEOPASS_LABEL = "Video Password (vimeo, smotri)"
 
-        self.username_box = wx.TextCtrl(self, size=(250, 25))
-        self.password_box = wx.TextCtrl(self, size=(250, 25), style=wx.TE_PASSWORD)
-        self.video_pass_box = wx.TextCtrl(self, size=(250, 25), style=wx.TE_PASSWORD)
+    def __init__(self, *args, **kwargs):
+        super(AuthenticationTab, self).__init__(*args, **kwargs)
 
+        self.username_box = self.create_textctrl()
+        self.password_box = self.create_textctrl(wx.TE_PASSWORD)
+        self.videopass_box = self.create_textctrl(wx.TE_PASSWORD)
+
+        self.username_text = self.create_statictext(self.USERNAME_LABEL)
+        self.password_text = self.create_statictext(self.PASSWORD_LABEL)
+        self.videopass_text = self.create_statictext(self.VIDEOPASS_LABEL)
+
+        self._set_sizer()
+
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(wx.StaticText(self, label='Username'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
+        main_sizer.AddSpacer(self.SIZE_15)
+        main_sizer.Add(self.username_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
         main_sizer.Add(self.username_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(wx.StaticText(self, label='Password'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
+        main_sizer.AddSpacer(self.SIZE_15)
+        main_sizer.Add(self.password_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
         main_sizer.Add(self.password_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(wx.StaticText(self, label='Video Password (vimeo, smotri)'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.video_pass_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_15)
+        main_sizer.Add(self.videopass_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.videopass_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.username_box.SetValue(opt_manager.options['username'])
-        self.password_box.SetValue(opt_manager.options['password'])
-        self.video_pass_box.SetValue(opt_manager.options['video_password'])
+        self.username_box.SetValue(self.opt_manager.options['username'])
+        self.password_box.SetValue(self.opt_manager.options['password'])
+        self.videopass_box.SetValue(self.opt_manager.options['video_password'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['username'] = self.username_box.GetValue()
-        opt_manager.options['password'] = self.password_box.GetValue()
-        opt_manager.options['video_password'] = self.video_pass_box.GetValue()
+        self.opt_manager.options['username'] = self.username_box.GetValue()
+        self.opt_manager.options['password'] = self.password_box.GetValue()
+        self.opt_manager.options['video_password'] = self.videopass_box.GetValue()
 
 
-class AudioPanel(wx.Panel):
+class AudioTab(TabPanel):
 
     '''
     Options frame audio tab panel.
@@ -505,59 +656,64 @@ class AudioPanel(wx.Panel):
         parent: wx.Panel parent.
     '''
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    TO_AUDIO_LABEL = "Convert to Audio"
+    KEEP_VIDEO_LABEL = "Keep Video"
+    AUDIO_FORMAT_LABEL = "Audio Format"
+    AUDIO_QUALITY_LABEL = "Audio Quality"
 
-        self.to_audio_checkbox = wx.CheckBox(self, label='Convert to Audio', size=WX_CHECKBOX_SIZE)
-        self.keep_video_checkbox = wx.CheckBox(self, label='Keep Video', size=WX_CHECKBOX_SIZE)
-        self.audio_format_combo = wx.ComboBox(self, choices=AUDIO_FORMATS, size=(160, 30))
-        self.audio_quality_combo = wx.ComboBox(self, choices=AUDIO_QUALITY, size=(80, 25))
+    def __init__(self, *args, **kwargs):
+        super(AudioTab, self).__init__(*args, **kwargs)
 
+        self.to_audio_checkbox = self.create_checkbox(self.TO_AUDIO_LABEL, self._on_audio_check)
+        self.keep_video_checkbox = self.create_checkbox(self.KEEP_VIDEO_LABEL)
+        self.audioformat_combo = self.create_combobox(AUDIO_FORMATS, (160, 30))
+        self.audioquality_combo = self.create_combobox(AUDIO_QUALITY, (80, 25))
+
+        self.audioformat_text = self.create_statictext(self.AUDIO_FORMAT_LABEL)
+        self.audioquality_text = self.create_statictext(self.AUDIO_QUALITY_LABEL)
+
+        self._set_sizer()
+
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(15)
+        main_sizer.AddSpacer(self.SIZE_15)
         main_sizer.Add(self.to_audio_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
+        main_sizer.AddSpacer(self.SIZE_5)
         main_sizer.Add(self.keep_video_checkbox, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Audio Format'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.audio_format_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Audio Quality'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.audio_quality_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(self.audioformat_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.audioformat_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(self.audioquality_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.audioquality_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnAudioCheck, self.to_audio_checkbox)
-
-    def OnAudioCheck(self, event):
+    def _on_audio_check(self, event):
         ''' Event handler for self.to_audio_checkbox. '''
-        if self.to_audio_checkbox.GetValue():
-            self.audio_format_combo.Enable()
-            self.audio_quality_combo.Enable()
-        else:
-            self.audio_format_combo.Disable()
-            self.audio_quality_combo.Disable()
+        self.audioformat_combo.Enable(self.to_audio_checkbox.GetValue())
+        self.audioquality_combo.Enable(self.to_audio_checkbox.GetValue())
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.to_audio_checkbox.SetValue(opt_manager.options['to_audio'])
-        self.keep_video_checkbox.SetValue(opt_manager.options['keep_video'])
-        self.audio_format_combo.SetValue(opt_manager.options['audio_format'])
-        self.audio_quality_combo.SetValue(opt_manager.options['audio_quality'])
-        self.OnAudioCheck(None)
+        self.to_audio_checkbox.SetValue(self.opt_manager.options['to_audio'])
+        self.keep_video_checkbox.SetValue(self.opt_manager.options['keep_video'])
+        self.audioformat_combo.SetValue(self.opt_manager.options['audio_format'])
+        self.audioquality_combo.SetValue(self.opt_manager.options['audio_quality'])
+        self._on_audio_check(None)
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['to_audio'] = self.to_audio_checkbox.GetValue()
-        opt_manager.options['keep_video'] = self.keep_video_checkbox.GetValue()
-        opt_manager.options['audio_format'] = self.audio_format_combo.GetValue()
-        opt_manager.options['audio_quality'] = self.audio_quality_combo.GetValue()
+        self.opt_manager.options['to_audio'] = self.to_audio_checkbox.GetValue()
+        self.opt_manager.options['keep_video'] = self.keep_video_checkbox.GetValue()
+        self.opt_manager.options['audio_format'] = self.audioformat_combo.GetValue()
+        self.opt_manager.options['audio_quality'] = self.audioquality_combo.GetValue()
 
 
-class VideoPanel(wx.Panel):
+class VideoTab(TabPanel):
 
     '''
     Options frame video tab panel.
@@ -565,48 +721,60 @@ class VideoPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    VIDEO_FORMATS = ["default"] + FORMATS
+    SECOND_VIDEO_FORMATS = ["none"] + FORMATS
+    
+    COMBOBOX_SIZE = (200, 30)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    VIDEO_FORMAT_LABEL = "Video Format"
+    SEC_VIDEOFORMAT_LABEL = "Mix Format"
 
-        self.video_format_combo = wx.ComboBox(self, choices=VIDEO_FORMATS, size=(200, 30))
-        self.second_video_format_combo = wx.ComboBox(self, choices=SECOND_VIDEO_FORMATS, size=(200, 30))
+    def __init__(self, *args, **kwargs):
+        super(VideoTab, self).__init__(*args, **kwargs)
 
+        self.videoformat_combo = self.create_combobox(self.VIDEO_FORMATS,
+                                                      self.COMBOBOX_SIZE,
+                                                      self._on_videoformat)
+        self.sec_videoformat_combo = self.create_combobox(self.SECOND_VIDEO_FORMATS,
+                                                          self.COMBOBOX_SIZE)
+
+        self.videoformat_text = self.create_statictext(self.VIDEO_FORMAT_LABEL)
+        self.sec_videoformat_text = self.create_statictext(self.SEC_VIDEOFORMAT_LABEL)
+
+        self._set_sizer()
+
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(30)
-        main_sizer.Add(wx.StaticText(self, label='Video Format'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.video_format_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Mix Video Format'), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.second_video_format_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_30)
+        main_sizer.Add(self.videoformat_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.videoformat_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(self.sec_videoformat_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_5)
+        main_sizer.Add(self.sec_videoformat_combo, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-        self.Bind(wx.EVT_COMBOBOX, self.OnVideoFormatPick, self.video_format_combo)
+    def _on_videoformat(self, event):
+        ''' Event handler for self.videoformat_combo. '''
+        condition = (self.videoformat_combo.GetValue() != 'default')
+        self.sec_videoformat_combo.Enable(condition)
 
-    def OnVideoFormatPick(self, event):
-        ''' Event handler for self.video_format_combo. '''
-        if self.video_format_combo.GetValue() != 'default':
-            self.second_video_format_combo.Enable()
-        else:
-            self.second_video_format_combo.Disable()
-
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.video_format_combo.SetValue(opt_manager.options['video_format'])
-        self.second_video_format_combo.SetValue(opt_manager.options['second_video_format'])
-        self.OnVideoFormatPick(None)
+        self.videoformat_combo.SetValue(self.opt_manager.options['video_format'])
+        self.sec_videoformat_combo.SetValue(self.opt_manager.options['second_video_format'])
+        self._on_videoformat(None)
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['video_format'] = self.video_format_combo.GetValue()
-        opt_manager.options['second_video_format'] = self.second_video_format_combo.GetValue()
+        self.opt_manager.options['video_format'] = self.videoformat_combo.GetValue()
+        self.opt_manager.options['second_video_format'] = self.sec_videoformat_combo.GetValue()
 
 
-class OutputPanel(wx.Panel):
+class OutputTab(TabPanel):
 
     '''
     Options frame output tab panel.
@@ -614,89 +782,78 @@ class OutputPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    TEXTCTRL_SIZE = (300, 20)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    RESTRICT_LABEL = "Restrict filenames (ASCII)"
+    ID_AS_NAME = "ID as Name"
+    TITLE_AS_NAME = "Title as Name"
+    CUST_TITLE = "Custom Template (youtube-dl)"
 
-        self.restrict_filenames_checkbox = wx.CheckBox(self, label='Restrict filenames (ASCII)', size=WX_CHECKBOX_SIZE)
-        self.id_as_name_checkbox = wx.CheckBox(self, label='ID as Name', size=WX_CHECKBOX_SIZE)
-        self.title_checkbox = wx.CheckBox(self, label='Title as Name', size=WX_CHECKBOX_SIZE)
-        self.custom_title_checkbox = wx.CheckBox(self, label='Custom Template (youtube-dl)', size=WX_CHECKBOX_SIZE)
-        self.title_template_box = wx.TextCtrl(self, size=(300, 20))
+    def __init__(self, *args, **kwargs):
+        super(OutputTab, self).__init__(*args, **kwargs)
 
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.res_names_checkbox = self.create_checkbox(self.RESTRICT_LABEL)
+        self.id_rbtn = self.create_radiobutton(self.ID_AS_NAME, self._on_pick, wx.RB_GROUP)
+        self.title_rbtn = self.create_radiobutton(self.TITLE_AS_NAME, self._on_pick)
+        self.custom_rbtn = self.create_radiobutton(self.CUST_TITLE, self._on_pick)
+        self.title_template = self.create_textctrl()
 
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(self.restrict_filenames_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.id_as_name_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.title_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.custom_title_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(self.title_template_box, flag=wx.LEFT, border=5)
+        self._set_sizer()
+
+    def _set_sizer(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.AddSpacer(self.SIZE_15)
+        vertical_sizer.Add(self.res_names_checkbox)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.id_rbtn)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.title_rbtn)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.custom_rbtn)
+        vertical_sizer.AddSpacer(self.SIZE_10)
+        vertical_sizer.Add(self.title_template)
+
+        main_sizer.Add(vertical_sizer, flag=wx.LEFT, border=self.SIZE_5)
 
         self.SetSizer(main_sizer)
 
-        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, self.id_as_name_checkbox)
-        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, self.title_checkbox)
-        self.Bind(wx.EVT_CHECKBOX, self.OnCheck, self.custom_title_checkbox)
-
-    def _group_load(self, output_format):
-        ''' Disable components base on output_format. '''
-        if output_format == 'id':
-            self.id_as_name_checkbox.SetValue(True)
-            self.title_checkbox.SetValue(False)
-            self.custom_title_checkbox.SetValue(False)
-            self.title_template_box.Disable()
-        elif output_format == 'title':
-            self.id_as_name_checkbox.SetValue(False)
-            self.title_checkbox.SetValue(True)
-            self.custom_title_checkbox.SetValue(False)
-            self.title_template_box.Disable()
-        elif output_format == 'custom':
-            self.id_as_name_checkbox.SetValue(False)
-            self.title_checkbox.SetValue(False)
-            self.custom_title_checkbox.SetValue(True)
-            self.title_template_box.Enable()
+    def _on_pick(self, event):
+        self.title_template.Enable(self.custom_rbtn.GetValue())
 
     def _get_output_format(self):
         ''' Return output_format. '''
-        if self.id_as_name_checkbox.GetValue():
+        if self.id_rbtn.GetValue():
             return 'id'
-        elif self.title_checkbox.GetValue():
+        elif self.title_rbtn.GetValue():
             return 'title'
-        elif self.custom_title_checkbox.GetValue():
+        elif self.custom_rbtn.GetValue():
             return 'custom'
 
-    def OnCheck(self, event):
-        ''' Event handler for output checkboxes. '''
-        box = event.GetEventObject()
+    def _set_output_format(self, output_format):
+        if output_format == 'id':
+            self.id_rbtn.SetValue(True)
+        elif output_format == 'title':
+            self.title_rbtn.SetValue(True)
+        elif output_format == 'custom':
+            self.custom_rbtn.SetValue(True)
 
-        if box == self.id_as_name_checkbox:
-            output_format = 'id'
-        elif box == self.title_checkbox:
-            output_format = 'title'
-        else:
-            output_format = 'custom'
-
-        self._group_load(output_format)
-
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self._group_load(opt_manager.options['output_format'])
-        self.title_template_box.SetValue(opt_manager.options['output_template'])
-        self.restrict_filenames_checkbox.SetValue(opt_manager.options['restrict_filenames'])
+        self._set_output_format(self.opt_manager.options['output_format'])
+        self.title_template.SetValue(self.opt_manager.options['output_template'])
+        self.res_names_checkbox.SetValue(self.opt_manager.options['restrict_filenames'])
+        self._on_pick(None)
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['output_format'] = self._get_output_format()
-        opt_manager.options['output_template'] = self.title_template_box.GetValue()
-        opt_manager.options['restrict_filenames'] = self.restrict_filenames_checkbox.GetValue()
+        self.opt_manager.options['output_format'] = self._get_output_format()
+        self.opt_manager.options['output_template'] = self.title_template.GetValue()
+        self.opt_manager.options['restrict_filenames'] = self.res_names_checkbox.GetValue()
 
 
-class FilesystemPanel(wx.Panel):
+class FilesystemTab(TabPanel):
 
     '''
     Options frame filesystem tab panel.
@@ -704,24 +861,38 @@ class FilesystemPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    TEXTCTRL_SIZE = (70, -1)
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    IGN_ERR_LABEL = "Ignore Errors"
+    OPEN_DIR_LABEL = "Open destination folder"
+    WRT_INFO_LABEL = "Write info to (.json) file"
+    WRT_DESC_LABEL = "Write description to file"
+    WRT_THMB_LABEL = "Write thumbnail to disk"
+    FILESIZE_LABEL = "Filesize (e.g. 50k or 44.6m)"
+    MIN_LABEL = "Min"
+    MAX_LABEL = "Max"
+    
+    def __init__(self, *args, **kwargs):
+        super(FilesystemTab, self).__init__(*args, **kwargs)
 
-        self.ignore_errors_checkbox = wx.CheckBox(self, label='Ignore Errors', size=WX_CHECKBOX_SIZE)
-        self.open_dir_checkbox = wx.CheckBox(self, label='Open download folder', size=WX_CHECKBOX_SIZE)
-        self.write_info_checkbox = wx.CheckBox(self, label='Write info to (.json) file', size=WX_CHECKBOX_SIZE)
-        self.write_desc_checkbox = wx.CheckBox(self, label='Write description to file', size=WX_CHECKBOX_SIZE)
-        self.write_thumbnail_checkbox = wx.CheckBox(self, label='Write thumbnail to disk', size=WX_CHECKBOX_SIZE)
+        self.ign_err_checkbox = self.create_checkbox(self.IGN_ERR_LABEL)
+        self.open_dir_checkbox = self.create_checkbox(self.OPEN_DIR_LABEL)
+        self.write_info_checkbox = self.create_checkbox(self.WRT_INFO_LABEL)
+        self.write_desc_checkbox = self.create_checkbox(self.WRT_DESC_LABEL)
+        self.write_thumbnail_checkbox = self.create_checkbox(self.WRT_THMB_LABEL)
+        self.min_filesize_box = self.create_textctrl()
+        self.max_filesize_box = self.create_textctrl()
+        
+        self.min_text = self.create_statictext(self.MIN_LABEL)
+        self.max_text = self.create_statictext(self.MAX_LABEL)
 
-        self.min_filesize_box = wx.TextCtrl(self, size=(70, -1))
-        self.max_filesize_box = wx.TextCtrl(self, size=(70, -1))
+        self._set_sizer()
 
+    def _set_sizer(self):    
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        main_sizer.Add(self._set_left_sizer(), flag=wx.EXPAND)
-        main_sizer.AddSpacer(150)
-        main_sizer.Add(self._set_right_sizer(), 1, flag=wx.EXPAND)
+        
+        main_sizer.Add(self._set_left_sizer(), 1, wx.LEFT, border=self.SIZE_5)
+        main_sizer.Add(self._set_right_sizer(), 1, wx.EXPAND)
 
         self.SetSizer(main_sizer)
 
@@ -729,26 +900,26 @@ class FilesystemPanel(wx.Panel):
         ''' Set left BoxSizer. '''
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        sizer.AddSpacer(15)
-        sizer.Add(self.ignore_errors_checkbox, flag=wx.LEFT, border=5)
-        sizer.AddSpacer(5)
-        sizer.Add(self.open_dir_checkbox, flag=wx.LEFT, border=5)
-        sizer.AddSpacer(5)
-        sizer.Add(self.write_desc_checkbox, flag=wx.LEFT, border=5)
-        sizer.AddSpacer(5)
-        sizer.Add(self.write_thumbnail_checkbox, flag=wx.LEFT, border=5)
-        sizer.AddSpacer(5)
-        sizer.Add(self.write_info_checkbox, flag=wx.LEFT, border=5)
+        sizer.AddSpacer(self.SIZE_15)
+        sizer.Add(self.ign_err_checkbox)
+        sizer.AddSpacer(self.SIZE_5)
+        sizer.Add(self.open_dir_checkbox)
+        sizer.AddSpacer(self.SIZE_5)
+        sizer.Add(self.write_desc_checkbox)
+        sizer.AddSpacer(self.SIZE_5)
+        sizer.Add(self.write_thumbnail_checkbox)
+        sizer.AddSpacer(self.SIZE_5)
+        sizer.Add(self.write_info_checkbox)
 
         return sizer
 
     def _set_right_sizer(self):
         ''' Set right BoxSizer. '''
-        static_box = wx.StaticBox(self, label='Filesize (e.g. 50k or 44.6m)')
+        static_box = wx.StaticBox(self, label=self.FILESIZE_LABEL)
 
         sizer = wx.StaticBoxSizer(static_box, wx.VERTICAL)
 
-        sizer.AddSpacer(50)
+        sizer.AddSpacer(self.SIZE_50)
 
         # Cross platform hack for the horizontal sizer
         # so it looks the same both on Windows & Linux
@@ -757,50 +928,50 @@ class FilesystemPanel(wx.Panel):
             extra_border = 3
 
         hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        hor_sizer.Add(wx.StaticText(self, label='Min'))
-        hor_sizer.AddSpacer(10 + extra_border)
+        hor_sizer.Add(self.min_text)
+        hor_sizer.AddSpacer(self.SIZE_10 + extra_border)
         hor_sizer.Add(self.min_filesize_box)
 
         sizer.Add(hor_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
-        sizer.AddSpacer(10)
+        sizer.AddSpacer(self.SIZE_10)
 
         hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        hor_sizer.Add(wx.StaticText(self, label='Max'))
-        hor_sizer.AddSpacer(10)
+        hor_sizer.Add(self.max_text)
+        hor_sizer.AddSpacer(self.SIZE_10)
         hor_sizer.Add(self.max_filesize_box)
 
         sizer.Add(hor_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         return sizer
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.open_dir_checkbox.SetValue(opt_manager.options['open_dl_dir'])
-        self.min_filesize_box.SetValue(opt_manager.options['min_filesize'])
-        self.max_filesize_box.SetValue(opt_manager.options['max_filesize'])
-        self.write_info_checkbox.SetValue(opt_manager.options['write_info'])
-        self.ignore_errors_checkbox.SetValue(opt_manager.options['ignore_errors'])
-        self.write_desc_checkbox.SetValue(opt_manager.options['write_description'])
-        self.write_thumbnail_checkbox.SetValue(opt_manager.options['write_thumbnail'])
+        self.open_dir_checkbox.SetValue(self.opt_manager.options['open_dl_dir'])
+        self.min_filesize_box.SetValue(self.opt_manager.options['min_filesize'])
+        self.max_filesize_box.SetValue(self.opt_manager.options['max_filesize'])
+        self.write_info_checkbox.SetValue(self.opt_manager.options['write_info'])
+        self.ign_err_checkbox.SetValue(self.opt_manager.options['ignore_errors'])
+        self.write_desc_checkbox.SetValue(self.opt_manager.options['write_description'])
+        self.write_thumbnail_checkbox.SetValue(self.opt_manager.options['write_thumbnail'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['write_thumbnail'] = self.write_thumbnail_checkbox.GetValue()
-        opt_manager.options['write_description'] = self.write_desc_checkbox.GetValue()
-        opt_manager.options['ignore_errors'] = self.ignore_errors_checkbox.GetValue()
-        opt_manager.options['write_info'] = self.write_info_checkbox.GetValue()
-        opt_manager.options['open_dl_dir'] = self.open_dir_checkbox.GetValue()
-        opt_manager.options['min_filesize'] = self.min_filesize_box.GetValue()
-        opt_manager.options['max_filesize'] = self.max_filesize_box.GetValue()
+        self.opt_manager.options['write_thumbnail'] = self.write_thumbnail_checkbox.GetValue()
+        self.opt_manager.options['write_description'] = self.write_desc_checkbox.GetValue()
+        self.opt_manager.options['ignore_errors'] = self.ign_err_checkbox.GetValue()
+        self.opt_manager.options['write_info'] = self.write_info_checkbox.GetValue()
+        self.opt_manager.options['open_dl_dir'] = self.open_dir_checkbox.GetValue()
+        self.opt_manager.options['min_filesize'] = self.min_filesize_box.GetValue()
+        self.opt_manager.options['max_filesize'] = self.max_filesize_box.GetValue()
         # Check min_filesize input
-        if opt_manager.options['min_filesize'] == '':
-            opt_manager.options['min_filesize'] = '0'
-        if opt_manager.options['max_filesize'] == '':
-            opt_manager.options['max_filesize'] = '0'
+        if self.opt_manager.options['min_filesize'] == '':
+            self.opt_manager.options['min_filesize'] = '0'
+        if self.opt_manager.options['max_filesize'] == '':
+            self.opt_manager.options['max_filesize'] = '0'
 
 
-class SubtitlesPanel(wx.Panel):
+class SubtitlesTab(TabPanel):
 
     '''
     Options frame subtitles tab panel.
@@ -808,39 +979,52 @@ class SubtitlesPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    DL_SUBS_LABEL = "Download subtitle file by language"
+    DL_ALL_SUBS_LABEL = "Download all available subtitles"
+    DL_AUTO_SUBS_LABEL = "Download automatic subtitle file (YOUTUBE ONLY)"
+    EMBED_SUBS_LABEL = "Embed subtitles in the video (only for mp4 videos)"
+    SUBS_LANG_LABEL = "Subtitles Language"
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, *args, **kwargs):
+        super(SubtitlesTab, self).__init__(*args, **kwargs)
 
-        self.write_subs_checkbox = wx.CheckBox(self, label='Download subtitle file by language', size=WX_CHECKBOX_SIZE)
-        self.write_all_subs_checkbox = wx.CheckBox(self, label='Download all available subtitles', size=WX_CHECKBOX_SIZE)
-        self.write_auto_subs_checkbox = wx.CheckBox(self, label='Download automatic subtitle file (YOUTUBE ONLY)', size=WX_CHECKBOX_SIZE)
-        self.embed_subs_checkbox = wx.CheckBox(self, label='Embed subtitles in the video (only for mp4 videos)', size=WX_CHECKBOX_SIZE)
-        self.subs_languages_combo = wx.ComboBox(self, choices=SUBS_LANG, size=(140, 30))
+        # Change those to radiobuttons
+        self.write_subs_checkbox = self.create_checkbox(self.DL_SUBS_LABEL, self.OnWriteSubsChk)
+        self.write_all_subs_checkbox = self.create_checkbox(self.DL_ALL_SUBS_LABEL, self.OnWriteAllSubsChk)
+        self.write_auto_subs_checkbox = self.create_checkbox(self.DL_AUTO_SUBS_LABEL, self.OnWriteAutoSubsChk)
+        self.embed_subs_checkbox = self.create_checkbox(self.EMBED_SUBS_LABEL)
+        self.subs_lang_combo = self.create_combobox(SUBS_LANG, (140, 30))
 
+        self.subs_lang_text = self.create_statictext(self.SUBS_LANG_LABEL)
+        
+        self._set_sizer()
+        self._disable_items()
+        
+    def _disable_items(self):
         self.embed_subs_checkbox.Disable()
-        self.subs_languages_combo.Disable()
+        self.subs_lang_combo.Disable()
 
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
+    def _set_sizer(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(15)
-        main_sizer.Add(self.write_subs_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.write_all_subs_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.write_auto_subs_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.embed_subs_checkbox, flag=wx.LEFT, border=5)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(wx.StaticText(self, label='Subtitles Langues'), flag=wx.LEFT, border=10)
-        main_sizer.AddSpacer(5)
-        main_sizer.Add(self.subs_languages_combo, flag=wx.LEFT, border=15)
+        vertical_sizer.AddSpacer(self.SIZE_15)
+        vertical_sizer.Add(self.write_subs_checkbox)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.write_all_subs_checkbox)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.write_auto_subs_checkbox)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.embed_subs_checkbox)
+        vertical_sizer.AddSpacer(self.SIZE_10)
+        vertical_sizer.Add(self.subs_lang_text, flag=wx.LEFT, border=self.SIZE_5)
+        vertical_sizer.AddSpacer(self.SIZE_5)
+        vertical_sizer.Add(self.subs_lang_combo, flag=wx.LEFT, border=self.SIZE_10)
+        
+        main_sizer.Add(vertical_sizer, flag=wx.LEFT, border=self.SIZE_5)
 
         self.SetSizer(main_sizer)
-
-        self.Bind(wx.EVT_CHECKBOX, self.OnWriteSubsChk, self.write_subs_checkbox)
-        self.Bind(wx.EVT_CHECKBOX, self.OnWriteAllSubsChk, self.write_all_subs_checkbox)
-        self.Bind(wx.EVT_CHECKBOX, self.OnWriteAutoSubsChk, self.write_auto_subs_checkbox)
 
     def OnWriteAutoSubsChk(self, event):
         ''' Event handler for self.write_auto_subs_checkbox. '''
@@ -858,13 +1042,13 @@ class SubtitlesPanel(wx.Panel):
         ''' Event handler for self.write_subs_checkbox. '''
         if self.write_subs_checkbox.GetValue():
             self.embed_subs_checkbox.Enable()
-            self.subs_languages_combo.Enable()
+            self.subs_lang_combo.Enable()
             self.write_all_subs_checkbox.Disable()
             self.write_auto_subs_checkbox.Disable()
         else:
             self.embed_subs_checkbox.Disable()
             self.embed_subs_checkbox.SetValue(False)
-            self.subs_languages_combo.Disable()
+            self.subs_lang_combo.Disable()
             self.write_all_subs_checkbox.Enable()
             self.write_auto_subs_checkbox.Enable()
 
@@ -877,27 +1061,27 @@ class SubtitlesPanel(wx.Panel):
             self.write_subs_checkbox.Enable()
             self.write_auto_subs_checkbox.Enable()
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.write_subs_checkbox.SetValue(opt_manager.options['write_subs'])
-        self.subs_languages_combo.SetValue(opt_manager.options['subs_lang'])
-        self.embed_subs_checkbox.SetValue(opt_manager.options['embed_subs'])
-        self.write_all_subs_checkbox.SetValue(opt_manager.options['write_all_subs'])
-        self.write_auto_subs_checkbox.SetValue(opt_manager.options['write_auto_subs'])
+        self.subs_lang_combo.SetValue(self.opt_manager.options['subs_lang'])
+        self.write_subs_checkbox.SetValue(self.opt_manager.options['write_subs'])
+        self.embed_subs_checkbox.SetValue(self.opt_manager.options['embed_subs'])
+        self.write_all_subs_checkbox.SetValue(self.opt_manager.options['write_all_subs'])
+        self.write_auto_subs_checkbox.SetValue(self.opt_manager.options['write_auto_subs'])
         self.OnWriteSubsChk(None)
         self.OnWriteAllSubsChk(None)
         self.OnWriteAutoSubsChk(None)
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['write_subs'] = self.write_subs_checkbox.GetValue()
-        opt_manager.options['subs_lang'] = self.subs_languages_combo.GetValue()
-        opt_manager.options['embed_subs'] = self.embed_subs_checkbox.GetValue()
-        opt_manager.options['write_all_subs'] = self.write_all_subs_checkbox.GetValue()
-        opt_manager.options['write_auto_subs'] = self.write_auto_subs_checkbox.GetValue()
+        self.opt_manager.options['subs_lang'] = self.subs_lang_combo.GetValue()
+        self.opt_manager.options['write_subs'] = self.write_subs_checkbox.GetValue()
+        self.opt_manager.options['embed_subs'] = self.embed_subs_checkbox.GetValue()
+        self.opt_manager.options['write_all_subs'] = self.write_all_subs_checkbox.GetValue()
+        self.opt_manager.options['write_auto_subs'] = self.write_auto_subs_checkbox.GetValue()
 
 
-class GeneralPanel(wx.Panel):
+class GeneralTab(TabPanel):
 
     '''
     Options frame general tab panel.
@@ -907,75 +1091,74 @@ class GeneralPanel(wx.Panel):
         opt_manager: OptionsHandler.OptionsHandler object.
         reset_handler: Method to reset all options & frame.
     '''
+    BUTTONS_SIZE = (110, 40)
 
-    def __init__(self, parent, opt_manager, reset_handler):
-        wx.Panel.__init__(self, parent)
+    ABOUT_LABEL = "About"
+    OPEN_LABEL = "Open"
+    RESET_LABEL = "Reset Options"
+    SAVEPATH_LABEL = "Save Path"
+    SETTINGS_DIR_LABEL = "Settings File: {0}"
+    PICK_DIR_LABEL = "Choose Directory"
+    
+    def __init__(self, *args, **kwargs):
+        super(GeneralTab, self).__init__(*args, **kwargs)
 
-        self.reset_handler = reset_handler
+        self.savepath_box = self.create_textctrl()
+        self.about_button = self.create_button(self.ABOUT_LABEL, self._on_about)
+        self.open_button = self.create_button(self.OPEN_LABEL, self._on_open)
+        self.reset_button = self.create_button(self.RESET_LABEL, self._on_reset)
 
-        self.savepath_box = wx.TextCtrl(self)
-        self.about_button = wx.Button(self, label='About', size=(110, 40))
-        self.open_button = wx.Button(self, label='Open', size=(110, 40))
-        self.reset_button = wx.Button(self, label='Reset Options', size=(110, 40))
-
+        self.savepath_text = self.create_statictext(self.SAVEPATH_LABEL)
+        
+        cfg_file = self.SETTINGS_DIR_LABEL.format(self.opt_manager.settings_file)
+        self.cfg_file_dir = self.create_statictext(cfg_file)
+        
+        self._set_sizer()
+        
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(20)
-        sp_label = wx.StaticText(self, label='Save Path')
-        main_sizer.Add(sp_label, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(self._create_savepath_sizer(), flag=wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND)
-        main_sizer.AddSpacer(20)
-        main_sizer.Add(self._create_buttons_sizer(), flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(30)
-        settings_file = wx.StaticText(self, label='Settings: ' + opt_manager.settings_file)
-        main_sizer.Add(settings_file, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        main_sizer.AddSpacer(self.SIZE_20)
+        main_sizer.Add(self.savepath_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        
+        main_sizer.AddSpacer(self.SIZE_10)
+        savepath_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        savepath_sizer.Add(self.savepath_box, 1, wx.LEFT | wx.RIGHT, self.SIZE_80)
+        main_sizer.Add(savepath_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND)
+        
+        main_sizer.AddSpacer(self.SIZE_20)
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_sizer.Add(self.about_button)
+        buttons_sizer.Add(self.open_button, flag=wx.LEFT | wx.RIGHT, border=self.SIZE_50)
+        buttons_sizer.Add(self.reset_button)
+        main_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        
+        main_sizer.AddSpacer(self.SIZE_30)
+        main_sizer.Add(self.cfg_file_dir, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)
 
-        self.Bind(wx.EVT_BUTTON, self.OnOpen, self.open_button)
-        self.Bind(wx.EVT_BUTTON, self.OnAbout, self.about_button)
-        self.Bind(wx.EVT_BUTTON, self.OnReset, self.reset_button)
-
-    def _create_savepath_sizer(self):
-        ''' Return self.savepath_box BoxSizer. '''
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sizer.Add(self.savepath_box, 1, flag=wx.LEFT | wx.RIGHT, border=80)
-
-        return sizer
-
-    def _create_buttons_sizer(self):
-        ''' Return buttons BoxSizer. '''
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sizer.Add(self.about_button)
-        sizer.Add(self.open_button, flag=wx.LEFT | wx.RIGHT, border=50)
-        sizer.Add(self.reset_button)
-
-        return sizer
-
-    def OnReset(self, event):
+    def _on_reset(self, event):
         ''' Event handler reset button. '''
         self.reset_handler()
 
-    def OnOpen(self, event):
+    def _on_open(self, event):
         ''' Event handler open button. '''
-        dlg = wx.DirDialog(None, "Choose directory")
+        dlg = self.create_dirdialog(self.PICK_DIR_LABEL)
+        
         if dlg.ShowModal() == wx.ID_OK:
             self.savepath_box.SetValue(dlg.GetPath())
 
         dlg.Destroy()
 
-    def OnAbout(self, event):
+    def _on_about(self, event):
         ''' Event handler about button. '''
         info = wx.AboutDialogInfo()
 
         # Load about icon
-        app_icon = get_icon_path()
-        if app_icon is not None:
-            info.SetIcon(wx.Icon(app_icon, wx.BITMAP_TYPE_PNG))
-        
+        if self.app_icon is not None:
+            info.SetIcon(self.app_icon)
+
         info.SetName(__appname__)
         info.SetVersion(__version__)
         info.SetDescription(__descriptionfull__)
@@ -985,16 +1168,16 @@ class GeneralPanel(wx.Panel):
 
         wx.AboutBox(info)
 
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.savepath_box.SetValue(opt_manager.options['save_path'])
+        self.savepath_box.SetValue(self.opt_manager.options['save_path'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['save_path'] = fix_path(self.savepath_box.GetValue())
+        self.opt_manager.options['save_path'] = fix_path(self.savepath_box.GetValue())
 
 
-class OtherPanel(wx.Panel):
+class CMDTab(TabPanel):
 
     '''
     Options frame command tab panel.
@@ -1002,34 +1185,33 @@ class OtherPanel(wx.Panel):
     Params
         parent: wx.Panel parent.
     '''
+    CMD_LABEL = "Command line arguments (e.g. --help)"
 
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent)
+    def __init__(self, *args, **kwargs):
+        super(CMDTab, self).__init__(*args, **kwargs)
 
-        self.cmd_args_box = wx.TextCtrl(self)
-
+        self.cmd_args_box = self.create_textctrl()
+        self.cmd_args_text = self.create_statictext(self.CMD_LABEL)
+        
+        self._set_sizer()
+        
+    def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        main_sizer.AddSpacer(50)
-        label = wx.StaticText(self, label='Command line arguments (e.g. --help)')
-        main_sizer.Add(label, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        main_sizer.AddSpacer(10)
-        main_sizer.Add(self._create_cmd_sizer(), flag=wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND)
+        main_sizer.AddSpacer(self.SIZE_50)
+        main_sizer.Add(self.cmd_args_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+
+        main_sizer.AddSpacer(self.SIZE_10)
+        cmdbox_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        cmdbox_sizer.Add(self.cmd_args_box, 1, wx.LEFT | wx.RIGHT, border=self.SIZE_80)
+        main_sizer.Add(cmdbox_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND)
 
         self.SetSizer(main_sizer)
 
-    def _create_cmd_sizer(self):
-        ''' Create BoxSizer for self.cmd_args_box. '''
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        sizer.Add(self.cmd_args_box, 1, wx.LEFT | wx.RIGHT, border=80)
-
-        return sizer
-
-    def load_options(self, opt_manager):
+    def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
-        self.cmd_args_box.SetValue(opt_manager.options['cmd_args'])
+        self.cmd_args_box.SetValue(self.opt_manager.options['cmd_args'])
 
-    def save_options(self, opt_manager):
+    def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()
+        self.opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()

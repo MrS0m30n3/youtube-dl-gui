@@ -1,5 +1,4 @@
 * Refactor my ugly code
-* Redesign options window
 
 * Add language configuration option
 
@@ -8,5 +7,6 @@
 * Build 0.3.7 portable for Windows
 
 * New layout for MainFrame
+* Redesign options Window
 * Add context menu (issue #16)
 * Use import instead of subprocess

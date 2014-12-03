@@ -47,8 +47,8 @@ class OptionsManager(object):
 
     def __init__(self, config_path):
         self.config_path = config_path
-        self.settings_file = fix_path(config_path) + self.SETTINGS_FILENAME
-        self.options = {}
+        self.settings_file = os.path.join(config_path, self.SETTINGS_FILENAME)
+        self.options = dict()
         self.load_default()
         self.load_from_file()
 
@@ -132,12 +132,10 @@ class OptionsManager(object):
 
     def _get_options(self):
         ''' Return options dictionary without SENSITIVE_KEYS. '''
-        temp_options = {}
-
-        for key in self.options:
-            if key in self.SENSITIVE_KEYS:
-                temp_options[key] = ''
-            else:
-                temp_options[key] = self.options[key]
-
+        temp_options = self.options.copy()
+        
+        for key in self.SENSITIVE_KEYS:
+            temp_options[key] = ''
+            
         return temp_options
+        

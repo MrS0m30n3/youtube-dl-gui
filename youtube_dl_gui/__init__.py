@@ -7,13 +7,12 @@ import os.path
 
 try:
     import wx
-except ImportError as e:
-    print e
+except ImportError as error:
+    print error
     sys.exit(1)
 
-from .MainFrame import MainFrame
+# For package use
 from .version import __version__
-
 from .data import (
     __author__,
     __appname__,
@@ -25,13 +24,18 @@ from .data import (
     __descriptionfull__,
 )
 
-from .utils import get_config_path
-from .OptionsManager import OptionsManager
+from .MainFrame import MainFrame
 from .LogManager import LogManager
+from .OptionsManager import OptionsManager
+
+from .utils import get_config_path
 
 
 def main():
-    ''' Call youtube-dlg main window. '''
+    '''
+    Real main. Set configuration path, 
+    enable managers and call main app window.
+    '''
     config_path = os.path.join(get_config_path(), __appname__.lower())
     
     opt_manager = OptionsManager(config_path)

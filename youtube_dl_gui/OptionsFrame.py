@@ -8,10 +8,7 @@ import wx
 
 from .LogManager import LogGUI
 from .version import __version__
-from .utils import (
-    get_icon_path,
-    fix_path
-)
+
 
 from .data import (
     __descriptionfull__,
@@ -1174,7 +1171,7 @@ class GeneralTab(TabPanel):
 
     def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
-        self.opt_manager.options['save_path'] = fix_path(self.savepath_box.GetValue())
+        self.opt_manager.options['save_path'] = self.savepath_box.GetValue()
 
 
 class CMDTab(TabPanel):

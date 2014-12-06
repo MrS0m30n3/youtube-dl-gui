@@ -6,9 +6,7 @@ import json
 import os.path
 
 from .utils import (
-    check_path,
-    get_home,
-    fix_path
+    check_path
 )
 
 
@@ -55,7 +53,7 @@ class OptionsManager(object):
     def load_default(self):
         ''' Load default options. '''
         self.options = {
-            'save_path': get_home(),
+            'save_path': os.path.expanduser('~'),
             'video_format': 'default',
             'second_video_format': 'none',
             'to_audio': False,

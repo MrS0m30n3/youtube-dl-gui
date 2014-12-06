@@ -2,6 +2,7 @@
 
 ''' Youtube-dlG module to download youtube-dl. '''
 
+import os.path
 from threading import Thread
 from urllib2 import urlopen, URLError, HTTPError
 
@@ -10,9 +11,8 @@ from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
 from .utils import (
-    get_youtubedl_filename,
-    check_path,
-    fix_path
+    YOUTUBEDL_BIN,
+    check_path
 )
 
 
@@ -34,17 +34,15 @@ class UpdateThread(Thread):
 
     def __init__(self, download_path, quiet):
         super(UpdateThread, self).__init__()
-        self.download_path = fix_path(download_path)
+        self.download_path = download_path
         self.quiet = quiet
         self.start()
 
     def run(self):
         self._callafter("Downloading latest youtube-dl. Please wait...")
 
-        youtubedl = get_youtubedl_filename()
-
-        source_file = self.LATEST_YOUTUBE_DL + youtubedl
-        destination_file = self.download_path + youtubedl
+        source_file = self.LATEST_YOUTUBE_DL + YOUTUBEDL_BIN
+        destination_file = os.path.join(self.download_path, YOUTUBEDL_BIN)
 
         check_path(self.download_path)
 

@@ -17,9 +17,9 @@ from .OptionsManager import OptionsManager
 from .DownloadThread import DownloadManager, DownloadThread
 
 from .utils import (
-    get_youtubedl_filename,
+    YOUTUBEDL_BIN,
     get_config_path,
-    get_icon_path,
+    get_icon_file,
     shutdown_sys,
     get_time,
     open_dir
@@ -81,7 +81,7 @@ class MainFrame(wx.Frame):
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        self.app_icon = get_icon_path()
+        self.app_icon = get_icon_file()
         
         if self.app_icon is not None:
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
@@ -177,7 +177,7 @@ class MainFrame(wx.Frame):
     def _youtubedl_exist(self):
         ''' Return True if youtube-dl executable exists. '''
         path = os.path.join(self.opt_manager.options['youtubedl_path'],
-                            get_youtubedl_filename())
+                            YOUTUBEDL_BIN)
 
         return os.path.exists(path)
 

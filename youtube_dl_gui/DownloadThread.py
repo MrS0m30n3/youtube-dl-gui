@@ -3,6 +3,7 @@
 ''' Youtube-dlG module to download videos & handle each download. '''
 
 import time
+import os.path
 from threading import Thread
 
 from wx import CallAfter
@@ -13,8 +14,7 @@ from .OptionsParser import OptionsParser
 from .DownloadObject import YoutubeDLDownloader
 
 from .utils import (
-    get_youtubedl_filename,
-    fix_path
+    YOUTUBEDL_BIN
 )
 
 
@@ -256,5 +256,5 @@ class DownloadThread(Thread):
     def _get_youtubedl_path(self):
         ''' Retrieve youtube-dl path. '''
         path = self.opt_manager.options['youtubedl_path']
-        path = fix_path(path) + get_youtubedl_filename()
+        path = os.path.join(path, YOUTUBEDL_BIN)
         return path

@@ -2,8 +2,10 @@
 
 ''' Parse OptionsManager.options. '''
 
+import os.path
+
 from .utils import (
-    fix_path
+    remove_shortcuts
 )
 
 SUBS_LANG = {
@@ -184,15 +186,17 @@ class OptionsParser():
             self.options_list.append('--embed-subs')
 
     def _set_output_options(self):
-        save_path = fix_path(self._options['save_path'])
+        save_path = self._options['save_path']
         self.options_list.append('-o')
 
         if self._options['output_format'] == 'id':
-            self.options_list.append(save_path + '%(id)s.%(ext)s')
+            save_path = os.path.join(save_path, '%(id)s.%(ext)s')
         elif self._options['output_format'] == 'title':
-            self.options_list.append(save_path + '%(title)s.%(ext)s')
+            save_path = os.path.join(save_path, '%(title)s.%(ext)s')
         elif self._options['output_format'] == 'custom':
-            self.options_list.append(save_path + self._options['output_template'])
+            save_path = os.path.join(save_path, self._options['output_template'])
+            
+        self.options_list.append(save_path)
 
         if self._options['restrict_filenames']:
             self.options_list.append('--restrict-filenames')

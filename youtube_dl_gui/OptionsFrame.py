@@ -986,9 +986,9 @@ class SubtitlesTab(TabPanel):
         super(SubtitlesTab, self).__init__(*args, **kwargs)
 
         # Change those to radiobuttons
-        self.write_subs_checkbox = self.create_checkbox(self.DL_SUBS_LABEL, self.OnWriteSubsChk)
-        self.write_all_subs_checkbox = self.create_checkbox(self.DL_ALL_SUBS_LABEL, self.OnWriteAllSubsChk)
-        self.write_auto_subs_checkbox = self.create_checkbox(self.DL_AUTO_SUBS_LABEL, self.OnWriteAutoSubsChk)
+        self.write_subs_checkbox = self.create_checkbox(self.DL_SUBS_LABEL, self._on_subs_pick)
+        self.write_all_subs_checkbox = self.create_checkbox(self.DL_ALL_SUBS_LABEL, self._on_subs_pick)
+        self.write_auto_subs_checkbox = self.create_checkbox(self.DL_AUTO_SUBS_LABEL, self._on_subs_pick)
         self.embed_subs_checkbox = self.create_checkbox(self.EMBED_SUBS_LABEL)
         self.subs_lang_combo = self.create_combobox(SUBS_LANG, (140, 30))
 
@@ -1023,39 +1023,25 @@ class SubtitlesTab(TabPanel):
 
         self.SetSizer(main_sizer)
 
-    def OnWriteAutoSubsChk(self, event):
-        ''' Event handler for self.write_auto_subs_checkbox. '''
-        if self.write_auto_subs_checkbox.GetValue():
-            self.embed_subs_checkbox.Enable()
-            self.write_subs_checkbox.Disable()
-            self.write_all_subs_checkbox.Disable()
-        else:
-            self.embed_subs_checkbox.Disable()
-            self.embed_subs_checkbox.SetValue(False)
-            self.write_subs_checkbox.Enable()
-            self.write_all_subs_checkbox.Enable()
-
-    def OnWriteSubsChk(self, event):
-        ''' Event handler for self.write_subs_checkbox. '''
+    def _on_subs_pick(self, event):
         if self.write_subs_checkbox.GetValue():
-            self.embed_subs_checkbox.Enable()
-            self.subs_lang_combo.Enable()
             self.write_all_subs_checkbox.Disable()
             self.write_auto_subs_checkbox.Disable()
+            self.embed_subs_checkbox.Enable()
+            self.subs_lang_combo.Enable()
+        elif self.write_all_subs_checkbox.GetValue():
+            self.write_subs_checkbox.Disable()
+            self.write_auto_subs_checkbox.Disable()
+        elif self.write_auto_subs_checkbox.GetValue():
+            self.write_subs_checkbox.Disable()
+            self.write_all_subs_checkbox.Disable()
+            self.embed_subs_checkbox.Enable()
         else:
             self.embed_subs_checkbox.Disable()
             self.embed_subs_checkbox.SetValue(False)
             self.subs_lang_combo.Disable()
-            self.write_all_subs_checkbox.Enable()
-            self.write_auto_subs_checkbox.Enable()
-
-    def OnWriteAllSubsChk(self, event):
-        ''' Event handler for self.write_all_subs_checkbox. '''
-        if self.write_all_subs_checkbox.GetValue():
-            self.write_subs_checkbox.Disable()
-            self.write_auto_subs_checkbox.Disable()
-        else:
             self.write_subs_checkbox.Enable()
+            self.write_all_subs_checkbox.Enable()
             self.write_auto_subs_checkbox.Enable()
 
     def load_options(self):
@@ -1065,9 +1051,7 @@ class SubtitlesTab(TabPanel):
         self.embed_subs_checkbox.SetValue(self.opt_manager.options['embed_subs'])
         self.write_all_subs_checkbox.SetValue(self.opt_manager.options['write_all_subs'])
         self.write_auto_subs_checkbox.SetValue(self.opt_manager.options['write_auto_subs'])
-        self.OnWriteSubsChk(None)
-        self.OnWriteAllSubsChk(None)
-        self.OnWriteAutoSubsChk(None)
+        self._on_subs_pick(None)
 
     def save_options(self):
         ''' Save panel options to OptionsHandler object. '''

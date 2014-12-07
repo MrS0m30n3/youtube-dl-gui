@@ -196,6 +196,7 @@ class DownloadThread(Thread):
         self.log_manager = log_manager
         self._downloader = None
         self._status = 0
+        self._options_parser = OptionsParser()
 
     def run(self):
         self._downloader = YoutubeDLDownloader(
@@ -204,7 +205,7 @@ class DownloadThread(Thread):
             self.log_manager
         )
 
-        options = OptionsParser(self.opt_manager).parse()
+        options = self._options_parser.parse(self.opt_manager.options)
 
         return_code = self._downloader.download(self.url, options)
 

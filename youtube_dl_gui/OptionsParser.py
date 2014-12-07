@@ -4,9 +4,7 @@
 
 import os.path
 
-from .utils import (
-    remove_shortcuts
-)
+from .utils import remove_shortcuts
 
 SUBS_LANG = {
     "English": "en",
@@ -70,10 +68,27 @@ AUDIO_QUALITY = {
     "low": "9"
 }
 
+class OptionHolder():
+    
+    def __init__(self, name, flag, default_value, requirements=[]):
+        self.name = name
+        self.flag = flag
+        self.requirements = requirements
+        self.default_value = default_value
 
+    def is_boolean(self):
+        return type(self.default_value) is bool
+        
+    def check_requirements(self, options_dict):
+        if not self.requirements:
+            return True
+            
+        return any(map(lambda x: options_dict[x], self.requirements))
+        
 class OptionsParser():
 
     '''
+    OUT_OF_DATE
     Parse OptionsManager.options into youtube-dl options list.
 
     Params
@@ -86,133 +101,95 @@ class OptionsParser():
             Return: Options list
     '''
 
-    def __init__(self, opt_manager):
-        self._options = opt_manager.options
-        self.options_list = []
+    def __init__(self):
+        self._ydl_options = [
+            OptionHolder('playlist_start', '--playlist-start', 1),
+            OptionHolder('playlist_end', '--playlist-end', 0),
+            OptionHolder('max_downloads', '--max-downloads', 0),
+            OptionHolder('username', '-u', ''),
+            OptionHolder('password', '-p', ''),
+            OptionHolder('video_password', '--video-password', ''),
+            OptionHolder('retries', '-R', 10),
+            OptionHolder('proxy', '--proxy', ''),
+            OptionHolder('user_agent', '--user-agent', ''),
+            OptionHolder('referer', '--referer', ''),
+            OptionHolder('ignore_errors', '-i', False),
+            OptionHolder('write_description', '--write-description', False),
+            OptionHolder('write_info', '--write-info-json', False),
+            OptionHolder('write_thumbnail', '--write-thumbnail', False),
+            OptionHolder('min_filesize', '--min-filesize', '0'),
+            OptionHolder('max_filesize', '--max-filesize', '0'),
+            OptionHolder('write_all_subs', '--all-subs', False),
+            OptionHolder('write_auto_subs', '--write-auto-sub', False),
+            OptionHolder('write_subs', '--write-sub', False),
+            OptionHolder('keep_video', '-k', False),
+            OptionHolder('restrict_filenames', '--restrict-filenames', False),
+            OptionHolder('save_path', '-o', ''),
+            OptionHolder('embed_subs', '--embed-subs', False, ['write_auto_subs', 'write_subs']),
+            OptionHolder('to_audio', '-x', False),
+            OptionHolder('audio_format', '--audio-format', '', ['to_audio']),
+            OptionHolder('video_format', '-f', ''),
+            OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
+            OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio'])
+        ]
 
-    def parse(self):
+    def parse(self, options_dictionary):
         ''' Parse OptionsHandler.options and return options list. '''
-        self._set_progress_options()
-        self._set_output_options()
-        self._set_auth_options()
-        self._set_connection_options()
-        self._set_video_options()
-        self._set_playlist_options()
-        self._set_filesystem_options()
-        self._set_subtitles_options()
-        self._set_audio_options()
-        self._set_other_options()
-        return self.options_list
+        options_list = ['--newline']
+        
+        # Create a copy of options_dictionary
+        # We don't want to edit the original options dictionary
+        # and change some of the options values like 'save_path' etc..
+        options_dict = options_dictionary.copy()
+        
+        self._build_savepath(options_dict)
+        self._build_subslang(options_dict)
+        self._build_videoformat(options_dict)
+        self._build_audioquality(options_dict)
+        
+        # Parse basic youtube-dl command line options
+        for option in self._ydl_options:
+            if option.check_requirements(options_dict):
+                value = options_dict[option.name]
+                
+                if value != option.default_value:
+                    options_list.append(option.flag)
+                    
+                    if not option.is_boolean():
+                        options_list.append(str(value))
+        
+        # Parse cmd_args
+        for option in options_dict['cmd_args'].split():
+            options_list.append(option)
+        
+        return options_list
 
-    def _set_progress_options(self):
-        ''' Do NOT change this option. '''
-        self.options_list.append('--newline')
-
-    def _set_playlist_options(self):
-        if self._options['playlist_start'] != 1:
-            self.options_list.append('--playlist-start')
-            self.options_list.append(str(self._options['playlist_start']))
-        if self._options['playlist_end'] != 0:
-            self.options_list.append('--playlist-end')
-            self.options_list.append(str(self._options['playlist_end']))
-        if self._options['max_downloads'] != 0:
-            self.options_list.append('--max-downloads')
-            self.options_list.append(str(self._options['max_downloads']))
-
-    def _set_auth_options(self):
-        if self._options['username'] != '':
-            self.options_list.append('-u')
-            self.options_list.append(self._options['username'])
-        if self._options['password'] != '':
-            self.options_list.append('-p')
-            self.options_list.append(self._options['password'])
-        if self._options['video_password'] != '':
-            self.options_list.append('--video-password')
-            self.options_list.append(self._options['video_password'])
-
-    def _set_connection_options(self):
-        if self._options['retries'] != 10:
-            self.options_list.append('-R')
-            self.options_list.append(str(self._options['retries']))
-        if self._options['proxy'] != '':
-            self.options_list.append('--proxy')
-            self.options_list.append(self._options['proxy'])
-        if self._options['user_agent'] != '':
-            self.options_list.append('--user-agent')
-            self.options_list.append(self._options['user_agent'])
-        if self._options['referer'] != '':
-            self.options_list.append('--referer')
-            self.options_list.append(self._options['referer'])
-
-    def _set_video_options(self):
-        if self._options['video_format'] != 'default':
-            self.options_list.append('-f')
-
-            video_format = VIDEO_FORMATS[self._options['video_format']]
-            second_video_format = VIDEO_FORMATS[self._options['second_video_format']]
-            
-            if video_format != "0":
-                if second_video_format != "0":
-                    video_format += '+' + second_video_format
-
-            self.options_list.append(video_format)
-
-    def _set_filesystem_options(self):
-        if self._options['ignore_errors']:
-            self.options_list.append('-i')
-        if self._options['write_description']:
-            self.options_list.append('--write-description')
-        if self._options['write_info']:
-            self.options_list.append('--write-info-json')
-        if self._options['write_thumbnail']:
-            self.options_list.append('--write-thumbnail')
-        if self._options['min_filesize'] != '0':
-            self.options_list.append('--min-filesize')
-            self.options_list.append(self._options['min_filesize'])
-        if self._options['max_filesize'] != '0':
-            self.options_list.append('--max-filesize')
-            self.options_list.append(self._options['max_filesize'])
-
-    def _set_subtitles_options(self):
-        if self._options['write_all_subs']:
-            self.options_list.append('--all-subs')
-        if self._options['write_auto_subs']:
-            self.options_list.append('--write-auto-sub')
-        if self._options['write_subs']:
-            self.options_list.append('--write-sub')
-            self.options_list.append('--sub-lang')
-            self.options_list.append(SUBS_LANG[self._options['subs_lang']])
-        if self._options['embed_subs']:
-            self.options_list.append('--embed-subs')
-
-    def _set_output_options(self):
-        save_path = self._options['save_path']
-        self.options_list.append('-o')
-
-        if self._options['output_format'] == 'id':
+    def _build_savepath(self, options_dict):
+        save_path = options_dict['save_path']
+        
+        if options_dict['output_format'] == 'id':
             save_path = os.path.join(save_path, '%(id)s.%(ext)s')
-        elif self._options['output_format'] == 'title':
+        elif options_dict['output_format'] == 'title':
             save_path = os.path.join(save_path, '%(title)s.%(ext)s')
-        elif self._options['output_format'] == 'custom':
-            save_path = os.path.join(save_path, self._options['output_template'])
-            
-        self.options_list.append(save_path)
+        else:
+            save_path = os.path.join(save_path, options_dict['output_template'])
+        
+        options_dict['save_path'] = save_path
+        
+    def _build_videoformat(self, options_dict):
+        first_vf = VIDEO_FORMATS[options_dict['video_format']]
+        second_vf = VIDEO_FORMATS[options_dict['second_video_format']]
+        
+        if first_vf != '0' and second_vf != '0':
+            options_dict['video_format'] = first_vf + '+' + second_vf
+        elif first_vf != '0' and second_vf == '0':
+            options_dict['video_format'] = first_vf
+        else:
+            options_dict['video_format'] = ''
 
-        if self._options['restrict_filenames']:
-            self.options_list.append('--restrict-filenames')
+    def _build_subslang(self, options_dict):
+        options_dict['subs_lang'] = SUBS_LANG[options_dict['subs_lang']]
 
-    def _set_audio_options(self):
-        if self._options['to_audio']:
-            self.options_list.append('-x')
-            self.options_list.append('--audio-format')
-            self.options_list.append(self._options['audio_format'])
-            if self._options['audio_quality'] != 'mid':
-                self.options_list.append('--audio-quality')
-                self.options_list.append(AUDIO_QUALITY[self._options['audio_quality']])
-        if self._options['keep_video']:
-            self.options_list.append('-k')
-
-    def _set_other_options(self):
-        if self._options['cmd_args'] != '':
-            for option in self._options['cmd_args'].split():
-                self.options_list.append(option)
+    def _build_audioquality(self, options_dict):
+        options_dict['audio_quality'] = AUDIO_QUALITY[options_dict['audio_quality']]
+        

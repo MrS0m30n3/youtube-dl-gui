@@ -6,7 +6,7 @@ from os import name
 
 import wx
 
-from .LogManager import LogGUI
+from .logmanager import LogGUI
 from .version import __version__
 
 

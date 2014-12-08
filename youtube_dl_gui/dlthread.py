@@ -10,12 +10,10 @@ from wx import CallAfter
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
-from .OptionsParser import OptionsParser
-from .DownloadObject import YoutubeDLDownloader
+from .parsers import OptionsParser
+from .downloaders import YoutubeDLDownloader
 
-from .utils import (
-    YOUTUBEDL_BIN
-)
+from .utils import YOUTUBEDL_BIN
 
 
 class DownloadManager(Thread):

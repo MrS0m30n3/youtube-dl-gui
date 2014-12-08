@@ -10,11 +10,9 @@ from wx.lib.pubsub import pub as Publisher
 
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
-from .LogManager import LogManager
-from .OptionsFrame import OptionsFrame
-from .UpdateThread import UpdateThread
-from .OptionsManager import OptionsManager
-from .DownloadThread import DownloadManager, DownloadThread
+from .optionsframe import OptionsFrame
+from .updthread import UpdateThread
+from .dlthread import DownloadManager, DownloadThread
 
 from .utils import (
     YOUTUBEDL_BIN,

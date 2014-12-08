@@ -5,9 +5,7 @@
 import json
 import os.path
 
-from .utils import (
-    check_path
-)
+from .utils import check_path
 
 
 class OptionsManager(object):

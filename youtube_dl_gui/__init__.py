@@ -24,9 +24,9 @@ from .data import (
     __descriptionfull__,
 )
 
-from .MainFrame import MainFrame
-from .LogManager import LogManager
-from .OptionsManager import OptionsManager
+from .mainframe import MainFrame
+from .logmanager import LogManager
+from .optionsmanager import OptionsManager
 
 from .utils import get_config_path
 

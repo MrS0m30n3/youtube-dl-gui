@@ -2,6 +2,7 @@
 
 import os
 import sys
+import shutil
 
 PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == 'py2exe'
 
@@ -38,6 +39,13 @@ WINDOWS_ICONS = os.path.join(get_python_lib(), 'youtube_dl_gui', 'icons')
 LINUX_ICONS = '/usr/share/icons/hicolor/'
 
 LINUX_FALLBACK_ICONS = '/usr/share/pixmaps/'
+
+
+def create_scripts():
+    if not os.path.exists('build/_scripts/'):
+        os.makedirs('build/_scripts')
+        
+    shutil.copyfile('youtube_dl_gui/__main__.py', 'build/_scripts/youtube-dl-gui')
 
 
 def py2exe_setup():
@@ -78,6 +86,8 @@ def normal_setup():
     if os.name == 'nt':
         icons_dir = (WINDOWS_ICONS, ICONS_LIST)
         data_files.append(icons_dir)
+        
+        params = {'data_files': data_files}
     else:
         # Create all the hicolor icons
         for index, size in enumerate(ICONS_SIZES):
@@ -90,7 +100,8 @@ def normal_setup():
         fallback_icon = (LINUX_FALLBACK_ICONS, [ICONS_LIST[2]])
         data_files.append(fallback_icon)
 
-    params = {'data_files': data_files}
+        create_scripts()
+        params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
     
     return params
     

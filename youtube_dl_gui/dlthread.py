@@ -207,16 +207,11 @@ class DownloadThread(Thread):
 
         return_code = self._downloader.download(self.url, options)
 
-        if return_code == YoutubeDLDownloader.OK:
-            self._callafter({'status': 'Finished'})
-        elif return_code == YoutubeDLDownloader.ERROR:
-            self._callafter({'status': 'Error', 'speed': '', 'eta': ''})
+        if (return_code == YoutubeDLDownloader.OK or
+                return_code == YoutubeDLDownloader.ALREADY):
+            self._status = 0
+        else:
             self._status = 1
-        elif return_code == YoutubeDLDownloader.STOPPED:
-            self._callafter({'status': 'Stopped', 'speed': '', 'eta': ''})
-            self._status = 1
-        elif return_code == YoutubeDLDownloader.ALREADY:
-            self._callafter({'status': 'Already-Downloaded'})
 
     @property
     def status(self):

@@ -89,6 +89,8 @@ class YoutubeDLDownloader(object):
                 self._return_code = self.ERROR
                 self._log(stderr)
 
+        self._last_data_hook()
+            
         return self._return_code
 
     def stop(self):
@@ -97,6 +99,22 @@ class YoutubeDLDownloader(object):
             self._proc.kill()
             self._return_code = self.STOPPED
 
+    def _last_data_hook(self):
+        if self._return_code == self.OK:
+            self._data['status'] = 'Finished'
+        elif self._return_code == self.ERROR:
+            self._data['status'] = 'Error'
+            self._data['speed'] = ''
+            self._data['eta'] = ''
+        elif self._return_code == self.STOPPED:
+            self._data['status'] = 'Stopped'
+            self._data['speed'] = ''
+            self._data['eta'] = ''
+        else:
+            self._data['status'] = 'Already Downloaded'
+            
+        self._hook_data()
+            
     def _update_data(self, data):
         ''' Update self._data from data.
         Return True if updated else return False.

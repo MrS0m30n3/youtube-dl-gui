@@ -230,15 +230,13 @@ class DownloadThread(Thread):
         ''' Merge playlist_info with data['status'] and
         pass data to self._callafter.
         '''
-        playlist_info = ''
-
-        if data['playlist_index'] is not None:
-            playlist_info = data['playlist_index']
+        if data['status'] is not None and data['playlist_index'] is not None:
+            playlist_info = ' '
+            playlist_info += data['playlist_index']
             playlist_info += '/'
             playlist_info += data['playlist_size']
-
-        if data['status'] is not None:
-            data['status'] = data['status'] + ' ' + playlist_info
+                
+            data['status'] += playlist_info
 
         self._callafter(data)
 

@@ -80,14 +80,13 @@ class YoutubeDLDownloader(object):
         while self._proc_is_alive():
             stdout, stderr = self._read()
 
-            data = extract_data(stdout)
-
-            if self._update_data(data):
-                self._hook_data()
-
             if stderr:
                 self._return_code = self.ERROR
                 self._log(stderr)
+            
+            if stdout:
+                self._sync_data(extract_data(stdout))
+                self._hook_data()
 
         self._last_data_hook()
             
@@ -115,12 +114,8 @@ class YoutubeDLDownloader(object):
             
         self._hook_data()
             
-    def _update_data(self, data):
-        ''' Update self._data from data.
-        Return True if updated else return False.
-        '''
-        updated = False
-
+    def _sync_data(self, data):
+        ''' Synchronise self._data with data. '''
         for key in data:
             if key == 'filename':
                 # Keep only the filename on data['filename']
@@ -128,16 +123,11 @@ class YoutubeDLDownloader(object):
 
             if key == 'status' and data['status'] == 'Already Downloaded':
                 # Set self._return_code to already downloaded
-                # and trash that key
+                # and trash that key (GUI won't read it if it's None)
                 self._return_code = self.ALREADY
                 data['status'] = None
 
             self._data[key] = data[key]
-
-            if not updated:
-                updated = True
-
-        return updated
 
     def _log(self, data):
         ''' Log data using self.log_manager. '''
@@ -213,42 +203,40 @@ class YoutubeDLDownloader(object):
 def extract_data(stdout):
     ''' Extract data from youtube-dl stdout. '''
     data_dictionary = dict()
-
+        
+    if not stdout:
+        return data_dictionary
+        
     stdout = [string for string in stdout.split(' ') if string != '']
 
-    if len(stdout) == 0:
-        return data_dictionary
-
-    header = stdout.pop(0)
-
-    if header == '[download]':
+    if stdout[0] == '[download]':
         data_dictionary['status'] = 'Downloading'
 
         # Get filename
-        if stdout[0] == 'Destination:':
+        if stdout[1] == 'Destination:':
             data_dictionary['filename'] = ' '.join(stdout[1:])
 
         # Get progress info
-        if '%' in stdout[0]:
-            if stdout[0] == '100%':
+        if '%' in stdout[1]:
+            if stdout[1] == '100%':
                 data_dictionary['speed'] = ''
                 data_dictionary['eta'] = ''
             else:
-                data_dictionary['percent'] = stdout[0]
-                data_dictionary['filesize'] = stdout[2]
-                data_dictionary['speed'] = stdout[4]
-                data_dictionary['eta'] = stdout[6]
+                data_dictionary['percent'] = stdout[1]
+                data_dictionary['filesize'] = stdout[3]
+                data_dictionary['speed'] = stdout[5]
+                data_dictionary['eta'] = stdout[7]
 
         # Get playlist info
-        if stdout[0] == 'Downloading' and stdout[1] == 'video':
-            data_dictionary['playlist_index'] = stdout[2]
-            data_dictionary['playlist_size'] = stdout[4]
+        if stdout[1] == 'Downloading' and stdout[2] == 'video':
+            data_dictionary['playlist_index'] = stdout[3]
+            data_dictionary['playlist_size'] = stdout[5]
 
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
 
-    elif header == '[ffmpeg]':
+    elif stdout[0] == '[ffmpeg]':
         data_dictionary['status'] = 'Post Processing'
 
     else:

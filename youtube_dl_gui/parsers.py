@@ -165,7 +165,7 @@ class OptionsParser():
         return options_list
 
     def _build_savepath(self, options_dict):
-        save_path = options_dict['save_path']
+        save_path = remove_shortcuts(options_dict['save_path'])
         
         if options_dict['output_format'] == 'id':
             save_path = os.path.join(save_path, '%(id)s.%(ext)s')

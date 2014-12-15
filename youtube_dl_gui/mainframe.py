@@ -23,7 +23,6 @@ from .utils import (
     open_dir
 )
 from .data import (
-    __author__,
     __appname__
 )
 
@@ -47,7 +46,7 @@ class MainFrame(wx.Frame):
     ERROR_LABEL = "Error"
     STOP_LABEL = "Stop"
     INFO_LABEL = "Info"
-    WELCOME_MSG = "Author: {0}"
+    WELCOME_MSG = "Welcome"
     SUCC_REPORT_MSG = ("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = "Download completed"
@@ -102,7 +101,7 @@ class MainFrame(wx.Frame):
                                      parent=self._panel,
                                      style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
                                      
-        self._status_bar = self._create_statictext(self.WELCOME_MSG.format(__author__))
+        self._status_bar = self._create_statictext(self.WELCOME_MSG)
 
         # Bind extra events
         self.Bind(wx.EVT_CLOSE, self._on_close)

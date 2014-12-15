@@ -68,6 +68,18 @@ AUDIO_QUALITY = {
     "low": "9"
 }
 
+FILESIZE_UNITS = {
+    'Bytes': '',
+    'Kilobytes': 'k',
+    'Megabytes': 'm',
+    'Gigabytes': 'g',
+    'Terabytes': 't',
+    'Petabytes': 'p',
+    'Exabytes': 'e',
+    'Zettabytes': 'z',
+    'Yottabytes': 'y'
+}
+
 class OptionHolder():
     
     def __init__(self, name, flag, default_value, requirements=[]):
@@ -117,8 +129,8 @@ class OptionsParser():
             OptionHolder('write_description', '--write-description', False),
             OptionHolder('write_info', '--write-info-json', False),
             OptionHolder('write_thumbnail', '--write-thumbnail', False),
-            OptionHolder('min_filesize', '--min-filesize', '0'),
-            OptionHolder('max_filesize', '--max-filesize', '0'),
+            OptionHolder('min_filesize', '--min-filesize', 0),
+            OptionHolder('max_filesize', '--max-filesize', 0),
             OptionHolder('write_all_subs', '--all-subs', False),
             OptionHolder('write_auto_subs', '--write-auto-sub', False),
             OptionHolder('write_subs', '--write-sub', False),
@@ -146,6 +158,7 @@ class OptionsParser():
         self._build_subslang(options_dict)
         self._build_videoformat(options_dict)
         self._build_audioquality(options_dict)
+        self._build_filesizes(options_dict)
         
         # Parse basic youtube-dl command line options
         for option in self._ydl_options:
@@ -192,4 +205,13 @@ class OptionsParser():
 
     def _build_audioquality(self, options_dict):
         options_dict['audio_quality'] = AUDIO_QUALITY[options_dict['audio_quality']]
+        
+    def _build_filesizes(self, options_dict):
+        if options_dict['min_filesize']:
+            size_unit = FILESIZE_UNITS[options_dict['min_filesize_unit']]
+            options_dict['min_filesize'] = str(options_dict['min_filesize']) + size_unit
+            
+        if options_dict['max_filesize']:
+            size_unit = FILESIZE_UNITS[options_dict['max_filesize_unit']]
+            options_dict['max_filesize'] = str(options_dict['max_filesize']) + size_unit
         

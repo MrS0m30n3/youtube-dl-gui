@@ -82,6 +82,18 @@ SUBS_LANG = [
     "German"
 ]
 
+FILESIZES = [
+    'Bytes',
+    'Kilobytes',
+    'Megabytes',
+    'Gigabytes',
+    'Terabytes',
+    'Petabytes',
+    'Exabytes',
+    'Zettabytes',
+    'Yottabytes'
+]
+
 
 class OptionsFrame(wx.Frame):
 
@@ -858,14 +870,12 @@ class FilesystemTab(TabPanel):
     Params
         parent: wx.Panel parent.
     '''
-    TEXTCTRL_SIZE = (70, -1)
-
     IGN_ERR_LABEL = "Ignore Errors"
     OPEN_DIR_LABEL = "Open destination folder"
     WRT_INFO_LABEL = "Write info to (.json) file"
     WRT_DESC_LABEL = "Write description to file"
     WRT_THMB_LABEL = "Write thumbnail to disk"
-    FILESIZE_LABEL = "Filesize (e.g. 50k or 44.6m)"
+    FILESIZE_LABEL = "Filesize"
     MIN_LABEL = "Min"
     MAX_LABEL = "Max"
     
@@ -877,9 +887,11 @@ class FilesystemTab(TabPanel):
         self.write_info_checkbox = self.create_checkbox(self.WRT_INFO_LABEL)
         self.write_desc_checkbox = self.create_checkbox(self.WRT_DESC_LABEL)
         self.write_thumbnail_checkbox = self.create_checkbox(self.WRT_THMB_LABEL)
-        self.min_filesize_box = self.create_textctrl()
-        self.max_filesize_box = self.create_textctrl()
         
+        self.min_filesize_spinner = self.create_spinctrl((0, 1024))
+        self.max_filesize_spinner = self.create_spinctrl((0, 1024))
+        self.min_filesize_combo = self.create_combobox(FILESIZES)
+        self.max_filesize_combo = self.create_combobox(FILESIZES)
         self.min_text = self.create_statictext(self.MIN_LABEL)
         self.max_text = self.create_statictext(self.MAX_LABEL)
 
@@ -916,27 +928,29 @@ class FilesystemTab(TabPanel):
 
         sizer = wx.StaticBoxSizer(static_box, wx.VERTICAL)
 
-        sizer.AddSpacer(self.SIZE_50)
+        sizer.AddSpacer(self.SIZE_20)
 
-        # Cross platform hack for the horizontal sizer
-        # so it looks the same both on Windows & Linux
-        extra_border = 0
-        if name != 'nt':
-            extra_border = 3
-
+        sizer.Add(self.min_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+            
+        sizer.AddSpacer(self.SIZE_5)
+            
         hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        hor_sizer.Add(self.min_text)
-        hor_sizer.AddSpacer(self.SIZE_10 + extra_border)
-        hor_sizer.Add(self.min_filesize_box)
+        hor_sizer.Add(self.min_filesize_spinner)
+        hor_sizer.AddSpacer(self.SIZE_10)
+        hor_sizer.Add(self.min_filesize_combo)
 
         sizer.Add(hor_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         sizer.AddSpacer(self.SIZE_10)
 
+        sizer.Add(self.max_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        
+        sizer.AddSpacer(self.SIZE_5)
+        
         hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        hor_sizer.Add(self.max_text)
+        hor_sizer.Add(self.max_filesize_spinner)
         hor_sizer.AddSpacer(self.SIZE_10)
-        hor_sizer.Add(self.max_filesize_box)
+        hor_sizer.Add(self.max_filesize_combo)
 
         sizer.Add(hor_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -945,13 +959,15 @@ class FilesystemTab(TabPanel):
     def load_options(self):
         ''' Load panel options from OptionsHandler object. '''
         self.open_dir_checkbox.SetValue(self.opt_manager.options['open_dl_dir'])
-        self.min_filesize_box.SetValue(self.opt_manager.options['min_filesize'])
-        self.max_filesize_box.SetValue(self.opt_manager.options['max_filesize'])
         self.write_info_checkbox.SetValue(self.opt_manager.options['write_info'])
         self.ign_err_checkbox.SetValue(self.opt_manager.options['ignore_errors'])
         self.write_desc_checkbox.SetValue(self.opt_manager.options['write_description'])
         self.write_thumbnail_checkbox.SetValue(self.opt_manager.options['write_thumbnail'])
-
+        self.min_filesize_spinner.SetValue(self.opt_manager.options['min_filesize'])
+        self.max_filesize_spinner.SetValue(self.opt_manager.options['max_filesize'])
+        self.min_filesize_combo.SetValue(self.opt_manager.options['min_filesize_unit'])
+        self.max_filesize_combo.SetValue(self.opt_manager.options['max_filesize_unit'])
+        
     def save_options(self):
         ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['write_thumbnail'] = self.write_thumbnail_checkbox.GetValue()
@@ -959,14 +975,10 @@ class FilesystemTab(TabPanel):
         self.opt_manager.options['ignore_errors'] = self.ign_err_checkbox.GetValue()
         self.opt_manager.options['write_info'] = self.write_info_checkbox.GetValue()
         self.opt_manager.options['open_dl_dir'] = self.open_dir_checkbox.GetValue()
-        self.opt_manager.options['min_filesize'] = self.min_filesize_box.GetValue()
-        self.opt_manager.options['max_filesize'] = self.max_filesize_box.GetValue()
-        # Check min_filesize input
-        if self.opt_manager.options['min_filesize'] == '':
-            self.opt_manager.options['min_filesize'] = '0'
-        if self.opt_manager.options['max_filesize'] == '':
-            self.opt_manager.options['max_filesize'] = '0'
-
+        self.opt_manager.options['min_filesize'] = self.min_filesize_spinner.GetValue()
+        self.opt_manager.options['max_filesize'] = self.max_filesize_spinner.GetValue()
+        self.opt_manager.options['min_filesize_unit'] = self.min_filesize_combo.GetValue()
+        self.opt_manager.options['max_filesize_unit'] = self.max_filesize_combo.GetValue()
 
 class SubtitlesTab(TabPanel):
 

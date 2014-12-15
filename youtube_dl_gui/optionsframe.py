@@ -172,7 +172,7 @@ class OptionsFrame(wx.Frame):
     def _on_close(self, event):
         ''' Event handler for wx.EVT_CLOSE. '''
         self.save_all_options()
-        self.Destroy()
+        self.Hide()
 
     def reset(self):
         ''' Reset default options. '''

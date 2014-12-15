@@ -85,6 +85,9 @@ class MainFrame(wx.Frame):
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
         
+        # Create options frame
+        self._options_frame = OptionsFrame(self)
+        
         # Create components
         self._panel = wx.Panel(self)
 
@@ -309,8 +312,7 @@ class MainFrame(wx.Frame):
 
     def _on_options(self, event):
         ''' Event handler method for self._options_btn. '''
-        options_frame = OptionsFrame(self)
-        options_frame.Show()
+        self._options_frame.Show()
 
     def _on_close(self, event):
         ''' Event handler method (wx.EVT_CLOSE). '''

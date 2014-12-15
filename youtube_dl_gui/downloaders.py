@@ -49,6 +49,7 @@ class YoutubeDLDownloader(object):
     ERROR = 1
     STOPPED = 2
     ALREADY = 3
+    FILESIZE_ABORT = 4
 
     def __init__(self, youtubedl_path, data_hook=None, log_manager=None):
         self.youtubedl_path = youtubedl_path
@@ -109,8 +110,10 @@ class YoutubeDLDownloader(object):
             self._data['status'] = 'Stopped'
             self._data['speed'] = ''
             self._data['eta'] = ''
-        else:
+        elif self._return_code == self.ALREADY:
             self._data['status'] = 'Already Downloaded'
+        else:
+            self._data['status'] = 'Filesize Abort'
             
         self._hook_data()
             
@@ -121,11 +124,18 @@ class YoutubeDLDownloader(object):
                 # Keep only the filename on data['filename']
                 data['filename'] = os.path.basename(data['filename'])
 
-            if key == 'status' and data['status'] == 'Already Downloaded':
-                # Set self._return_code to already downloaded
-                # and trash that key (GUI won't read it if it's None)
-                self._return_code = self.ALREADY
-                data['status'] = None
+            if key == 'status':
+                if data['status'] == 'Already Downloaded':
+                    # Set self._return_code to already downloaded
+                    # and trash that key (GUI won't read it if it's None)
+                    self._return_code = self.ALREADY
+                    data['status'] = None
+                    
+                if data['status'] == 'Filesize Abort':
+                    # Set self._return_code to filesize abort
+                    # and trash that key (GUI won't read it if it's None)
+                    self._return_code = self.FILESIZE_ABORT
+                    data['status'] = None
 
             self._data[key] = data[key]
 
@@ -209,6 +219,8 @@ def extract_data(stdout):
         
     stdout = [string for string in stdout.split(' ') if string != '']
 
+    stdout[0] = stdout[0].lstrip('\r')
+    
     if stdout[0] == '[download]':
         data_dictionary['status'] = 'Downloading'
 
@@ -235,6 +247,10 @@ def extract_data(stdout):
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
+            
+        # Get filesize abort status
+        if stdout[-1] == 'Aborting.':
+            data_dictionary['status'] = 'Filesize Abort'
 
     elif stdout[0] == '[ffmpeg]':
         data_dictionary['status'] = 'Post Processing'

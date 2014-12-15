@@ -378,6 +378,9 @@ class LogTab(TabPanel):
             return 0
         return self.log_manager.log_size()
 
+    def _set_logsize(self):
+        self.log_size.SetLabel(self.LOGSIZE_LABEL.format(self._get_logsize()))
+        
     def _on_time(self, event):
         ''' Event handler for self.time_checkbox. '''
         self.log_manager.add_time = self.time_checkbox.GetValue()
@@ -403,6 +406,7 @@ class LogTab(TabPanel):
         ''' Load panel options from OptionsHandler object. '''
         self.enable_checkbox.SetValue(self.opt_manager.options['enable_log'])
         self.time_checkbox.SetValue(self.opt_manager.options['log_time'])
+        self._set_logsize()
 
     def save_options(self):
         ''' Save panel options to OptionsHandler object. '''

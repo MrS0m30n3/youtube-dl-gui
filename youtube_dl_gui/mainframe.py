@@ -311,6 +311,7 @@ class MainFrame(wx.Frame):
 
     def _on_options(self, event):
         ''' Event handler method for self._options_btn. '''
+        self._options_frame.load_all_options()
         self._options_frame.Show()
 
     def _on_close(self, event):

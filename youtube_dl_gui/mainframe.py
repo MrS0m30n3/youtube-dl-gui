@@ -33,7 +33,7 @@ class MainFrame(wx.Frame):
     ''' Youtube-dlG main frame. '''
 
     FRAME_SIZE = (700, 490)
-    TEXTCTRL_SIZE = (-1, 120)
+    TEXTCTRL_SIZE = (-1, -1)
     BUTTONS_SIZE = (90, 30)
     BUTTONS_SPACE = 80
     SIZE_20 = 20
@@ -92,8 +92,7 @@ class MainFrame(wx.Frame):
         self._panel = wx.Panel(self)
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
-        self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP,
-                                               self._on_urllist_edit)
+        self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
         self._download_btn = self._create_button(self.DOWNLOAD_LABEL, self._on_download)
         self._update_btn = self._create_button(self.UPDATE_LABEL, self._on_update)
@@ -102,6 +101,7 @@ class MainFrame(wx.Frame):
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
                                      parent=self._panel,
                                      style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+                                     
         self._status_bar = self._create_statictext(self.WELCOME_MSG.format(__author__))
 
         # Bind extra events
@@ -151,7 +151,7 @@ class MainFrame(wx.Frame):
         vertical_sizer.AddSpacer(self.SIZE_10)
 
         vertical_sizer.Add(self._url_text)
-        vertical_sizer.Add(self._url_list, flag=wx.EXPAND)
+        vertical_sizer.Add(self._url_list, 1, wx.EXPAND)
         
         vertical_sizer.AddSpacer(self.SIZE_10)
 
@@ -163,7 +163,7 @@ class MainFrame(wx.Frame):
 
         vertical_sizer.AddSpacer(self.SIZE_10)
 
-        vertical_sizer.Add(self._status_list, 1, wx.EXPAND)
+        vertical_sizer.Add(self._status_list, 2, wx.EXPAND)
         
         vertical_sizer.AddSpacer(self.SIZE_5)
 

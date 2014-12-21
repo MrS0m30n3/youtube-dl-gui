@@ -10,7 +10,7 @@ from .logmanager import LogGUI
 from .version import __version__
 
 
-from .data import (
+from .info import (
     __descriptionfull__,
     __licensefull__,
     __projecturl__,

@@ -1,3 +1,12 @@
+
+"""Youtubedlg module that holds package information.
+
+Note:
+    All those info could be stored in the __init__ file
+    but we keep them here to keep the code clean.
+    
+"""
+
 __author__ = 'Sotiris Papadopoulos'
 __contact__ = 'ytubedlg@gmail.com'
 __projecturl__ = 'http://mrs0m30n3.github.io/youtube-dl-gui/'

@@ -24,7 +24,7 @@ except ImportError as error:
 
 # For package use
 from .version import __version__
-from .data import (
+from .info import (
     __author__,
     __appname__,
     __contact__,

@@ -22,7 +22,7 @@ from .utils import (
     get_time,
     open_dir
 )
-from .data import (
+from .info import (
     __appname__
 )
 

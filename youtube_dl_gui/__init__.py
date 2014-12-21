@@ -1,6 +1,17 @@
 #!/usr/bin/env python2
 
-''' Youtube-dlg __init__ file. '''
+"""Youtubedlg __init__ file.
+
+Responsible on how the package looks from the outside.
+
+Example:
+    In order to load the GUI from a python script.
+    
+        import youtube_dl_gui
+        
+        youtube_dl_gui.main()    
+
+"""
 
 import sys
 import os.path
@@ -32,10 +43,12 @@ from .utils import get_config_path
 
 
 def main():
-    '''
-    Real main. Set configuration path, 
-    enable managers and call main app window.
-    '''
+    """The real main.
+    
+    Sets configuration path, enables the managers like OptionsManager,
+    LogManager, etc.. and creates the main app window.
+    
+    """
     config_path = os.path.join(get_config_path(), __appname__.lower())
     
     opt_manager = OptionsManager(config_path)

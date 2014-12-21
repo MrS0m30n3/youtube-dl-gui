@@ -356,11 +356,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def write(self, data):
         ''' Write data on ListCtrl row-column. '''
-        for key in data:
-            for column in self.columns:
-                if key == column[0]:
-                    self._write_data(data[key], data['index'], column[1])
-                    break
+        for column in self.columns:
+            column_key = column[0]
+            self._write_data(data[column_key], data['index'], column[1])
 
     def load_urls(self, url_list, func=None):
         for url in url_list:

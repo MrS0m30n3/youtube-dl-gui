@@ -1,6 +1,16 @@
 #!/usr/bin/env python2
 
-''' Python module to download videos using youtube-dl & subprocess. '''
+"""Python module to download videos. 
+
+This module contains the actual downloaders responsible 
+for downloading the video files. It's more like a driver module 
+that connects the youtubedlg with different 3rd party (or not) downloaders.
+
+Note:
+    downloaders.py is part of the youtubedlg package but it can be used
+    as a stand alone driver module for downloading videos.
+
+"""
 
 import os
 import sys
@@ -10,41 +20,26 @@ import subprocess
 
 class YoutubeDLDownloader(object):
 
-    '''
-    OUT_OF_DATE
-    Download videos using youtube-dl & subprocess.
-
-    Params
-        youtubedl_path: Absolute path of youtube-dl.
-        data_hook: Can be any function with one parameter, the data.
-        log_manager: Can be any log_manager which implements log().
-
-    Accessible Methods
-        download()
-            Params: URL to download
-                    Options list e.g. ['--help']
-
-            Return: DownlaodObject.OK
-                    YoutubeDLDownloader.ERROR
-                    YoutubeDLDownloader.STOPPED
-                    YoutubeDLDownloader.ALREADY
-        stop()
-            Params: None
-
-            Return: None
-
-    Data_hook Keys
-        'playlist_index',
-        'playlist_size',
-        'filesize',
-        'filename',
-        'percent',
-        'status',
-        'speed',
-        'eta'
-    '''
-
-    # download() return codes
+    """Python class for downloading videos using youtube-dl & subprocess.
+    
+    Attributes:
+        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT (int): 'Random' integers 
+        that describe the return code from the download() method.
+        
+    Args:
+        youtubedl_path (string): Absolute path to youtube-dl binary.
+        
+        data_hook (function): Optional callback function to retrieve download 
+            process data. 
+            
+        log_manager (logmanager.LogManager): Object responsible for writing
+            errors to the log.
+        
+    Note:
+        For available data keys check self._data under __init__()
+        
+    """
+    
     OK = 0
     ERROR = 1
     STOPPED = 2
@@ -70,9 +65,24 @@ class YoutubeDLDownloader(object):
         }
 
     def download(self, url, options):
-        ''' Download given url using youtube-dl &
-        return self._return_code.
-        '''
+        """Download url using given options.
+
+        Args:
+            url (string): URL string to download.
+            options (list): Python list that contains youtube-dl options.
+            
+        Returns:
+            An integer that shows the status of the download process.
+            Right now we support 5 different return codes.
+            
+            OK (0): The download process completed successfully.
+            ERROR (1): An error occured during the download process.
+            STOPPED (2): The download process was stopped from the user.
+            ALREADY (3): The given url is already downloaded.
+            FILESIZE_ABORT (4): The corresponding url video file was larger or
+                smaller from the given options filesize limit.
+        
+        """
         self._reset()
 
         cmd = self._get_cmd(url, options)
@@ -94,12 +104,13 @@ class YoutubeDLDownloader(object):
         return self._return_code
 
     def stop(self):
-        ''' Stop downloading. '''
+        """Stop the download process and set return code to STOPPED. """
         if self._proc_is_alive():
             self._proc.kill()
             self._return_code = self.STOPPED
 
     def _last_data_hook(self):
+        """Set the last data information based on the return code. """
         if self._return_code == self.OK:
             self._data['status'] = 'Finished'
         elif self._return_code == self.ERROR:
@@ -118,6 +129,7 @@ class YoutubeDLDownloader(object):
         self._hook_data()
             
     def _reset(self):
+        """Reset the data. """
         self._return_code = 0
         self._data = {
             'playlist_index': None,
@@ -131,7 +143,14 @@ class YoutubeDLDownloader(object):
         }
             
     def _sync_data(self, data):
-        ''' Synchronise self._data with data. '''
+        """ Synchronise self._data with data. It also filters some keys.
+        
+        Args:
+            data (dictionary): Python dictionary that contains different
+                keys. The keys are not standar the dictionary can also be
+                empty when there are no data to extract. See extract_data().
+        
+        """
         for key in data:
             if key == 'filename':
                 # Keep only the filename on data['filename']
@@ -153,24 +172,35 @@ class YoutubeDLDownloader(object):
             self._data[key] = data[key]
 
     def _log(self, data):
-        ''' Log data using self.log_manager. '''
+        """Log data using log_manager.
+        
+        Args:
+            data (string): String to write in the log file.
+        
+        """
         if self.log_manager is not None:
             self.log_manager.log(data)
 
     def _hook_data(self):
-        ''' Pass self._data back to data_hook. '''
+        """Pass self._data back to data_hook. """
         if self.data_hook is not None:
             self.data_hook(self._data)
 
     def _proc_is_alive(self):
-        ''' Return True if self._proc is alive. '''
+        """Return True if self._proc is alive. Else False. """
         if self._proc is None:
             return False
 
         return self._proc.poll() is None
 
     def _read(self):
-        ''' Read subprocess stdout, stderr. '''
+        """Read subprocess stdout, stderr.
+        
+        Returns:
+            Python tuple that contains the STDOUT string and 
+            the STDERR string.
+        
+        """
         stdout = stderr = ''
 
         stdout = self._read_stream(self._proc.stdout)
@@ -181,14 +211,29 @@ class YoutubeDLDownloader(object):
         return stdout, stderr
 
     def _read_stream(self, stream):
-        ''' Read subprocess stream. '''
+        """Read subprocess stream.
+        
+        Args:
+            stream (subprocess.PIPE): Subprocess pipe. Can be either STDOUT
+                or STDERR.
+        
+        """
         if self._proc is None:
             return ''
 
         return stream.readline().rstrip()
 
     def _get_cmd(self, url, options):
-        ''' Return command for subprocess. '''
+        """Build the subprocess command.
+        
+        Args:
+            url (string): URL string to download.
+            options (list): Python list that contains youtube-dl options.
+        
+        Returns:
+            Python list that contains the command to execute.
+        
+        """
         if os.name == 'nt':
             cmd = [self.youtubedl_path] + options + [url]
         else:
@@ -197,7 +242,12 @@ class YoutubeDLDownloader(object):
         return cmd
 
     def _create_process(self, cmd):
-        ''' Create new subprocess. '''
+        """Create new subprocess.
+        
+        Args:
+            cmd (list): Python list that contains the command to execute.
+        
+        """
         encoding = info = None
 
         # Hide subprocess window on Windows
@@ -224,7 +274,16 @@ class YoutubeDLDownloader(object):
 
 
 def extract_data(stdout):
-    ''' Extract data from youtube-dl stdout. '''
+    """Extract data from youtube-dl stdout.
+    
+    Args:
+        stdout (string): String that contains the youtube-dl stdout.
+        
+    Returns:
+        Python dictionary. For available keys check self._data under
+        YoutubeDLDownloader.__init__().
+    
+    """
     data_dictionary = dict()
         
     if not stdout:

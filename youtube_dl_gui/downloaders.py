@@ -73,7 +73,7 @@ class YoutubeDLDownloader(object):
         ''' Download given url using youtube-dl &
         return self._return_code.
         '''
-        self._return_code = self.OK
+        self._reset()
 
         cmd = self._get_cmd(url, options)
         self._create_process(cmd)
@@ -116,6 +116,19 @@ class YoutubeDLDownloader(object):
             self._data['status'] = 'Filesize Abort'
             
         self._hook_data()
+            
+    def _reset(self):
+        self._return_code = 0
+        self._data = {
+            'playlist_index': None,
+            'playlist_size': None,
+            'filesize': None,
+            'filename': None,
+            'percent': None,
+            'status': None,
+            'speed': None,
+            'eta': None
+        }
             
     def _sync_data(self, data):
         ''' Synchronise self._data with data. '''

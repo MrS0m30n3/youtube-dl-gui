@@ -12,7 +12,7 @@ from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
 from .optionsframe import OptionsFrame
 from .updthread import UpdateThread
-from .dlthread import DownloadManager, DownloadThread
+from .dlthread import DownloadManager
 
 from .utils import (
     YOUTUBEDL_BIN,
@@ -110,7 +110,7 @@ class MainFrame(wx.Frame):
 
         # Set threads wx.CallAfter handlers using subscribe
         self._set_publisher(self._update_handler, 'update')
-        self._set_publisher(self._status_list_handler, 'dlthread')
+        self._set_publisher(self._status_list_handler, 'dlworker')
         self._set_publisher(self._download_manager_handler, 'dlmanager')
 
     def _set_publisher(self, handler, topic):
@@ -174,20 +174,11 @@ class MainFrame(wx.Frame):
 
         self._panel.SetSizer(hor_sizer)
 
-    def _youtubedl_exist(self):
-        ''' Return True if youtube-dl executable exists. '''
-        path = os.path.join(self.opt_manager.options['youtubedl_path'],
-                            YOUTUBEDL_BIN)
-
-        return os.path.exists(path)
-
-    def _update_youtubedl(self, quiet=False):
+    def _update_youtubedl(self):
         ''' Update youtube-dl executable. '''
-        if not quiet:
-            self._update_btn.Disable()
-            self._download_btn.Disable()
-
-        self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'], quiet)
+        self._update_btn.Disable()
+        self._download_btn.Disable()
+        self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'])
 
     def _status_bar_write(self, msg):
         ''' Write msg to self._status_bar. '''
@@ -201,8 +192,8 @@ class MainFrame(wx.Frame):
 
     def _print_stats(self):
         ''' Print stats to self._status_bar after downloading. '''
-        suc_downloads = self.download_manager.successful_downloads
-        dtime = get_time(self.download_manager.time)
+        suc_downloads = self.download_manager.successful
+        dtime = get_time(self.download_manager.time_it_took)
 
         days = int(dtime['days'])
         hours = int(dtime['hours'])
@@ -229,7 +220,7 @@ class MainFrame(wx.Frame):
         self._status_list.write(data)
         
         # Report urls been downloaded
-        msg = self.URL_REPORT_MSG.format(self.download_manager.not_finished())
+        msg = self.URL_REPORT_MSG.format(self.download_manager.active())
         self._status_bar_write(msg)
                 
     def _download_manager_handler(self, msg):
@@ -271,39 +262,25 @@ class MainFrame(wx.Frame):
                                self.ERROR_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
-            if not self._youtubedl_exist():
-                self._update_youtubedl(True)
-            
-            threads_list = [self._create_thread(item) for item in self._status_list.get_items()]
-
-            self.download_manager = DownloadManager(threads_list, self.update_thread)
+            self.download_manager = DownloadManager(self._status_list.get_items(),
+                                                    self.opt_manager,
+                                                    self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._download_btn.SetLabel(self.STOP_LABEL)
             self._update_btn.Disable()
-
-    def _create_thread(self, item):
-        ''' Return DownloadThread created from item. '''
-        return DownloadThread(item['url'],
-                              item['index'],
-                              self.opt_manager,
-                              self.log_manager)
-
-    def _add_thread(self, item):
-        thread = self._create_thread(item)
-        self.download_manager.add_thread(thread)
                               
     def _on_urllist_edit(self, event):
         ''' Dynamically add url for download.'''
         if self.download_manager is not None:
-            self._status_list.load_urls(self._get_urls(), self._add_thread)
-
+            self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
+        
     def _on_download(self, event):
         ''' Event handler method for self._download_btn. '''
         if self.download_manager is None:
             self._start_download()
         else:
-            self.download_manager.close()
+            self.download_manager.stop_downloads()
 
     def _on_update(self, event):
         ''' Event handler method for self._update_btn. '''
@@ -317,7 +294,7 @@ class MainFrame(wx.Frame):
     def _on_close(self, event):
         ''' Event handler method (wx.EVT_CLOSE). '''
         if self.download_manager is not None:
-            self.download_manager.close()
+            self.download_manager.stop_downloads()
             self.download_manager.join()
 
         if self.update_thread is not None:
@@ -374,7 +351,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         ListCtrlAutoWidthMixin.__init__(self)
         self.columns = columns
         self._list_index = 0
-        self._url_list = list()
+        self._url_list = set()
         self._set_columns()
 
     def write(self, data):
@@ -405,14 +382,14 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def add_url(self, url):
         ''' Add url on ListCtrl. '''
         self.InsertStringItem(self._list_index, url)
-        self._url_list.append(url)
+        self._url_list.add(url)
         self._list_index += 1
 
     def clear(self):
         ''' Clear ListCtrl & reset self._list_index. '''
         self.DeleteAllItems()
         self._list_index = 0
-        self._url_list = list()
+        self._url_list = set()
 
     def is_empty(self):
         ''' Return True if list is empty. '''
@@ -422,7 +399,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         ''' Return list of items in ListCtrl. '''
         items = []
 
-        for row in range(self._list_index):
+        for row in xrange(self._list_index):
             item = self._get_item(row)
             items.append(item)
 

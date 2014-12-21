@@ -32,7 +32,7 @@ class UpdateThread(Thread):
     PUBLISHER_TOPIC = 'update'
     DOWNLOAD_TIMEOUT = 20
 
-    def __init__(self, download_path, quiet):
+    def __init__(self, download_path, quiet=False):
         super(UpdateThread, self).__init__()
         self.download_path = download_path
         self.quiet = quiet

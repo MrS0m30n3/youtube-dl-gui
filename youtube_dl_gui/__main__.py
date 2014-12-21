@@ -1,6 +1,25 @@
 #!/usr/bin/env python2
 
-''' Youtube-dlg __main__ file. '''
+"""Youtubedlg __main__ file.
+
+__main__ file is a python 'executable' file which calls the youtubedlg
+main() function in order to start the app. It can be used for starting
+the app from inside the package OR it can be used for starting the app
+from a different directory after you have installed the 
+youtube_dl_gui package.
+
+Example:
+    In order to run the app from inside the package.
+    
+        $ cd <package director>
+        $ python __main__.py
+    
+    In order to run the app from /usr/local/bin AFTER
+    you have installed the package.
+    
+        $ youtube-dlg
+
+"""
 
 import sys
 

@@ -1,6 +1,14 @@
 #!/usr/bin/env python2
 
-''' Parse OptionsManager.options. '''
+"""Youtubedlg module to parse the options.
+
+Note:
+    If you want to add new values on the module attributes
+    e.g. (SUBS_LANG, VIDEO_FORMATS, etc..) you also need to add the
+    values on the optionsframe module in order for them to be
+    visible from the GUI.
+
+"""
 
 import os.path
 
@@ -82,6 +90,27 @@ FILESIZE_UNITS = {
 
 class OptionHolder():
     
+    """Simple data structure that holds informations for the given option.
+    
+    Args:
+        name (string): Option name. Must be a valid option name
+            from the optionsmanager.OptionsManager class.
+            See optionsmanager.OptionsManager load_default() method.
+            
+        flag (string): The option command line switch.
+            See https://github.com/rg3/youtube-dl/#options
+            
+        default_value (any): The option default value. Must be the same type
+            with the corresponding option from the optionsmanager.OptionsManager
+            class.
+            
+        requirements (list): The requirements for the given option. This 
+            argument is a list of strings with the name of all the options
+            that this specific option needs. For example 'subs_lang' needs the
+            'write_subs' option to be enabled.
+    
+    """
+    
     def __init__(self, name, flag, default_value, requirements=[]):
         self.name = name
         self.flag = flag
@@ -89,9 +118,19 @@ class OptionHolder():
         self.default_value = default_value
 
     def is_boolean(self):
+        """Returns True if the option is a boolean switch else False. """
         return type(self.default_value) is bool
         
     def check_requirements(self, options_dict):
+        """Check if the required options are enabled.
+        
+        Args:
+            options_dict (dictionary): Dictionary with all the options.
+            
+        Returns:
+            True if any of the required options is enabled else False.
+        
+        """
         if not self.requirements:
             return True
             
@@ -99,19 +138,12 @@ class OptionHolder():
         
 class OptionsParser():
 
-    '''
-    OUT_OF_DATE
-    Parse OptionsManager.options into youtube-dl options list.
-
-    Params
-        opt_manager: OptionsManager.OptionsManager object
-
-    Accessible Methods
-        parse()
-            Params: None
-
-            Return: Options list
-    '''
+    """Parse optionsmanager.OptionsManager options.
+    
+    This class is responsible for turning some of the youtube-dlg options
+    to youtube-dl command line options.
+    
+    """
 
     def __init__(self):
         self._ydl_options = [
@@ -146,7 +178,17 @@ class OptionsParser():
         ]
 
     def parse(self, options_dictionary):
-        ''' Parse OptionsHandler.options and return options list. '''
+        """Parse optionsmanager.OptionsHandler options.
+        
+        Parses the given options to youtube-dl command line arguments.
+        
+        Args:
+            options_dictionary (dictionary): Dictionary with all the options.
+            
+        Returns:
+            List of strings with all the youtube-dl command line options.
+        
+        """
         options_list = ['--newline']
         
         # Create a copy of options_dictionary
@@ -178,6 +220,15 @@ class OptionsParser():
         return options_list
 
     def _build_savepath(self, options_dict):
+        """Build the save path.
+        
+        We use this method to build the value of the 'save_path' option and
+        store it back to the options dictionary.
+        
+        Args:
+            options_dict (dictionary): Copy of the original options dictionary.
+        
+        """
         save_path = remove_shortcuts(options_dict['save_path'])
         
         if options_dict['output_format'] == 'id':
@@ -190,6 +241,15 @@ class OptionsParser():
         options_dict['save_path'] = save_path
         
     def _build_videoformat(self, options_dict):
+        """Build the video format.
+        
+        We use this method to build the value of the 'video_format' option and
+        store it back to the options dictionary.
+        
+        Args:
+            options_dict (dictionary): Copy of the original options dictionary.
+        
+        """
         first_vf = VIDEO_FORMATS[options_dict['video_format']]
         second_vf = VIDEO_FORMATS[options_dict['second_video_format']]
         
@@ -201,12 +261,39 @@ class OptionsParser():
             options_dict['video_format'] = ''
 
     def _build_subslang(self, options_dict):
+        """Build the subtitles language option value.
+        
+        We use this method to build the value of the 'subs_lang' option and
+        store it back to the options dictionary.
+        
+        Args:
+            options_dict (dictionary): Copy of the original options dictionary.
+        
+        """
         options_dict['subs_lang'] = SUBS_LANG[options_dict['subs_lang']]
 
     def _build_audioquality(self, options_dict):
+        """Build the audio quality option value.
+        
+        We use this method to build the value of the 'audio_quality' option and
+        store it back to the options dictionary.
+        
+        Args:
+            options_dict (dictionary): Copy of the original options dictionary.
+        
+        """
         options_dict['audio_quality'] = AUDIO_QUALITY[options_dict['audio_quality']]
         
     def _build_filesizes(self, options_dict):
+        """Build the filesize options values.
+        
+        We use this method to build the values of 'min_filesize' and 
+        'max_filesize' options and store them back to options dictionary.
+        
+        Args:
+            options_dict (dictionary): Copy of the original options dictionary.
+        
+        """
         if options_dict['min_filesize']:
             size_unit = FILESIZE_UNITS[options_dict['min_filesize_unit']]
             options_dict['min_filesize'] = str(options_dict['min_filesize']) + size_unit

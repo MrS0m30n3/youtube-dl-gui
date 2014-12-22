@@ -38,6 +38,18 @@ class YoutubeDLDownloader(object):
     Note:
         For available data keys check self._data under __init__()
         
+    Example:
+        How to use YoutubeDLDownloader from a python script.
+        
+            from downloaders import YoutubeDLDownloader
+            
+            def data_hook(data):
+                print data
+            
+            downloader = YoutubeDLDownloader('/usr/bin/youtube-dl', data_hook)
+            
+            downloader.download(<URL STRING>, ['-f', 'flv'])
+        
     """
     
     OK = 0
@@ -216,6 +228,9 @@ class YoutubeDLDownloader(object):
         Args:
             stream (subprocess.PIPE): Subprocess pipe. Can be either STDOUT
                 or STDERR.
+        
+        Returns:
+            String that contains the stream (STDOUT or STDERR) string.
         
         """
         if self._proc is None:

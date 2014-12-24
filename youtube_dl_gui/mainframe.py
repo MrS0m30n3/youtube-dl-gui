@@ -195,12 +195,11 @@ class MainFrame(wx.Frame):
         suc_downloads = self.download_manager.successful
         dtime = get_time(self.download_manager.time_it_took)
 
-        days = int(dtime['days'])
-        hours = int(dtime['hours'])
-        minutes = int(dtime['minutes'])
-        seconds = int(dtime['seconds'])
-
-        msg = self.SUCC_REPORT_MSG.format(suc_downloads, days, hours, minutes, seconds)
+        msg = self.SUCC_REPORT_MSG.format(suc_downloads,
+                                          dtime['days'],
+                                          dtime['hours'],
+                                          dtime['minutes'],
+                                          dtime['seconds'])
 
         self._status_bar_write(msg)
 

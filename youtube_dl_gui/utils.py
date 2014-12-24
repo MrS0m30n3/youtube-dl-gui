@@ -1,6 +1,12 @@
 #!/usr/bin/env python2
 
-''' Contains youtube-dlG util functions. '''
+"""Youtubedlg module that contains util functions. 
+
+Attributes:
+    YOUTUBEDL_BIN (string): Youtube-dl binary filename.
+
+"""
+
 
 import os
 import sys
@@ -13,19 +19,19 @@ if os.name == 'nt':
 
 
 def remove_shortcuts(path):
-    ''' Return the path after removing the shortcuts. '''
+    """Return given path after removing the shortcuts. """
     path = path.replace('~', os.path.expanduser('~'))
     return path
 
 
 def absolute_path(filename):
-    ''' Return absolute path. '''
+    """Return absolute path of the given file. """
     path = os.path.realpath(os.path.abspath(filename))
     return os.path.dirname(path)
 
 
 def open_dir(path):
-    ''' Open path using default file navigator. '''
+    """Open path using default file navigator. """
     path = remove_shortcuts(path)
     
     if os.name == 'nt':
@@ -35,13 +41,19 @@ def open_dir(path):
 
 
 def check_path(path):
-    ''' Create path if not exist. '''
+    """Create path if not exist. """
     if not os.path.exists(path):
         os.makedirs(path)
 
 
 def get_config_path():
-    ''' Return user config path. Windows=AppData, Linux=~/.config. '''
+    """Return user config path.
+    
+    Note:
+        Windows = %AppData%
+        Linux   = ~/.config
+
+    """
     if os.name == 'nt':
         path = os.getenv('APPDATA')
     else:
@@ -51,9 +63,16 @@ def get_config_path():
 
 
 def shutdown_sys(password=''):
-    ''' Shutdown system. !!!On Linux you need to provide
-    password for sudo if you dont have admin prev.
-    '''
+    """Shuts down the system. 
+    
+    Args:
+        password (string): SUDO password for linux.
+        
+    Note:
+        On Linux you need to provide sudo password if you don't 
+        have admin prev.
+    
+    """
     if os.name == 'nt':
         subprocess.call(['shutdown', '/s', '/t', '1'])
     else:
@@ -65,20 +84,39 @@ def shutdown_sys(password=''):
 
 
 def get_time(seconds):
-    ''' Return day, hours, minutes, seconds from given seconds. '''
+    """Convert given seconds to days, hours, minutes and seconds.
+    
+    Args:
+        seconds (float): Time in seconds.
+        
+    Returns:
+        Dictionary that contains the corresponding days, hours, minutes
+        and seconds of the given seconds.
+    
+    """
     dtime = dict(seconds=0, minutes=0, hours=0, days=0)
 
-    dtime['days'] = seconds / 86400
-    dtime['hours'] = seconds % 86400 / 3600
-    dtime['minutes'] = seconds % 86400 % 3600 / 60
-    dtime['seconds'] = seconds % 86400 % 3600 % 60
+    dtime['days'] = int(seconds / 86400)
+    dtime['hours'] = int(seconds % 86400 / 3600)
+    dtime['minutes'] = int(seconds % 86400 % 3600 / 60)
+    dtime['seconds'] = round((seconds % 86400 % 3600 % 60), 2)
 
     return dtime
 
 
 def get_icon_file():
-    ''' Return path to the icon file if exist else return None.
-    Search __main__ dir, $XDG_DATA_DIRS, /usr/share/pixmaps in that order. '''
+    """Search for youtube-dlg app icon.
+    
+    Returns:
+        The path to youtube-dlg icon file if exists. Else returns None.
+        
+    Note:
+        Paths that get_icon_file() function searches.
+        
+        Windows: __main__ directory.
+        Linux: __main__ directory, $XDG_DATA_DIRS and /usr/share/pixmaps.
+        
+    """
     SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
     ICON_NAME = 'youtube-dl-gui_%s.png'
 

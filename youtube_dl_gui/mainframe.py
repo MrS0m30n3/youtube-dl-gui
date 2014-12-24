@@ -223,7 +223,7 @@ class MainFrame(wx.Frame):
         """Display msg in the status bar. """
         self._status_bar.SetLabel(msg)
 
-    def _reset_buttons(self):
+    def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
         self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
         self._download_btn.Enable()
@@ -288,12 +288,12 @@ class MainFrame(wx.Frame):
 
         if data == 'finished':
             self._print_stats()
-            self._reset_buttons()
+            self._reset_widgets()
             self.download_manager = None
             self._after_download()
         elif data == 'closed':
             self._status_bar_write(self.CLOSED_MSG)
-            self._reset_buttons()
+            self._reset_widgets()
             self.download_manager = None
         else:
             self._status_bar_write(self.CLOSING_MSG)
@@ -310,7 +310,7 @@ class MainFrame(wx.Frame):
         data = msg.data
         
         if data == 'finish':
-            self._reset_buttons()
+            self._reset_widgets()
             self.update_thread = None
         else:
             self._status_bar_write(data)
@@ -372,7 +372,7 @@ class MainFrame(wx.Frame):
         the update process.
         
         Note:
-            Currently the is not way to stop the update process.
+            Currently there is not way to stop the update process.
         
         Args:
             event (wx.Event): Event item.
@@ -439,20 +439,14 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             data (dictionary): Dictionary that contains data to be
                 written on the ListCtrl. In order for this method to
                 write the given data there must be an 'index' key that
-                identifies the current row and a corresponding key to the
-                self.columns first item (column name) that identifies
-                the column.
+                identifies the current row and a corresponding key for
+                each item of the self.columns.
                 
-        Example:
-            Example of data to be written.
-            
-                data = {'index': 1, 'filename': 'test'}
-                
-            The write method will search the self.columns tuple in order to
-            see if any of the columns names is in the income data. Here the
-            only key is the 'filename' so it's gonna retrieve the columns
-            number for the filename column (second item in self.columns) and
-            then it will read the data['index'] to identify the row.
+        Note:
+            Income data must contain all the columns keys else a KeyError will
+            be raised. Also there must be an 'index' key that identifies the 
+            row to write the data. For a valid data dictionary see 
+            downloaders.YoutubeDLDownloader self._data.
         
         """
         for column in self.columns:
@@ -463,9 +457,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         """Load URLs from the url_list on the ListCtrl widget.
         
         Args:
-            url_list (list): Python list that contains the URLs to add.
-            func (function): Callback function. Here it's used to add
-                the URLs on the download_manager.
+            url_list (list): List of strings that contains the URLs to add.
+            func (function): Callback function. It's used to add the URLs
+                on the download_manager.
         
         """
         for url in url_list:

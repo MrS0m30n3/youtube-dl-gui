@@ -37,7 +37,7 @@ class DownloadManager(Thread):
     
     Args:
         urls_list (list): Python list that contains multiple dictionaries
-            with the url to download and the corresponding column(index) in
+            with the url to download and the corresponding row(index) in
             which the worker should send the download process information.
         
         opt_manager (optionsmanager.OptionsManager): Object responsible for
@@ -141,7 +141,7 @@ class DownloadManager(Thread):
         
         Args:
             url (dictionary): Python dictionary that contains two keys,
-                the url and the index of the corresponding column
+                the url and the index of the corresponding row
                 to send the download information back.
         
         """
@@ -254,7 +254,7 @@ class Worker(Thread):
         
         Args:
             item (dictionary): Python dictionary that contains two keys,
-                the url and the index of the corresponding column
+                the url and the index of the corresponding row
                 to send the download information back.
         
         """

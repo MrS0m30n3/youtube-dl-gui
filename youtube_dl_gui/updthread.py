@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-''' Youtube-dlG module to download youtube-dl. '''
+"""Youtubedlg module to update youtube-dl binary. """
 
 import os.path
 from threading import Thread
@@ -18,15 +18,22 @@ from .utils import (
 
 class UpdateThread(Thread):
 
-    '''
-    Download latest youtube-dl.
+    """Python Thread that downloads youtube-dl binary.
 
-    Params
-        download_path: Absolute path where UpdateThread
-                       should download the latest youtube-dl.
+    Attributes:
+        LATEST_YOUTUBE_DL (string): URL with the latest youtube-dl binary.
+        PUBLISHER_TOPIC (string): Subscription topic for the wx Publisher.
+        DOWNLOAD_TIMEOUT (int): Download timeout in seconds.
+    
+    Args:
+        download_path (string): Absolute path where UpdateThread will download
+            the latest youtube-dl.
 
-        quiet: If True UpdateThread won't send any messages back to caller.
-    '''
+        quiet (boolean): If True UpdateThread won't send the finish signal
+            back to the caller. Finish signal can be used to make sure that
+            UpdateThread has been terminated in an asynchronous way.
+    
+    """
 
     LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
     PUBLISHER_TOPIC = 'update'
@@ -39,7 +46,7 @@ class UpdateThread(Thread):
         self.start()
 
     def run(self):
-        self._callafter("Downloading latest youtube-dl. Please wait...")
+        self._talk_to_gui("Downloading latest youtube-dl. Please wait...")
 
         source_file = self.LATEST_YOUTUBE_DL + YOUTUBEDL_BIN
         destination_file = os.path.join(self.download_path, YOUTUBEDL_BIN)
@@ -56,10 +63,18 @@ class UpdateThread(Thread):
         except (HTTPError, URLError, IOError) as e:
             msg = 'Youtube-dl download failed ' + str(e)
 
-        self._callafter(msg)
-        if not self.quiet:
-            self._callafter('finish')
+        self._talk_to_gui(msg)
 
-    def _callafter(self, data):
-        ''' CallAfter wrapper. '''
+        if not self.quiet:
+            self._talk_to_gui('finish')
+
+    def _talk_to_gui(self, data):
+        """Send data back to the GUI using wx CallAfter and wx Publisher.
+        
+        Args:
+            data (string): Can be either a message that informs for the 
+                update process or a 'finish' signal that shows that the 
+                update process has been completed.
+        
+        """
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)

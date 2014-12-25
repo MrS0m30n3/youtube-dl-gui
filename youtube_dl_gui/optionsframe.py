@@ -1,6 +1,33 @@
 #!/usr/bin/env python2
 
-''' Contains code for youtube-dlG options frame. '''
+"""Youtubedlg module responsible for the options window.
+
+Attributes:
+    AUDIO_QUALITY (list): Contains audio qualities. See parsers AUDIO_QUALITY
+        attribute for available values.
+        
+    AUDIO_FORMATS (list): Contains audio formats. 
+        See optionsmanager.OptionsManager 'audio_format' option for available
+        values.
+        
+    FORMATS (list): Contains video formats. This list contains all the 
+        available video formats without the 'default' and 'none' options.
+        See parsers VIDEO_FORMATS attribute for available values.
+
+    SUBS_LANG (list): Contains subtitles languages. See parsers SUBS_LANG
+        attribute for available values.
+        
+    FILESIZES (list): Contains filesize units. See parsers FILESIZE_UNITS
+        attribute for available values.
+        
+Note:
+    For every item inside the attributes of this module (except AUDIO_FORMATS)
+    there must be a valid key on the corresponding attribute of the parsers
+    module. For example to add a new video format you need to specify the 
+    video format {'name': 'key'} on the parsers module and then add the 'name'
+    of the video format on the FORMATS attribute to be visible on the GUI.
+        
+"""
 
 from os import name
 
@@ -97,30 +124,19 @@ FILESIZES = [
 
 class OptionsFrame(wx.Frame):
 
-    '''
-    Youtube-dlG options frame.
+    """Youtubedlg options frame class.
 
-    Params
-        opt_manager: OptionsManager.OptionsManager object.
-        parent: Frame parent.
-        logger: LogManager.LogManager object.
-
-    Accessible Methods
-        reset()
-            Params: None
-
-            Return: None
-
-        load_all_options()
-            Params: None
-
-            Return: None
-
-        save_all_options()
-            Params: None
-
-            Return: None
-    '''
+    Attributes:
+        FRAME_SIZE (tuple): Frame size (width, height).
+        FRAME_TITLE (string): Options window title.
+        
+        *_TAB (string): Constant string with the name of each tab.
+    
+    Args:
+        parent (mainframe.MainFrame): Parent class.
+    
+    """
+    
     FRAME_SIZE = (640, 270)
 
     FRAME_TITLE = "Options"
@@ -182,30 +198,61 @@ class OptionsFrame(wx.Frame):
         self.load_all_options()
 
     def _on_close(self, event):
-        ''' Event handler for wx.EVT_CLOSE. '''
+        """Event handler for wx.EVT_CLOSE event.
+        
+        This method is used to save the options and hide the options window.
+        
+        Args:
+            event (wx.Event): Event item.
+        
+        """
         self.save_all_options()
         self.Hide()
 
     def reset(self):
-        ''' Reset default options. '''
+        """Resets the default options. """
         self.opt_manager.load_default()
         self.load_all_options()
 
     def load_all_options(self):
-        ''' Load tabs options. '''
+        """Load options for each tab. """
         for tab, _ in self.tabs:
             tab.load_options()
 
     def save_all_options(self):
-        ''' Save tabs options '''
+        """Save options of each tab. """
         for tab, _ in self.tabs:
             tab.save_options()
 
 
 class TabPanel(wx.Panel):
 
-    # Set wx.CheckBox height for Windows & Linux
-    # so it looks the same on both platforms
+    """Main tab class from which each tab inherits.
+    
+    Contains methods to create widgets, load options etc..
+    
+    Attributes:
+        Each of this attributes is the Default one. In order to use a
+        different size you must overwrite the corresponding attribute
+        on the child object.
+    
+        CHECKBOX_SIZE (tuple): wx.Checkbox size (width, height). On Windows
+            we change the height value in order to look the same with Linux.
+    
+        BUTTONS_SIZE (tuple): wx.Button size (width, height)
+    
+        TEXTCTRL_SIZE (tuple): wx.TextCtrl size (width, height)
+        
+        SPINCTRL_SIZE (tuple): wx.SpinCtrl size (width, height)
+        
+        SIZE_* (int): Constant size number.
+        
+    Args:
+        parent (OptionsFrame): The parent of all tabs.
+        notebook (wx.Notebook): The container for each tab.
+    
+    """
+
     CHECKBOX_SIZE = (-1, -1)
     if name == 'nt':
         CHECKBOX_SIZE = (-1, 25)
@@ -232,6 +279,19 @@ class TabPanel(wx.Panel):
         self.reset_handler = parent.reset
         
     def create_button(self, label, event_handler=None):
+        """Creates and returns an wx.Button.
+        
+        Args:
+            label (string): wx.Button label.
+            
+            event_handler (function): Can be any function with one parameter
+                the event item.
+            
+        Note:
+            In order to change the button size you need to overwrite the 
+            BUTTONS_SIZE attribute on the current class.
+        
+        """
         button = wx.Button(self, label=label, size=self.BUTTONS_SIZE)
 
         if event_handler is not None:
@@ -240,6 +300,19 @@ class TabPanel(wx.Panel):
         return button
 
     def create_checkbox(self, label, event_handler=None):
+        """Creates and returns an wx.CheckBox.
+        
+        Args:
+            label (string): wx.CheckBox label.
+            
+            event_handler (function): Can be any function with one parameter
+                the event item.
+                
+        Note:
+            In order to change the checkbox size you need to overwrite the
+            CHECKBOX_SIZE attribute on the current class.
+        
+        """
         checkbox = wx.CheckBox(self, label=label, size=self.CHECKBOX_SIZE)
 
         if event_handler is not None:
@@ -248,6 +321,16 @@ class TabPanel(wx.Panel):
         return checkbox
 
     def create_textctrl(self, style=None):
+        """Creates and returns an wx.TextCtrl.
+        
+        Args:
+            style (long): Can be any valid wx.TextCtrl style.
+                
+        Note:
+            In order to change the textctrl size you need to overwrite the
+            TEXTCTRL_SIZE attribute on the current class.
+        
+        """
         if style is None:
             textctrl = wx.TextCtrl(self, size=self.TEXTCTRL_SIZE)
         else:
@@ -256,6 +339,18 @@ class TabPanel(wx.Panel):
         return textctrl
 
     def create_combobox(self, choices, size=(-1, -1), event_handler=None):
+        """Creates and returns an wx.ComboBox.
+        
+        Args:
+            choices (list): List of strings that contains the choices for the
+                wx.ComboBox widget.
+                
+            size (tuple): wx.ComboBox size (width, height).
+            
+            event_handler (function): Can be any function with one parameter
+                the event item.
+        
+        """
         combobox = wx.ComboBox(self, choices=choices, size=size)
 
         if event_handler is not None:
@@ -264,10 +359,27 @@ class TabPanel(wx.Panel):
         return combobox
 
     def create_dirdialog(self, label):
+        """Creates and returns an wx.DirDialog.
+
+        Args:
+            label (string): wx.DirDialog widget title.s
+        
+        """
         dlg = wx.DirDialog(self, label)
         return dlg
         
     def create_radiobutton(self, label, event_handler=None, style=None):
+        """Creates and returns an wx.RadioButton.
+        
+        Args:
+            label (string): wx.RadioButton label.
+            
+            event_handler (function): Can be any function with one parameter
+                the event item.
+        
+            style (long): Can be any valid wx.RadioButton style.
+        
+        """
         if style is None:
             radiobutton = wx.RadioButton(self, label=label)
         else:
@@ -279,41 +391,86 @@ class TabPanel(wx.Panel):
         return radiobutton
 
     def create_spinctrl(self, spin_range=(0, 999)):
+        """Creates and returns an wx.SpinCtrl.
+        
+        Args:
+            spin_range (tuple): wx.SpinCtrl range (min, max).
+            
+        Note:
+            In order to change the size of the spinctrl widget you need
+            to overwrite the SPINCTRL_SIZE attribute on the current class.
+        
+        """
         spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
         spinctrl.SetRange(*spin_range)
 
         return spinctrl
 
     def create_statictext(self, label):
+        """Creates and returns an wx.StaticText.
+        
+        Args:
+            label (string): wx.StaticText label.
+        
+        """
         statictext = wx.StaticText(self, label=label)
         return statictext
 
     def create_popup(self, text, title, style):
-        ''' Create popup. '''
+        """Creates an wx.MessageBox.
+        
+        Args:
+            text (string): wx.MessageBox message.
+            
+            title (string): wx.MessageBox title.
+            
+            style (long): Can be any valid wx.MessageBox style.
+        
+        """
         wx.MessageBox(text, title, style)
 
     def _set_sizer(self):
+        """Sets the sizer for the current panel.
+        
+        You need to overwrite this method on the child class in order
+        to set the panels sizers.
+        
+        """
         pass
 
     def _disable_items(self):
+        """Disables widgets.
+        
+        If you want any widgets to be disabled by default you specify
+        them in this method.
+        
+        """
         pass
     
     def load_options(self):
+        """Load options from the optionsmanager.OptionsManager object
+        to the current tab.
+        
+        """
         pass
     
     def save_options(self):
+        """Save options of the current tab back to
+        optionsmanager.OptionsManager object.
+        
+        """
         pass
     
 
 class LogTab(TabPanel):
 
-    '''
-    Options frame log tab panel.
+    """Options frame log tab.
 
-    Params
-        parent: wx.Panel parent.
-        logger: LogManager.LogManager.object.
-    '''
+    Attributes:
+        Constant strings for the widgets.
+    
+    """
+    
     ENABLE_LABEL = "Enable Log"
     WRITE_LABEL = "Write Time"
     CLEAR_LABEL = "Clear Log"
@@ -369,59 +526,64 @@ class LogTab(TabPanel):
             self.log_size.Hide()
 
     def _get_logpath(self):
+        """Returns the path to the log file. """
         if self.log_manager is None:
             return ''
         return self.log_manager.log_file
 
     def _get_logsize(self):
+        """Returns the size (Bytes) of the log file. """
         if self.log_manager is None:
             return 0
         return self.log_manager.log_size()
 
     def _set_logsize(self):
+        """Updates the self.log_size widget with the current log file size ."""
         self.log_size.SetLabel(self.LOGSIZE_LABEL.format(self._get_logsize()))
         
     def _on_time(self, event):
-        ''' Event handler for self.time_checkbox. '''
+        """Event handler for self.time_checkbox. """
         self.log_manager.add_time = self.time_checkbox.GetValue()
 
     def _on_enable(self, event):
-        ''' Event handler for self.enable_checkbox. '''
+        """Event handler for self.enable_checkbox. """
         self.create_popup(self.RESTART_MSG.format(__appname__),
                           self.RESTART_LABEL,
                           wx.OK | wx.ICON_INFORMATION)
 
     def _on_clear(self, event):
-        ''' Event handler for self.clear_button. '''
+        """Event handler for self.clear_button. """
         self.log_manager.clear()
         self.log_size.SetLabel(self.LOGSIZE_LABEL.format(self._get_logsize()))
 
     def _on_view(self, event):
-        ''' Event handler for self.view_button. '''
+        """Event handler for self.view_button. """
         logger_gui = LogGUI(self)
         logger_gui.Show()
         logger_gui.load(self.log_manager.log_file)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.enable_checkbox.SetValue(self.opt_manager.options['enable_log'])
         self.time_checkbox.SetValue(self.opt_manager.options['log_time'])
         self._set_logsize()
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['enable_log'] = self.enable_checkbox.GetValue()
         self.opt_manager.options['log_time'] = self.time_checkbox.GetValue()
 
 
 class ShutdownTab(TabPanel):
 
-    '''
-    Options frame shutdown tab panel.
+    """Options frame shutdown tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        TEXTCTRL_SIZE (tuple): Overwrites the TEXTCTRL_SIZE attribute of
+            the TabPanel class.
+            
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     TEXTCTRL_SIZE = (250, 25)
 
     SHUTDOWN_LABEL = "Shutdown when finished"
@@ -455,29 +617,28 @@ class ShutdownTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_shutdown_check(self, event):
-        ''' Event handler for self.shutdown_checkbox. '''
+        """Event handler for self.shutdown_checkbox. """
         self.sudo_box.Enable(self.shutdown_checkbox.GetValue())
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.shutdown_checkbox.SetValue(self.opt_manager.options['shutdown'])
         self.sudo_box.SetValue(self.opt_manager.options['sudo_password'])
         self._on_shutdown_check(None)
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['shutdown'] = self.shutdown_checkbox.GetValue()
         self.opt_manager.options['sudo_password'] = self.sudo_box.GetValue()
 
 
 class PlaylistTab(TabPanel):
 
-    '''
-    Options frame playlist tab panel.
+    """Options frame playlist tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     START_LABEL = "Playlist Start"
     STOP_LABEL = "Playlist Stop"
     MAX_LABEL = "Max Downloads"
@@ -514,13 +675,11 @@ class PlaylistTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.start_spinctrl.SetValue(self.opt_manager.options['playlist_start'])
         self.stop_spinctrl.SetValue(self.opt_manager.options['playlist_end'])
         self.max_spinctrl.SetValue(self.opt_manager.options['max_downloads'])
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['playlist_start'] = self.start_spinctrl.GetValue()
         self.opt_manager.options['playlist_end'] = self.stop_spinctrl.GetValue()
         self.opt_manager.options['max_downloads'] = self.max_spinctrl.GetValue()
@@ -528,12 +687,16 @@ class PlaylistTab(TabPanel):
 
 class ConnectionTab(TabPanel):
 
-    '''
-    Options frame connection tab panel.
+    """Options frame connection tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        SPINCTRL_SIZE (tuple): Overwrites the SPINCTRL_SIZE attribute of
+            the TabPanel class.
+    
+        *_LABEL (string): Constant string label for widgets.
+    
+    """
+    
     SPINCTRL_SIZE = (50, -1)
 
     RETRIES_LABEL = "Retries"
@@ -544,7 +707,6 @@ class ConnectionTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(ConnectionTab, self).__init__(*args, **kwargs)
 
-        # Create components
         self.retries_spinctrl = self.create_spinctrl((1, 99))
         self.useragent_box = self.create_textctrl()
         self.referer_box = self.create_textctrl()
@@ -588,14 +750,12 @@ class ConnectionTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.proxy_box.SetValue(self.opt_manager.options['proxy'])
         self.referer_box.SetValue(self.opt_manager.options['referer'])
         self.retries_spinctrl.SetValue(self.opt_manager.options['retries'])
         self.useragent_box.SetValue(self.opt_manager.options['user_agent'])
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['proxy'] = self.proxy_box.GetValue()
         self.opt_manager.options['referer'] = self.referer_box.GetValue()
         self.opt_manager.options['retries'] = self.retries_spinctrl.GetValue()
@@ -604,12 +764,16 @@ class ConnectionTab(TabPanel):
 
 class AuthenticationTab(TabPanel):
 
-    '''
-    Options frame authentication tab panel.
+    """Options frame authentication tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        TEXTCTRL_SIZE (tuple): Overwrites the TEXTCTRL_SIZE attribute of the 
+            TabPanel class.
+            
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     TEXTCTRL_SIZE = (250, 25)
 
     USERNAME_LABEL = "Username"
@@ -648,13 +812,11 @@ class AuthenticationTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.username_box.SetValue(self.opt_manager.options['username'])
         self.password_box.SetValue(self.opt_manager.options['password'])
         self.videopass_box.SetValue(self.opt_manager.options['video_password'])
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['username'] = self.username_box.GetValue()
         self.opt_manager.options['password'] = self.password_box.GetValue()
         self.opt_manager.options['video_password'] = self.videopass_box.GetValue()
@@ -662,12 +824,12 @@ class AuthenticationTab(TabPanel):
 
 class AudioTab(TabPanel):
 
-    '''
-    Options frame audio tab panel.
+    """Options frame audio tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
 
     TO_AUDIO_LABEL = "Convert to Audio"
     KEEP_VIDEO_LABEL = "Keep Video"
@@ -706,12 +868,11 @@ class AudioTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_audio_check(self, event):
-        ''' Event handler for self.to_audio_checkbox. '''
+        """Event handler for self.to_audio_checkbox. """
         self.audioformat_combo.Enable(self.to_audio_checkbox.GetValue())
         self.audioquality_combo.Enable(self.to_audio_checkbox.GetValue())
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.to_audio_checkbox.SetValue(self.opt_manager.options['to_audio'])
         self.keep_video_checkbox.SetValue(self.opt_manager.options['keep_video'])
         self.audioformat_combo.SetValue(self.opt_manager.options['audio_format'])
@@ -719,7 +880,6 @@ class AudioTab(TabPanel):
         self._on_audio_check(None)
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['to_audio'] = self.to_audio_checkbox.GetValue()
         self.opt_manager.options['keep_video'] = self.keep_video_checkbox.GetValue()
         self.opt_manager.options['audio_format'] = self.audioformat_combo.GetValue()
@@ -728,12 +888,22 @@ class AudioTab(TabPanel):
 
 class VideoTab(TabPanel):
 
-    '''
-    Options frame video tab panel.
+    """Options frame video tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        VIDEO_FORMATS (list): List that contains all the video formats
+            plus the 'default' one.
+            
+        SECOND_VIDEO_FORMATS (list): List that contains all the video formats
+            plus the 'none' one.
+            
+        COMBOBOX_SIZE (tuple): Overwrites the COMBOBOX_SIZE attribute of the
+            TabPanel class.
+            
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     VIDEO_FORMATS = ["default"] + FORMATS
     SECOND_VIDEO_FORMATS = ["none"] + FORMATS
     
@@ -771,30 +941,32 @@ class VideoTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_videoformat(self, event):
-        ''' Event handler for self.videoformat_combo. '''
+        """Event handler for self.videoformat_combo. """
         condition = (self.videoformat_combo.GetValue() != 'default')
         self.sec_videoformat_combo.Enable(condition)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.videoformat_combo.SetValue(self.opt_manager.options['video_format'])
         self.sec_videoformat_combo.SetValue(self.opt_manager.options['second_video_format'])
         self._on_videoformat(None)
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['video_format'] = self.videoformat_combo.GetValue()
         self.opt_manager.options['second_video_format'] = self.sec_videoformat_combo.GetValue()
 
 
 class OutputTab(TabPanel):
 
-    '''
-    Options frame output tab panel.
+    """Options frame output tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        TEXTCTRL_SIZE (tuple): Overwrites the TEXTCTRL_SIZE attribute of
+            the TabPanel class.
+            
+        * (string): Constant string label for the widgets.
+        
+    """
+    
     TEXTCTRL_SIZE = (300, 20)
 
     RESTRICT_LABEL = "Restrict filenames (ASCII)"
@@ -833,10 +1005,16 @@ class OutputTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_pick(self, event):
+        """Event handler for the radiobuttons. """
         self.title_template.Enable(self.custom_rbtn.GetValue())
 
     def _get_output_format(self):
-        ''' Return output_format. '''
+        """Returns output_format string type base on the radiobuttons.
+        
+        See optionsmanager.OptionsManager 'output_format' option for more
+        informations.
+        
+        """
         if self.id_rbtn.GetValue():
             return 'id'
         elif self.title_rbtn.GetValue():
@@ -845,6 +1023,7 @@ class OutputTab(TabPanel):
             return 'custom'
 
     def _set_output_format(self, output_format):
+        """Enables the corresponding radiobutton base on the output_format. """
         if output_format == 'id':
             self.id_rbtn.SetValue(True)
         elif output_format == 'title':
@@ -853,14 +1032,12 @@ class OutputTab(TabPanel):
             self.custom_rbtn.SetValue(True)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self._set_output_format(self.opt_manager.options['output_format'])
         self.title_template.SetValue(self.opt_manager.options['output_template'])
         self.res_names_checkbox.SetValue(self.opt_manager.options['restrict_filenames'])
         self._on_pick(None)
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['output_format'] = self._get_output_format()
         self.opt_manager.options['output_template'] = self.title_template.GetValue()
         self.opt_manager.options['restrict_filenames'] = self.res_names_checkbox.GetValue()
@@ -868,12 +1045,13 @@ class OutputTab(TabPanel):
 
 class FilesystemTab(TabPanel):
 
-    '''
-    Options frame filesystem tab panel.
+    """Options frame filesystem tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     IGN_ERR_LABEL = "Ignore Errors"
     OPEN_DIR_LABEL = "Open destination folder"
     WRT_INFO_LABEL = "Write info to (.json) file"
@@ -910,7 +1088,7 @@ class FilesystemTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _set_left_sizer(self):
-        ''' Set left BoxSizer. '''
+        """Sets and returns the left BoxSizer. """
         sizer = wx.BoxSizer(wx.VERTICAL)
 
         sizer.AddSpacer(self.SIZE_15)
@@ -927,7 +1105,7 @@ class FilesystemTab(TabPanel):
         return sizer
 
     def _set_right_sizer(self):
-        ''' Set right BoxSizer. '''
+        """Sets and returns the right BoxSizer. """
         static_box = wx.StaticBox(self, label=self.FILESIZE_LABEL)
 
         sizer = wx.StaticBoxSizer(static_box, wx.VERTICAL)
@@ -961,7 +1139,6 @@ class FilesystemTab(TabPanel):
         return sizer
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.open_dir_checkbox.SetValue(self.opt_manager.options['open_dl_dir'])
         self.write_info_checkbox.SetValue(self.opt_manager.options['write_info'])
         self.ign_err_checkbox.SetValue(self.opt_manager.options['ignore_errors'])
@@ -973,7 +1150,6 @@ class FilesystemTab(TabPanel):
         self.max_filesize_combo.SetValue(self.opt_manager.options['max_filesize_unit'])
         
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['write_thumbnail'] = self.write_thumbnail_checkbox.GetValue()
         self.opt_manager.options['write_description'] = self.write_desc_checkbox.GetValue()
         self.opt_manager.options['ignore_errors'] = self.ign_err_checkbox.GetValue()
@@ -986,12 +1162,13 @@ class FilesystemTab(TabPanel):
 
 class SubtitlesTab(TabPanel):
 
-    '''
-    Options frame subtitles tab panel.
+    """Options frame subtitles tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     DL_SUBS_LABEL = "Download subtitle file by language"
     DL_ALL_SUBS_LABEL = "Download all available subtitles"
     DL_AUTO_SUBS_LABEL = "Download automatic subtitle file (YOUTUBE ONLY)"
@@ -1001,7 +1178,6 @@ class SubtitlesTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(SubtitlesTab, self).__init__(*args, **kwargs)
 
-        # Change those to radiobuttons
         self.write_subs_checkbox = self.create_checkbox(self.DL_SUBS_LABEL, self._on_subs_pick)
         self.write_all_subs_checkbox = self.create_checkbox(self.DL_ALL_SUBS_LABEL, self._on_subs_pick)
         self.write_auto_subs_checkbox = self.create_checkbox(self.DL_AUTO_SUBS_LABEL, self._on_subs_pick)
@@ -1040,6 +1216,7 @@ class SubtitlesTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_subs_pick(self, event):
+        """Event handler for the write_subs checkboxes. """
         if self.write_subs_checkbox.GetValue():
             self.write_all_subs_checkbox.Disable()
             self.write_auto_subs_checkbox.Disable()
@@ -1061,7 +1238,6 @@ class SubtitlesTab(TabPanel):
             self.write_auto_subs_checkbox.Enable()
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.subs_lang_combo.SetValue(self.opt_manager.options['subs_lang'])
         self.write_subs_checkbox.SetValue(self.opt_manager.options['write_subs'])
         self.embed_subs_checkbox.SetValue(self.opt_manager.options['embed_subs'])
@@ -1070,7 +1246,6 @@ class SubtitlesTab(TabPanel):
         self._on_subs_pick(None)
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['subs_lang'] = self.subs_lang_combo.GetValue()
         self.opt_manager.options['write_subs'] = self.write_subs_checkbox.GetValue()
         self.opt_manager.options['embed_subs'] = self.embed_subs_checkbox.GetValue()
@@ -1080,14 +1255,16 @@ class SubtitlesTab(TabPanel):
 
 class GeneralTab(TabPanel):
 
-    '''
-    Options frame general tab panel.
+    """Options frame general tab.
 
-    Params
-        parent: wx.Panel parent.
-        opt_manager: OptionsHandler.OptionsHandler object.
-        reset_handler: Method to reset all options & frame.
-    '''
+    Attributes:
+        BUTTONS_SIZE (tuple): Overwrites the BUTTONS_SIZE attribute of the 
+            TabPanel class.
+            
+        *_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     BUTTONS_SIZE = (110, 40)
 
     ABOUT_LABEL = "About"
@@ -1136,11 +1313,11 @@ class GeneralTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _on_reset(self, event):
-        ''' Event handler reset button. '''
+        """Event handler of the self.reset_button. """
         self.reset_handler()
 
     def _on_open(self, event):
-        ''' Event handler open button. '''
+        """Event handler of the self.open_button. """
         dlg = self.create_dirdialog(self.PICK_DIR_LABEL)
         
         if dlg.ShowModal() == wx.ID_OK:
@@ -1149,10 +1326,9 @@ class GeneralTab(TabPanel):
         dlg.Destroy()
 
     def _on_about(self, event):
-        ''' Event handler about button. '''
+        """Event handler of the self.about_button. """
         info = wx.AboutDialogInfo()
 
-        # Load about icon
         if self.app_icon is not None:
             info.SetIcon(self.app_icon)
 
@@ -1166,22 +1342,21 @@ class GeneralTab(TabPanel):
         wx.AboutBox(info)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.savepath_box.SetValue(self.opt_manager.options['save_path'])
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['save_path'] = self.savepath_box.GetValue()
 
 
 class CMDTab(TabPanel):
 
-    '''
-    Options frame command tab panel.
+    """Options frame command tab.
 
-    Params
-        parent: wx.Panel parent.
-    '''
+    Attributes:
+        CMD_LABEL (string): Constant string label for the widgets.
+    
+    """
+    
     CMD_LABEL = "Command line arguments (e.g. --help)"
 
     def __init__(self, *args, **kwargs):
@@ -1206,9 +1381,7 @@ class CMDTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        ''' Load panel options from OptionsHandler object. '''
         self.cmd_args_box.SetValue(self.opt_manager.options['cmd_args'])
 
     def save_options(self):
-        ''' Save panel options to OptionsHandler object. '''
         self.opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()

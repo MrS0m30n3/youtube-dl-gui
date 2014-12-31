@@ -697,7 +697,7 @@ class ConnectionTab(TabPanel):
     
     """
     
-    SPINCTRL_SIZE = (50, -1)
+    SPINCTRL_SIZE = (60, -1)
 
     RETRIES_LABEL = "Retries"
     USERAGENT_LABEL = "User Agent"
@@ -707,7 +707,7 @@ class ConnectionTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(ConnectionTab, self).__init__(*args, **kwargs)
 
-        self.retries_spinctrl = self.create_spinctrl((1, 99))
+        self.retries_spinctrl = self.create_spinctrl((1, 999))
         self.useragent_box = self.create_textctrl()
         self.referer_box = self.create_textctrl()
         self.proxy_box = self.create_textctrl()

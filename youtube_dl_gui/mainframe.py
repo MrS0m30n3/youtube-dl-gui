@@ -11,8 +11,8 @@ from wx.lib.pubsub import pub as Publisher
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
 from .optionsframe import OptionsFrame
-from .updthread import UpdateThread
-from .dlthread import DownloadManager
+from .updatemanager import UpdateThread
+from .downloadmanager import DownloadManager
 
 from .utils import (
     YOUTUBEDL_BIN,
@@ -260,12 +260,12 @@ class MainFrame(wx.Frame):
                 open_dir(self.opt_manager.options['save_path'])
 
     def _status_list_handler(self, msg):
-        """dlthread.Worker thread handler.
+        """downloadmanager.Worker thread handler.
         
         Handles messages from the Worker thread.
         
         Args:
-            See dlthread.Worker _talk_to_gui() method.
+            See downloadmanager.Worker _talk_to_gui() method.
         
         """
         data = msg.data
@@ -277,12 +277,12 @@ class MainFrame(wx.Frame):
         self._status_bar_write(msg)
                 
     def _download_manager_handler(self, msg):
-        """dlthread.DownloadManager thread handler.
+        """downloadmanager.DownloadManager thread handler.
 
         Handles messages from the DownloadManager thread.
         
         Args:
-            See dlthread.DownloadManager _talk_to_gui() method.
+            See downloadmanager.DownloadManager _talk_to_gui() method.
         
         """
         data = msg.data
@@ -300,12 +300,12 @@ class MainFrame(wx.Frame):
             self._status_bar_write(self.CLOSING_MSG)
 
     def _update_handler(self, msg):
-        """dlthread.UpdateThread thread handler.
+        """updatemanager.UpdateThread thread handler.
         
         Handles messages from the UpdateThread thread.
         
         Args:
-            See updthread.UpdateThread _talk_to_gui() method.
+            See updatemanager.UpdateThread _talk_to_gui() method.
         
         """
         data = msg.data

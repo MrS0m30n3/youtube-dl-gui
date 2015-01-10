@@ -20,7 +20,7 @@ from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
 from .parsers import OptionsParser
-from .updthread import UpdateThread
+from .updatemanager import UpdateThread
 from .downloaders import YoutubeDLDownloader
 
 from .utils import YOUTUBEDL_BIN

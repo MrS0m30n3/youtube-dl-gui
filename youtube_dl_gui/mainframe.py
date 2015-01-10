@@ -2,8 +2,6 @@
 
 """Youtubedlg module responsible for the main app window. """
 
-import os.path
-
 import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
@@ -15,8 +13,6 @@ from .updatemanager import UpdateThread
 from .downloadmanager import DownloadManager
 
 from .utils import (
-    YOUTUBEDL_BIN,
-    get_config_path,
     get_icon_file,
     shutdown_sys,
     get_time,
@@ -30,10 +26,10 @@ from .info import (
 class MainFrame(wx.Frame):
 
     """Main window class.
-    
+
     This class is responsible for creating the main app window
     and binding the events.
-    
+
     Attributes:
         FRAME_SIZE (tuple): Frame size (width, height).
         BUTTONS_SIZE (tuple): Buttons size (width, height).
@@ -41,24 +37,24 @@ class MainFrame(wx.Frame):
         SIZE_20 (int): Constant size number.
         SIZE_10 (int): Constant size number.
         SIZE_5 (int): Constant size number.
-        
+
         Labels area (strings): Strings for the widgets labels.
-        
+
         STATUSLIST_COLUMNS (tuple): Tuple of tuples that contains informations
             about the ListCtrl columns. First item is the column name. Second
             item is the column position. Third item is the column label.
             Fourth item is the column default width. Last item is a boolean
             flag if True the current column is resizable.
-        
+
     Args:
         opt_manager (optionsmanager.OptionsManager): Object responsible for
             handling the settings.
-            
+
         log_manager (logmanager.LogManager): Object responsible for handling
             the log stuff.
-            
+
         parent (wx.Window): Frame parent.
-        
+
     """
 
     FRAME_SIZE = (700, 490)
@@ -67,7 +63,7 @@ class MainFrame(wx.Frame):
     SIZE_20 = 20
     SIZE_10 = 10
     SIZE_5 = 5
-    
+
     # Labels area
     URLS_LABEL = "URLs"
     DOWNLOAD_LABEL = "Download"
@@ -85,7 +81,7 @@ class MainFrame(wx.Frame):
     CLOSED_MSG = "Downloads stopped"
     PROVIDE_URL_MSG = "You need to provide at least one url"
     DOWNLOAD_STARTED = "Download started"
-    
+
     VIDEO_LABEL = "Video"
     SIZE_LABEL = "Size"
     PERCENT_LABEL = "Percent"
@@ -93,7 +89,7 @@ class MainFrame(wx.Frame):
     SPEED_LABEL = "Speed"
     STATUS_LABEL = "Status"
     #################################
-    
+
     STATUSLIST_COLUMNS = (
         ('filename', 0, VIDEO_LABEL, 150, True),
         ('filesize', 1, SIZE_LABEL, 80, False),
@@ -102,7 +98,7 @@ class MainFrame(wx.Frame):
         ('speed', 4, SPEED_LABEL, 90, False),
         ('status', 5, STATUS_LABEL, 160, False)
     )
-    
+
     def __init__(self, opt_manager, log_manager, parent=None):
         wx.Frame.__init__(self, parent, title=__appname__, size=self.FRAME_SIZE)
         self.opt_manager = opt_manager
@@ -110,15 +106,15 @@ class MainFrame(wx.Frame):
         self.download_manager = None
         self.update_thread = None
         self.app_icon = get_icon_file()
-        
+
         # Create the app icon
         if self.app_icon is not None:
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
-        
+
         # Create options frame
         self._options_frame = OptionsFrame(self)
-        
+
         # Create components
         self._panel = wx.Panel(self)
 
@@ -132,12 +128,12 @@ class MainFrame(wx.Frame):
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
                                      parent=self._panel,
                                      style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
-                                     
+
         self._status_bar = self._create_statictext(self.WELCOME_MSG)
 
         # Bind extra events
         self.Bind(wx.EVT_CLOSE, self._on_close)
-        
+
         self._set_sizers()
 
         # Set threads wxCallAfter handlers using subscribe
@@ -147,44 +143,44 @@ class MainFrame(wx.Frame):
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.
-        
+
         Args:
             handler (function): Can be any function with one parameter
                 the message that the caller sends.
-                
+
             topic (string): Can be any string that identifies the caller.
-                You can bind multiple handlers on the same topic or 
+                You can bind multiple handlers on the same topic or
                 multiple topics on the same handler.
-        
+
         """
         Publisher.subscribe(handler, topic)
-        
+
     def _create_statictext(self, label):
         statictext = wx.StaticText(self._panel, label=label)
         return statictext
-        
+
     def _create_textctrl(self, style=None, event_handler=None):
         if style is None:
             textctrl = wx.TextCtrl(self._panel)
         else:
             textctrl = wx.TextCtrl(self._panel, style=style)
-            
+
         if event_handler is not None:
             textctrl.Bind(wx.EVT_TEXT, event_handler)
-            
+
         return textctrl
-        
+
     def _create_button(self, label, event_handler=None):
         btn = wx.Button(self._panel, label=label, size=self.BUTTONS_SIZE)
-        
+
         if event_handler is not None:
             btn.Bind(wx.EVT_BUTTON, event_handler)
-            
+
         return btn
-        
+
     def _create_popup(self, text, title, style):
         wx.MessageBox(text, title, style)
-        
+
     def _set_sizers(self):
         """Sets the sizers of the main window. """
         hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -194,7 +190,7 @@ class MainFrame(wx.Frame):
 
         vertical_sizer.Add(self._url_text)
         vertical_sizer.Add(self._url_list, 1, wx.EXPAND)
-        
+
         vertical_sizer.AddSpacer(self.SIZE_10)
 
         buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -205,11 +201,11 @@ class MainFrame(wx.Frame):
 
         vertical_sizer.AddSpacer(self.SIZE_10)
         vertical_sizer.Add(self._status_list, 2, wx.EXPAND)
-        
+
         vertical_sizer.AddSpacer(self.SIZE_5)
         vertical_sizer.Add(self._status_bar)
         vertical_sizer.AddSpacer(self.SIZE_5)
-        
+
         hor_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, border=self.SIZE_20)
 
         self._panel.SetSizer(hor_sizer)
@@ -245,11 +241,11 @@ class MainFrame(wx.Frame):
 
     def _after_download(self):
         """Run tasks after download process has been completed.
-        
+
         Note:
             Here you can add any tasks you want to run after the
             download process has been completed.
-        
+
         """
         if self.opt_manager.options['shutdown']:
             self.opt_manager.save_to_file()
@@ -261,29 +257,29 @@ class MainFrame(wx.Frame):
 
     def _status_list_handler(self, msg):
         """downloadmanager.Worker thread handler.
-        
+
         Handles messages from the Worker thread.
-        
+
         Args:
             See downloadmanager.Worker _talk_to_gui() method.
-        
+
         """
         data = msg.data
-        
+
         self._status_list.write(data)
-        
+
         # Report number of urls been downloaded
         msg = self.URL_REPORT_MSG.format(self.download_manager.active())
         self._status_bar_write(msg)
-                
+
     def _download_manager_handler(self, msg):
         """downloadmanager.DownloadManager thread handler.
 
         Handles messages from the DownloadManager thread.
-        
+
         Args:
             See downloadmanager.DownloadManager _talk_to_gui() method.
-        
+
         """
         data = msg.data
 
@@ -301,15 +297,15 @@ class MainFrame(wx.Frame):
 
     def _update_handler(self, msg):
         """updatemanager.UpdateThread thread handler.
-        
+
         Handles messages from the UpdateThread thread.
-        
+
         Args:
             See updatemanager.UpdateThread _talk_to_gui() method.
-        
+
         """
         data = msg.data
-        
+
         if data == 'finish':
             self._reset_widgets()
             self.update_thread = None
@@ -319,7 +315,7 @@ class MainFrame(wx.Frame):
     def _get_urls(self):
         """Returns urls list. """
         return self._url_list.GetValue().split('\n')
-            
+
     def _start_download(self):
         """Handles pre-download tasks & starts the download process. """
         self._status_list.clear()
@@ -337,23 +333,23 @@ class MainFrame(wx.Frame):
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._download_btn.SetLabel(self.STOP_LABEL)
             self._update_btn.Disable()
-                              
+
     def _on_urllist_edit(self, event):
         """Event handler of the self._status_list widget.
-        
+
         This method is used to dynamically add urls on the download_manager
         after the download process has started.
-        
+
         """
         if self.download_manager is not None:
             self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
-        
+
     def _on_download(self, event):
         """Event handler of the self._download_btn widget.
-        
+
         This method is used when the download-stop button is pressed to
         start or stop the download process.
-        
+
         """
         if self.download_manager is None:
             self._start_download()
@@ -362,33 +358,33 @@ class MainFrame(wx.Frame):
 
     def _on_update(self, event):
         """Event handler of the self._update_btn widget.
-        
+
         This method is used when the update button is pressed to start
         the update process.
-        
+
         Note:
             Currently there is not way to stop the update process.
-        
+
         """
         self._update_youtubedl()
 
     def _on_options(self, event):
         """Event handler of the self._options_btn widget.
-        
+
         This method is used when the options button is pressed to show
         the optios window.
-        
+
         """
         self._options_frame.load_all_options()
         self._options_frame.Show()
 
     def _on_close(self, event):
-        """Event handler for the wx.EVT_CLOSE event. 
-        
+        """Event handler for the wx.EVT_CLOSE event.
+
         This method is used when the user tries to close the program
         to save the options and make sure that the download & update
         processes are not running.
-        
+
         """
         if self.download_manager is not None:
             self.download_manager.stop_downloads()
@@ -404,10 +400,10 @@ class MainFrame(wx.Frame):
 class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     """Custom ListCtrl widget.
-    
+
     Args:
         columns (tuple): See MainFrame class STATUSLIST_COLUMNS attribute.
-    
+
     """
 
     def __init__(self, columns, *args, **kwargs):
@@ -420,20 +416,20 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def write(self, data):
         """Write data on ListCtrl row-column.
-        
+
         Args:
             data (dictionary): Dictionary that contains the data to be
                 written on the ListCtrl. In order for this method to
                 write the given data there must be an 'index' key that
                 identifies the current row and a corresponding key for
                 each item of the self.columns.
-                
+
         Note:
             Income data must contain all the columns keys else a KeyError will
-            be raised. Also there must be an 'index' key that identifies the 
-            row to write the data. For a valid data dictionary see 
+            be raised. Also there must be an 'index' key that identifies the
+            row to write the data. For a valid data dictionary see
             downloaders.YoutubeDLDownloader self._data.
-        
+
         """
         for column in self.columns:
             column_key = column[0]
@@ -441,39 +437,39 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def load_urls(self, url_list, func=None):
         """Load URLs from the url_list on the ListCtrl widget.
-        
+
         Args:
             url_list (list): List of strings that contains the URLs to add.
             func (function): Callback function. It's used to add the URLs
                 on the download_manager.
-        
+
         """
         for url in url_list:
             url = url.replace(' ', '')
-            
+
             if url and not self.has_url(url):
                 self.add_url(url)
-                
+
                 if func is not None:
                     # Custom hack to add url into download_manager
                     item = self._get_item(self._list_index - 1)
                     func(item)
-                
+
     def has_url(self, url):
         """Returns True if the url is aleady in the ListCtrl else False.
-        
+
         Args:
             url (string): URL string.
-        
+
         """
         return url in self._url_list
 
     def add_url(self, url):
         """Adds the given url in the ListCtrl.
-        
+
         Args:
             url (string): URL string.
-        
+
         """
         self.InsertStringItem(self._list_index, url)
         self._url_list.add(url)
@@ -492,11 +488,11 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def get_items(self):
         """Returns a list of items inside the ListCtrl.
-        
+
         Returns:
             List of dictionaries that contains the 'url' and the
             'index'(row) for each item of the ListCtrl.
-        
+
         """
         items = []
 
@@ -513,20 +509,20 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def _get_item(self, index):
         """Returns the corresponding ListCtrl item for the given index.
-        
+
         Args:
             index (int): Index that identifies the row of the item.
                 Index must be smaller than the self._list_index.
-                
+
         Returns:
             Dictionary that contains the URL string of the row and the
             row number(index).
-        
+
         """
-        item = self.GetItem(itemId=index, col=0)        
+        item = self.GetItem(itemId=index, col=0)
         data = dict(url=item.GetText(), index=index)
         return data
-        
+
     def _set_columns(self):
         """Initializes ListCtrl columns.
         See MainFrame STATUSLIST_COLUMNS attribute for more info. """
@@ -534,4 +530,3 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             self.InsertColumn(column[1], column[2], width=column[3])
             if column[4]:
                 self.setResizeColumn(column[1])
-        

@@ -15,18 +15,18 @@ class LogManager(object):
     """Simple log manager for youtube-dl.
 
     This class is mainly used to log the youtube-dl STDERR.
-    
+
     Attributes:
         LOG_FILENAME (string): Filename of the log file.
         TIME_TEMPLATE (string): Custom template to log the time.
         MAX_LOGSIZE (int): Maximum size(Bytes) of the log file.
-    
+
     Args:
-        config_path (string): Absolute path where LogManager should 
+        config_path (string): Absolute path where LogManager should
             store the log file.
-        
+
         add_time (boolean): If True LogManager will also log the time.
-    
+
     """
 
     LOG_FILENAME = "log"
@@ -57,13 +57,13 @@ class LogManager(object):
 
     def _write(self, data, mode):
         """Write data to the log file.
-        
+
         That's the main method for writing to the log file.
-        
+
         Args:
             data (string): String to write on the log file.
             mode (string): Can be any IO mode supported by python.
-        
+
         """
         check_path(self.config_path)
 
@@ -93,10 +93,10 @@ class LogGUI(wx.Frame):
     Attributes:
         TITLE (string): Frame title.
         FRAME_SIZE (tuple): Tuple that holds the frame size (width, height).
-        
+
     Args:
         parent (wx.Window): Frame parent.
-        
+
     """
 
     TITLE = "Log Viewer"

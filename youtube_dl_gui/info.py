@@ -4,7 +4,7 @@
 Note:
     All those info could be stored in the __init__ file
     but we keep them here to keep the code clean.
-    
+
 """
 
 __author__ = 'Sotiris Papadopoulos'

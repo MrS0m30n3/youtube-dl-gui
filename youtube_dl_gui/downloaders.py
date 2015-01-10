@@ -1,8 +1,8 @@
 #!/usr/bin/env python2
 
-"""Python module to download videos. 
+"""Python module to download videos.
 
-This module contains the actual downloaders responsible 
+This module contains the actual downloaders responsible
 for downloading the video files.
 
 Note:
@@ -20,37 +20,37 @@ import subprocess
 class YoutubeDLDownloader(object):
 
     """Python class for downloading videos using youtube-dl & subprocess.
-    
+
     Attributes:
-        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT (int): 'Random' integers 
+        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT (int): 'Random' integers
         that describe the return code from the download() method.
-        
+
     Args:
         youtubedl_path (string): Absolute path to youtube-dl binary.
-        
-        data_hook (function): Optional callback function to retrieve download 
-            process data. 
-            
+
+        data_hook (function): Optional callback function to retrieve download
+            process data.
+
         log_manager (logmanager.LogManager): Object responsible for writing
             errors to the log.
-        
+
     Note:
         For available data keys check self._data under __init__().
-        
+
     Example:
         How to use YoutubeDLDownloader from a python script.
-        
+
             from downloaders import YoutubeDLDownloader
-            
+
             def data_hook(data):
                 print data
-            
+
             downloader = YoutubeDLDownloader('/usr/bin/youtube-dl', data_hook)
-            
+
             downloader.download(<URL STRING>, ['-f', 'flv'])
-        
+
     """
-    
+
     OK = 0
     ERROR = 1
     STOPPED = 2
@@ -81,18 +81,18 @@ class YoutubeDLDownloader(object):
         Args:
             url (string): URL string to download.
             options (list): Python list that contains youtube-dl options.
-            
+
         Returns:
             An integer that shows the status of the download process.
             Right now we support 5 different return codes.
-            
+
             OK (0): The download process completed successfully.
             ERROR (1): An error occured during the download process.
             STOPPED (2): The download process was stopped from the user.
             ALREADY (3): The given url is already downloaded.
             FILESIZE_ABORT (4): The corresponding url video file was larger or
                 smaller from the given options filesize limit.
-        
+
         """
         self._reset()
 
@@ -105,13 +105,13 @@ class YoutubeDLDownloader(object):
             if stderr:
                 self._return_code = self.ERROR
                 self._log(stderr)
-            
+
             if stdout:
                 self._sync_data(extract_data(stdout))
                 self._hook_data()
 
         self._last_data_hook()
-            
+
         return self._return_code
 
     def stop(self):
@@ -136,9 +136,9 @@ class YoutubeDLDownloader(object):
             self._data['status'] = 'Already Downloaded'
         else:
             self._data['status'] = 'Filesize Abort'
-            
+
         self._hook_data()
-            
+
     def _reset(self):
         """Reset the data. """
         self._return_code = 0
@@ -152,15 +152,15 @@ class YoutubeDLDownloader(object):
             'speed': None,
             'eta': None
         }
-            
+
     def _sync_data(self, data):
         """Synchronise self._data with data. It also filters some keys.
-        
+
         Args:
             data (dictionary): Python dictionary that contains different
                 keys. The keys are not standar the dictionary can also be
                 empty when there are no data to extract. See extract_data().
-        
+
         """
         for key in data:
             if key == 'filename':
@@ -173,7 +173,7 @@ class YoutubeDLDownloader(object):
                     # and trash that key
                     self._return_code = self.ALREADY
                     data['status'] = None
-                    
+
                 if data['status'] == 'Filesize Abort':
                     # Set self._return_code to filesize abort
                     # and trash that key
@@ -201,11 +201,11 @@ class YoutubeDLDownloader(object):
 
     def _read(self):
         """Read subprocess stdout, stderr.
-        
+
         Returns:
             Python tuple that contains the STDOUT and STDERR
             strings.
-        
+
         """
         stdout = stderr = ''
 
@@ -219,14 +219,14 @@ class YoutubeDLDownloader(object):
 
     def _get_cmd(self, url, options):
         """Build the subprocess command.
-        
+
         Args:
             url (string): URL string to download.
             options (list): Python list that contains youtube-dl options.
-        
+
         Returns:
             Python list that contains the command to execute.
-        
+
         """
         if os.name == 'nt':
             cmd = [self.youtubedl_path] + options + [url]
@@ -237,10 +237,10 @@ class YoutubeDLDownloader(object):
 
     def _create_process(self, cmd):
         """Create new subprocess.
-        
+
         Args:
             cmd (list): Python list that contains the command to execute.
-        
+
         """
         encoding = info = None
 
@@ -269,24 +269,24 @@ class YoutubeDLDownloader(object):
 
 def extract_data(stdout):
     """Extract data from youtube-dl stdout.
-    
+
     Args:
         stdout (string): String that contains the youtube-dl stdout.
-        
+
     Returns:
         Python dictionary. For available keys check self._data under
         YoutubeDLDownloader.__init__().
-    
+
     """
     data_dictionary = dict()
-        
+
     if not stdout:
         return data_dictionary
-        
+
     stdout = [string for string in stdout.split(' ') if string != '']
 
     stdout[0] = stdout[0].lstrip('\r')
-    
+
     if stdout[0] == '[download]':
         data_dictionary['status'] = 'Downloading'
 
@@ -313,7 +313,7 @@ def extract_data(stdout):
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
-            
+
         # Get filesize abort status
         if stdout[-1] == 'Aborting.':
             data_dictionary['status'] = 'Filesize Abort'

@@ -24,7 +24,7 @@ class UpdateThread(Thread):
         LATEST_YOUTUBE_DL (string): URL with the latest youtube-dl binary.
         PUBLISHER_TOPIC (string): Subscription topic for the wx Publisher.
         DOWNLOAD_TIMEOUT (int): Download timeout in seconds.
-    
+
     Args:
         download_path (string): Absolute path where UpdateThread will download
             the latest youtube-dl.
@@ -32,7 +32,7 @@ class UpdateThread(Thread):
         quiet (boolean): If True UpdateThread won't send the finish signal
             back to the caller. Finish signal can be used to make sure that
             UpdateThread has been completed in an asynchronous way.
-    
+
     """
 
     LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
@@ -60,8 +60,8 @@ class UpdateThread(Thread):
                 dest_file.write(stream.read())
 
             msg = 'Youtube-dl downloaded correctly'
-        except (HTTPError, URLError, IOError) as e:
-            msg = 'Youtube-dl download failed ' + str(e)
+        except (HTTPError, URLError, IOError) as error:
+            msg = 'Youtube-dl download failed ' + str(error)
 
         self._talk_to_gui(msg)
 
@@ -70,11 +70,11 @@ class UpdateThread(Thread):
 
     def _talk_to_gui(self, data):
         """Send data back to the GUI using wx CallAfter and wx Publisher.
-        
+
         Args:
-            data (string): Can be either a message that informs for the 
-                update process or a 'finish' signal which shows that the 
+            data (string): Can be either a message that informs for the
+                update process or a 'finish' signal which shows that the
                 update process has been completed.
-        
+
         """
         CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-"""Youtubedlg module that contains util functions. 
+"""Youtubedlg module that contains util functions.
 
 Attributes:
     YOUTUBEDL_BIN (string): Youtube-dl binary filename.
@@ -33,7 +33,7 @@ def absolute_path(filename):
 def open_dir(path):
     """Open path using default file navigator. """
     path = remove_shortcuts(path)
-    
+
     if os.name == 'nt':
         os.startfile(path)
     else:
@@ -48,7 +48,7 @@ def check_path(path):
 
 def get_config_path():
     """Return user config path.
-    
+
     Note:
         Windows = %AppData%
         Linux   = ~/.config
@@ -64,14 +64,14 @@ def get_config_path():
 
 def shutdown_sys(password=''):
     """Shuts down the system.
-    
+
     Args:
         password (string): SUDO password for linux.
-        
+
     Note:
-        On Linux you need to provide sudo password if you don't 
+        On Linux you need to provide sudo password if you don't
         have elevated privileges.
-    
+
     """
     if os.name == 'nt':
         subprocess.call(['shutdown', '/s', '/t', '1'])
@@ -85,14 +85,14 @@ def shutdown_sys(password=''):
 
 def get_time(seconds):
     """Convert given seconds to days, hours, minutes and seconds.
-    
+
     Args:
         seconds (float): Time in seconds.
-        
+
     Returns:
         Dictionary that contains the corresponding days, hours, minutes
         and seconds of the given seconds.
-    
+
     """
     dtime = dict(seconds=0, minutes=0, hours=0, days=0)
 
@@ -106,16 +106,16 @@ def get_time(seconds):
 
 def get_icon_file():
     """Search for youtube-dlg app icon.
-    
+
     Returns:
         The path to youtube-dlg icon file if exists, else returns None.
-        
+
     Note:
         Paths that get_icon_file() function searches.
-        
+
         Windows: __main__ directory.
         Linux: __main__ directory, $XDG_DATA_DIRS and /usr/share/pixmaps.
-        
+
     """
     SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
     ICON_NAME = 'youtube-dl-gui_%s.png'
@@ -148,7 +148,7 @@ def get_icon_file():
 
         # /usr/share/pixmaps
         path = '/usr/share/pixmaps'
-        
+
         for icon in ICONS_LIST:
             icon_file = os.path.join(path, icon)
 

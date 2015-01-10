@@ -25,7 +25,7 @@ def remove_shortcuts(path):
 
 
 def absolute_path(filename):
-    """Return absolute path of the given file. """
+    """Return absolute path to the given file. """
     path = os.path.realpath(os.path.abspath(filename))
     return os.path.dirname(path)
 
@@ -63,14 +63,14 @@ def get_config_path():
 
 
 def shutdown_sys(password=''):
-    """Shuts down the system. 
+    """Shuts down the system.
     
     Args:
         password (string): SUDO password for linux.
         
     Note:
         On Linux you need to provide sudo password if you don't 
-        have admin prev.
+        have elevated privileges.
     
     """
     if os.name == 'nt':
@@ -99,7 +99,7 @@ def get_time(seconds):
     dtime['days'] = int(seconds / 86400)
     dtime['hours'] = int(seconds % 86400 / 3600)
     dtime['minutes'] = int(seconds % 86400 % 3600 / 60)
-    dtime['seconds'] = round((seconds % 86400 % 3600 % 60), 2)
+    dtime['seconds'] = int(seconds % 86400 % 3600 % 60)
 
     return dtime
 
@@ -108,7 +108,7 @@ def get_icon_file():
     """Search for youtube-dlg app icon.
     
     Returns:
-        The path to youtube-dlg icon file if exists. Else returns None.
+        The path to youtube-dlg icon file if exists, else returns None.
         
     Note:
         Paths that get_icon_file() function searches.

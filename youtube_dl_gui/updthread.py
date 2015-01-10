@@ -31,7 +31,7 @@ class UpdateThread(Thread):
 
         quiet (boolean): If True UpdateThread won't send the finish signal
             back to the caller. Finish signal can be used to make sure that
-            UpdateThread has been terminated in an asynchronous way.
+            UpdateThread has been completed in an asynchronous way.
     
     """
 
@@ -73,7 +73,7 @@ class UpdateThread(Thread):
         
         Args:
             data (string): Can be either a message that informs for the 
-                update process or a 'finish' signal that shows that the 
+                update process or a 'finish' signal which shows that the 
                 update process has been completed.
         
         """

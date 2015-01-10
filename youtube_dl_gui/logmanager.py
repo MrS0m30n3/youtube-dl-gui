@@ -14,12 +14,12 @@ class LogManager(object):
 
     """Simple log manager for youtube-dl.
 
-    This class is mainly used for loggin the youtube-dl STDERR.
+    This class is mainly used to log the youtube-dl STDERR.
     
     Attributes:
         LOG_FILENAME (string): Filename of the log file.
         TIME_TEMPLATE (string): Custom template to log the time.
-        MAX_LOGSIZE (int): Maximum number (Bytes) of the log file.
+        MAX_LOGSIZE (int): Maximum size(Bytes) of the log file.
     
     Args:
         config_path (string): Absolute path where LogManager should 
@@ -52,11 +52,11 @@ class LogManager(object):
         self._write('', 'w')
 
     def log(self, data):
-        """Log data to log file. """
+        """Log data to the log file. """
         self._write(data + '\n', 'a')
 
     def _write(self, data, mode):
-        """Write data to log file.
+        """Write data to the log file.
         
         That's the main method for writing to the log file.
         
@@ -76,19 +76,19 @@ class LogManager(object):
             log.write(msg)
 
     def _init_log(self):
-        """Init log file if not exist. """
+        """Initialize the log file if not exist. """
         if not os.path.exists(self.log_file):
             self._write('', 'w')
 
     def _auto_clear_log(self):
-        """Auto clear log file. """
+        """Auto clear the log file. """
         if self.log_size() > self.MAX_LOGSIZE:
             self.clear()
 
 
 class LogGUI(wx.Frame):
 
-    """Simple GUI for youtube-dlg.
+    """Simple window for reading the STDERR.
 
     Attributes:
         TITLE (string): Frame title.
@@ -117,6 +117,6 @@ class LogGUI(wx.Frame):
         panel.SetSizerAndFit(sizer)
 
     def load(self, filename):
-        """Load file content on text area. """
+        """Load file content on the text area. """
         if os.path.exists(filename):
             self._text_area.LoadFile(filename)

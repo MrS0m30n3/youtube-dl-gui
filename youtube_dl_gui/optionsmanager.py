@@ -62,9 +62,9 @@ class OptionsManager(object):
             
             second_video_format (string): Video format to mix with the first
                 one. (-f 18+17). For available video formats see 'video_format'
-                option. (This option must NOT be 'default').
+                option.
                 
-            to_audio (boolean): If True the youtube-dl will post process the 
+            to_audio (boolean): If True youtube-dl will post process the 
                 video file.
                 
             keep_video (boolen): If True youtube-dl will keep the video file
@@ -106,7 +106,7 @@ class OptionsManager(object):
                 youtube-dl will abort the download process.
                 
             min_filesize_unit (string): Minimum file size unit.
-                Available values 'Bytes', 'Kilobytes', 'Megabytes', 
+                Available values: 'Bytes', 'Kilobytes', 'Megabytes', 
                 'Gigabytes', 'Terabytes', 'Petabytes', 'Exabytes', 
                 'Zettabytes', 'Yottabytes'.
                 
@@ -157,7 +157,7 @@ class OptionsManager(object):
                 off after the download process has been completed.
                 
             sudo_password (string): SUDO password for the shutdown process if
-                the user does not have root access.
+                the user does not have elevated privileges.
                 
             username (string): Username to login with.
             

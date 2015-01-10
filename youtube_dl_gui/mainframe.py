@@ -46,8 +46,8 @@ class MainFrame(wx.Frame):
         
         STATUSLIST_COLUMNS (tuple): Tuple of tuples that contains informations
             about the ListCtrl columns. First item is the column name. Second
-            item is the column position. Third item is the constant column
-            label. Fourth item is the column width. Last item is a boolean
+            item is the column position. Third item is the column label.
+            Fourth item is the column default width. Last item is a boolean
             flag if True the current column is resizable.
         
     Args:
@@ -111,6 +111,7 @@ class MainFrame(wx.Frame):
         self.update_thread = None
         self.app_icon = get_icon_file()
         
+        # Create the app icon
         if self.app_icon is not None:
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
@@ -139,7 +140,7 @@ class MainFrame(wx.Frame):
         
         self._set_sizers()
 
-        # Set threads wx.CallAfter handlers using subscribe
+        # Set threads wxCallAfter handlers using subscribe
         self._set_publisher(self._update_handler, 'update')
         self._set_publisher(self._status_list_handler, 'dlworker')
         self._set_publisher(self._download_manager_handler, 'dlmanager')
@@ -343,9 +344,6 @@ class MainFrame(wx.Frame):
         This method is used to dynamically add urls on the download_manager
         after the download process has started.
         
-        Args:
-            event (wx.Event): Event item.
-        
         """
         if self.download_manager is not None:
             self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
@@ -353,11 +351,8 @@ class MainFrame(wx.Frame):
     def _on_download(self, event):
         """Event handler of the self._download_btn widget.
         
-        This method is used when download-stop button is pressed to
+        This method is used when the download-stop button is pressed to
         start or stop the download process.
-        
-        Args:
-            event (wx.Event): Event item.
         
         """
         if self.download_manager is None:
@@ -368,14 +363,11 @@ class MainFrame(wx.Frame):
     def _on_update(self, event):
         """Event handler of the self._update_btn widget.
         
-        This method is used when update button is pressed to start
+        This method is used when the update button is pressed to start
         the update process.
         
         Note:
             Currently there is not way to stop the update process.
-        
-        Args:
-            event (wx.Event): Event item.
         
         """
         self._update_youtubedl()
@@ -383,25 +375,19 @@ class MainFrame(wx.Frame):
     def _on_options(self, event):
         """Event handler of the self._options_btn widget.
         
-        This method is used when options button is pressed to show
+        This method is used when the options button is pressed to show
         the optios window.
-        
-        Args:
-            event (wx.Event): Event item.
         
         """
         self._options_frame.load_all_options()
         self._options_frame.Show()
 
     def _on_close(self, event):
-        """Event handler method for the wx.EVT_CLOSE event. 
+        """Event handler for the wx.EVT_CLOSE event. 
         
-        This method is used when the user tries to close the program.
-        It's used to run some tasks on the shutdown like save the options
-        and make sure the download & update process are not running.
-        
-        Args:
-            event (wx.Event): Event item.
+        This method is used when the user tries to close the program
+        to save the options and make sure that the download & update
+        processes are not running.
         
         """
         if self.download_manager is not None:
@@ -436,7 +422,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         """Write data on ListCtrl row-column.
         
         Args:
-            data (dictionary): Dictionary that contains data to be
+            data (dictionary): Dictionary that contains the data to be
                 written on the ListCtrl. In order for this method to
                 write the given data there must be an 'index' key that
                 identifies the current row and a corresponding key for
@@ -474,8 +460,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
                     func(item)
                 
     def has_url(self, url):
-        """Returns True if url is aleady in the ListCtrl
-        else returns False.
+        """Returns True if the url is aleady in the ListCtrl else False.
         
         Args:
             url (string): URL string.
@@ -495,10 +480,8 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index += 1
 
     def clear(self):
-        """Clear ListCtrl widget & reset self._list_index and
-        self._url_list.
-        
-        """
+        """Clear the ListCtrl widget & reset self._list_index and
+        self._url_list. """
         self.DeleteAllItems()
         self._list_index = 0
         self._url_list = set()
@@ -508,11 +491,11 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         return self._list_index == 0
 
     def get_items(self):
-        """Returns a list of items in ListCtrl.
+        """Returns a list of items inside the ListCtrl.
         
         Returns:
             List of dictionaries that contains the 'url' and the
-            'index' (row) for each item of the ListCtrl.
+            'index'(row) for each item of the ListCtrl.
         
         """
         items = []
@@ -529,15 +512,15 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             self.SetStringItem(row, column, data)
 
     def _get_item(self, index):
-        """Returns corresponding ListCtrl item for the given index.
+        """Returns the corresponding ListCtrl item for the given index.
         
         Args:
             index (int): Index that identifies the row of the item.
-                Index must be smaller than the current self._list_index.
+                Index must be smaller than the self._list_index.
                 
         Returns:
             Dictionary that contains the URL string of the row and the
-            row number (index).
+            row number(index).
         
         """
         item = self.GetItem(itemId=index, col=0)        
@@ -546,9 +529,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         
     def _set_columns(self):
         """Initializes ListCtrl columns.
-        See MainFrame STATUSLIST_COLUMNS attribute for more info.
-        
-        """
+        See MainFrame STATUSLIST_COLUMNS attribute for more info. """
         for column in self.columns:
             self.InsertColumn(column[1], column[2], width=column[3])
             if column[4]:

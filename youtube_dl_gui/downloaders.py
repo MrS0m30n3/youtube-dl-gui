@@ -3,12 +3,11 @@
 """Python module to download videos. 
 
 This module contains the actual downloaders responsible 
-for downloading the video files. It's more like a driver module 
-that connects the youtubedlg with different 3rd party (or not) downloaders.
+for downloading the video files.
 
 Note:
     downloaders.py is part of the youtubedlg package but it can be used
-    as a stand alone driver module for downloading videos.
+    as a stand alone module for downloading videos.
 
 """
 
@@ -36,7 +35,7 @@ class YoutubeDLDownloader(object):
             errors to the log.
         
     Note:
-        For available data keys check self._data under __init__()
+        For available data keys check self._data under __init__().
         
     Example:
         How to use YoutubeDLDownloader from a python script.
@@ -155,7 +154,7 @@ class YoutubeDLDownloader(object):
         }
             
     def _sync_data(self, data):
-        """ Synchronise self._data with data. It also filters some keys.
+        """Synchronise self._data with data. It also filters some keys.
         
         Args:
             data (dictionary): Python dictionary that contains different
@@ -171,35 +170,30 @@ class YoutubeDLDownloader(object):
             if key == 'status':
                 if data['status'] == 'Already Downloaded':
                     # Set self._return_code to already downloaded
-                    # and trash that key (GUI won't read it if it's None)
+                    # and trash that key
                     self._return_code = self.ALREADY
                     data['status'] = None
                     
                 if data['status'] == 'Filesize Abort':
                     # Set self._return_code to filesize abort
-                    # and trash that key (GUI won't read it if it's None)
+                    # and trash that key
                     self._return_code = self.FILESIZE_ABORT
                     data['status'] = None
 
             self._data[key] = data[key]
 
     def _log(self, data):
-        """Log data using log_manager.
-        
-        Args:
-            data (string): String to write in the log file.
-        
-        """
+        """Log data using log_manager. """
         if self.log_manager is not None:
             self.log_manager.log(data)
 
     def _hook_data(self):
-        """Pass self._data back to data_hook. """
+        """Pass self._data back to the data_hook. """
         if self.data_hook is not None:
             self.data_hook(self._data)
 
     def _proc_is_alive(self):
-        """Return True if self._proc is alive. Else False. """
+        """Returns True if self._proc is alive else False. """
         if self._proc is None:
             return False
 
@@ -209,34 +203,19 @@ class YoutubeDLDownloader(object):
         """Read subprocess stdout, stderr.
         
         Returns:
-            Python tuple that contains the STDOUT string and 
-            the STDERR string.
+            Python tuple that contains the STDOUT and STDERR
+            strings.
         
         """
         stdout = stderr = ''
 
-        stdout = self._read_stream(self._proc.stdout)
+        if self._proc is not None:
+            stdout = self._proc.stdout.readline().rstrip()
 
-        if not stdout:
-            stderr = self._read_stream(self._proc.stderr)
+            if not stdout:
+                stderr = self._proc.stderr.readline().rstrip()
 
         return stdout, stderr
-
-    def _read_stream(self, stream):
-        """Read subprocess stream.
-        
-        Args:
-            stream (subprocess.PIPE): Subprocess pipe. Can be either STDOUT
-                or STDERR.
-        
-        Returns:
-            String that contains the stream (STDOUT or STDERR) string.
-        
-        """
-        if self._proc is None:
-            return ''
-
-        return stream.readline().rstrip()
 
     def _get_cmd(self, url, options):
         """Build the subprocess command.

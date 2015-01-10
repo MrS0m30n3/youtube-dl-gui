@@ -178,7 +178,7 @@ class OptionsParser():
         ]
 
     def parse(self, options_dictionary):
-        """Parse optionsmanager.OptionsHandler options.
+        """Parse optionsmanager.OptionsManager options.
         
         Parses the given options to youtube-dl command line arguments.
         

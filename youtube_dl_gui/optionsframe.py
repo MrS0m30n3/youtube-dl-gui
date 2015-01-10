@@ -3,8 +3,8 @@
 """Youtubedlg module responsible for the options window.
 
 Attributes:
-    AUDIO_QUALITY (list): Contains audio qualities. See parsers AUDIO_QUALITY
-        attribute for available values.
+    AUDIO_QUALITY (list): Contains audio qualities. See AUDIO_QUALITY
+        attribute of the parser module for available values.
         
     AUDIO_FORMATS (list): Contains audio formats. 
         See optionsmanager.OptionsManager 'audio_format' option for available
@@ -12,20 +12,23 @@ Attributes:
         
     FORMATS (list): Contains video formats. This list contains all the 
         available video formats without the 'default' and 'none' options.
-        See parsers VIDEO_FORMATS attribute for available values.
+        See VIDEO_FORMATS attribute of the parsers module for available
+        values.
 
-    SUBS_LANG (list): Contains subtitles languages. See parsers SUBS_LANG
-        attribute for available values.
+    SUBS_LANG (list): Contains subtitles languages. See SUBS_LANG attribute
+        of the parsers module for available values.
         
-    FILESIZES (list): Contains filesize units. See parsers FILESIZE_UNITS
-        attribute for available values.
+    FILESIZES (list): Contains filesize units. See FILESIZE_UNITS attribute
+        of the parsers module for available values.
         
 Note:
     For every item inside the attributes of this module (except AUDIO_FORMATS)
     there must be a valid key on the corresponding attribute of the parsers
     module. For example to add a new video format you need to specify the 
-    video format {'name': 'key'} on the parsers module and then add the 'name'
-    of the video format on the FORMATS attribute to be visible on the GUI.
+    video format {'name': 'key'} on the parsers module (inside VIDEO_FORMATS
+    attribute) and then add the 'name' of the video format on the FORMATS
+    attribute of this module in order for the new video format to be visible
+    on the GUI.
         
 """
 
@@ -202,9 +205,6 @@ class OptionsFrame(wx.Frame):
         
         This method is used to save the options and hide the options window.
         
-        Args:
-            event (wx.Event): Event item.
-        
         """
         self.save_all_options()
         self.Hide()
@@ -215,12 +215,14 @@ class OptionsFrame(wx.Frame):
         self.load_all_options()
 
     def load_all_options(self):
-        """Load options for each tab. """
+        """Load options from optionsmanager.OptionsManager
+        on each tab. """
         for tab, _ in self.tabs:
             tab.load_options()
 
     def save_all_options(self):
-        """Save options of each tab. """
+        """Save options back to optionsmanager.OptionsManager
+        from each tab. """
         for tab, _ in self.tabs:
             tab.save_options()
 
@@ -289,7 +291,7 @@ class TabPanel(wx.Panel):
             
         Note:
             In order to change the button size you need to overwrite the 
-            BUTTONS_SIZE attribute on the current class.
+            BUTTONS_SIZE attribute on the child class.
         
         """
         button = wx.Button(self, label=label, size=self.BUTTONS_SIZE)
@@ -310,7 +312,7 @@ class TabPanel(wx.Panel):
                 
         Note:
             In order to change the checkbox size you need to overwrite the
-            CHECKBOX_SIZE attribute on the current class.
+            CHECKBOX_SIZE attribute on the child class.
         
         """
         checkbox = wx.CheckBox(self, label=label, size=self.CHECKBOX_SIZE)
@@ -328,7 +330,7 @@ class TabPanel(wx.Panel):
                 
         Note:
             In order to change the textctrl size you need to overwrite the
-            TEXTCTRL_SIZE attribute on the current class.
+            TEXTCTRL_SIZE attribute on the child class.
         
         """
         if style is None:
@@ -362,7 +364,7 @@ class TabPanel(wx.Panel):
         """Creates and returns an wx.DirDialog.
 
         Args:
-            label (string): wx.DirDialog widget title.s
+            label (string): wx.DirDialog widget title.
         
         """
         dlg = wx.DirDialog(self, label)
@@ -398,7 +400,7 @@ class TabPanel(wx.Panel):
             
         Note:
             In order to change the size of the spinctrl widget you need
-            to overwrite the SPINCTRL_SIZE attribute on the current class.
+            to overwrite the SPINCTRL_SIZE attribute on the child class.
         
         """
         spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
@@ -444,21 +446,20 @@ class TabPanel(wx.Panel):
         If you want any widgets to be disabled by default you specify
         them in this method.
         
+        Example:
+            mybutton.Disable()
+        
         """
         pass
     
     def load_options(self):
         """Load options from the optionsmanager.OptionsManager object
-        to the current tab.
-        
-        """
+        to the current tab. """
         pass
     
     def save_options(self):
         """Save options of the current tab back to
-        optionsmanager.OptionsManager object.
-        
-        """
+        optionsmanager.OptionsManager object. """
         pass
     
 
@@ -532,7 +533,7 @@ class LogTab(TabPanel):
         return self.log_manager.log_file
 
     def _get_logsize(self):
-        """Returns the size (Bytes) of the log file. """
+        """Returns the size(Bytes) of the log file. """
         if self.log_manager is None:
             return 0
         return self.log_manager.log_size()

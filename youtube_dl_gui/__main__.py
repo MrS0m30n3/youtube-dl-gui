@@ -3,21 +3,21 @@
 """Youtubedlg __main__ file.
 
 __main__ file is a python 'executable' file which calls the youtubedlg
-main() function in order to start the app. It can be used for starting
-the app from inside the package OR it can be used for starting the app
-from a different directory after you have installed the 
-youtube_dl_gui package.
+main() function in order to start the app. It can be used to start
+the app from the package directory OR it can be used to start the app
+from a different directory after you have installed the youtube_dl_gui
+package.
 
 Example:
-    In order to run the app from inside the package.
+    In order to run the app from the package directory.
     
         $ cd <package director>
         $ python __main__.py
     
-    In order to run the app from /usr/local/bin AFTER
-    you have installed the package.
+    In order to run the app from /usr/local/bin etc.. AFTER
+    you have installed the package using setup.py.
     
-        $ youtube-dlg
+        $ youtube-dl-gui
 
 """
 

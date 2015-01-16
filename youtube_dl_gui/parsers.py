@@ -3,6 +3,7 @@
 """Youtubedlg module to parse the options.
 
 Note:
+    OUT_OF_DATE
     If you want to add new values on the module attributes
     e.g. (SUBS_LANG, VIDEO_FORMATS, etc..) you also need to add the
     values on the optionsframe module in order for them to be

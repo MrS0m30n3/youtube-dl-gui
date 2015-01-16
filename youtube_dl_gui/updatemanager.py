@@ -31,7 +31,7 @@ class UpdateThread(Thread):
 
         quiet (boolean): If True UpdateThread won't send the finish signal
             back to the caller. Finish signal can be used to make sure that
-            UpdateThread has been completed in an asynchronous way.
+            the UpdateThread has been completed in an asynchronous way.
 
     """
 
@@ -46,8 +46,8 @@ class UpdateThread(Thread):
         self.start()
 
     def run(self):
-        self._talk_to_gui("Downloading latest youtube-dl. Please wait...")
-
+        self._talk_to_gui('download')
+        
         source_file = self.LATEST_YOUTUBE_DL + YOUTUBEDL_BIN
         destination_file = os.path.join(self.download_path, YOUTUBEDL_BIN)
 
@@ -59,22 +59,29 @@ class UpdateThread(Thread):
             with open(destination_file, 'wb') as dest_file:
                 dest_file.write(stream.read())
 
-            msg = 'Youtube-dl downloaded correctly'
+            self._talk_to_gui('correct')
         except (HTTPError, URLError, IOError) as error:
-            msg = 'Youtube-dl download failed ' + str(error)
-
-        self._talk_to_gui(msg)
+            self._talk_to_gui('error', str(error))
 
         if not self.quiet:
             self._talk_to_gui('finish')
 
-    def _talk_to_gui(self, data):
-        """Send data back to the GUI using wx CallAfter and wx Publisher.
+    def _talk_to_gui(self, signal, data=None):
+        """Communicate with the GUI using wxCallAfter and wxPublisher.
 
         Args:
-            data (string): Can be either a message that informs for the
-                update process or a 'finish' signal which shows that the
-                update process has been completed.
+            signal (string): Unique signal string that informs the GUI for the
+                update process.
+                
+            data (string): Can be any string data to pass along with the
+                given signal. Default is None.
+                
+        Note:
+            UpdateThread supports 4 signals.
+                1) download: The update process started
+                2) correct: The update process completed successfully
+                3) error: An error occured while downloading youtube-dl binary
+                4) finish: The update thread is ready to join
 
         """
-        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
+        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, (signal, data))

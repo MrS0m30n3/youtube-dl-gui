@@ -81,6 +81,10 @@ class MainFrame(wx.Frame):
     CLOSED_MSG = "Downloads stopped"
     PROVIDE_URL_MSG = "You need to provide at least one url"
     DOWNLOAD_STARTED = "Download started"
+    
+    UPDATING_MSG = "Downloading latest youtube-dl. Please wait..."
+    UPDATE_ERR_MSG = "Youtube-dl download failed [{0}]"
+    UPDATE_SUCC_MSG = "Youtube-dl downloaded correctly"
 
     VIDEO_LABEL = "Video"
     SIZE_LABEL = "Size"
@@ -306,11 +310,15 @@ class MainFrame(wx.Frame):
         """
         data = msg.data
 
-        if data == 'finish':
+        if data[0] == 'download':
+            self._status_bar_write(self.UPDATING_MSG)
+        elif data[0] == 'error':
+            self._status_bar_write(self.UPDATE_ERR_MSG.format(data[1]))
+        elif data[0] == 'correct':
+            self._status_bar_write(self.UPDATE_SUCC_MSG)
+        else:
             self._reset_widgets()
             self.update_thread = None
-        else:
-            self._status_bar_write(data)
 
     def _get_urls(self):
         """Returns urls list. """

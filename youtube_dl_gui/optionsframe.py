@@ -32,11 +32,10 @@ Note:
 
 """
 
-from os import name
+import os
 
 import wx
 
-from .logmanager import LogGUI
 from .version import __version__
 
 
@@ -256,7 +255,7 @@ class TabPanel(wx.Panel):
     """
 
     CHECKBOX_SIZE = (-1, -1)
-    if name == 'nt':
+    if os.name == 'nt':
         CHECKBOX_SIZE = (-1, 25)
 
     BUTTONS_SIZE = (-1, -1)
@@ -601,7 +600,7 @@ class ShutdownTab(TabPanel):
         self._disable_items()
 
     def _disable_items(self):
-        if name == 'nt':
+        if os.name == 'nt':
             self.sudo_text.Hide()
             self.sudo_box.Hide()
 
@@ -1387,3 +1386,40 @@ class CMDTab(TabPanel):
 
     def save_options(self):
         self.opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()
+
+
+class LogGUI(wx.Frame):
+
+    """Simple window for reading the STDERR.
+
+    Attributes:
+        TITLE (string): Frame title.
+        FRAME_SIZE (tuple): Tuple that holds the frame size (width, height).
+
+    Args:
+        parent (wx.Window): Frame parent.
+
+    """
+
+    TITLE = "Log Viewer"
+    FRAME_SIZE = (650, 200)
+
+    def __init__(self, parent=None):
+        wx.Frame.__init__(self, parent, title=self.TITLE, size=self.FRAME_SIZE)
+
+        panel = wx.Panel(self)
+
+        self._text_area = wx.TextCtrl(
+            panel,
+            style=wx.TE_MULTILINE | wx.TE_READONLY | wx.HSCROLL
+        )
+
+        sizer = wx.BoxSizer()
+        sizer.Add(self._text_area, 1, wx.EXPAND)
+        panel.SetSizerAndFit(sizer)
+
+    def load(self, filename):
+        """Load file content on the text area. """
+        if os.path.exists(filename):
+            self._text_area.LoadFile(filename)
+

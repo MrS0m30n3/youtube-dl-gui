@@ -5,8 +5,6 @@
 import os.path
 from time import strftime
 
-import wx
-
 from .utils import check_path
 
 
@@ -84,39 +82,3 @@ class LogManager(object):
         """Auto clear the log file. """
         if self.log_size() > self.MAX_LOGSIZE:
             self.clear()
-
-
-class LogGUI(wx.Frame):
-
-    """Simple window for reading the STDERR.
-
-    Attributes:
-        TITLE (string): Frame title.
-        FRAME_SIZE (tuple): Tuple that holds the frame size (width, height).
-
-    Args:
-        parent (wx.Window): Frame parent.
-
-    """
-
-    TITLE = "Log Viewer"
-    FRAME_SIZE = (650, 200)
-
-    def __init__(self, parent=None):
-        wx.Frame.__init__(self, parent, title=self.TITLE, size=self.FRAME_SIZE)
-
-        panel = wx.Panel(self)
-
-        self._text_area = wx.TextCtrl(
-            panel,
-            style=wx.TE_MULTILINE | wx.TE_READONLY | wx.HSCROLL
-        )
-
-        sizer = wx.BoxSizer()
-        sizer.Add(self._text_area, 1, wx.EXPAND)
-        panel.SetSizerAndFit(sizer)
-
-    def load(self, filename):
-        """Load file content on the text area. """
-        if os.path.exists(filename):
-            self._text_area.LoadFile(filename)

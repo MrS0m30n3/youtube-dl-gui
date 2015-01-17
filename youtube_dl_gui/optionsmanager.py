@@ -261,9 +261,41 @@ class OptionsManager(object):
             True if settings.json dictionary is valid, else False.
 
         """
+        VALID_VIDEO_FORMAT = ('0', '17', '36', '5', '34', '35', '43', '44', '45',
+            '46', '18', '22', '37', '38', '160', '133', '134', '135', '136','137',
+            '264', '138', '242', '243', '244', '247', '248', '271', '272', '82',
+            '83', '84', '85', '100', '101', '102', '139', '140', '141', '171', '172')
+
+        VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis')
+
+        VALID_AUDIO_QUALITY = ('0', '5', '9')
+
+        VALID_OUTPUT_FORMAT = ('title', 'id', 'custom')
+
+        VALID_FILESIZE_UNIT = ('', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y')
+
+        VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
+        
         for key in self.options:
             if key not in settings_dictionary:
                 return False
+                
+        ## Check if each key has a valid value
+        #rules_dict = {
+            #'video_format': VALID_VIDEO_FORMAT,
+            #'second_video_format': VALID_VIDEO_FORMAT,
+            #'audio_format': VALID_AUDIO_FORMAT,
+            #'audio_quality': VALID_AUDIO_QUALITY,
+            #'output_format': VALID_OUTPUT_FORMAT,
+            #'min_filesize_unit': VALID_FILESIZE_UNIT,
+            #'max_filesize_unit': VALID_FILESIZE_UNIT,
+            #'subs_lang': VALID_SUB_LANGUAGE
+        #}
+
+        #for key, valid_list in rules_dict.items():
+            #if settings_dictionary[key] not in valid_list:
+                #print key, valid_list
+                #return False
 
         return True
 

@@ -3,6 +3,8 @@
 """Youtubedlg module that contains util functions.
 
 Attributes:
+    RANDOM_OBJECT (object): Object that it's used as a default parameter.
+
     YOUTUBEDL_BIN (string): Youtube-dl binary filename.
 
 """
@@ -11,6 +13,9 @@ Attributes:
 import os
 import sys
 import subprocess
+
+
+RANDOM_OBJECT = object()
 
 
 YOUTUBEDL_BIN = 'youtube-dl'
@@ -156,3 +161,227 @@ def get_icon_file():
                 return icon_file
 
     return None
+
+
+class TwoWayOrderedDict(object):
+
+    """Custom data structure which implements a two way ordrered dictionary.
+
+    TwoWayOrderedDict it's a custom dictionary in which you can get the
+    key:value relationship but you can also get the value:key relationship.
+    It also remembers the order in which the items were inserted and supports
+    almost all the features of the build-in dict.
+    
+    Note:
+        Ways to create a new dictionary.
+
+        *) d = TwoWayOrderedDict(a=1, b=2) (Unordered)
+        *) d = TwoWayOrderedDict({'a': 1, 'b': 2}) (Unordered)
+
+        *) d = TwoWayOrderedDict([('a', 1), ('b', 2)]) (Ordered)
+        *) d = TwoWayOrderedDict(zip(['a', 'b', 'c'], [1, 2, 3])) (Ordered)
+
+    Examples:
+        >>> d = TwoWayOrderedDict(a=1, b=2)
+        >>> d['a']
+        1
+        >>> d[1]
+        'a'
+        >>> print d
+        {'a': 1, 'b': 2}
+
+    """
+
+    def __init__(self, *args, **kwargs):
+        self._items = list()
+        self._load_into_dict(args, kwargs)
+
+    def __getitem__(self, key):
+        try:
+            item = self._find_item(key)
+
+            return self._get_value(key, item)
+        except KeyError as error:
+            raise error
+
+    def __setitem__(self, key, value):
+        index = 0
+
+        while index < len(self._items):
+            item = self._items[index]
+
+            if (key == item[0] or key == item[1] or
+                    value == item[0] or value == item[1]):
+                self._items.remove(item)
+            else:
+                index += 1
+
+        self._items.append((key, value))
+
+    def __delitem__(self, key):
+        try:
+            item = self._find_item(key)
+
+            self._items.remove(item)
+        except KeyError as error:
+            raise error
+
+    def __len__(self):
+        return len(self._items)
+
+    def __iter__(self):
+        for item in self._items:
+            yield item[0]
+
+    def __contains__(self, item):
+        """Return True if the item matches either a
+        dictionary key or value else False. """
+        try:
+            self._find_item(item)
+        except KeyError:
+            return False
+
+        return True
+
+    def __repr__(self):
+        return str(self._items)
+
+    def __str__(self):
+        return str(dict(self._items))
+
+    def _get_value(self, key, item):
+        """Return the key:value or value:key relationship
+        for the given item. """
+        if key == item[0]:
+            return item[1]
+
+        if key == item[1]:
+            return item[0]
+
+    def _find_item(self, key):
+        """Search for the item which contains the given key.
+        
+        This method will compare the key both with the key and the value
+        of the item until it finds a match else it will raise a KeyError
+        exception.
+        
+        Returns:
+            item (tuple): Tuple which contains the (key, value).
+        
+        Raises:
+            KeyError
+        
+        """
+        for item in self._items:
+            if key == item[0] or key == item[1]:
+                return item
+
+        raise KeyError(key)
+
+    def _load_into_dict(self, args, kwargs):
+        """Load new items into the dictionary. This method handles the
+        items insertion for the __init__ and update methods. """
+        for item in args:
+            if type(item) == dict:
+                item = item.items()
+
+            for key, value in item:
+                self.__setitem__(key, value)
+
+        for key, value in kwargs.items():
+            self.__setitem__(key, value)
+
+    def items(self):
+        """Return the item list instead of returning the dict view. """
+        return self._items
+
+    def values(self):
+        """Return a list with all the values of the dictionary instead of
+        returning the dict view for the values. """
+        return [item[1] for item in self._items]
+
+    def keys(self):
+        """Return a list with all the keys of the dictionary instead of
+        returning the dict view for the keys. """
+        return [item[0] for item in self._items]
+
+    def get(self, key, default=None):
+        """Return the value for key or the key for value if key
+        is in the dictionary else default.
+        
+        Note:
+            This method does NOT raise a KeyError.
+        
+        """
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            return default
+
+    def pop(self, key, default=RANDOM_OBJECT):
+        """If key is in the dictionary remove it and return its value
+        else return default. If default is not given and key is not in
+        the dictionary a KeyError is raised. """
+        try:
+            item = self._find_item(key)
+            value = self._get_value(key, item)
+
+            self._items.remove(item)
+        except KeyError as error:
+            if default == RANDOM_OBJECT:
+                raise error
+
+            value = default
+
+        return value
+
+    def popitem(self):
+        """Remove and return a (key, value) pair from the dictionary.
+        If the dictionary is empty calling popitem() raises a KeyError.
+        
+        Note:
+            popitem() is useful to destructively iterate over a dictionary.
+        
+        Raises:
+            KeyError
+        
+        """
+        if len(self._items) == 0:
+            raise KeyError('popitem(): dictionary is empty')
+
+        return self._items.pop()
+
+    def setdefault(self, key, default=None):
+        """If key is in the dictionary return its value else
+        insert a new key with a value of default and return default. """
+        try:
+            return self.__getitem__(key)
+        except KeyError:
+            self.__setitem__(key, default)
+            return default
+
+    def update(self, *args, **kwargs):
+        """Update the dictionary with the (key, value) pairs
+        overwriting existing keys.
+        
+        Example:
+            >>d = TwoWayOrderedDict(a=1, b=2)
+            >>print d
+            {'a': 1, 'b': 2}
+            
+            >>d.update({'a': 0, 'b': 1, 'c': 2})
+            {'a': 0, 'b': 1, 'c': 2}
+            
+            >>d.update(d=3)
+            {'a': 0, 'b': 1, 'c': 2, 'd': 3}
+        
+        """
+        self._load_into_dict(args, kwargs)
+
+    def copy(self):
+        """Return a copy of our custom dictionary. """
+        return TwoWayOrderedDict(self._items)
+
+    def clear(self):
+        """Remove all items from the dictionary. """
+        del self._items[:]

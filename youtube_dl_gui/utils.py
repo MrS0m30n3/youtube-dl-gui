@@ -3,7 +3,7 @@
 """Youtubedlg module that contains util functions.
 
 Attributes:
-    RANDOM_OBJECT (object): Object that it's used as a default parameter.
+    _RANDOM_OBJECT (object): Object that it's used as a default parameter.
 
     YOUTUBEDL_BIN (string): Youtube-dl binary filename.
 
@@ -15,7 +15,7 @@ import sys
 import subprocess
 
 
-RANDOM_OBJECT = object()
+_RANDOM_OBJECT = object()
 
 
 YOUTUBEDL_BIN = 'youtube-dl'
@@ -163,7 +163,7 @@ def get_icon_file():
     return None
 
 
-class TwoWayOrderedDict(object):
+class TwoWayOrderedDict(dict):
 
     """Custom data structure which implements a two way ordrered dictionary.
 
@@ -171,7 +171,7 @@ class TwoWayOrderedDict(object):
     key:value relationship but you can also get the value:key relationship.
     It also remembers the order in which the items were inserted and supports
     almost all the features of the build-in dict.
-    
+
     Note:
         Ways to create a new dictionary.
 
@@ -188,200 +188,178 @@ class TwoWayOrderedDict(object):
         >>> d[1]
         'a'
         >>> print d
-        {'a': 1, 'b': 2}
+        TwoWayOrderedDict([('a', 1), ('b', 2)])
 
     """
 
+    _PREV = 0
+    _KEY = 1
+    _NEXT = 2
+
     def __init__(self, *args, **kwargs):
-        self._items = list()
-        self._load_into_dict(args, kwargs)
-
-    def __getitem__(self, key):
-        try:
-            item = self._find_item(key)
-
-            return self._get_value(key, item)
-        except KeyError as error:
-            raise error
+        self._items = item = []
+        self._items += [item, None, item]  # Double linked list [prev, key, next]
+        self._items_map = {}  # Map link list items into keys to speed up lookup
+        self._load(args, kwargs)
 
     def __setitem__(self, key, value):
-        index = 0
+        if key in self:
+            # If self[key] == key for example {'b': 'b'} and we
+            # do d['b'] = 2 then we dont want to remove the 'b'
+            # from our linked list because we will lose the order
+            if self[key] in self._items_map and key != self[key]:
+                self._remove_mapped_key(self[key])
 
-        while index < len(self._items):
-            item = self._items[index]
+            dict.__delitem__(self, self[key])
 
-            if (key == item[0] or key == item[1] or
-                    value == item[0] or value == item[1]):
-                self._items.remove(item)
-            else:
-                index += 1
+        if value in self:
+            # If value == key we dont have to remove the
+            # value from the items_map because the value is
+            # the key and we want to keep the key in our
+            # linked list in order to keep the order.
+            if value in self._items_map and key != value:
+                self._remove_mapped_key(value)
 
-        self._items.append((key, value))
+            if self[value] in self._items_map:
+                self._remove_mapped_key(self[value])
+
+            # Check if self[value] is in the dict
+            # for cases like {'a': 'a'} where we
+            # have only one copy instead of {'a': 1, 1: 'a'}
+            if self[value] in self:
+                dict.__delitem__(self, self[value])
+
+        if key not in self._items_map:
+            last = self._items[self._PREV]  # self._items prev always points to the last item
+            last[self._NEXT] = self._items[self._PREV] = self._items_map[key] = [last, key, self._items]
+
+        dict.__setitem__(self, key, value)
+        dict.__setitem__(self, value, key)
 
     def __delitem__(self, key):
-        try:
-            item = self._find_item(key)
+        if self[key] in self._items_map:
+            self._remove_mapped_key(self[key])
 
-            self._items.remove(item)
-        except KeyError as error:
-            raise error
+        if key in self._items_map:
+            self._remove_mapped_key(key)
+
+        dict.__delitem__(self, self[key])
+
+        # Check if key is in the dict
+        # for cases like {'a': 'a'} where we
+        # have only one copy instead of {'a': 1, 1: 'a'}
+        if key in self:
+            dict.__delitem__(self, key)
 
     def __len__(self):
-        return len(self._items)
+        return len(self._items_map)
 
     def __iter__(self):
-        for item in self._items:
-            yield item[0]
+        curr = self._items[self._NEXT]
+        while curr is not self._items:
+            yield curr[self._KEY]
+            curr = curr[self._NEXT]
 
-    def __contains__(self, item):
-        """Return True if the item matches either a
-        dictionary key or value else False. """
-        try:
-            self._find_item(item)
-        except KeyError:
-            return False
-
-        return True
+    def __reversed__(self):
+        curr = self._items[self._PREV]
+        while curr is not self._items:
+            yield curr[self._KEY]
+            curr = curr[self._PREV]
 
     def __repr__(self):
-        return str(self._items)
+        return '%s(%r)' % (self.__class__.__name__, self.items())
 
-    def __str__(self):
-        return str(dict(self._items))
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.items() == other.items()
+        return False
 
-    def _get_value(self, key, item):
-        """Return the key:value or value:key relationship
-        for the given item. """
-        if key == item[0]:
-            return item[1]
+    def __ne__(self, other):
+        return not self == other
 
-        if key == item[1]:
-            return item[0]
+    def _remove_mapped_key(self, key):
+        """Remove the given key both from the linked list
+        and the map dictionary. """
+        prev, __, next = self._items_map.pop(key)
+        prev[self._NEXT] = next
+        next[self._PREV] = prev
 
-    def _find_item(self, key):
-        """Search for the item which contains the given key.
-        
-        This method will compare the key both with the key and the value
-        of the item until it finds a match else it will raise a KeyError
-        exception.
-        
-        Returns:
-            item (tuple): Tuple which contains the (key, value).
-        
-        Raises:
-            KeyError
-        
-        """
-        for item in self._items:
-            if key == item[0] or key == item[1]:
-                return item
-
-        raise KeyError(key)
-
-    def _load_into_dict(self, args, kwargs):
-        """Load new items into the dictionary. This method handles the
-        items insertion for the __init__ and update methods. """
+    def _load(self, args, kwargs):
+        """Load items into our dictionary. """
         for item in args:
             if type(item) == dict:
-                item = item.items()
+                item = item.iteritems()
 
             for key, value in item:
-                self.__setitem__(key, value)
+                self[key] = value
 
         for key, value in kwargs.items():
-            self.__setitem__(key, value)
+            self[key] = value
 
     def items(self):
-        """Return the item list instead of returning the dict view. """
-        return self._items
+        return [(key, self[key]) for key in self]
 
     def values(self):
-        """Return a list with all the values of the dictionary instead of
-        returning the dict view for the values. """
-        return [item[1] for item in self._items]
+        return [self[key] for key in self]
 
     def keys(self):
-        """Return a list with all the keys of the dictionary instead of
-        returning the dict view for the keys. """
-        return [item[0] for item in self._items]
+        return list(self)
 
-    def get(self, key, default=None):
-        """Return the value for key or the key for value if key
-        is in the dictionary else default.
-        
-        Note:
-            This method does NOT raise a KeyError.
-        
-        """
+    def pop(self, key, default=_RANDOM_OBJECT):
         try:
-            return self.__getitem__(key)
-        except KeyError:
-            return default
+            value = self[key]
 
-    def pop(self, key, default=RANDOM_OBJECT):
-        """If key is in the dictionary remove it and return its value
-        else return default. If default is not given and key is not in
-        the dictionary a KeyError is raised. """
-        try:
-            item = self._find_item(key)
-            value = self._get_value(key, item)
-
-            self._items.remove(item)
+            del self[key]
         except KeyError as error:
-            if default == RANDOM_OBJECT:
+            if default == _RANDOM_OBJECT:
                 raise error
 
             value = default
 
         return value
 
-    def popitem(self):
+    def popitem(self, last=True):
         """Remove and return a (key, value) pair from the dictionary.
         If the dictionary is empty calling popitem() raises a KeyError.
-        
+
+        Args:
+            last (bool): When False popitem() will remove the first item
+                from the list.
+
         Note:
             popitem() is useful to destructively iterate over a dictionary.
-        
+
         Raises:
             KeyError
-        
+
         """
-        if len(self._items) == 0:
+        if not self:
             raise KeyError('popitem(): dictionary is empty')
 
-        return self._items.pop()
+        if last:
+            __, key, __ = self._items[self._PREV]
+        else:
+            __, key, __ = self._items[self._NEXT]
 
-    def setdefault(self, key, default=None):
-        """If key is in the dictionary return its value else
-        insert a new key with a value of default and return default. """
-        try:
-            return self.__getitem__(key)
-        except KeyError:
-            self.__setitem__(key, default)
-            return default
+        value = self.pop(key)
+
+        return key, value
 
     def update(self, *args, **kwargs):
-        """Update the dictionary with the (key, value) pairs
-        overwriting existing keys.
-        
-        Example:
-            >>d = TwoWayOrderedDict(a=1, b=2)
-            >>print d
-            {'a': 1, 'b': 2}
-            
-            >>d.update({'a': 0, 'b': 1, 'c': 2})
-            {'a': 0, 'b': 1, 'c': 2}
-            
-            >>d.update(d=3)
-            {'a': 0, 'b': 1, 'c': 2, 'd': 3}
-        
-        """
-        self._load_into_dict(args, kwargs)
+        self._load(args, kwargs)
+
+    def setdefault(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            self[key] = default
+            return default
 
     def copy(self):
-        """Return a copy of our custom dictionary. """
-        return TwoWayOrderedDict(self._items)
+        return self.__class__(self.items())
 
     def clear(self):
-        """Remove all items from the dictionary. """
-        del self._items[:]
+        self._items = item = []
+        self._items += [item, None, item]
+        self._items_map = {}
+        dict.clear(self)

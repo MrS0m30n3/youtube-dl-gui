@@ -55,14 +55,12 @@ class OptionsManager(object):
             save_path (string): Path where youtube-dl should store the
                 downloaded file. Default is $HOME.
 
-            video_format (string): Video format to download. For available
-                video formats see 'parsers' module (VIDEO_FORMATS attribute).
-                When this options is set to 'default' youtube-dl will choose
+            video_format (string): Video format to download.
+                When this options is set to '0' youtube-dl will choose
                 the best video format available for the given URL.
 
             second_video_format (string): Video format to mix with the first
-                one. (-f 18+17). For available video formats see 'video_format'
-                option.
+                one (-f 18+17).
 
             to_audio (boolean): If True youtube-dl will post process the
                 video file.
@@ -74,7 +72,8 @@ class OptionsManager(object):
                 Available values are "mp3", "wav", "aac", "m4a", "vorbis".
 
             audio_quality (string): Audio quality of the post processed file.
-                Available values are "low", "mid", "high".
+                Available values are "9", "5", "0". The lowest the value the
+                better the quality.
 
             restrict_filenames (boolean): If True youtube-dl will restrict
                 the downloaded file filename to ASCII characters only.
@@ -84,8 +83,7 @@ class OptionsManager(object):
 
                 'id' -> '%(id)s.%(ext)s'
                 'title' -> '%(title)s.%(ext)s'
-                'custom' -> Loads the template from the 'output_template'
-                    option.
+                'custom' -> Use 'output_template' as output template.
 
             output_template (string): Can be any output template supported
                 by youtube-dl.
@@ -106,28 +104,25 @@ class OptionsManager(object):
                 youtube-dl will abort the download process.
 
             min_filesize_unit (string): Minimum file size unit.
-                Available values: 'Bytes', 'Kilobytes', 'Megabytes',
-                'Gigabytes', 'Terabytes', 'Petabytes', 'Exabytes',
-                'Zettabytes', 'Yottabytes'.
+                Available values: '', 'k', 'm', 'g', 'y', 'p', 'e', 'z', 'y'.
 
             max_filesize_unit (string): Maximum file size unit.
                 See 'min_filesize_unit' option for available values.
 
-            write_subs (boolean): If True youtube-dl will try downloading
+            write_subs (boolean): If True youtube-dl will try to download
                 the subtitles file for the given URL.
 
-            write_all_subs (boolean): If True youtube-dl will try downloading
+            write_all_subs (boolean): If True youtube-dl will try to download
                 all the available subtitles files for the given URL.
 
-            write_auto_subs (boolean): If True youtube-dl will try downloading
+            write_auto_subs (boolean): If True youtube-dl will try to download
                 the automatic subtitles file for the given URL.
 
             embed_subs (boolean): If True youtube-dl will merge the subtitles
                 file with the video. (ONLY mp4 files).
 
             subs_lang (string): Language of the subtitles file to download.
-                Needs 'write_subs' option. For available subtitles see
-                'parsers' module. (SUBS_LANG attribute).
+                Needs 'write_subs' option.
 
             ignore_errors (boolean): If True youtube-dl will ignore the errors
                 and continue the download process.
@@ -184,12 +179,12 @@ class OptionsManager(object):
         """
         self.options = {
             'save_path': os.path.expanduser('~'),
-            'video_format': 'default',
-            'second_video_format': 'none',
+            'video_format': '0',
+            'second_video_format': '0',
             'to_audio': False,
             'keep_video': False,
             'audio_format': 'mp3',
-            'audio_quality': 'mid',
+            'audio_quality': '5',
             'restrict_filenames': False,
             'output_format': 'title',
             'output_template': '%(uploader)s/%(title)s.%(ext)s',
@@ -198,13 +193,13 @@ class OptionsManager(object):
             'max_downloads': 0,
             'min_filesize': 0,
             'max_filesize': 0,
-            'min_filesize_unit': 'Bytes',
-            'max_filesize_unit': 'Bytes',
+            'min_filesize_unit': '',
+            'max_filesize_unit': '',
             'write_subs': False,
             'write_all_subs': False,
             'write_auto_subs': False,
             'embed_subs': False,
-            'subs_lang': 'English',
+            'subs_lang': 'en',
             'ignore_errors': True,
             'open_dl_dir': True,
             'write_description': False,
@@ -280,22 +275,21 @@ class OptionsManager(object):
             if key not in settings_dictionary:
                 return False
                 
-        ## Check if each key has a valid value
-        #rules_dict = {
-            #'video_format': VALID_VIDEO_FORMAT,
-            #'second_video_format': VALID_VIDEO_FORMAT,
-            #'audio_format': VALID_AUDIO_FORMAT,
-            #'audio_quality': VALID_AUDIO_QUALITY,
-            #'output_format': VALID_OUTPUT_FORMAT,
-            #'min_filesize_unit': VALID_FILESIZE_UNIT,
-            #'max_filesize_unit': VALID_FILESIZE_UNIT,
-            #'subs_lang': VALID_SUB_LANGUAGE
-        #}
+        # Check if each key has a valid value
+        rules_dict = {
+            'video_format': VALID_VIDEO_FORMAT,
+            'second_video_format': VALID_VIDEO_FORMAT,
+            'audio_format': VALID_AUDIO_FORMAT,
+            'audio_quality': VALID_AUDIO_QUALITY,
+            'output_format': VALID_OUTPUT_FORMAT,
+            'min_filesize_unit': VALID_FILESIZE_UNIT,
+            'max_filesize_unit': VALID_FILESIZE_UNIT,
+            'subs_lang': VALID_SUB_LANGUAGE
+        }
 
-        #for key, valid_list in rules_dict.items():
-            #if settings_dictionary[key] not in valid_list:
-                #print key, valid_list
-                #return False
+        for key, valid_list in rules_dict.items():
+            if settings_dictionary[key] not in valid_list:
+                return False
 
         return True
 

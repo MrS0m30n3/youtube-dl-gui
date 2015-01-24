@@ -16,6 +16,8 @@ from .info import (
     __author__
 )
 
+from .utils import TwoWayOrderedDict as twodict
+
 
 class OptionsFrame(wx.Frame):
 
@@ -89,8 +91,6 @@ class OptionsFrame(wx.Frame):
         panel.SetSizer(sizer)
 
         self.Bind(wx.EVT_CLOSE, self._on_close)
-
-        self.load_all_options()
 
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event.
@@ -720,24 +720,17 @@ class AudioTab(TabPanel):
     """Options frame audio tab.
 
     Attributes:
-        AUDIO_QUALITY (list): Contains audio qualities. See AUDIO_QUALITY
-            attribute of the parsers module for available values.
+        AUDIO_QUALITY (TwoWayOrderedDict): Contains audio qualities.
         
         AUDIO_FORMATS (list): Contains audio formats.
-            See optionsmanager.OptionsManager 'audio_format' option for available
-            values.
+            See optionsmanager.OptionsManager 'audio_format' option
+            for available values.
     
         *_LABEL (string): Constant string label for the widgets.
 
     """
-    AUDIO_QUALITY = ['high', 'mid', 'low']
-    AUDIO_FORMATS = [
-        "mp3",
-        "wav",
-        "aac",
-        "m4a",
-        "vorbis"
-    ]
+    AUDIO_QUALITY = twodict([("0", "high"), ("5", "mid"), ("9", "low")])
+    AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis"]
     
     TO_AUDIO_LABEL = "Convert to Audio"
     KEEP_VIDEO_LABEL = "Keep Video"
@@ -750,7 +743,7 @@ class AudioTab(TabPanel):
         self.to_audio_checkbox = self.create_checkbox(self.TO_AUDIO_LABEL, self._on_audio_check)
         self.keep_video_checkbox = self.create_checkbox(self.KEEP_VIDEO_LABEL)
         self.audioformat_combo = self.create_combobox(self.AUDIO_FORMATS, (160, 30))
-        self.audioquality_combo = self.create_combobox(self.AUDIO_QUALITY, (80, 25))
+        self.audioquality_combo = self.create_combobox(self.AUDIO_QUALITY.values(), (80, 25))
 
         self.audioformat_text = self.create_statictext(self.AUDIO_FORMAT_LABEL)
         self.audioquality_text = self.create_statictext(self.AUDIO_QUALITY_LABEL)
@@ -784,14 +777,14 @@ class AudioTab(TabPanel):
         self.to_audio_checkbox.SetValue(self.opt_manager.options['to_audio'])
         self.keep_video_checkbox.SetValue(self.opt_manager.options['keep_video'])
         self.audioformat_combo.SetValue(self.opt_manager.options['audio_format'])
-        self.audioquality_combo.SetValue(self.opt_manager.options['audio_quality'])
+        self.audioquality_combo.SetValue(self.AUDIO_QUALITY[self.opt_manager.options['audio_quality']])
         self._on_audio_check(None)
 
     def save_options(self):
         self.opt_manager.options['to_audio'] = self.to_audio_checkbox.GetValue()
         self.opt_manager.options['keep_video'] = self.keep_video_checkbox.GetValue()
         self.opt_manager.options['audio_format'] = self.audioformat_combo.GetValue()
-        self.opt_manager.options['audio_quality'] = self.audioquality_combo.GetValue()
+        self.opt_manager.options['audio_quality'] = self.AUDIO_QUALITY[self.audioquality_combo.GetValue()]
 
 
 class VideoTab(TabPanel):
@@ -799,10 +792,9 @@ class VideoTab(TabPanel):
     """Options frame video tab.
 
     Attributes:
-        FORMATS (list): Contains video formats. This list contains all the
-            available video formats without the 'default' and 'none' options.
-            See VIDEO_FORMATS attribute of the parsers module for available
-            values.
+        FORMATS (TwoWayOrderedDict): Contains video formats. This list
+            contains all the available video formats without the 'default'
+            and 'none' options.
     
         VIDEO_FORMATS (list): List that contains all the video formats
             plus the 'default' one.
@@ -817,51 +809,51 @@ class VideoTab(TabPanel):
 
     """
 
-    FORMATS = [
-        "3gp [176x144]",
-        "3gp [320x240]",
-        "flv [400x240]",
-        "flv [640x360]",
-        "flv [854x480]",
-        "webm [640x360]",
-        "webm [854x480]",
-        "webm [1280x720]",
-        "webm [1920x1080]",
-        "mp4 [640x360]",
-        "mp4 [1280x720]",
-        "mp4 [1920x1080]",
-        "mp4 [4096x3072]",
-        "mp4 144p (DASH)",
-        "mp4 240p (DASH)",
-        "mp4 360p (DASH)",
-        "mp4 480p (DASH)",
-        "mp4 720p (DASH)",
-        "mp4 1080p (DASH)",
-        "mp4 1440p (DASH)",
-        "mp4 2160p (DASH)",
-        "webm 240p (DASH)",
-        "webm 360p (DASH)",
-        "webm 480p (DASH)",
-        "webm 720p (DASH)",
-        "webm 1080p (DASH)",
-        "webm 1440p (DASH)",
-        "webm 2160p (DASH)",
-        "mp4 360p (3D)",
-        "mp4 480p (3D)",
-        "mp4 720p (3D)",
-        "mp4 1080p (3D)",
-        "webm 360p (3D)",
-        "webm 480p (3D)",
-        "webm 720p (3D)",
-        "m4a 48k (DASH AUDIO)",
-        "m4a 128k (DASH AUDIO)",
-        "m4a 256k (DASH AUDIO)",
-        "webm 48k (DASH AUDIO)",
-        "webm 256k (DASH AUDIO)"
-    ]
+    FORMATS = twodict([
+        ("17", "3gp [176x144]"),
+        ("36", "3gp [320x240]"),
+        ("5", "flv [400x240]"),
+        ("34", "flv [640x360]"),
+        ("35", "flv [854x480]"),
+        ("43", "webm [640x360]"),
+        ("44", "webm [854x480]"),
+        ("45", "webm [1280x720]"),
+        ("46", "webm [1920x1080]"),
+        ("18", "mp4 [640x360]"),
+        ("22", "mp4 [1280x720]"),
+        ("37", "mp4 [1920x1080]"),
+        ("38", "mp4 [4096x3072]"),
+        ("160", "mp4 144p (DASH)"),
+        ("133", "mp4 240p (DASH)"),
+        ("134", "mp4 360p (DASH)"),
+        ("135", "mp4 480p (DASH)"),
+        ("136", "mp4 720p (DASH)"),
+        ("137", "mp4 1080p (DASH)"),
+        ("264", "mp4 1440p (DASH)"),
+        ("138", "mp4 2160p (DASH)"),
+        ("242", "webm 240p (DASH)"),
+        ("243", "webm 360p (DASH)"),
+        ("244", "webm 480p (DASH)"),
+        ("247", "webm 720p (DASH)"),
+        ("248", "webm 1080p (DASH)"),
+        ("271", "webm 1440p (DASH)"),
+        ("272", "webm 2160p (DASH)"),
+        ("82", "mp4 360p (3D)"),
+        ("83", "mp4 480p (3D)"),
+        ("84", "mp4 720p (3D)"),
+        ("85", "mp4 1080p (3D)"),
+        ("100", "webm 360p (3D)"),
+        ("101", "webm 480p (3D)"),
+        ("102", "webm 720p (3D)"),
+        ("139", "m4a 48k (DASH AUDIO)"),
+        ("140", "m4a 128k (DASH AUDIO)"),
+        ("141", "m4a 256k (DASH AUDIO)"),
+        ("171", "webm 48k (DASH AUDIO)"),
+        ("172", "webm 256k (DASH AUDIO)")
+    ])
     
-    VIDEO_FORMATS = ["default"] + FORMATS
-    SECOND_VIDEO_FORMATS = ["none"] + FORMATS
+    VIDEO_FORMATS = ["default"] + FORMATS.values()
+    SECOND_VIDEO_FORMATS = ["none"] + FORMATS.values()
 
     COMBOBOX_SIZE = (200, 30)
 
@@ -902,13 +894,13 @@ class VideoTab(TabPanel):
         self.sec_videoformat_combo.Enable(condition)
 
     def load_options(self):
-        self.videoformat_combo.SetValue(self.opt_manager.options['video_format'])
-        self.sec_videoformat_combo.SetValue(self.opt_manager.options['second_video_format'])
+        self.videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['video_format'], 'default'))
+        self.sec_videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['second_video_format'], 'none'))
         self._on_videoformat(None)
 
     def save_options(self):
-        self.opt_manager.options['video_format'] = self.videoformat_combo.GetValue()
-        self.opt_manager.options['second_video_format'] = self.sec_videoformat_combo.GetValue()
+        self.opt_manager.options['video_format'] = self.FORMATS.get(self.videoformat_combo.GetValue(), '0')
+        self.opt_manager.options['second_video_format'] = self.FORMATS.get(self.sec_videoformat_combo.GetValue(), '0')
 
 
 class OutputTab(TabPanel):
@@ -1004,24 +996,23 @@ class FilesystemTab(TabPanel):
     """Options frame filesystem tab.
 
     Attributes:
-        FILESIZES (list): Contains filesize units. See FILESIZE_UNITS attribute
-            of the parsers module for available values.
+        FILESIZES (TwoWayOrderedDict): Contains filesize units.
     
         *_LABEL (string): Constant string label for the widgets.
 
     """
 
-    FILESIZES = [
-        'Bytes',
-        'Kilobytes',
-        'Megabytes',
-        'Gigabytes',
-        'Terabytes',
-        'Petabytes',
-        'Exabytes',
-        'Zettabytes',
-        'Yottabytes'
-    ]
+    FILESIZES = twodict([
+        ("", "Bytes"),
+        ("k", "Kilobytes"),
+        ("m", "Megabytes"),
+        ("g", "Gigabytes"),
+        ("t", "Terabytes"),
+        ("p", "Petabytes"),
+        ("e", "Exabytes"),
+        ("z", "Zettabytes"),
+        ("y", "Yottabytes")
+    ])
     
     IGN_ERR_LABEL = "Ignore Errors"
     OPEN_DIR_LABEL = "Open destination folder"
@@ -1043,8 +1034,8 @@ class FilesystemTab(TabPanel):
 
         self.min_filesize_spinner = self.create_spinctrl((0, 1024))
         self.max_filesize_spinner = self.create_spinctrl((0, 1024))
-        self.min_filesize_combo = self.create_combobox(self.FILESIZES)
-        self.max_filesize_combo = self.create_combobox(self.FILESIZES)
+        self.min_filesize_combo = self.create_combobox(self.FILESIZES.values())
+        self.max_filesize_combo = self.create_combobox(self.FILESIZES.values())
         self.min_text = self.create_statictext(self.MIN_LABEL)
         self.max_text = self.create_statictext(self.MAX_LABEL)
 
@@ -1117,8 +1108,8 @@ class FilesystemTab(TabPanel):
         self.write_thumbnail_checkbox.SetValue(self.opt_manager.options['write_thumbnail'])
         self.min_filesize_spinner.SetValue(self.opt_manager.options['min_filesize'])
         self.max_filesize_spinner.SetValue(self.opt_manager.options['max_filesize'])
-        self.min_filesize_combo.SetValue(self.opt_manager.options['min_filesize_unit'])
-        self.max_filesize_combo.SetValue(self.opt_manager.options['max_filesize_unit'])
+        self.min_filesize_combo.SetValue(self.FILESIZES[self.opt_manager.options['min_filesize_unit']])
+        self.max_filesize_combo.SetValue(self.FILESIZES[self.opt_manager.options['max_filesize_unit']])
 
     def save_options(self):
         self.opt_manager.options['write_thumbnail'] = self.write_thumbnail_checkbox.GetValue()
@@ -1128,8 +1119,8 @@ class FilesystemTab(TabPanel):
         self.opt_manager.options['open_dl_dir'] = self.open_dir_checkbox.GetValue()
         self.opt_manager.options['min_filesize'] = self.min_filesize_spinner.GetValue()
         self.opt_manager.options['max_filesize'] = self.max_filesize_spinner.GetValue()
-        self.opt_manager.options['min_filesize_unit'] = self.min_filesize_combo.GetValue()
-        self.opt_manager.options['max_filesize_unit'] = self.max_filesize_combo.GetValue()
+        self.opt_manager.options['min_filesize_unit'] = self.FILESIZES[self.min_filesize_combo.GetValue()]
+        self.opt_manager.options['max_filesize_unit'] = self.FILESIZES[self.max_filesize_combo.GetValue()]
 
 
 class SubtitlesTab(TabPanel):
@@ -1137,22 +1128,21 @@ class SubtitlesTab(TabPanel):
     """Options frame subtitles tab.
 
     Attributes:
-        SUBS_LANG (list): Contains subtitles languages. See SUBS_LANG attribute
-            of the parsers module for available values.
+        SUBS_LANG (TwoWayOrderedDict): Contains subtitles languages.
     
         *_LABEL (string): Constant string label for the widgets.
 
     """
-    SUBS_LANG = [
-        "English",
-        "Greek",
-        "Portuguese",
-        "French",
-        "Italian",
-        "Russian",
-        "Spanish",
-        "German"
-    ]
+    SUBS_LANG = twodict([
+        ("en", "English"),
+        ("gr", "Greek"),
+        ("pt", "Portuguese"),
+        ("fr", "French"),
+        ("it", "Italian"),
+        ("ru", "Russian"),
+        ("es", "Spanish"),
+        ("de", "German")
+    ])
 
     DL_SUBS_LABEL = "Download subtitle file by language"
     DL_ALL_SUBS_LABEL = "Download all available subtitles"
@@ -1167,7 +1157,7 @@ class SubtitlesTab(TabPanel):
         self.write_all_subs_checkbox = self.create_checkbox(self.DL_ALL_SUBS_LABEL, self._on_subs_pick)
         self.write_auto_subs_checkbox = self.create_checkbox(self.DL_AUTO_SUBS_LABEL, self._on_subs_pick)
         self.embed_subs_checkbox = self.create_checkbox(self.EMBED_SUBS_LABEL)
-        self.subs_lang_combo = self.create_combobox(self.SUBS_LANG, (140, 30))
+        self.subs_lang_combo = self.create_combobox(self.SUBS_LANG.values(), (140, 30))
 
         self.subs_lang_text = self.create_statictext(self.SUBS_LANG_LABEL)
 
@@ -1223,7 +1213,7 @@ class SubtitlesTab(TabPanel):
             self.write_auto_subs_checkbox.Enable()
 
     def load_options(self):
-        self.subs_lang_combo.SetValue(self.opt_manager.options['subs_lang'])
+        self.subs_lang_combo.SetValue(self.SUBS_LANG[self.opt_manager.options['subs_lang']])
         self.write_subs_checkbox.SetValue(self.opt_manager.options['write_subs'])
         self.embed_subs_checkbox.SetValue(self.opt_manager.options['embed_subs'])
         self.write_all_subs_checkbox.SetValue(self.opt_manager.options['write_all_subs'])
@@ -1231,7 +1221,7 @@ class SubtitlesTab(TabPanel):
         self._on_subs_pick(None)
 
     def save_options(self):
-        self.opt_manager.options['subs_lang'] = self.subs_lang_combo.GetValue()
+        self.opt_manager.options['subs_lang'] = self.SUBS_LANG[self.subs_lang_combo.GetValue()]
         self.opt_manager.options['write_subs'] = self.write_subs_checkbox.GetValue()
         self.opt_manager.options['embed_subs'] = self.embed_subs_checkbox.GetValue()
         self.opt_manager.options['write_all_subs'] = self.write_all_subs_checkbox.GetValue()

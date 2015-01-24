@@ -1,93 +1,10 @@
 #!/usr/bin/env python2
 
-"""Youtubedlg module to parse the options.
-
-Note:
-    OUT_OF_DATE
-    If you want to add new values on the module attributes
-    e.g. (SUBS_LANG, VIDEO_FORMATS, etc..) you also need to add the
-    values on the optionsframe module in order for them to be
-    visible from the GUI.
-
-"""
+"""Youtubedlg module responsible for parsing the options. """
 
 import os.path
 
 from .utils import remove_shortcuts
-
-SUBS_LANG = {
-    "English": "en",
-    "Greek": "gr",
-    "Portuguese": "pt",
-    "French": "fr",
-    "Italian": "it",
-    "Russian": "ru",
-    "Spanish": "es",
-    "German": "de"
-}
-
-VIDEO_FORMATS = {
-    "default": "0",
-    "none": "0",
-    "3gp [176x144]": "17",
-    "3gp [320x240]": "36",
-    "flv [400x240]": "5",
-    "flv [640x360]": "34",
-    "flv [854x480]": "35",
-    "webm [640x360]": "43",
-    "webm [854x480]": "44",
-    "webm [1280x720]": "45",
-    "webm [1920x1080]": "46",
-    "mp4 [640x360]": "18",
-    "mp4 [1280x720]": "22",
-    "mp4 [1920x1080]": "37",
-    "mp4 [4096x3072]": "38",
-    "mp4 144p (DASH)": "160",
-    "mp4 240p (DASH)": "133",
-    "mp4 360p (DASH)": "134",
-    "mp4 480p (DASH)": "135",
-    "mp4 720p (DASH)": "136",
-    "mp4 1080p (DASH)": "137",
-    "mp4 1440p (DASH)": "264",
-    "mp4 2160p (DASH)": "138",
-    "webm 240p (DASH)": "242",
-    "webm 360p (DASH)": "243",
-    "webm 480p (DASH)": "244",
-    "webm 720p (DASH)": "247",
-    "webm 1080p (DASH)": "248",
-    "webm 1440p (DASH)": "271",
-    "webm 2160p (DASH)": "272",
-    "mp4 360p (3D)": "82",
-    "mp4 480p (3D)": "83",
-    "mp4 720p (3D)": "84",
-    "mp4 1080p (3D)": "85",
-    "webm 360p (3D)": "100",
-    "webm 480p (3D)": "101",
-    "webm 720p (3D)": "102",
-    "m4a 48k (DASH AUDIO)": "139",
-    "m4a 128k (DASH AUDIO)": "140",
-    "m4a 256k (DASH AUDIO)": "141",
-    "webm 48k (DASH AUDIO)": "171",
-    "webm 256k (DASH AUDIO)": "172"
-}
-
-AUDIO_QUALITY = {
-    "high": "0",
-    "mid": "5",
-    "low": "9"
-}
-
-FILESIZE_UNITS = {
-    'Bytes': '',
-    'Kilobytes': 'k',
-    'Megabytes': 'm',
-    'Gigabytes': 'g',
-    'Terabytes': 't',
-    'Petabytes': 'p',
-    'Exabytes': 'e',
-    'Zettabytes': 'z',
-    'Yottabytes': 'y'
-}
 
 
 class OptionHolder(object):
@@ -175,7 +92,7 @@ class OptionsParser(object):
             OptionHolder('embed_subs', '--embed-subs', False, ['write_auto_subs', 'write_subs']),
             OptionHolder('to_audio', '-x', False),
             OptionHolder('audio_format', '--audio-format', '', ['to_audio']),
-            OptionHolder('video_format', '-f', ''),
+            OptionHolder('video_format', '-f', '0'),
             OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
             OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio'])
         ]
@@ -200,9 +117,7 @@ class OptionsParser(object):
         options_dict = options_dictionary.copy()
 
         self._build_savepath(options_dict)
-        self._build_subslang(options_dict)
         self._build_videoformat(options_dict)
-        self._build_audioquality(options_dict)
         self._build_filesizes(options_dict)
 
         # Parse basic youtube-dl command line options
@@ -253,39 +168,8 @@ class OptionsParser(object):
             options_dict (dictionary): Copy of the original options dictionary.
 
         """
-        first_vf = VIDEO_FORMATS[options_dict['video_format']]
-        second_vf = VIDEO_FORMATS[options_dict['second_video_format']]
-
-        if first_vf != '0' and second_vf != '0':
-            options_dict['video_format'] = first_vf + '+' + second_vf
-        elif first_vf != '0' and second_vf == '0':
-            options_dict['video_format'] = first_vf
-        else:
-            options_dict['video_format'] = ''
-
-    def _build_subslang(self, options_dict):
-        """Build the subtitles language option value.
-
-        We use this method to build the value of the 'subs_lang' option and
-        store it back to the options dictionary.
-
-        Args:
-            options_dict (dictionary): Copy of the original options dictionary.
-
-        """
-        options_dict['subs_lang'] = SUBS_LANG[options_dict['subs_lang']]
-
-    def _build_audioquality(self, options_dict):
-        """Build the audio quality option value.
-
-        We use this method to build the value of the 'audio_quality' option and
-        store it back to the options dictionary.
-
-        Args:
-            options_dict (dictionary): Copy of the original options dictionary.
-
-        """
-        options_dict['audio_quality'] = AUDIO_QUALITY[options_dict['audio_quality']]
+        if options_dict['video_format'] != '0' and options_dict['second_video_format'] != '0':
+            options_dict['video_format'] = options_dict['video_format'] + '+' + options_dict['second_video_format']
 
     def _build_filesizes(self, options_dict):
         """Build the filesize options values.
@@ -298,9 +182,7 @@ class OptionsParser(object):
 
         """
         if options_dict['min_filesize']:
-            size_unit = FILESIZE_UNITS[options_dict['min_filesize_unit']]
-            options_dict['min_filesize'] = str(options_dict['min_filesize']) + size_unit
+            options_dict['min_filesize'] = str(options_dict['min_filesize']) + options_dict['min_filesize_unit']
 
         if options_dict['max_filesize']:
-            size_unit = FILESIZE_UNITS[options_dict['max_filesize_unit']]
-            options_dict['max_filesize'] = str(options_dict['max_filesize']) + size_unit
+            options_dict['max_filesize'] = str(options_dict['max_filesize']) + options_dict['max_filesize_unit']

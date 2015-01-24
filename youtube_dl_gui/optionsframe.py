@@ -890,12 +890,12 @@ class VideoTab(TabPanel):
 
     def _on_videoformat(self, event):
         """Event handler for self.videoformat_combo. """
-        condition = (self.videoformat_combo.GetValue() != 'default')
+        condition = (self.videoformat_combo.GetValue() != self.VIDEO_FORMATS[0])
         self.sec_videoformat_combo.Enable(condition)
 
     def load_options(self):
-        self.videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['video_format'], 'default'))
-        self.sec_videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['second_video_format'], 'none'))
+        self.videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['video_format'], self.VIDEO_FORMATS[0]))
+        self.sec_videoformat_combo.SetValue(self.FORMATS.get(self.opt_manager.options['second_video_format'], self.SECOND_VIDEO_FORMATS[0]))
         self._on_videoformat(None)
 
     def save_options(self):

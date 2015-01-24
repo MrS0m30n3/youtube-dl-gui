@@ -42,7 +42,6 @@ class DownloadManager(Thread):
     """Manages the download process.
 
     Attributes:
-        WORKERS_NUMBER (int): Size of custom thread pool.
         WAIT_TIME (float): Time in seconds to sleep.
 
     Args:
@@ -58,7 +57,6 @@ class DownloadManager(Thread):
 
     """
 
-    WORKERS_NUMBER = 3
     WAIT_TIME = 0.1
 
     def __init__(self, urls_list, opt_manager, log_manager=None):
@@ -71,7 +69,7 @@ class DownloadManager(Thread):
         self._successful = 0
         self._running = True
 
-        self._workers = self._init_workers()
+        self._workers = self._init_workers(opt_manager.options['workers_number'])
         self.start()
 
     @property
@@ -192,7 +190,7 @@ class DownloadManager(Thread):
         path = os.path.join(path, YOUTUBEDL_BIN)
         return path
 
-    def _init_workers(self):
+    def _init_workers(self, workers_number):
         """Initialize the custom thread pool.
 
         Returns:
@@ -200,7 +198,7 @@ class DownloadManager(Thread):
 
         """
         youtubedl = self._youtubedl_path()
-        return [Worker(self.opt_manager, youtubedl, self.increase_succ, self.log_manager) for i in xrange(self.WORKERS_NUMBER)]
+        return [Worker(self.opt_manager, youtubedl, self.increase_succ, self.log_manager) for i in xrange(workers_number)]
 
 
 class Worker(Thread):

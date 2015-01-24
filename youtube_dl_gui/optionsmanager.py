@@ -175,6 +175,9 @@ class OptionsManager(object):
                 the LogManager. See main() function under __init__().
 
             log_time (boolean): See logmanager.LogManager add_time attribute.
+            
+            workers_number (int): Number of download workers that download manager
+                will spawn. Must be greater than zero.
 
         """
         self.options = {
@@ -217,7 +220,8 @@ class OptionsManager(object):
             'youtubedl_path': self.config_path,
             'cmd_args': '',
             'enable_log': True,
-            'log_time': False
+            'log_time': False,
+            'workers_number': 3
         }
 
     def load_from_file(self):
@@ -228,11 +232,11 @@ class OptionsManager(object):
         with open(self.settings_file, 'rb') as settings_file:
             try:
                 options = json.load(settings_file)
+                
+                if self._settings_are_valid(options):
+                    self.options = options
             except:
                 self.load_default()
-
-        if self._settings_are_valid(options):
-            self.options = options
 
     def save_to_file(self):
         """Save options to settings file. """
@@ -290,6 +294,11 @@ class OptionsManager(object):
         for key, valid_list in rules_dict.items():
             if settings_dictionary[key] not in valid_list:
                 return False
+        
+        settings_dictionary['workers_number'] = int(settings_dictionary['workers_number'])
+        
+        if settings_dictionary['workers_number'] < 1:
+            return False
 
         return True
 

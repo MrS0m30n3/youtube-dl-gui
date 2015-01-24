@@ -5,6 +5,13 @@
 This module is responsible for managing the download process
 and update the GUI interface.
 
+Attributes:
+    MANAGER_PUB_TOPIC (string): wxPublisher subscription topic of the
+        DownloadManager thread.
+    
+    WORKER_PUB_TOPIC (string): wxPublisher subscription topic of the
+        Worker thread.
+
 Note:
     It's not the actual module that downloads the urls
     thats the job of the 'downloaders' module.
@@ -26,12 +33,15 @@ from .downloaders import YoutubeDLDownloader
 from .utils import YOUTUBEDL_BIN
 
 
+MANAGER_PUB_TOPIC = 'dlmanager'
+WORKER_PUB_TOPIC = 'dlworker'
+
+
 class DownloadManager(Thread):
 
     """Manages the download process.
 
     Attributes:
-        PUBLISHER_TOPIC (string): Subscription topic for the wxPublisher.
         WORKERS_NUMBER (int): Size of custom thread pool.
         WAIT_TIME (float): Time in seconds to sleep.
 
@@ -48,7 +58,6 @@ class DownloadManager(Thread):
 
     """
 
-    PUBLISHER_TOPIC = 'dlmanager'
     WORKERS_NUMBER = 3
     WAIT_TIME = 0.1
 
@@ -162,7 +171,7 @@ class DownloadManager(Thread):
                 3) finished: The download process was completed normally.
 
         """
-        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
+        CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, data)
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
@@ -200,7 +209,6 @@ class Worker(Thread):
     from the 'downloaders' module.
 
     Attributes:
-        PUBLISHER_TOPIC (string): Subscription topic for the wxPublisher.
         WAIT_TIME (float): Time in seconds to sleep.
 
     Args:
@@ -217,7 +225,6 @@ class Worker(Thread):
 
     """
 
-    PUBLISHER_TOPIC = 'dlworker'
     WAIT_TIME = 0.1
 
     def __init__(self, opt_manager, youtubedl, increase_succ, log_manager=None):
@@ -299,7 +306,7 @@ class Worker(Thread):
     def _talk_to_gui(self, data):
         """Send data back to the GUI after inserting the index. """
         data['index'] = self._index
-        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, data)
+        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, data)
 
 
 if __name__ == '__main__':

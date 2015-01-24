@@ -9,8 +9,15 @@ from wx.lib.pubsub import pub as Publisher
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
 from .optionsframe import OptionsFrame
-from .updatemanager import UpdateThread
-from .downloadmanager import DownloadManager
+from .updatemanager import (
+    UPDATE_PUB_TOPIC,
+    UpdateThread
+)
+from .downloadmanager import (
+    MANAGER_PUB_TOPIC,
+    WORKER_PUB_TOPIC,
+    DownloadManager
+)
 
 from .utils import (
     get_icon_file,
@@ -141,9 +148,9 @@ class MainFrame(wx.Frame):
         self._set_sizers()
 
         # Set threads wxCallAfter handlers using subscribe
-        self._set_publisher(self._update_handler, 'update')
-        self._set_publisher(self._status_list_handler, 'dlworker')
-        self._set_publisher(self._download_manager_handler, 'dlmanager')
+        self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
+        self._set_publisher(self._status_list_handler, WORKER_PUB_TOPIC)
+        self._set_publisher(self._download_manager_handler, MANAGER_PUB_TOPIC)
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.

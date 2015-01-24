@@ -1,6 +1,12 @@
 #!/usr/bin/env python2
 
-"""Youtubedlg module to update youtube-dl binary. """
+"""Youtubedlg module to update youtube-dl binary.
+
+Attributes:
+    UPDATE_PUB_TOPIC (string): wxPublisher subscription topic of the
+        UpdateThread thread.
+
+"""
 
 import os.path
 from threading import Thread
@@ -15,6 +21,8 @@ from .utils import (
     check_path
 )
 
+UPDATE_PUB_TOPIC = 'update'
+
 
 class UpdateThread(Thread):
 
@@ -22,7 +30,6 @@ class UpdateThread(Thread):
 
     Attributes:
         LATEST_YOUTUBE_DL (string): URL with the latest youtube-dl binary.
-        PUBLISHER_TOPIC (string): Subscription topic for the wx Publisher.
         DOWNLOAD_TIMEOUT (int): Download timeout in seconds.
 
     Args:
@@ -36,7 +43,6 @@ class UpdateThread(Thread):
     """
 
     LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
-    PUBLISHER_TOPIC = 'update'
     DOWNLOAD_TIMEOUT = 20
 
     def __init__(self, download_path, quiet=False):
@@ -84,4 +90,4 @@ class UpdateThread(Thread):
                 4) finish: The update thread is ready to join
 
         """
-        CallAfter(Publisher.sendMessage, self.PUBLISHER_TOPIC, (signal, data))
+        CallAfter(Publisher.sendMessage, UPDATE_PUB_TOPIC, (signal, data))

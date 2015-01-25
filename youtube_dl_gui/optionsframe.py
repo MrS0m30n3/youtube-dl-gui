@@ -92,6 +92,8 @@ class OptionsFrame(wx.Frame):
 
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
+        self.load_all_options()
+
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event.
 

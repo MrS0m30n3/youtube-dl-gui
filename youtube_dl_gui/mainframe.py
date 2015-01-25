@@ -408,6 +408,7 @@ class MainFrame(wx.Frame):
         if self.update_thread is not None:
             self.update_thread.join()
 
+        self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
         self.Destroy()
 

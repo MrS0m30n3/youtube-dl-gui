@@ -178,6 +178,8 @@ class OptionsManager(object):
             
             workers_number (int): Number of download workers that download manager
                 will spawn. Must be greater than zero.
+                
+            locale_name (string): Locale name (e.g. ru_RU).
 
         """
         self.options = {
@@ -221,7 +223,8 @@ class OptionsManager(object):
             'cmd_args': '',
             'enable_log': True,
             'log_time': False,
-            'workers_number': 3
+            'workers_number': 3,
+            'locale_name': 'en_US'
         }
 
     def load_from_file(self):

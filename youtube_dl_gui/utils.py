@@ -14,6 +14,8 @@ import os
 import sys
 import subprocess
 
+from .info import __appname__
+
 
 _RANDOM_OBJECT = object()
 
@@ -108,6 +110,37 @@ def get_time(seconds):
 
     return dtime
 
+    
+def get_locale_file():
+    """Search for youtube-dlg locale file.
+    
+    Returns:
+        The path to youtube-dlg locale file if exists else None.
+        
+    Note:
+        Paths that get_locale_file() func searches:
+        
+        Windows: __main__ dir.
+        Linux: __main__ dir, /usr/share/youtube-dlg
+    
+    """
+    DIR_NAME = 'locale'
+    
+    # __main__ dir
+    directory = os.path.join(absolute_path(sys.argv[0]), DIR_NAME)
+    
+    if os.path.isdir(directory):
+        return directory
+        
+    if os.name != 'nt':
+        # /usr/share/youtube-dlg
+        directory = os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
+        
+        if os.path.isdir(directory):
+            return directory
+
+    return None
+    
 
 def get_icon_file():
     """Search for youtube-dlg app icon.

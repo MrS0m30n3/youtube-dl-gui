@@ -3,6 +3,7 @@
 """Youtubedlg module responsible for the options window. """
 
 import os
+import gettext
 
 import wx
 
@@ -36,20 +37,21 @@ class OptionsFrame(wx.Frame):
 
     FRAME_SIZE = (640, 270)
 
-    FRAME_TITLE = "Options"
+    FRAME_TITLE = _("Options")
 
-    GENERAL_TAB = "General"
-    VIDEO_TAB = "Video"
-    AUDIO_TAB = "Audio"
-    PLAYLIST_TAB = "Playlist"
-    OUTPUT_TAB = "Output"
-    SUBTITLES_TAB = "Subtitles"
-    FILESYS_TAB = "Filesystem"
-    SHUTDOWN_TAB = "Shutdown"
-    AUTH_TAB = "Authentication"
-    CONNECTION_TAB = "Connection"
-    LOG_TAB = "Log"
-    CMD_TAB = "Commands"
+    GENERAL_TAB = _("General")
+    VIDEO_TAB = _("Video")
+    AUDIO_TAB = _("Audio")
+    PLAYLIST_TAB = _("Playlist")
+    OUTPUT_TAB = _("Output")
+    SUBTITLES_TAB = _("Subtitles")
+    FILESYS_TAB = _("Filesystem")
+    SHUTDOWN_TAB = _("Shutdown")
+    AUTH_TAB = _("Authentication")
+    CONNECTION_TAB = _("Connection")
+    LOG_TAB = _("Log")
+    CMD_TAB = _("Commands")
+    LOCALIZATION_TAB = _("Localization")
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=self.FRAME_SIZE)
@@ -79,7 +81,8 @@ class OptionsFrame(wx.Frame):
             (AuthenticationTab(*tab_args), self.AUTH_TAB),
             (ConnectionTab(*tab_args), self.CONNECTION_TAB),
             (LogTab(*tab_args), self.LOG_TAB),
-            (CMDTab(*tab_args), self.CMD_TAB)
+            (CMDTab(*tab_args), self.CMD_TAB),
+            (LocalizationTab(*tab_args), self.LOCALIZATION_TAB)
         )
 
         # Add tabs on notebook
@@ -91,7 +94,7 @@ class OptionsFrame(wx.Frame):
         panel.SetSizer(sizer)
 
         self.Bind(wx.EVT_CLOSE, self._on_close)
-
+        
         self.load_all_options()
 
     def _on_close(self, event):
@@ -366,14 +369,14 @@ class LogTab(TabPanel):
 
     """
 
-    ENABLE_LABEL = "Enable Log"
-    WRITE_LABEL = "Write Time"
-    CLEAR_LABEL = "Clear Log"
-    VIEW_LABEL = "View Log"
-    PATH_LABEL = "Path: {0}"
-    LOGSIZE_LABEL = "Log Size: {0} Bytes"
-    RESTART_LABEL = "Restart"
-    RESTART_MSG = "Please restart {0}"
+    ENABLE_LABEL = _("Enable Log")
+    WRITE_LABEL = _("Write Time")
+    CLEAR_LABEL = _("Clear Log")
+    VIEW_LABEL = _("View Log")
+    PATH_LABEL = _("Path: {0}")
+    LOGSIZE_LABEL = _("Log Size: {0} Bytes")
+    RESTART_LABEL = _("Restart")
+    RESTART_MSG = _("Please restart {0}")
 
     def __init__(self, *args, **kwargs):
         super(LogTab, self).__init__(*args, **kwargs)
@@ -481,8 +484,8 @@ class ShutdownTab(TabPanel):
 
     TEXTCTRL_SIZE = (250, 25)
 
-    SHUTDOWN_LABEL = "Shutdown when finished"
-    SUDO_LABEL = "SUDO password"
+    SHUTDOWN_LABEL = _("Shutdown when finished")
+    SUDO_LABEL = _("SUDO password")
 
     def __init__(self, *args, **kwargs):
         super(ShutdownTab, self).__init__(*args, **kwargs)
@@ -534,9 +537,9 @@ class PlaylistTab(TabPanel):
 
     """
 
-    START_LABEL = "Playlist Start"
-    STOP_LABEL = "Playlist Stop"
-    MAX_LABEL = "Max Downloads"
+    START_LABEL = _("Playlist Start")
+    STOP_LABEL = _("Playlist Stop")
+    MAX_LABEL = _("Max Downloads")
 
     def __init__(self, *args, **kwargs):
         super(PlaylistTab, self).__init__(*args, **kwargs)
@@ -594,10 +597,10 @@ class ConnectionTab(TabPanel):
 
     SPINCTRL_SIZE = (60, -1)
 
-    RETRIES_LABEL = "Retries"
-    USERAGENT_LABEL = "User Agent"
-    REF_LABEL = "Referer"
-    PROXY_LABEL = "Proxy"
+    RETRIES_LABEL = _("Retries")
+    USERAGENT_LABEL = _("User Agent")
+    REF_LABEL = _("Referer")
+    PROXY_LABEL = _("Proxy")
 
     def __init__(self, *args, **kwargs):
         super(ConnectionTab, self).__init__(*args, **kwargs)
@@ -671,9 +674,9 @@ class AuthenticationTab(TabPanel):
 
     TEXTCTRL_SIZE = (250, 25)
 
-    USERNAME_LABEL = "Username"
-    PASSWORD_LABEL = "Password"
-    VIDEOPASS_LABEL = "Video Password (vimeo, smotri)"
+    USERNAME_LABEL = _("Username")
+    PASSWORD_LABEL = _("Password")
+    VIDEOPASS_LABEL = _("Video Password (vimeo, smotri)")
 
     def __init__(self, *args, **kwargs):
         super(AuthenticationTab, self).__init__(*args, **kwargs)
@@ -731,13 +734,13 @@ class AudioTab(TabPanel):
         *_LABEL (string): Constant string label for the widgets.
 
     """
-    AUDIO_QUALITY = twodict([("0", "high"), ("5", "mid"), ("9", "low")])
+    AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
     AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis"]
     
-    TO_AUDIO_LABEL = "Convert to Audio"
-    KEEP_VIDEO_LABEL = "Keep Video"
-    AUDIO_FORMAT_LABEL = "Audio Format"
-    AUDIO_QUALITY_LABEL = "Audio Quality"
+    TO_AUDIO_LABEL = _("Convert to Audio")
+    KEEP_VIDEO_LABEL = _("Keep Video")
+    AUDIO_FORMAT_LABEL = _("Audio Format")
+    AUDIO_QUALITY_LABEL = _("Audio Quality")
 
     def __init__(self, *args, **kwargs):
         super(AudioTab, self).__init__(*args, **kwargs)
@@ -854,13 +857,13 @@ class VideoTab(TabPanel):
         ("172", "webm 256k (DASH AUDIO)")
     ])
     
-    VIDEO_FORMATS = ["default"] + FORMATS.values()
-    SECOND_VIDEO_FORMATS = ["none"] + FORMATS.values()
+    VIDEO_FORMATS = [_("default")] + FORMATS.values()
+    SECOND_VIDEO_FORMATS = [_("none")] + FORMATS.values()
 
     COMBOBOX_SIZE = (200, 30)
 
-    VIDEO_FORMAT_LABEL = "Video Format"
-    SEC_VIDEOFORMAT_LABEL = "Mix Format"
+    VIDEO_FORMAT_LABEL = _("Video Format")
+    SEC_VIDEOFORMAT_LABEL = _("Mix Format")
 
     def __init__(self, *args, **kwargs):
         super(VideoTab, self).__init__(*args, **kwargs)
@@ -919,10 +922,10 @@ class OutputTab(TabPanel):
 
     TEXTCTRL_SIZE = (300, 20)
 
-    RESTRICT_LABEL = "Restrict filenames (ASCII)"
-    ID_AS_NAME = "ID as Name"
-    TITLE_AS_NAME = "Title as Name"
-    CUST_TITLE = "Custom Template (youtube-dl)"
+    RESTRICT_LABEL = _("Restrict filenames (ASCII)")
+    ID_AS_NAME = _("ID as Name")
+    TITLE_AS_NAME = _("Title as Name")
+    CUST_TITLE = _("Custom Template (youtube-dl)")
 
     def __init__(self, *args, **kwargs):
         super(OutputTab, self).__init__(*args, **kwargs)
@@ -1016,14 +1019,14 @@ class FilesystemTab(TabPanel):
         ("y", "Yottabytes")
     ])
     
-    IGN_ERR_LABEL = "Ignore Errors"
-    OPEN_DIR_LABEL = "Open destination folder"
-    WRT_INFO_LABEL = "Write info to (.json) file"
-    WRT_DESC_LABEL = "Write description to file"
-    WRT_THMB_LABEL = "Write thumbnail to disk"
-    FILESIZE_LABEL = "Filesize"
-    MIN_LABEL = "Min"
-    MAX_LABEL = "Max"
+    IGN_ERR_LABEL = _("Ignore Errors")
+    OPEN_DIR_LABEL = _("Open destination folder")
+    WRT_INFO_LABEL = _("Write info to (.json) file")
+    WRT_DESC_LABEL = _("Write description to file")
+    WRT_THMB_LABEL = _("Write thumbnail to disk")
+    FILESIZE_LABEL = _("Filesize")
+    MIN_LABEL = _("Min")
+    MAX_LABEL = _("Max")
 
     def __init__(self, *args, **kwargs):
         super(FilesystemTab, self).__init__(*args, **kwargs)
@@ -1136,21 +1139,21 @@ class SubtitlesTab(TabPanel):
 
     """
     SUBS_LANG = twodict([
-        ("en", "English"),
-        ("gr", "Greek"),
-        ("pt", "Portuguese"),
-        ("fr", "French"),
-        ("it", "Italian"),
-        ("ru", "Russian"),
-        ("es", "Spanish"),
-        ("de", "German")
+        ("en", _("English")),
+        ("gr", _("Greek")),
+        ("pt", _("Portuguese")),
+        ("fr", _("French")),
+        ("it", _("Italian")),
+        ("ru", _("Russian")),
+        ("es", _("Spanish")),
+        ("de", _("German"))
     ])
 
-    DL_SUBS_LABEL = "Download subtitle file by language"
-    DL_ALL_SUBS_LABEL = "Download all available subtitles"
-    DL_AUTO_SUBS_LABEL = "Download automatic subtitle file (YOUTUBE ONLY)"
-    EMBED_SUBS_LABEL = "Embed subtitles in the video (only for mp4 videos)"
-    SUBS_LANG_LABEL = "Subtitles Language"
+    DL_SUBS_LABEL = _("Download subtitle file by language")
+    DL_ALL_SUBS_LABEL = _("Download all available subtitles")
+    DL_AUTO_SUBS_LABEL = _("Download automatic subtitle file (YOUTUBE ONLY)")
+    EMBED_SUBS_LABEL = _("Embed subtitles in the video (only for mp4 videos)")
+    SUBS_LANG_LABEL = _("Subtitles Language")
 
     def __init__(self, *args, **kwargs):
         super(SubtitlesTab, self).__init__(*args, **kwargs)
@@ -1244,12 +1247,12 @@ class GeneralTab(TabPanel):
 
     BUTTONS_SIZE = (110, 40)
 
-    ABOUT_LABEL = "About"
-    OPEN_LABEL = "Open"
-    RESET_LABEL = "Reset Options"
-    SAVEPATH_LABEL = "Save Path"
-    SETTINGS_DIR_LABEL = "Settings File: {0}"
-    PICK_DIR_LABEL = "Choose Directory"
+    ABOUT_LABEL = _("About")
+    OPEN_LABEL = _("Open")
+    RESET_LABEL = _("Reset Options")
+    SAVEPATH_LABEL = _("Save Path")
+    SETTINGS_DIR_LABEL = _("Settings File: {0}")
+    PICK_DIR_LABEL = _("Choose Directory")
 
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
@@ -1334,7 +1337,7 @@ class CMDTab(TabPanel):
 
     """
 
-    CMD_LABEL = "Command line arguments (e.g. --help)"
+    CMD_LABEL = _("Command line arguments (e.g. --help)")
 
     def __init__(self, *args, **kwargs):
         super(CMDTab, self).__init__(*args, **kwargs)
@@ -1362,7 +1365,63 @@ class CMDTab(TabPanel):
 
     def save_options(self):
         self.opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()
+        
+        
+class LocalizationTab(TabPanel):
 
+    """Options frame localization tab.
+
+    Attributes:
+        COMBOBOX_SIZE (tuple): Tuple that contains the size(width, height)
+            of the combobox widget.
+            
+        LOCALE_NAMES (TwoWayOrderedDict): Stores the locale names.
+        
+        *_LABEL (string): Constant string label for the widgets.
+
+    """
+    
+    COMBOBOX_SIZE = (150, 30)
+
+    LOCALE_NAMES = twodict([
+        ('en_US', 'English')
+    ])
+    
+    RESTART_LABEL = _("Restart")
+    LOCALE_LABEL = _("Localization Language")
+    RESTART_MSG = _("In order for the changes to take effect please restart {0}")
+
+    def __init__(self, *args, **kwargs):
+        super(LocalizationTab, self).__init__(*args, **kwargs)
+
+        self.locale_text = self.create_statictext(self.LOCALE_LABEL)
+        self.locale_box = self.create_combobox(self.LOCALE_NAMES.values(), self.COMBOBOX_SIZE, self._on_locale)
+
+        self._set_sizer()
+
+    def _set_sizer(self):
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        main_sizer.AddSpacer(self.SIZE_50)
+        main_sizer.Add(self.locale_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
+
+        main_sizer.AddSpacer(self.SIZE_10)
+        main_sizer.Add(self.locale_box, flag=wx.ALIGN_CENTER_HORIZONTAL)
+
+        self.SetSizer(main_sizer)
+
+    def _on_locale(self, event):
+        """Event handler for the self.locale_box widget. """
+        self.create_popup(self.RESTART_MSG.format(__appname__),
+                          self.RESTART_LABEL,
+                          wx.OK | wx.ICON_INFORMATION)
+        
+    def load_options(self):
+        self.locale_box.SetValue(self.LOCALE_NAMES[self.opt_manager.options['locale_name']])
+    
+    def save_options(self):
+        self.opt_manager.options['locale_name'] = self.LOCALE_NAMES[self.locale_box.GetValue()]
+    
 
 class LogGUI(wx.Frame):
 
@@ -1377,7 +1436,7 @@ class LogGUI(wx.Frame):
 
     """
 
-    TITLE = "Log Viewer"
+    TITLE = _("Log Viewer")
     FRAME_SIZE = (650, 200)
 
     def __init__(self, parent=None):

@@ -2,6 +2,8 @@
 
 """Youtubedlg module responsible for the main app window. """
 
+import gettext
+
 import wx
 from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
@@ -72,33 +74,33 @@ class MainFrame(wx.Frame):
     SIZE_5 = 5
 
     # Labels area
-    URLS_LABEL = "URLs"
-    DOWNLOAD_LABEL = "Download"
-    UPDATE_LABEL = "Update"
-    OPTIONS_LABEL = "Options"
-    ERROR_LABEL = "Error"
-    STOP_LABEL = "Stop"
-    INFO_LABEL = "Info"
-    WELCOME_MSG = "Welcome"
-    SUCC_REPORT_MSG = ("Successfully downloaded {0} url(s) in {1} "
+    URLS_LABEL = _("URLs")
+    DOWNLOAD_LABEL = _("Download")
+    UPDATE_LABEL = _("Update")
+    OPTIONS_LABEL = _("Options")
+    ERROR_LABEL = _("Error")
+    STOP_LABEL = _("Stop")
+    INFO_LABEL = _("Info")
+    WELCOME_MSG = _("Welcome")
+    SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
-    DL_COMPLETED_MSG = "Download completed"
-    URL_REPORT_MSG = "Downloading {0} url(s)"
-    CLOSING_MSG = "Stopping downloads"
-    CLOSED_MSG = "Downloads stopped"
-    PROVIDE_URL_MSG = "You need to provide at least one url"
-    DOWNLOAD_STARTED = "Download started"
-    
-    UPDATING_MSG = "Downloading latest youtube-dl. Please wait..."
-    UPDATE_ERR_MSG = "Youtube-dl download failed [{0}]"
-    UPDATE_SUCC_MSG = "Youtube-dl downloaded correctly"
+    DL_COMPLETED_MSG = _("Download completed")
+    URL_REPORT_MSG = _("Downloading {0} url(s)")
+    CLOSING_MSG = _("Stopping downloads")
+    CLOSED_MSG = _("Downloads stopped")
+    PROVIDE_URL_MSG = _("You need to provide at least one url")
+    DOWNLOAD_STARTED = _("Download started")
 
-    VIDEO_LABEL = "Video"
-    SIZE_LABEL = "Size"
-    PERCENT_LABEL = "Percent"
-    ETA_LABEL = "ETA"
-    SPEED_LABEL = "Speed"
-    STATUS_LABEL = "Status"
+    UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
+    UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
+    UPDATE_SUCC_MSG = _("Youtube-dl downloaded correctly")
+
+    VIDEO_LABEL = _("Title")
+    SIZE_LABEL = _("Size")
+    PERCENT_LABEL = _("Percent")
+    ETA_LABEL = _("ETA")
+    SPEED_LABEL = _("Speed")
+    STATUS_LABEL = _("Status")
     #################################
 
     STATUSLIST_COLUMNS = (

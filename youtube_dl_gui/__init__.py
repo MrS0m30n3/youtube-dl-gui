@@ -15,6 +15,7 @@ Example:
 
 import sys
 import os.path
+import gettext
 
 try:
     import wx
@@ -35,28 +36,40 @@ from .info import (
     __descriptionfull__,
 )
 
-from .mainframe import MainFrame
 from .logmanager import LogManager
 from .optionsmanager import OptionsManager
 
-from .utils import get_config_path
+from .utils import (
+    get_config_path,
+    get_locale_file
+)
+
+
+# Set config path and create options and log managers
+config_path = os.path.join(get_config_path(), __appname__.lower())
+
+opt_manager = OptionsManager(config_path)
+log_manager = None
+
+if opt_manager.options['enable_log']:
+    log_manager = LogManager(config_path, opt_manager.options['log_time'])
+
+# Set gettext before MainFrame import
+# because the GUI strings are class level attributes
+locale_dir = get_locale_file()
+
+try:
+    gettext.translation('youtube_dl_gui', locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
+except IOError:
+    opt_manager.options['locale_name'] = 'en_US'
+    gettext.install('youtube_dl_gui')
+    
+
+from .mainframe import MainFrame
 
 
 def main():
-    """The real main.
-
-    Sets configuration path, enables the managers like OptionsManager,
-    LogManager, etc.. and creates the main app window.
-
-    """
-    config_path = os.path.join(get_config_path(), __appname__.lower())
-
-    opt_manager = OptionsManager(config_path)
-    log_manager = None
-
-    if opt_manager.options['enable_log']:
-        log_manager = LogManager(config_path, opt_manager.options['log_time'])
-
+    """The real main. Creates and calls the main app windows. """
     app = wx.App()
     frame = MainFrame(opt_manager, log_manager)
     frame.Centre()

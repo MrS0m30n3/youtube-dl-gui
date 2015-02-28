@@ -33,6 +33,7 @@ ICONS_TEMPLATE = 'youtube_dl_gui/icons/youtube-dl-gui_{size}.png'
 
 ICONS_LIST = [ICONS_TEMPLATE.format(size=size) for size in ICONS_SIZES]
 
+
 # Set icons path
 PY2EXE_ICONS = 'icons'
 WINDOWS_ICONS = os.path.join(get_python_lib(), 'youtube_dl_gui', 'icons')
@@ -41,12 +42,36 @@ LINUX_ICONS = '/usr/share/icons/hicolor/'
 LINUX_FALLBACK_ICONS = '/usr/share/pixmaps/'
 
 
+# Set localization files path
+LOCALE_PATH = os.path.join('youtube_dl_gui', 'locale')
+
+PY2EXE_LOCALE_DIR = 'locale'
+WIN_LOCALE_DIR = os.path.join(get_python_lib(), 'youtube_dl_gui', 'locale')
+LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.lower())
+
+
 def create_scripts():
     if not os.path.exists('build/_scripts/'):
         os.makedirs('build/_scripts')
         
     shutil.copyfile('youtube_dl_gui/__main__.py', 'build/_scripts/youtube-dl-gui')
 
+    
+def set_locale_files(data_files):
+    for directory in os.listdir(LOCALE_PATH):
+        locale_lang = os.path.join(directory, 'LC_MESSAGES')
+        
+        src = os.path.join(LOCALE_PATH, locale_lang, 'youtube_dl_gui.mo')
+        
+        if PY2EXE:
+            dst = os.path.join(PY2EXE_LOCALE_DIR, locale_lang)
+        elif os.name == 'nt':
+            dst = os.path.join(WIN_LOCALE_DIR, locale_lang)
+        else:
+            dst = os.path.join(LINUX_LOCALE_DIR, locale_lang)
+            
+        data_files.append((dst, [src]))
+    
 
 def py2exe_setup():
     py2exe_dependencies = [
@@ -59,6 +84,8 @@ def py2exe_setup():
         ('', py2exe_dependencies),
         (PY2EXE_ICONS, ICONS_LIST)
     ]
+    
+    set_locale_files(py2exe_data_files)
     
     py2exe_options = {
         'includes': ['wx.lib.pubsub.*',
@@ -87,6 +114,8 @@ def normal_setup():
         icons_dir = (WINDOWS_ICONS, ICONS_LIST)
         data_files.append(icons_dir)
         
+        set_locale_files(data_files)
+        
         params = {'data_files': data_files}
     else:
         # Create all the hicolor icons
@@ -99,7 +128,9 @@ def normal_setup():
         # Add the 48x48 icon as fallback
         fallback_icon = (LINUX_FALLBACK_ICONS, [ICONS_LIST[2]])
         data_files.append(fallback_icon)
-
+    
+        set_locale_files(data_files)
+            
         create_scripts()
         params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
     

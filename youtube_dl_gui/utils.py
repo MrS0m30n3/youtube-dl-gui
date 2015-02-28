@@ -118,24 +118,20 @@ def get_locale_file():
         The path to youtube-dlg locale file if exists else None.
         
     Note:
-        Paths that get_locale_file() func searches:
+        Paths that get_locale_file() func searches.
         
-        Windows: __main__ dir.
-        Linux: __main__ dir, /usr/share/youtube-dlg
+        __main__ dir, library dir, /usr/share/youtube-dlg/locale
     
     """
     DIR_NAME = 'locale'
     
-    # __main__ dir
-    directory = os.path.join(absolute_path(sys.argv[0]), DIR_NAME)
+    SEARCH_DIRS = [
+        os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
+        os.path.join(os.path.dirname(__file__), DIR_NAME),
+        os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
+    ]
     
-    if os.path.isdir(directory):
-        return directory
-        
-    if os.name != 'nt':
-        # /usr/share/youtube-dlg
-        directory = os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
-        
+    for directory in SEARCH_DIRS:
         if os.path.isdir(directory):
             return directory
 
@@ -151,8 +147,7 @@ def get_icon_file():
     Note:
         Paths that get_icon_file() function searches.
 
-        Windows: __main__ directory.
-        Linux: __main__ directory, $XDG_DATA_DIRS and /usr/share/pixmaps.
+        __main__ dir, library dir, /usr/share/pixmaps, $XDG_DATA_DIRS
 
     """
     SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
@@ -160,39 +155,33 @@ def get_icon_file():
 
     ICONS_LIST = [ICON_NAME % size for size in SIZES]
 
-    # __main__ dir
-    path = os.path.join(absolute_path(sys.argv[0]), 'icons')
-
-    for icon in ICONS_LIST:
-        icon_file = os.path.join(path, icon)
-
-        if os.path.exists(icon_file):
-            return icon_file
-
-    if os.name != 'nt':
-        # $XDG_DATA_DIRS/icons
-        path = os.getenv('XDG_DATA_DIRS')
-
-        if path is not None:
-            for xdg_path in path.split(':'):
-                xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
-
-                for size in SIZES:
-                    icon_name = ICON_NAME % size
-                    icon_file = os.path.join(xdg_path, size, 'apps', icon_name)
-
-                    if os.path.exists(icon_file):
-                        return icon_file
-
-        # /usr/share/pixmaps
-        path = '/usr/share/pixmaps'
-
+    SEARCH_DIRS = [
+        os.path.join(absolute_path(sys.argv[0]), 'icons'),
+        os.path.join(os.path.dirname(__file__), 'icons'),
+        '/usr/share/pixmaps'
+    ]
+    
+    for directory in SEARCH_DIRS:
         for icon in ICONS_LIST:
-            icon_file = os.path.join(path, icon)
-
+            icon_file = os.path.join(directory, icon)
+            
             if os.path.exists(icon_file):
                 return icon_file
-
+    
+    # Search $XDG_DATA_DIRS
+    path = os.getenv('XDG_DATA_DIRS')
+    
+    if path is not None:
+        for xdg_path in path.split(':'):
+            xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
+            
+            for size in SIZES:
+                icon_name = ICON_NAME % size
+                icon_file = os.path.join(xdg_path, size, 'apps', icon_name)
+                
+                if os.path.exists(icon_file):
+                    return icon_file
+                
     return None
 
 

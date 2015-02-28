@@ -26,6 +26,9 @@ http://code.google.com/p/youtube-dlg/
 
 **Arch**: https://aur.archlinux.org/packages/youtube-dl-gui-git/
 
+## ADD SUPPORT FOR NEW LANGUAGE
+See https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/locale_build/HOWTO.md
+
 ## REQUIREMENTS
 [Python (version 2.7+)](http://www.python.org)
 

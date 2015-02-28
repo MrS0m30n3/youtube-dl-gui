@@ -1,5 +1,3 @@
-* Add language configuration option
-
 * Bump version 0.3.7
 * Build 0.3.7 setup for Windows (Remove the old settings file)
 * Build 0.3.7 portable for Windows

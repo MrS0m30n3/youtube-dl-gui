@@ -175,10 +175,10 @@ class OptionsManager(object):
                 the LogManager. See main() function under __init__().
 
             log_time (boolean): See logmanager.LogManager add_time attribute.
-            
+
             workers_number (int): Number of download workers that download manager
                 will spawn. Must be greater than zero.
-                
+
             locale_name (string): Locale name (e.g. ru_RU).
 
         """
@@ -235,7 +235,7 @@ class OptionsManager(object):
         with open(self.settings_file, 'rb') as settings_file:
             try:
                 options = json.load(settings_file)
-                
+
                 if self._settings_are_valid(options):
                     self.options = options
             except:
@@ -277,11 +277,11 @@ class OptionsManager(object):
         VALID_FILESIZE_UNIT = ('', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y')
 
         VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
-        
+
         for key in self.options:
             if key not in settings_dictionary:
                 return False
-                
+
         # Check if each key has a valid value
         rules_dict = {
             'video_format': VALID_VIDEO_FORMAT,
@@ -297,9 +297,9 @@ class OptionsManager(object):
         for key, valid_list in rules_dict.items():
             if settings_dictionary[key] not in valid_list:
                 return False
-        
+
         settings_dictionary['workers_number'] = int(settings_dictionary['workers_number'])
-        
+
         if settings_dictionary['workers_number'] < 1:
             return False
 

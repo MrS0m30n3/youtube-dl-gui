@@ -292,7 +292,7 @@ def extract_data(stdout):
 
         # Get filename
         if stdout[1] == 'Destination:':
-            data_dictionary['filename'] = ' '.join(stdout[1:])
+            data_dictionary['filename'] = ' '.join(stdout[2:])
 
         # Get progress info
         if '%' in stdout[1]:

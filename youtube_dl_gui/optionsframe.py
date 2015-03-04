@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for the options window. """
+
+from __future__ import unicode_literals
 
 import os
 import gettext
@@ -94,7 +97,7 @@ class OptionsFrame(wx.Frame):
         panel.SetSizer(sizer)
 
         self.Bind(wx.EVT_CLOSE, self._on_close)
-        
+
         self.load_all_options()
 
     def _on_close(self, event):
@@ -726,17 +729,17 @@ class AudioTab(TabPanel):
 
     Attributes:
         AUDIO_QUALITY (TwoWayOrderedDict): Contains audio qualities.
-        
+
         AUDIO_FORMATS (list): Contains audio formats.
             See optionsmanager.OptionsManager 'audio_format' option
             for available values.
-    
+
         *_LABEL (string): Constant string label for the widgets.
 
     """
     AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
     AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis"]
-    
+
     TO_AUDIO_LABEL = _("Convert to Audio")
     KEEP_VIDEO_LABEL = _("Keep Video")
     AUDIO_FORMAT_LABEL = _("Audio Format")
@@ -800,7 +803,7 @@ class VideoTab(TabPanel):
         FORMATS (TwoWayOrderedDict): Contains video formats. This list
             contains all the available video formats without the 'default'
             and 'none' options.
-    
+
         VIDEO_FORMATS (list): List that contains all the video formats
             plus the 'default' one.
 
@@ -856,7 +859,7 @@ class VideoTab(TabPanel):
         ("171", "webm 48k (DASH AUDIO)"),
         ("172", "webm 256k (DASH AUDIO)")
     ])
-    
+
     VIDEO_FORMATS = [_("default")] + FORMATS.values()
     SECOND_VIDEO_FORMATS = [_("none")] + FORMATS.values()
 
@@ -1002,7 +1005,7 @@ class FilesystemTab(TabPanel):
 
     Attributes:
         FILESIZES (TwoWayOrderedDict): Contains filesize units.
-    
+
         *_LABEL (string): Constant string label for the widgets.
 
     """
@@ -1018,7 +1021,7 @@ class FilesystemTab(TabPanel):
         ("z", "Zettabytes"),
         ("y", "Yottabytes")
     ])
-    
+
     IGN_ERR_LABEL = _("Ignore Errors")
     OPEN_DIR_LABEL = _("Open destination folder")
     WRT_INFO_LABEL = _("Write info to (.json) file")
@@ -1134,7 +1137,7 @@ class SubtitlesTab(TabPanel):
 
     Attributes:
         SUBS_LANG (TwoWayOrderedDict): Contains subtitles languages.
-    
+
         *_LABEL (string): Constant string label for the widgets.
 
     """
@@ -1365,8 +1368,8 @@ class CMDTab(TabPanel):
 
     def save_options(self):
         self.opt_manager.options['cmd_args'] = self.cmd_args_box.GetValue()
-        
-        
+
+
 class LocalizationTab(TabPanel):
 
     """Options frame localization tab.
@@ -1374,19 +1377,19 @@ class LocalizationTab(TabPanel):
     Attributes:
         COMBOBOX_SIZE (tuple): Tuple that contains the size(width, height)
             of the combobox widget.
-            
+
         LOCALE_NAMES (TwoWayOrderedDict): Stores the locale names.
-        
+
         *_LABEL (string): Constant string label for the widgets.
 
     """
-    
+
     COMBOBOX_SIZE = (150, 30)
 
     LOCALE_NAMES = twodict([
         ('en_US', 'English')
     ])
-    
+
     RESTART_LABEL = _("Restart")
     LOCALE_LABEL = _("Localization Language")
     RESTART_MSG = _("In order for the changes to take effect please restart {0}")
@@ -1415,13 +1418,13 @@ class LocalizationTab(TabPanel):
         self.create_popup(self.RESTART_MSG.format(__appname__),
                           self.RESTART_LABEL,
                           wx.OK | wx.ICON_INFORMATION)
-        
+
     def load_options(self):
         self.locale_box.SetValue(self.LOCALE_NAMES[self.opt_manager.options['locale_name']])
-    
+
     def save_options(self):
         self.opt_manager.options['locale_name'] = self.LOCALE_NAMES[self.locale_box.GetValue()]
-    
+
 
 class LogGUI(wx.Frame):
 

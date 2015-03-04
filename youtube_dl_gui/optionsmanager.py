@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module to handle settings. """
+
+from __future__ import unicode_literals
 
 import json
 import os.path
@@ -282,6 +285,9 @@ class OptionsManager(object):
             if key not in settings_dictionary:
                 return False
 
+            if type(self.options[key]) != type(settings_dictionary[key]):
+                return False
+
         # Check if each key has a valid value
         rules_dict = {
             'video_format': VALID_VIDEO_FORMAT,
@@ -298,8 +304,7 @@ class OptionsManager(object):
             if settings_dictionary[key] not in valid_list:
                 return False
 
-        settings_dictionary['workers_number'] = int(settings_dictionary['workers_number'])
-
+        # Check workers number value
         if settings_dictionary['workers_number'] < 1:
             return False
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module for managing the download process.
 
@@ -8,7 +9,7 @@ and update the GUI interface.
 Attributes:
     MANAGER_PUB_TOPIC (string): wxPublisher subscription topic of the
         DownloadManager thread.
-    
+
     WORKER_PUB_TOPIC (string): wxPublisher subscription topic of the
         Worker thread.
 
@@ -17,6 +18,8 @@ Note:
     thats the job of the 'downloaders' module.
 
 """
+
+from __future__ import unicode_literals
 
 import time
 import os.path

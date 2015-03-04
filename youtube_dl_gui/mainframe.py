@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for the main app window. """
+
+from __future__ import unicode_literals
 
 import gettext
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module that holds package information.
 
@@ -6,6 +7,8 @@ Note:
     but we keep them here to keep the code clean.
 
 """
+
+from __future__ import unicode_literals
 
 __author__ = 'Sotiris Papadopoulos'
 __contact__ = 'ytubedlg@gmail.com'

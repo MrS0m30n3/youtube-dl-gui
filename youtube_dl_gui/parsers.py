@@ -1,6 +1,9 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for parsing the options. """
+
+from __future__ import unicode_literals
 
 import os.path
 
@@ -129,7 +132,7 @@ class OptionsParser(object):
                     options_list.append(option.flag)
 
                     if not option.is_boolean():
-                        options_list.append(str(value))
+                        options_list.append(unicode(value))
 
         # Parse cmd_args
         for option in options_dict['cmd_args'].split():
@@ -182,7 +185,7 @@ class OptionsParser(object):
 
         """
         if options_dict['min_filesize']:
-            options_dict['min_filesize'] = str(options_dict['min_filesize']) + options_dict['min_filesize_unit']
+            options_dict['min_filesize'] = unicode(options_dict['min_filesize']) + options_dict['min_filesize_unit']
 
         if options_dict['max_filesize']:
-            options_dict['max_filesize'] = str(options_dict['max_filesize']) + options_dict['max_filesize_unit']
+            options_dict['max_filesize'] = unicode(options_dict['max_filesize']) + options_dict['max_filesize_unit']

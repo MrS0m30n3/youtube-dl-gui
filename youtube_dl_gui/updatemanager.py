@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module to update youtube-dl binary.
 
@@ -7,6 +8,8 @@ Attributes:
         UpdateThread thread.
 
 """
+
+from __future__ import unicode_literals
 
 import os.path
 from threading import Thread
@@ -53,7 +56,7 @@ class UpdateThread(Thread):
 
     def run(self):
         self._talk_to_gui('download')
-        
+
         source_file = self.LATEST_YOUTUBE_DL + YOUTUBEDL_BIN
         destination_file = os.path.join(self.download_path, YOUTUBEDL_BIN)
 
@@ -67,7 +70,7 @@ class UpdateThread(Thread):
 
             self._talk_to_gui('correct')
         except (HTTPError, URLError, IOError) as error:
-            self._talk_to_gui('error', str(error))
+            self._talk_to_gui('error', unicode(error))
 
         if not self.quiet:
             self._talk_to_gui('finish')
@@ -78,10 +81,10 @@ class UpdateThread(Thread):
         Args:
             signal (string): Unique signal string that informs the GUI for the
                 update process.
-                
+
             data (string): Can be any string data to pass along with the
                 given signal. Default is None.
-                
+
         Note:
             UpdateThread supports 4 signals.
                 1) download: The update process started

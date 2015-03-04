@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg __init__ file.
 
@@ -12,6 +13,8 @@ Example:
         youtube_dl_gui.main()
 
 """
+
+from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -63,7 +66,7 @@ try:
 except IOError:
     opt_manager.options['locale_name'] = 'en_US'
     gettext.install('youtube_dl_gui')
-    
+
 
 from .mainframe import MainFrame
 

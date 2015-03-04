@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Youtubedlg module that contains util functions.
 
@@ -9,6 +10,7 @@ Attributes:
 
 """
 
+from __future__ import unicode_literals
 
 import os
 import sys

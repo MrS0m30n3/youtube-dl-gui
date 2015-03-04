@@ -1,4 +1,5 @@
 #!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 
 """Python module to download videos.
 
@@ -10,6 +11,8 @@ Note:
     as a stand alone module for downloading videos.
 
 """
+
+from __future__ import unicode_literals
 
 import os
 import sys

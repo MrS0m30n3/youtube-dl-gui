@@ -110,33 +110,33 @@ def get_time(seconds):
 
     return dtime
 
-    
+
 def get_locale_file():
     """Search for youtube-dlg locale file.
-    
+
     Returns:
         The path to youtube-dlg locale file if exists else None.
-        
+
     Note:
         Paths that get_locale_file() func searches.
-        
+
         __main__ dir, library dir, /usr/share/youtube-dlg/locale
-    
+
     """
     DIR_NAME = 'locale'
-    
+
     SEARCH_DIRS = [
         os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
         os.path.join(os.path.dirname(__file__), DIR_NAME),
         os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
-    
+
     for directory in SEARCH_DIRS:
         if os.path.isdir(directory):
             return directory
 
     return None
-    
+
 
 def get_icon_file():
     """Search for youtube-dlg app icon.
@@ -155,33 +155,31 @@ def get_icon_file():
 
     ICONS_LIST = [ICON_NAME % size for size in SIZES]
 
-    SEARCH_DIRS = [
+    search_dirs = [
         os.path.join(absolute_path(sys.argv[0]), 'icons'),
         os.path.join(os.path.dirname(__file__), 'icons'),
-        '/usr/share/pixmaps'
     ]
-    
-    for directory in SEARCH_DIRS:
-        for icon in ICONS_LIST:
-            icon_file = os.path.join(directory, icon)
-            
-            if os.path.exists(icon_file):
-                return icon_file
-    
-    # Search $XDG_DATA_DIRS
+
+    # Append $XDG_DATA_DIRS on search_dirs
     path = os.getenv('XDG_DATA_DIRS')
-    
+
     if path is not None:
         for xdg_path in path.split(':'):
             xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
-            
+
             for size in SIZES:
-                icon_name = ICON_NAME % size
-                icon_file = os.path.join(xdg_path, size, 'apps', icon_name)
-                
-                if os.path.exists(icon_file):
-                    return icon_file
-                
+                search_dirs.append(os.path.join(xdg_path, size, 'apps'))
+
+    # Also append /usr/share/pixmaps on search_dirs
+    search_dirs.append('/usr/share/pixmaps')
+
+    for directory in search_dirs:
+        for icon in ICONS_LIST:
+            icon_file = os.path.join(directory, icon)
+
+            if os.path.exists(icon_file):
+                return icon_file
+
     return None
 
 

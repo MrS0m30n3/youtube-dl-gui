@@ -1387,7 +1387,8 @@ class LocalizationTab(TabPanel):
     COMBOBOX_SIZE = (150, 30)
 
     LOCALE_NAMES = twodict([
-        ('en_US', 'English')
+        ('en_US', 'English'),
+        ('fr_FR', 'French')
     ])
 
     RESTART_LABEL = _("Restart")

@@ -218,7 +218,9 @@ class YoutubeDLDownloader(object):
             if not stdout:
                 stderr = self._proc.stderr.readline().rstrip()
 
-        return stdout, stderr
+        encoding = self._get_encoding()
+
+        return stdout.decode(encoding, 'ignore'), stderr.decode(encoding, 'ignore')
 
     def _get_cmd(self, url, options):
         """Build the subprocess command.
@@ -238,6 +240,16 @@ class YoutubeDLDownloader(object):
 
         return cmd
 
+    def _get_encoding(self):
+        """Return system encoding. """
+        try:
+            encoding = locale.getpreferredencoding()
+            'TEST'.encode(encoding)
+        except:
+            encoding = 'UTF-8'
+
+        return encoding
+
     def _create_process(self, cmd):
         """Create new subprocess.
 
@@ -255,11 +267,7 @@ class YoutubeDLDownloader(object):
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
         if sys.version_info < (3, 0) and sys.platform == 'win32':
-            try:
-                encoding = locale.getpreferredencoding()
-                u'TEST'.encode(encoding)
-            except:
-                encoding = 'UTF-8'
+            encoding = self._get_encoding()
 
         if encoding is not None:
             cmd = [item.encode(encoding, 'ignore') for item in cmd]

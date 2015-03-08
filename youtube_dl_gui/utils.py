@@ -14,6 +14,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import locale
 import subprocess
 
 from .info import __appname__
@@ -36,7 +37,12 @@ def remove_shortcuts(path):
 def absolute_path(filename):
     """Return absolute path to the given file. """
     path = os.path.realpath(os.path.abspath(filename))
-    return os.path.dirname(path)
+    return os.path.dirname(path).decode(get_encoding(), 'ignore')
+
+
+def get_lib_path():
+    """Return path to the current file. """
+    return os.path.dirname(__file__).decode(get_encoding(), 'ignore')
 
 
 def open_dir(path):
@@ -88,8 +94,15 @@ def shutdown_sys(password=''):
         if not password:
             subprocess.call(['/sbin/shutdown', '-h', 'now'])
         else:
+            password = ('%s\n' % password).encode(get_encoding())
             subprocess.Popen(['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
-                             stdin=subprocess.PIPE).communicate(password + '\n')
+                             stdin=subprocess.PIPE).communicate(password)
+
+
+def to_string(data):
+    """Convert data to string.
+    Works for both Python2 & Python3. """
+    return '%s' % data
 
 
 def get_time(seconds):
@@ -113,6 +126,17 @@ def get_time(seconds):
     return dtime
 
 
+def get_encoding():
+    """Return system encoding. """
+    try:
+        encoding = locale.getpreferredencoding()
+        'TEST'.encode(encoding)
+    except:
+        encoding = 'UTF-8'
+
+    return encoding
+
+
 def get_locale_file():
     """Search for youtube-dlg locale file.
 
@@ -129,7 +153,7 @@ def get_locale_file():
 
     SEARCH_DIRS = [
         os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
-        os.path.join(os.path.dirname(__file__), DIR_NAME),
+        os.path.join(get_lib_path(), DIR_NAME),
         os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
 
@@ -159,7 +183,7 @@ def get_icon_file():
 
     search_dirs = [
         os.path.join(absolute_path(sys.argv[0]), 'icons'),
-        os.path.join(os.path.dirname(__file__), 'icons'),
+        os.path.join(get_lib_path(), 'icons'),
     ]
 
     # Append $XDG_DATA_DIRS on search_dirs

@@ -7,7 +7,10 @@ from __future__ import unicode_literals
 
 import os.path
 
-from .utils import remove_shortcuts
+from .utils import (
+    remove_shortcuts,
+    to_string
+)
 
 
 class OptionHolder(object):
@@ -132,7 +135,7 @@ class OptionsParser(object):
                     options_list.append(option.flag)
 
                     if not option.is_boolean():
-                        options_list.append(unicode(value))
+                        options_list.append(to_string(value))
 
         # Parse cmd_args
         for option in options_dict['cmd_args'].split():
@@ -185,7 +188,7 @@ class OptionsParser(object):
 
         """
         if options_dict['min_filesize']:
-            options_dict['min_filesize'] = unicode(options_dict['min_filesize']) + options_dict['min_filesize_unit']
+            options_dict['min_filesize'] = to_string(options_dict['min_filesize']) + options_dict['min_filesize_unit']
 
         if options_dict['max_filesize']:
-            options_dict['max_filesize'] = unicode(options_dict['max_filesize']) + options_dict['max_filesize_unit']
+            options_dict['max_filesize'] = to_string(options_dict['max_filesize']) + options_dict['max_filesize_unit']

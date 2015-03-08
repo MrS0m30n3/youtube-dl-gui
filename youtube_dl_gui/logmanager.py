@@ -8,7 +8,10 @@ from __future__ import unicode_literals
 import os.path
 from time import strftime
 
-from .utils import check_path
+from .utils import (
+    get_encoding,
+    check_path
+)
 
 
 class LogManager(object):
@@ -38,6 +41,7 @@ class LogManager(object):
         self.config_path = config_path
         self.add_time = add_time
         self.log_file = os.path.join(config_path, self.LOG_FILENAME)
+        self._encoding = get_encoding()
         self._init_log()
         self._auto_clear_log()
 
@@ -74,7 +78,7 @@ class LogManager(object):
             else:
                 msg = data
 
-            log.write(msg)
+            log.write(msg.encode(self._encoding, 'ignore'))
 
     def _init_log(self):
         """Initialize the log file if not exist. """

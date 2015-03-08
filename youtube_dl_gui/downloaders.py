@@ -266,7 +266,7 @@ class YoutubeDLDownloader(object):
 
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
-        if sys.version_info < (3, 0) and sys.platform == 'win32':
+        if sys.version_info < (3, 0):
             encoding = self._get_encoding()
 
         if encoding is not None:

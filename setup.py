@@ -1,6 +1,16 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
+"""Youtube-dlg setup file.
+
+Note:
+    If you get 'TypeError: decoding Unicode is not supported' when you run
+    py2exe then apply the following patch:
+
+    http://sourceforge.net/p/py2exe/patches/28/
+
+"""
+
 import os
 import sys
 import shutil

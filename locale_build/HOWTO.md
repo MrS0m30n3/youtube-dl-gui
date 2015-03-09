@@ -3,9 +3,9 @@
 **Requires**: [GNU GetText](https://www.gnu.org/software/gettext/) (Only if you want to build the MO files on your own)
 
 1. Clone or Fork the repository
-2. Go to **youtube-dl-gui/locale_build** directory
-3. Copy **youtube_dl_gui.po** to a new file (e.g. gr.po)
-4. Edit the new file with your favorite text editor (See *EDIT* section)
+2. Copy **youtube-dl-gui/youtube_dl_gui/locale/en_US/LC_MESSAGES/youtube_dl_gui.po** to **youtube-dl-gui/locale_build/**
+3. Go to **youtube-dl-gui/locale_build** directory
+4. Edit the PO file with your favorite text editor (See *EDIT* section)
 5. After you have finished the file editing save the file
 6. Now you have two options
  1. Send me the translated PO file to this email address: ytubedlg@gmail.com

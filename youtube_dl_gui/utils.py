@@ -82,8 +82,9 @@ def get_config_path():
     return path
 
 
-def shutdown_sys(password=''):
+def shutdown_sys(password=None):
     """Shuts down the system.
+    Returns True if no errors occur else False.
 
     Args:
         password (string): SUDO password for linux.
@@ -93,15 +94,35 @@ def shutdown_sys(password=''):
         have elevated privileges.
 
     """
+    _stderr = subprocess.PIPE
+    _stdin = None
+    info = None
+    encoding = get_encoding()
+
     if os.name == 'nt':
-        subprocess.call(['shutdown', '/s', '/t', '1'])
+        cmd = ['shutdown', '/s', '/t', '1']
+
+        # Hide subprocess window
+        info = subprocess.STARTUPINFO()
+        info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     else:
-        if not password:
-            subprocess.call(['/sbin/shutdown', '-h', 'now'])
+        if password:
+            _stdin = subprocess.PIPE
+            password = ('%s\n' % password).encode(encoding)
+            cmd = ['sudo', '-S', '/sbin/shutdown', '-h', 'now']
         else:
-            password = ('%s\n' % password).encode(get_encoding())
-            subprocess.Popen(['sudo', '-S', '/sbin/shutdown', '-h', 'now'],
-                             stdin=subprocess.PIPE).communicate(password)
+            cmd = ['/sbin/shutdown', '-h', 'now']
+
+    cmd = [item.encode(encoding, 'ignore') for item in cmd]
+
+    shutdown_proc = subprocess.Popen(cmd,
+                                     stderr=_stderr,
+                                     stdin=_stdin,
+                                     startupinfo=info)
+
+    output = shutdown_proc.communicate(password)[1]
+
+    return not output or output == "Password:"
 
 
 def to_string(data):

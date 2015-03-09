@@ -100,6 +100,9 @@ class MainFrame(wx.Frame):
 
     OPEN_DIR_ERR = _("Unable to open directory: '{dir}'. "
                     "The specified path does not exist")
+    SHUTDOWN_ERR = _("Error while shutting down. "
+                    "Make sure you typed the correct password")
+    SHUTDOWN_MSG = _("Shutting down system")
 
     VIDEO_LABEL = _("Title")
     SIZE_LABEL = _("Size")
@@ -268,7 +271,12 @@ class MainFrame(wx.Frame):
         """
         if self.opt_manager.options['shutdown']:
             self.opt_manager.save_to_file()
-            shutdown_sys(self.opt_manager.options['sudo_password'])
+            success = shutdown_sys(self.opt_manager.options['sudo_password'])
+
+            if success:
+                self._status_bar_write(self.SHUTDOWN_MSG)
+            else:
+                self._status_bar_write(self.SHUTDOWN_ERR)
         else:
             self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
             if self.opt_manager.options['open_dl_dir']:

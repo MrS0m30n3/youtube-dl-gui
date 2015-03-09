@@ -70,8 +70,8 @@ def get_config_path():
     """Return user config path.
 
     Note:
-        Windows = %AppData%
-        Linux   = ~/.config
+        Windows = %AppData% + app_name
+        Linux   = ~/.config + app_name
 
     """
     if os.name == 'nt':
@@ -79,7 +79,7 @@ def get_config_path():
     else:
         path = os.path.join(os.path.expanduser('~'), '.config')
 
-    return path
+    return os.path.join(path, __appname__.lower())
 
 
 def shutdown_sys(password=None):

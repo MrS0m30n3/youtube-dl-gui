@@ -49,7 +49,7 @@ from .utils import (
 
 
 # Set config path and create options and log managers
-config_path = os.path.join(get_config_path(), __appname__.lower())
+config_path = get_config_path()
 
 opt_manager = OptionsManager(config_path)
 log_manager = None

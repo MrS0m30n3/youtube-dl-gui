@@ -46,14 +46,19 @@ def get_lib_path():
 
 
 def open_dir(path):
-    """Open path using default file navigator. """
+    """Open path using default file navigator.
+    Return True if path exists else False. """
     path = remove_shortcuts(path)
+
+    if not os.path.exists(path):
+        return False
 
     if os.name == 'nt':
         os.startfile(path)
     else:
         subprocess.call(('xdg-open', path))
 
+    return True
 
 def check_path(path):
     """Create path if not exist. """

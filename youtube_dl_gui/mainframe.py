@@ -98,6 +98,9 @@ class MainFrame(wx.Frame):
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
     UPDATE_SUCC_MSG = _("Youtube-dl downloaded correctly")
 
+    OPEN_DIR_ERR = _("Unable to open directory: '{dir}'. "
+                    "The specified path does not exist")
+
     VIDEO_LABEL = _("Title")
     SIZE_LABEL = _("Size")
     PERCENT_LABEL = _("Percent")
@@ -269,7 +272,10 @@ class MainFrame(wx.Frame):
         else:
             self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
             if self.opt_manager.options['open_dl_dir']:
-                open_dir(self.opt_manager.options['save_path'])
+                success = open_dir(self.opt_manager.options['save_path'])
+
+                if not success:
+                    self._status_bar_write(self.OPEN_DIR_ERR.format(dir=self.opt_manager.options['save_path']))
 
     def _status_list_handler(self, msg):
         """downloadmanager.Worker thread handler.

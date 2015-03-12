@@ -43,9 +43,8 @@ class MainFrame(wx.Frame):
     and binding the events.
 
     Attributes:
-        FRAME_SIZE (tuple): Frame size (width, height).
         BUTTONS_SIZE (tuple): Buttons size (width, height).
-        BUTTONS_SPACE (int): Horizontal space between the buttons.
+        BUTTONS_SPACE (tuple): Space between buttons (width, height).
         SIZE_20 (int): Constant size number.
         SIZE_10 (int): Constant size number.
         SIZE_5 (int): Constant size number.
@@ -69,9 +68,8 @@ class MainFrame(wx.Frame):
 
     """
 
-    FRAME_SIZE = (700, 490)
     BUTTONS_SIZE = (90, 30)
-    BUTTONS_SPACE = 80
+    BUTTONS_SPACE = (80, -1)
     SIZE_20 = 20
     SIZE_10 = 10
     SIZE_5 = 5
@@ -122,7 +120,7 @@ class MainFrame(wx.Frame):
     )
 
     def __init__(self, opt_manager, log_manager, parent=None):
-        wx.Frame.__init__(self, parent, title=__appname__, size=self.FRAME_SIZE)
+        wx.Frame.__init__(self, parent, title=__appname__, size=opt_manager.options['main_win_size'])
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         self.download_manager = None
@@ -217,7 +215,9 @@ class MainFrame(wx.Frame):
 
         buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
         buttons_sizer.Add(self._download_btn)
-        buttons_sizer.Add(self._update_btn, flag=wx.LEFT | wx.RIGHT, border=self.BUTTONS_SPACE)
+        buttons_sizer.Add(self.BUTTONS_SPACE, 1)
+        buttons_sizer.Add(self._update_btn)
+        buttons_sizer.Add(self.BUTTONS_SPACE, 1)
         buttons_sizer.Add(self._options_btn)
         vertical_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
@@ -426,6 +426,10 @@ class MainFrame(wx.Frame):
 
         if self.update_thread is not None:
             self.update_thread.join()
+
+        # Store main-options frame size
+        self.opt_manager.options['main_win_size'] = self.GetSize()
+        self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
 
         self._options_frame.save_all_options()
         self.opt_manager.save_to_file()

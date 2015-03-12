@@ -60,6 +60,17 @@ def open_dir(path):
 
     return True
 
+
+def encode_tuple(tuple_to_encode):
+    """Turn size tuple into string. """
+    return '%s/%s' % (tuple_to_encode[0], tuple_to_encode[1])
+
+def decode_tuple(encoded_tuple):
+    """Turn tuple string back to tuple. """
+    s = encoded_tuple.split('/')
+    return int(s[0]), int(s[1])
+
+
 def check_path(path):
     """Create path if not exist. """
     if not os.path.exists(path):

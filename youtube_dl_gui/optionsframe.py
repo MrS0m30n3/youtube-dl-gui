@@ -28,7 +28,6 @@ class OptionsFrame(wx.Frame):
     """Youtubedlg options frame class.
 
     Attributes:
-        FRAME_SIZE (tuple): Frame size (width, height).
         FRAME_TITLE (string): Options window title.
 
         *_TAB (string): Constant string with the name of each tab.
@@ -37,8 +36,6 @@ class OptionsFrame(wx.Frame):
         parent (mainframe.MainFrame): Parent class.
 
     """
-
-    FRAME_SIZE = (640, 270)
 
     FRAME_TITLE = _("Options")
 
@@ -57,7 +54,7 @@ class OptionsFrame(wx.Frame):
     LOCALIZATION_TAB = _("Localization")
 
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=self.FRAME_SIZE)
+        wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options['opts_win_size'])
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
         self.app_icon = parent.app_icon

@@ -8,7 +8,11 @@ from __future__ import unicode_literals
 import json
 import os.path
 
-from .utils import check_path
+from .utils import (
+    encode_tuple,
+    decode_tuple,
+    check_path
+)
 
 
 class OptionsManager(object):
@@ -227,7 +231,9 @@ class OptionsManager(object):
             'enable_log': True,
             'log_time': False,
             'workers_number': 3,
-            'locale_name': 'en_US'
+            'locale_name': 'en_US',
+            'main_win_size': (700, 490),
+            'opts_win_size': (640, 270)
         }
 
     def load_from_file(self):
@@ -281,6 +287,12 @@ class OptionsManager(object):
 
         VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
 
+        MIN_FRAME_SIZE = 100
+
+        # Decode string formatted tuples back to normal tuples
+        settings_dictionary['main_win_size'] = decode_tuple(settings_dictionary['main_win_size'])
+        settings_dictionary['opts_win_size'] = decode_tuple(settings_dictionary['opts_win_size'])
+
         for key in self.options:
             if key not in settings_dictionary:
                 return False
@@ -308,6 +320,15 @@ class OptionsManager(object):
         if settings_dictionary['workers_number'] < 1:
             return False
 
+        # Check main-options frame size
+        for size in settings_dictionary['main_win_size']:
+            if size < MIN_FRAME_SIZE:
+                return False
+
+        for size in settings_dictionary['opts_win_size']:
+            if size < MIN_FRAME_SIZE:
+                return False
+
         return True
 
     def _get_options(self):
@@ -317,4 +338,9 @@ class OptionsManager(object):
         for key in self.SENSITIVE_KEYS:
             temp_options[key] = ''
 
+        # Encode normal tuples to string formatted tuples
+        temp_options['main_win_size'] = encode_tuple(temp_options['main_win_size'])
+        temp_options['opts_win_size'] = encode_tuple(temp_options['opts_win_size'])
+
         return temp_options
+

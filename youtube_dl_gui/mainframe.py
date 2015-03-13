@@ -186,7 +186,7 @@ class MainFrame(wx.Frame):
             textctrl = wx.TextCtrl(self._panel, style=style)
 
         if event_handler is not None:
-            textctrl.Bind(wx.EVT_TEXT, event_handler)
+            textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
 
         return textctrl
 
@@ -369,12 +369,23 @@ class MainFrame(wx.Frame):
             self._update_btn.Disable()
 
     def _on_urllist_edit(self, event):
-        """Event handler of the self._status_list widget.
+        """Event handler of the self._url_list widget.
 
-        This method is used to dynamically add urls on the download_manager
-        after the download process has started.
+        This method is triggered by the wx.EVT_TEXT_PASTE.
 
         """
+        if not wx.TheClipboard.IsOpened():
+            # Auto append newline on paste
+            if wx.TheClipboard.Open():
+                if wx.TheClipboard.IsSupported(wx.DataFormat(wx.DF_TEXT)):
+                    data = wx.TextDataObject()
+                    wx.TheClipboard.GetData(data)
+
+                    self._url_list.WriteText(data.GetText() + '\n')
+
+                wx.TheClipboard.Close()
+
+        # Dynamically add urls after download process has started
         if self.download_manager is not None:
             self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
 

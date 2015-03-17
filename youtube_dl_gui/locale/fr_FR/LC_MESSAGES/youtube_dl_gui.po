@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.3.6\n"
-"POT-Creation-Date: 2015-02-25 22:38+EET\n"
-"PO-Revision-Date: 2015-03-06 20:15+EET\n"
+"POT-Creation-Date: 2015-03-09 18:21+EET\n"
+"PO-Revision-Date: 2015-03-17 14:30+EET\n"
 "Last-Translator: Thierry Roussel <thierry.roussel@gmx.com>\n"
 "Language-Team: fr\n"
 "MIME-Version: 1.0\n"
@@ -13,416 +13,427 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-
-#: mainframe.py:77
+#: mainframe.py:80
 msgid "URLs"
 msgstr "Lien(s)"
 
-#: mainframe.py:78
+#: mainframe.py:81
 msgid "Download"
 msgstr "Télécharger"
 
-#: mainframe.py:79
+#: mainframe.py:82
 msgid "Update"
 msgstr "Mise à jour"
 
-#: mainframe.py:80 optionsframe.py:40
+#: mainframe.py:83 optionsframe.py:43
 msgid "Options"
 msgstr ""
 
-#: mainframe.py:81
+#: mainframe.py:84
 msgid "Error"
 msgstr "Erreur"
 
-#: mainframe.py:82
+#: mainframe.py:85
 msgid "Stop"
 msgstr "Arrêter"
 
-#: mainframe.py:83
+#: mainframe.py:86
 msgid "Info"
 msgstr ""
 
-#: mainframe.py:84
+#: mainframe.py:87
 msgid "Welcome"
 msgstr "Bienvenue"
 
-#: mainframe.py:85
+#: mainframe.py:88
 msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
 msgstr "Téléchargements réussis {0} lien(s) en {1} jour(s) {2} heure(s) {3} minute(s) {4} seconde(s)"
 
-#: mainframe.py:87
+#: mainframe.py:90
 msgid "Download completed"
 msgstr "Téléchargement terminé"
 
-#: mainframe.py:88
+#: mainframe.py:91
 msgid "Downloading {0} url(s)"
 msgstr "Téléchargement de {0} lien(s)"
 
-#: mainframe.py:89
+#: mainframe.py:92
 msgid "Stopping downloads"
 msgstr "Arrêt des téléchargements"
 
-#: mainframe.py:90
+#: mainframe.py:93
 msgid "Downloads stopped"
 msgstr "Téléchargements arrêtés"
 
-#: mainframe.py:91
+#: mainframe.py:94
 msgid "You need to provide at least one url"
 msgstr "Vous devez fournir au moins 1 lien"
 
-#: mainframe.py:92
+#: mainframe.py:95
 msgid "Download started"
 msgstr "Téléchargement démarré"
 
-#: mainframe.py:94
+#: mainframe.py:97
 msgid "Downloading latest youtube-dl. Please wait..."
 msgstr "Mise à jour de youtube-dl. Merci de patienter"
 
-#: mainframe.py:95
+#: mainframe.py:98
 msgid "Youtube-dl download failed [{0}]"
 msgstr "Echec de la mise à jour de Youtube-dl [{0}]"
 
-#: mainframe.py:96
+#: mainframe.py:99
 msgid "Youtube-dl downloaded correctly"
 msgstr "Youtube-dl a été mis à jour"
 
-#: mainframe.py:98
+#: mainframe.py:101
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "Impossible d'ouvrir le répertoire: '{dir}'. Le chemin n'existe pas"
+
+#: mainframe.py:103
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Erreur d'arrêt du système. Vérifiez le mot de passe saisi"
+
+#: mainframe.py:105
+msgid "Shutting down system"
+msgstr "Arrêt du système"
+
+#: mainframe.py:107
 msgid "Title"
 msgstr "Titre"
 
-#: mainframe.py:99
+#: mainframe.py:108
 msgid "Size"
 msgstr "Taille"
 
-#: mainframe.py:100
+#: mainframe.py:109
 msgid "Percent"
 msgstr "%"
 
-#: mainframe.py:101
+#: mainframe.py:110
 msgid "ETA"
 msgstr "ETA"
 
-#: mainframe.py:102
+#: mainframe.py:111
 msgid "Speed"
 msgstr "Vitesse"
 
-#: mainframe.py:103
+#: mainframe.py:112
 msgid "Status"
 msgstr "Etat"
 
-#: optionsframe.py:42
+#: optionsframe.py:45
 msgid "General"
 msgstr "Général"
 
-#: optionsframe.py:43
+#: optionsframe.py:46
 msgid "Video"
 msgstr "Vidéo"
 
-#: optionsframe.py:44
+#: optionsframe.py:47
 msgid "Audio"
 msgstr "Audio"
 
-#: optionsframe.py:45
+#: optionsframe.py:48
 msgid "Playlist"
 msgstr "Playlist"
 
-#: optionsframe.py:46
+#: optionsframe.py:49
 msgid "Output"
 msgstr "Sortie"
 
-#: optionsframe.py:47
+#: optionsframe.py:50
 msgid "Subtitles"
 msgstr "Sous-titres"
 
-#: optionsframe.py:48
+#: optionsframe.py:51
 msgid "Filesystem"
 msgstr "Fichiers"
 
-#: optionsframe.py:49
+#: optionsframe.py:52
 msgid "Shutdown"
 msgstr "Arrêt"
 
-#: optionsframe.py:50
+#: optionsframe.py:53
 msgid "Authentication"
 msgstr "Authentification"
 
-#: optionsframe.py:51
+#: optionsframe.py:54
 msgid "Connection"
 msgstr "Connexion"
 
-#: optionsframe.py:52
+#: optionsframe.py:55
 msgid "Log"
 msgstr "Log"
 
-#: optionsframe.py:53
+#: optionsframe.py:56
 msgid "Commands"
 msgstr "Commandes"
 
-#: optionsframe.py:54
+#: optionsframe.py:57
 msgid "Localization"
 msgstr "Langue"
 
-#: optionsframe.py:372
+#: optionsframe.py:375
 msgid "Enable Log"
 msgstr "Activer les traces"
 
-#: optionsframe.py:373
+#: optionsframe.py:376
 msgid "Write Time"
 msgstr "Temps d'écriture"
 
-#: optionsframe.py:374
+#: optionsframe.py:377
 msgid "Clear Log"
 msgstr "Effacer les traces"
 
-#: optionsframe.py:375
+#: optionsframe.py:378
 msgid "View Log"
 msgstr "Afficher les traces"
 
-#: optionsframe.py:376
+#: optionsframe.py:379
 msgid "Path: {0}"
 msgstr "Répertoire: {0}"
 
-#: optionsframe.py:377
+#: optionsframe.py:380
 msgid "Log Size: {0} Bytes"
 msgstr "Taille des traces: {0} Octets"
 
-#: optionsframe.py:378 optionsframe.py:1390
+#: optionsframe.py:381 optionsframe.py:1394
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: optionsframe.py:379
+#: optionsframe.py:382
 msgid "Please restart {0}"
 msgstr "Veuillez redémarrer {0}"
 
-#: optionsframe.py:487
+#: optionsframe.py:490
 msgid "Shutdown when finished"
 msgstr "Arrêter une fois terminé"
 
-#: optionsframe.py:488
+#: optionsframe.py:491
 msgid "SUDO password"
 msgstr ""
 
-#: optionsframe.py:540
+#: optionsframe.py:543
 msgid "Playlist Start"
 msgstr ""
 
-#: optionsframe.py:541
+#: optionsframe.py:544
 msgid "Playlist Stop"
 msgstr ""
 
-#: optionsframe.py:542
+#: optionsframe.py:545
 msgid "Max Downloads"
 msgstr "Téléchargements Max"
 
-#: optionsframe.py:600
+#: optionsframe.py:603
 msgid "Retries"
 msgstr "Essais"
 
-#: optionsframe.py:601
+#: optionsframe.py:604
 msgid "User Agent"
 msgstr ""
 
-#: optionsframe.py:602
+#: optionsframe.py:605
 msgid "Referer"
 msgstr ""
 
-#: optionsframe.py:603
+#: optionsframe.py:606
 msgid "Proxy"
 msgstr ""
 
-#: optionsframe.py:677
+#: optionsframe.py:680
 msgid "Username"
 msgstr "Utilisateur"
 
-#: optionsframe.py:678
+#: optionsframe.py:681
 msgid "Password"
 msgstr "Mot de passe"
 
-#: optionsframe.py:679
+#: optionsframe.py:682
 msgid "Video Password (vimeo, smotri)"
 msgstr ""
 
-#: optionsframe.py:737
+#: optionsframe.py:740
 msgid "high"
 msgstr "haute"
 
-#: optionsframe.py:737
+#: optionsframe.py:740
 msgid "low"
 msgstr "basse"
 
-#: optionsframe.py:737
+#: optionsframe.py:740
 msgid "mid"
 msgstr "moyenne"
 
-#: optionsframe.py:740
+#: optionsframe.py:743
 msgid "Convert to Audio"
 msgstr "Convertir la piste Audio"
 
-#: optionsframe.py:741
+#: optionsframe.py:744
 msgid "Keep Video"
 msgstr "Conserver la piste Vidéo"
 
-#: optionsframe.py:742
+#: optionsframe.py:745
 msgid "Audio Format"
 msgstr "Format Audio"
 
-#: optionsframe.py:743
+#: optionsframe.py:746
 msgid "Audio Quality"
 msgstr "Qualité Audio"
 
-#: optionsframe.py:860
+#: optionsframe.py:863
 msgid "default"
 msgstr "par défaut"
 
-#: optionsframe.py:861
+#: optionsframe.py:864
 msgid "none"
 msgstr "aucune"
 
-#: optionsframe.py:865
+#: optionsframe.py:868
 msgid "Video Format"
 msgstr "Format Vidéo"
 
-#: optionsframe.py:866
+#: optionsframe.py:869
 msgid "Mix Format"
 msgstr ""
 
-#: optionsframe.py:925
+#: optionsframe.py:928
 msgid "Restrict filenames (ASCII)"
 msgstr "Convertir les noms (ASCII)"
 
-#: optionsframe.py:926
+#: optionsframe.py:929
 msgid "ID as Name"
 msgstr "Nom = ID"
 
-#: optionsframe.py:927
+#: optionsframe.py:930
 msgid "Title as Name"
 msgstr "Nom = Titre"
 
-#: optionsframe.py:928
+#: optionsframe.py:931
 msgid "Custom Template (youtube-dl)"
 msgstr "Format personnalisé"
 
-#: optionsframe.py:1022
+#: optionsframe.py:1025
 msgid "Ignore Errors"
 msgstr "Ignorer les erreurs"
 
-#: optionsframe.py:1023
+#: optionsframe.py:1026
 msgid "Open destination folder"
 msgstr "Ouvrir le répertoire de destination"
 
-#: optionsframe.py:1024
+#: optionsframe.py:1027
 msgid "Write info to (.json) file"
 msgstr "Renseigner le fichier (.json)"
 
-#: optionsframe.py:1025
+#: optionsframe.py:1028
 msgid "Write description to file"
 msgstr "Ecrire la description"
 
-#: optionsframe.py:1026
+#: optionsframe.py:1029
 msgid "Write thumbnail to disk"
 msgstr "Enregistrer la miniature"
 
-#: optionsframe.py:1027
+#: optionsframe.py:1030
 msgid "Filesize"
 msgstr "Taille de fichier"
 
-#: optionsframe.py:1028
+#: optionsframe.py:1031
 msgid "Min"
 msgstr ""
 
-#: optionsframe.py:1029
+#: optionsframe.py:1032
 msgid "Max"
 msgstr ""
 
-#: optionsframe.py:1142
+#: optionsframe.py:1145
 msgid "English"
 msgstr "Anglais"
 
-#: optionsframe.py:1143
+#: optionsframe.py:1146
 msgid "Greek"
 msgstr "Grec"
 
-#: optionsframe.py:1144
+#: optionsframe.py:1147
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: optionsframe.py:1145
+#: optionsframe.py:1148
 msgid "French"
 msgstr "Français"
 
-#: optionsframe.py:1146
+#: optionsframe.py:1149
 msgid "Italian"
 msgstr "Italien"
 
-#: optionsframe.py:1147
+#: optionsframe.py:1150
 msgid "Russian"
 msgstr "Russe"
 
-#: optionsframe.py:1148
+#: optionsframe.py:1151
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: optionsframe.py:1149
+#: optionsframe.py:1152
 msgid "German"
 msgstr "Allemand"
 
-#: optionsframe.py:1152
+#: optionsframe.py:1155
 msgid "Download subtitle file by language"
 msgstr "Télécharger les sous-titres suivant la langue"
 
-#: optionsframe.py:1153
+#: optionsframe.py:1156
 msgid "Download all available subtitles"
 msgstr "Télécharger tous les sous-titres disponibles"
 
-#: optionsframe.py:1154
+#: optionsframe.py:1157
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
 msgstr "Télécharger le fichier sous-titre automatique (YOUTUBE ONLY)"
 
-#: optionsframe.py:1155
+#: optionsframe.py:1158
 msgid "Embed subtitles in the video (only for mp4 videos)"
 msgstr "Ajouter les sous-titres à la vidéo (mp4 uniquement)"
 
-#: optionsframe.py:1156
+#: optionsframe.py:1159
 msgid "Subtitles Language"
 msgstr "Langue sous-titres"
 
-#: optionsframe.py:1250
+#: optionsframe.py:1253
 msgid "About"
 msgstr "A propos"
 
-#: optionsframe.py:1251
+#: optionsframe.py:1254
 msgid "Open"
 msgstr "Ouvrir"
 
-#: optionsframe.py:1252
+#: optionsframe.py:1255
 msgid "Reset Options"
 msgstr "Reset options"
 
-#: optionsframe.py:1253
+#: optionsframe.py:1256
 msgid "Save Path"
 msgstr "Enregistrer sous..."
 
-#: optionsframe.py:1254
+#: optionsframe.py:1257
 msgid "Settings File: {0}"
 msgstr ""
 
-#: optionsframe.py:1255
+#: optionsframe.py:1258
 msgid "Choose Directory"
 msgstr "Sélectionner le répertoire"
 
-#: optionsframe.py:1340
+#: optionsframe.py:1343
 msgid "Command line arguments (e.g. --help)"
 msgstr ""
 
-#: optionsframe.py:1391
+#: optionsframe.py:1395
 msgid "Localization Language"
 msgstr "Langue"
 
-#: optionsframe.py:1392
+#: optionsframe.py:1396
 msgid "In order for the changes to take effect please restart {0}"
 msgstr "Pour que les changements prennent effet, veuillez redémarrer {0}"
 
-#: optionsframe.py:1439
+#: optionsframe.py:1443
 msgid "Log Viewer"
 msgstr "Afficher les traces"
 

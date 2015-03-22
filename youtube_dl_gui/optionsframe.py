@@ -1386,6 +1386,7 @@ class LocalizationTab(TabPanel):
     LOCALE_NAMES = twodict([
         ('en_US', 'English'),
         ('fr_FR', 'French'),
+        ('de_DE', 'German'),
         ('ar_AR', 'Arabic')
     ])
 

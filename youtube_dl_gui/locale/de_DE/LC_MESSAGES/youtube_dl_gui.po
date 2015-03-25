@@ -408,7 +408,7 @@ msgstr "Öffnen"
 
 #: optionsframe.py:1255
 msgid "Reset Options"
-msgstr "Einstellungen Zurücksetzen"
+msgstr "Zurücksetzen"
 
 #: optionsframe.py:1256
 msgid "Save Path"

@@ -43,6 +43,8 @@ class MainFrame(wx.Frame):
     and binding the events.
 
     Attributes:
+        wxEVT_TEXT_PASTE (int): Event type code for the wx.EVT_TEXT_PASTE
+
         BUTTONS_SIZE (tuple): Buttons size (width, height).
         BUTTONS_SPACE (tuple): Space between buttons (width, height).
         SIZE_20 (int): Constant size number.
@@ -67,6 +69,7 @@ class MainFrame(wx.Frame):
         parent (wx.Window): Frame parent.
 
     """
+    wxEVT_TEXT_PASTE = 10212
 
     BUTTONS_SIZE = (-1, 30)
     BUTTONS_SPACE = (80, -1)
@@ -211,6 +214,7 @@ class MainFrame(wx.Frame):
 
         if event_handler is not None:
             textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
+            textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
 
         return textctrl
 
@@ -392,22 +396,42 @@ class MainFrame(wx.Frame):
             self._download_btn.SetLabel(self.STOP_LABEL)
             self._update_btn.Disable()
 
-    def _on_urllist_edit(self, event):
-        """Event handler of the self._url_list widget.
-
-        This method is triggered by the wx.EVT_TEXT_PASTE.
+    def _paste_from_clipboard(self):
+        """Paste the content of the clipboard to the self._url_list widget.
+        It also adds a new line at the end of the data if not exist.
 
         """
         if not wx.TheClipboard.IsOpened():
-            # Auto append newline on paste
+
             if wx.TheClipboard.Open():
                 if wx.TheClipboard.IsSupported(wx.DataFormat(wx.DF_TEXT)):
+
                     data = wx.TextDataObject()
                     wx.TheClipboard.GetData(data)
 
-                    self._url_list.WriteText(data.GetText() + '\n')
+                    data = data.GetText()
+
+                    if data[-1] != '\n':
+                        data += '\n'
+
+                    self._url_list.WriteText(data)
 
                 wx.TheClipboard.Close()
+
+    def _on_urllist_edit(self, event):
+        """Event handler of the self._url_list widget.
+
+        This method is triggered when the users pastes text into
+        the URLs list either by using CTRL+V or by using the middle
+        click of the mouse.
+
+        """
+        if event.GetEventType() == self.wxEVT_TEXT_PASTE:
+            self._paste_from_clipboard()
+        else:
+            wx.TheClipboard.UsePrimarySelection(True)
+            self._paste_from_clipboard()
+            wx.TheClipboard.UsePrimarySelection(False)
 
         # Dynamically add urls after download process has started
         if self.download_manager is not None:

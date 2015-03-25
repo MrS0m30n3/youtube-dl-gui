@@ -188,6 +188,14 @@ class OptionsManager(object):
 
             locale_name (string): Locale name (e.g. ru_RU).
 
+            main_win_size (tuple): Main window size (width, height).
+                If window becomes to small the program will reset its size.
+                See _settings_are_valid method MIN_FRAME_SIZE.
+
+            opts_win_size (tuple): Options window size (width, height).
+                If window becomes to small the program will reset its size.
+                See _settings_are_valid method MIN_FRAME_SIZE.
+
         """
         self.options = {
             'save_path': os.path.expanduser('~'),

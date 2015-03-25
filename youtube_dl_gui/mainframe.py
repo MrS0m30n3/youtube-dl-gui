@@ -110,6 +110,7 @@ class MainFrame(wx.Frame):
     STATUS_LABEL = _("Status")
     #################################
 
+    # (column_name, column_index, column_label, minimum_width, resizable)
     STATUSLIST_COLUMNS = (
         ('filename', 0, VIDEO_LABEL, 150, True),
         ('filesize', 1, SIZE_LABEL, 80, False),
@@ -577,6 +578,13 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         """Initializes ListCtrl columns.
         See MainFrame STATUSLIST_COLUMNS attribute for more info. """
         for column in self.columns:
-            self.InsertColumn(column[1], column[2], width=column[3])
+            self.InsertColumn(column[1], column[2], width=wx.LIST_AUTOSIZE_USEHEADER)
+
+            # If the column width obtained from wxLIST_AUTOSIZE_USEHEADER
+            # is smaller than the minimum allowed column width
+            # then set the column width to the minumum allowed size
+            if self.GetColumnWidth(column[1]) < column[3]:
+                self.SetColumnWidth(column[1], column[3])
+
             if column[4]:
                 self.setResizeColumn(column[1])

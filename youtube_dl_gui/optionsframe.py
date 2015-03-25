@@ -748,7 +748,7 @@ class AudioTab(TabPanel):
         self.to_audio_checkbox = self.create_checkbox(self.TO_AUDIO_LABEL, self._on_audio_check)
         self.keep_video_checkbox = self.create_checkbox(self.KEEP_VIDEO_LABEL)
         self.audioformat_combo = self.create_combobox(self.AUDIO_FORMATS, (160, 30))
-        self.audioquality_combo = self.create_combobox(self.AUDIO_QUALITY.values(), (80, 25))
+        self.audioquality_combo = self.create_combobox(self.AUDIO_QUALITY.values(), (100, 25))
 
         self.audioformat_text = self.create_statictext(self.AUDIO_FORMAT_LABEL)
         self.audioquality_text = self.create_statictext(self.AUDIO_QUALITY_LABEL)

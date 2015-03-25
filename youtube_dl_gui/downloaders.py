@@ -25,8 +25,8 @@ class YoutubeDLDownloader(object):
     """Python class for downloading videos using youtube-dl & subprocess.
 
     Attributes:
-        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT (int): 'Random' integers
-        that describe the return code from the download() method.
+        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT, WARNING (int): 'Random'
+        integers that describe the return code from the download() method.
 
     Args:
         youtubedl_path (string): Absolute path to youtube-dl binary.
@@ -59,6 +59,7 @@ class YoutubeDLDownloader(object):
     STOPPED = 2
     ALREADY = 3
     FILESIZE_ABORT = 4
+    WARNING = 5
 
     def __init__(self, youtubedl_path, data_hook=None, log_manager=None):
         self.youtubedl_path = youtubedl_path
@@ -95,6 +96,7 @@ class YoutubeDLDownloader(object):
             ALREADY (3): The given url is already downloaded.
             FILESIZE_ABORT (4): The corresponding url video file was larger or
                 smaller from the given options filesize limit.
+            WARNING (5): A warning occured during the download process.
 
         """
         self._reset()
@@ -106,7 +108,12 @@ class YoutubeDLDownloader(object):
             stdout, stderr = self._read()
 
             if stderr:
-                self._return_code = self.ERROR
+
+                if self._is_warning(stderr):
+                    self._return_code = self.WARNING
+                else:
+                    self._return_code = self.ERROR
+
                 self._log(stderr)
 
             if stdout:
@@ -123,12 +130,19 @@ class YoutubeDLDownloader(object):
             self._proc.kill()
             self._return_code = self.STOPPED
 
+    def _is_warning(self, stderr):
+        return stderr.split(':')[0] == 'WARNING'
+
     def _last_data_hook(self):
         """Set the last data information based on the return code. """
         if self._return_code == self.OK:
             self._data['status'] = 'Finished'
         elif self._return_code == self.ERROR:
             self._data['status'] = 'Error'
+            self._data['speed'] = ''
+            self._data['eta'] = ''
+        elif self._return_code == self.WARNING:
+            self._data['status'] = 'Warning'
             self._data['speed'] = ''
             self._data['eta'] = ''
         elif self._return_code == self.STOPPED:

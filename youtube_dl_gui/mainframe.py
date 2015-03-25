@@ -68,7 +68,7 @@ class MainFrame(wx.Frame):
 
     """
 
-    BUTTONS_SIZE = (90, 30)
+    BUTTONS_SIZE = (-1, 30)
     BUTTONS_SPACE = (80, -1)
     SIZE_20 = 20
     SIZE_10 = 10
@@ -152,6 +152,8 @@ class MainFrame(wx.Frame):
 
         self._status_bar = self._create_statictext(self.WELCOME_MSG)
 
+        self._set_buttons_width()
+
         # Bind extra events
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
@@ -175,6 +177,27 @@ class MainFrame(wx.Frame):
 
         """
         Publisher.subscribe(handler, topic)
+
+    def _set_buttons_width(self):
+        """Re-adjust buttons size on runtime so that all buttons
+        look the same. """
+        widths = [
+            self._download_btn.GetSize()[0],
+            self._update_btn.GetSize()[0],
+            self._options_btn.GetSize()[0],
+        ]
+
+        max_width = -1
+
+        for item in widths:
+            if item > max_width:
+                max_width = item
+
+        self._download_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+        self._update_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+        self._options_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+
+        self._panel.Layout()
 
     def _create_statictext(self, label):
         statictext = wx.StaticText(self._panel, label=label)

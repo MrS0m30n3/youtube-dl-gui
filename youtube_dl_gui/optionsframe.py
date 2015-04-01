@@ -1245,7 +1245,7 @@ class GeneralTab(TabPanel):
 
     """
 
-    BUTTONS_SIZE = (110, 40)
+    BUTTONS_SIZE = (110, 35)
 
     ABOUT_LABEL = _("About")
     OPEN_LABEL = _("Open")
@@ -1287,7 +1287,7 @@ class GeneralTab(TabPanel):
         buttons_sizer.Add(self.reset_button)
         main_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
-        main_sizer.AddSpacer(self.SIZE_30)
+        main_sizer.AddSpacer(self.SIZE_20)
         main_sizer.Add(self.cfg_file_dir, flag=wx.ALIGN_CENTER_HORIZONTAL)
 
         self.SetSizer(main_sizer)

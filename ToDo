@@ -1,4 +1,3 @@
-* New layout for MainFrame
-* Redesign options Window
+* New gui design
 * Add context menu (issue #16)
 * Use import instead of subprocess

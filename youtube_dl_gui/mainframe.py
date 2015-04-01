@@ -69,7 +69,7 @@ class MainFrame(wx.Frame):
         parent (wx.Window): Frame parent.
 
     """
-    wxEVT_TEXT_PASTE = 10212
+    wxEVT_TEXT_PASTE = 'wxClipboardTextEvent'
 
     BUTTONS_SIZE = (-1, 30)
     BUTTONS_SPACE = (80, -1)
@@ -426,7 +426,7 @@ class MainFrame(wx.Frame):
         click of the mouse.
 
         """
-        if event.GetEventType() == self.wxEVT_TEXT_PASTE:
+        if event.ClassName == self.wxEVT_TEXT_PASTE:
             self._paste_from_clipboard()
         else:
             wx.TheClipboard.UsePrimarySelection(True)

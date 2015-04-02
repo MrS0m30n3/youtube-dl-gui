@@ -469,6 +469,7 @@ class MainFrame(wx.Frame):
 
         """
         self._options_frame.load_all_options()
+        self._options_frame.CenterOnParent()
         self._options_frame.Show()
 
     def _on_close(self, event):

@@ -140,8 +140,6 @@ class MainFrame(wx.Frame):
 
         # Create options frame
         self._options_frame = OptionsFrame(self)
-        if self.opt_manager.options['opts_win_position'] == wx.Point(-1, -1):
-            self._options_frame.CenterOnParent()
 
         # Create components
         self._panel = wx.Panel(self)
@@ -473,6 +471,9 @@ class MainFrame(wx.Frame):
 
         """
         self._options_frame.load_all_options()
+        if self.opt_manager.options['opts_win_position'] == wx.Point(-1, -1):
+            self._options_frame.CenterOnParent()
+            self.opt_manager.options['opts_win_position'] = self._options_frame.GetPosition()
         self._options_frame.Show()
 
     def _on_close(self, event):

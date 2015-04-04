@@ -131,6 +131,8 @@ class MainFrame(wx.Frame):
         self.update_thread = None
         self.app_icon = get_icon_file()
 
+        self.Centre()
+
         # Create the app icon
         if self.app_icon is not None:
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
@@ -138,6 +140,8 @@ class MainFrame(wx.Frame):
 
         # Create options frame
         self._options_frame = OptionsFrame(self)
+        if self.opt_manager.options['opts_win_position'] == wx.Point(-1, -1):
+            self._options_frame.CenterOnParent()
 
         # Create components
         self._panel = wx.Panel(self)
@@ -469,7 +473,6 @@ class MainFrame(wx.Frame):
 
         """
         self._options_frame.load_all_options()
-        self._options_frame.CenterOnParent()
         self._options_frame.Show()
 
     def _on_close(self, event):
@@ -490,6 +493,7 @@ class MainFrame(wx.Frame):
         # Store main-options frame size
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
+        self.opt_manager.options['opts_win_position'] = self._options_frame.GetPosition()
 
         self._options_frame.save_all_options()
         self.opt_manager.save_to_file()

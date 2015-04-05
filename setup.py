@@ -128,6 +128,9 @@ def normal_setup():
         set_locale_files(data_files)
 
         params = {'data_files': data_files}
+    elif sys.platform == 'darwin':
+        create_scripts()
+        params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
     else:
         # Create all the hicolor icons
         for index, size in enumerate(ICONS_SIZES):

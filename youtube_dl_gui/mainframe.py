@@ -471,9 +471,6 @@ class MainFrame(wx.Frame):
 
         """
         self._options_frame.load_all_options()
-        if self.opt_manager.options['opts_win_position'] == wx.Point(-1, -1):
-            self._options_frame.CenterOnParent()
-            self.opt_manager.options['opts_win_position'] = self._options_frame.GetPosition()
         self._options_frame.Show()
 
     def _on_close(self, event):
@@ -494,7 +491,6 @@ class MainFrame(wx.Frame):
         # Store main-options frame size
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
-        self.opt_manager.options['opts_win_position'] = self._options_frame.GetPosition()
 
         self._options_frame.save_all_options()
         self.opt_manager.save_to_file()

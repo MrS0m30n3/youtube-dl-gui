@@ -196,8 +196,6 @@ class OptionsManager(object):
                 If window becomes to small the program will reset its size.
                 See _settings_are_valid method MIN_FRAME_SIZE.
 
-            opts_win_position (tuple): Options window position.
-
         """
         self.options = {
             'save_path': os.path.expanduser('~'),
@@ -244,7 +242,6 @@ class OptionsManager(object):
             'locale_name': 'en_US',
             'main_win_size': (700, 490),
             'opts_win_size': (640, 270),
-            'opts_win_position': (-1, -1)
         }
 
     def load_from_file(self):
@@ -303,7 +300,6 @@ class OptionsManager(object):
         # Decode string formatted tuples back to normal tuples
         settings_dictionary['main_win_size'] = decode_tuple(settings_dictionary['main_win_size'])
         settings_dictionary['opts_win_size'] = decode_tuple(settings_dictionary['opts_win_size'])
-        settings_dictionary['opts_win_position'] = decode_tuple(settings_dictionary['opts_win_position'])
 
         for key in self.options:
             if key not in settings_dictionary:
@@ -353,7 +349,6 @@ class OptionsManager(object):
         # Encode normal tuples to string formatted tuples
         temp_options['main_win_size'] = encode_tuple(temp_options['main_win_size'])
         temp_options['opts_win_size'] = encode_tuple(temp_options['opts_win_size'])
-        temp_options['opts_win_position'] = encode_tuple(temp_options['opts_win_position'])
 
         return temp_options
 

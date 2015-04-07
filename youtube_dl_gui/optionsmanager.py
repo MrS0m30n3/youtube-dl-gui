@@ -241,7 +241,7 @@ class OptionsManager(object):
             'workers_number': 3,
             'locale_name': 'en_US',
             'main_win_size': (700, 490),
-            'opts_win_size': (640, 270),
+            'opts_win_size': (640, 270)
         }
 
     def load_from_file(self):

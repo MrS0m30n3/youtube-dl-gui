@@ -62,10 +62,15 @@ LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.l
 
 
 def create_scripts():
-    if not os.path.exists('build/_scripts/'):
-        os.makedirs('build/_scripts')
+    dest_dir = os.path.join('build', '_scripts')
 
-    shutil.copyfile('youtube_dl_gui/__main__.py', 'build/_scripts/youtube-dl-gui')
+    dest_file = os.path.join(dest_dir, 'youtube-dl-gui')
+    src_file = os.path.join('youtube_dl_gui', '__main__.py')
+
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    shutil.copyfile(src_file, dest_file)
 
 
 def set_locale_files(data_files):
@@ -85,6 +90,8 @@ def set_locale_files(data_files):
 
 
 def py2exe_setup():
+    create_scripts()
+
     py2exe_dependencies = [
         'C:\\Windows\\System32\\ffmpeg.exe',
         'C:\\Windows\\System32\\ffprobe.exe',
@@ -105,7 +112,7 @@ def py2exe_setup():
     }
 
     py2exe_windows = {
-        'script': 'youtube_dl_gui\\__main__.py',
+        'script': 'build\\_scripts\\youtube-dl-gui',
         'icon_resources': [(0, 'youtube_dl_gui\\icons\\youtube-dl-gui.ico')]
     }
 

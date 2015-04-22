@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleIconFile</key>
+	<string>YoutubeDlGui.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Download your youtube videos via GUI</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.github.youtube-dl-gui</string>
+	<key>CFBundleExecutable</key>
+	<string>YoutubeDlGui</string>
+</dict>
+</plist>

@@ -59,6 +59,7 @@ LOCALE_PATH = os.path.join('youtube_dl_gui', 'locale')
 PY2EXE_LOCALE_DIR = 'locale'
 WIN_LOCALE_DIR = os.path.join(get_python_lib(), 'youtube_dl_gui', 'locale')
 LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.lower())
+OSX_LOCALE_DIR = '/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__)
 
 
 def create_scripts():
@@ -83,6 +84,8 @@ def set_locale_files(data_files):
             dst = os.path.join(PY2EXE_LOCALE_DIR, locale_lang)
         elif os.name == 'nt':
             dst = os.path.join(WIN_LOCALE_DIR, locale_lang)
+        elif sys.platform == 'darwin':
+            dst = os.path.join(OSX_LOCALE_DIR, locale_lang)
         else:
             dst = os.path.join(LINUX_LOCALE_DIR, locale_lang)
 
@@ -135,6 +138,10 @@ def normal_setup():
         set_locale_files(data_files)
 
         params = {'data_files': data_files}
+    elif sys.platform == 'darwin':
+        create_scripts()
+        set_locale_files(data_files)
+        params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
     else:
         # Create all the hicolor icons
         for index, size in enumerate(ICONS_SIZES):

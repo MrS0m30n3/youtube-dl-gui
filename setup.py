@@ -59,13 +59,19 @@ LOCALE_PATH = os.path.join('youtube_dl_gui', 'locale')
 PY2EXE_LOCALE_DIR = 'locale'
 WIN_LOCALE_DIR = os.path.join(get_python_lib(), 'youtube_dl_gui', 'locale')
 LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.lower())
+OSX_LOCALE_DIR = '/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__)
 
 
 def create_scripts():
-    if not os.path.exists('build/_scripts/'):
-        os.makedirs('build/_scripts')
+    dest_dir = os.path.join('build', '_scripts')
 
-    shutil.copyfile('youtube_dl_gui/__main__.py', 'build/_scripts/youtube-dl-gui')
+    dest_file = os.path.join(dest_dir, 'youtube-dl-gui')
+    src_file = os.path.join('youtube_dl_gui', '__main__.py')
+
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+
+    shutil.copyfile(src_file, dest_file)
 
 
 def set_locale_files(data_files):
@@ -78,6 +84,8 @@ def set_locale_files(data_files):
             dst = os.path.join(PY2EXE_LOCALE_DIR, locale_lang)
         elif os.name == 'nt':
             dst = os.path.join(WIN_LOCALE_DIR, locale_lang)
+        elif sys.platform == 'darwin':
+            dst = os.path.join(OSX_LOCALE_DIR, locale_lang)
         else:
             dst = os.path.join(LINUX_LOCALE_DIR, locale_lang)
 
@@ -85,6 +93,8 @@ def set_locale_files(data_files):
 
 
 def py2exe_setup():
+    create_scripts()
+
     py2exe_dependencies = [
         'C:\\Windows\\System32\\ffmpeg.exe',
         'C:\\Windows\\System32\\ffprobe.exe',
@@ -105,7 +115,7 @@ def py2exe_setup():
     }
 
     py2exe_windows = {
-        'script': 'youtube_dl_gui\\__main__.py',
+        'script': 'build\\_scripts\\youtube-dl-gui',
         'icon_resources': [(0, 'youtube_dl_gui\\icons\\youtube-dl-gui.ico')]
     }
 
@@ -130,6 +140,7 @@ def normal_setup():
         params = {'data_files': data_files}
     elif sys.platform == 'darwin':
         create_scripts()
+        set_locale_files(data_files)
         params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
     else:
         # Create all the hicolor icons

@@ -62,6 +62,8 @@ class OptionsFrame(wx.Frame):
         if self.app_icon is not None:
             self.SetIcon(self.app_icon)
 
+        self._was_shown = False
+
         # Create GUI
         panel = wx.Panel(self)
         notebook = wx.Notebook(panel)
@@ -122,6 +124,14 @@ class OptionsFrame(wx.Frame):
         from each tab. """
         for tab, _ in self.tabs:
             tab.save_options()
+
+    def Show(self, *args, **kwargs):
+        # CenterOnParent can't go to main frame's __init__ as main frame may change
+        # own position and options frame won't be centered on main frame anymore.
+        if not self._was_shown:
+            self._was_shown = True
+            self.CenterOnParent()
+        return wx.Frame.Show(self, *args, **kwargs)
 
 
 class TabPanel(wx.Panel):
@@ -1387,7 +1397,8 @@ class LocalizationTab(TabPanel):
         ('en_US', 'English'),
         ('fr_FR', 'French'),
         ('de_DE', 'German'),
-        ('ar_AR', 'Arabic')
+        ('ar_AR', 'Arabic'),
+        ('pt_BR', 'Portuguese (BRAZIL)')
     ])
 
     RESTART_LABEL = _("Restart")

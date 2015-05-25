@@ -131,6 +131,8 @@ class MainFrame(wx.Frame):
         self.update_thread = None
         self.app_icon = get_icon_file()
 
+        self.Center()
+
         # Create the app icon
         if self.app_icon is not None:
             self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
@@ -465,7 +467,7 @@ class MainFrame(wx.Frame):
         """Event handler of the self._options_btn widget.
 
         This method is used when the options button is pressed to show
-        the optios window.
+        the options window.
 
         """
         self._options_frame.load_all_options()

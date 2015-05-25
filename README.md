@@ -11,7 +11,10 @@ written in wxPython.
 ![Options window](http://i.imgur.com/eShdoLD.png)
 
 ## INSTALLATION
-**Linux**: sudo python setup.py install
+
+**Linux-source**: sudo python setup.py install
+
+**Linux-pypi**: sudo pip install youtube-dlg
 
 Then you can call youtube-dlg from the command line
 using "youtube-dl-gui" command or by creating a desktop launcher

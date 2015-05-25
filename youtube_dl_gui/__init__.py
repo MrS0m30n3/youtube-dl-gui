@@ -75,6 +75,5 @@ def main():
     """The real main. Creates and calls the main app windows. """
     app = wx.App()
     frame = MainFrame(opt_manager, log_manager)
-    frame.Centre()
     frame.Show()
     app.MainLoop()

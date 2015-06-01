@@ -38,7 +38,7 @@ See https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/locale_build/HOWTO.m
 [wxPython](http://wxpython.org)
 
 [FFMPEG & FFPROBE](http://www.ffmpeg.org)
-**Optional (In order to conver video files to audio-only files)
+**Optional (In order to convert video files to audio-only files)
 
 ## PROJECT HOMEPAGE
 

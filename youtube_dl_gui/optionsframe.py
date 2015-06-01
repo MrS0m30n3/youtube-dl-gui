@@ -669,14 +669,14 @@ class ConnectionTab(TabPanel):
     def load_options(self):
         self.proxy_box.SetValue(self.opt_manager.options['proxy'])
         self.referer_box.SetValue(self.opt_manager.options['referer'])
-        self.maxsimdls_spinctrl.SetValue(self.opt_manager.options['max_downloads'])
+        self.maxsimdls_spinctrl.SetValue(self.opt_manager.options['workers_number'])
         self.retries_spinctrl.SetValue(self.opt_manager.options['retries'])
         self.useragent_box.SetValue(self.opt_manager.options['user_agent'])
 
     def save_options(self):
         self.opt_manager.options['proxy'] = self.proxy_box.GetValue()
         self.opt_manager.options['referer'] = self.referer_box.GetValue()
-        self.opt_manager.options['max_downloads'] = self.maxsimdls_spinctrl.GetValue()
+        self.opt_manager.options['workers_number'] = self.maxsimdls_spinctrl.GetValue()
         self.opt_manager.options['retries'] = self.retries_spinctrl.GetValue()
         self.opt_manager.options['user_agent'] = self.useragent_box.GetValue()
 

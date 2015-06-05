@@ -47,13 +47,15 @@ msgstr "Add the translation here"
 ### BUILD
 1. To build the MO file you need to run the corresponding build script for your OS
    
-   **Windows**: build_locale.**bat** 
+   **Windows**: build_locale.bat
    
-   **Linux**: build_locale.**sh**
+   **Linux**: build_locale.sh
+
+   **Usage**
+   
+   `build_locale.<sh-bat> <language code> <translated PO file>`
 
    **Example**
-   
-   Usage: `build_locale.sh <language code> <translated PO file>`
    
    `./build_locale.sh gr_GR gr.po`
    

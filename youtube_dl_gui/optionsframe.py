@@ -636,17 +636,23 @@ class ConnectionTab(TabPanel):
 
         vertical_sizer.AddSpacer(self.SIZE_10)
 
+        top_hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
+	
+	retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        retries_sizer.Add(self.retries_text)
+        retries_sizer.AddSpacer(self.SIZE_5)
+        retries_sizer.Add(self.retries_spinctrl)
+
         maxsimdls_sizer = wx.BoxSizer(wx.HORIZONTAL)
         maxsimdls_sizer.Add(self.maxsimdls_text)
         maxsimdls_sizer.AddSpacer(self.SIZE_5)
         maxsimdls_sizer.Add(self.maxsimdls_spinctrl)
-        vertical_sizer.Add(maxsimdls_sizer)
 
-        retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        retries_sizer.Add(self.retries_text)
-        retries_sizer.AddSpacer(self.SIZE_5)
-        retries_sizer.Add(self.retries_spinctrl)
-        vertical_sizer.Add(retries_sizer)
+	top_hor_sizer.Add(retries_sizer)
+	top_hor_sizer.AddSpacer(self.SIZE_20)
+	top_hor_sizer.Add(maxsimdls_sizer)
+
+        vertical_sizer.Add(top_hor_sizer)
 
         vertical_sizer.AddSpacer(self.SIZE_10)
         vertical_sizer.Add(self.useragent_text)

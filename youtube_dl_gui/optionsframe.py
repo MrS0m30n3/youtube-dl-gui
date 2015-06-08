@@ -607,7 +607,7 @@ class ConnectionTab(TabPanel):
 
     SPINCTRL_SIZE = (60, -1)
 
-    MAXSIMDLS_LABEL = _("Max. Simultaneous Downloads")
+    MAXSIMDLS_LABEL = _("Max Simultaneous Downloads")
     RETRIES_LABEL = _("Retries")
     USERAGENT_LABEL = _("User Agent")
     REF_LABEL = _("Referer")

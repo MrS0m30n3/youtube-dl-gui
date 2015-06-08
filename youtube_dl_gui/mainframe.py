@@ -6,6 +6,7 @@
 from __future__ import unicode_literals
 
 import gettext
+from os import name as os_name
 
 import wx
 from wx.lib.pubsub import setuparg1
@@ -217,6 +218,16 @@ class MainFrame(wx.Frame):
         if event_handler is not None:
             textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
             textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
+
+        if os_name == 'nt':
+            # Enable CTRL+A on Windows
+            def win_ctrla_eventhandler(event):
+                if event.GetKeyCode() == wx.WXK_CONTROL_A:
+                    event.GetEventObject().SelectAll()
+
+                event.Skip()
+
+            textctrl.Bind(wx.EVT_CHAR, win_ctrla_eventhandler)
 
         return textctrl
 

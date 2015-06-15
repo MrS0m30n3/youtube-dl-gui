@@ -50,12 +50,8 @@ msgid "Welcome"
 msgstr "Bienvenido"
 
 #: mainframe.py:88
-msgid ""
-"Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) "
-"{4} second(s)"
-msgstr ""
-"{0} url(s) descargadas exitosamente en {1} día(s) {2} hora(s) {3} minuto(s) "
-"{4} segundo(s)"
+msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "{0} url(s) descargadas exitosamente en {1} día(s) {2} hora(s) {3} minuto(s) {4} segundo(s)"
 
 #: mainframe.py:90
 msgid "Download completed"

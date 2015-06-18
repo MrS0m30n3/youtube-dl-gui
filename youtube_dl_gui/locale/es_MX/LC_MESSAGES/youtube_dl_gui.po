@@ -207,7 +207,7 @@ msgstr "Reiniciar"
 
 #: optionsframe.py:382
 msgid "Please restart {0}"
-msgstr "Reinicia, por favor {0}"
+msgstr "Por favor, reinicia {0}"
 
 #: optionsframe.py:490
 msgid "Shutdown when finished"

@@ -359,6 +359,24 @@ class TabPanel(wx.Panel):
         """
         pass
 
+    def _auto_buttons_width(self, *buttons):
+        """Re-adjust *buttons width so that all the buttons have the same
+        width and all the labels fit on their buttons. """
+
+        max_width = -1
+
+        widths = [button.GetSize()[0] for button in buttons]
+
+        for current_width in widths:
+            if current_width > max_width:
+                max_width = current_width
+
+        for button in buttons:
+            button.SetMinSize((max_width, button.GetSize()[1]))
+
+        self.Layout()
+
+
     def load_options(self):
         """Load options from the optionsmanager.OptionsManager object
         to the current tab. """
@@ -398,6 +416,8 @@ class LogTab(TabPanel):
 
         self.log_path = self.create_statictext(self.PATH_LABEL.format(self._get_logpath()))
         self.log_size = self.create_statictext(self.LOGSIZE_LABEL.format(self._get_logsize()))
+
+        self._auto_buttons_width(self.clear_button, self.view_button)
 
         self._set_sizer()
         self._disable_items()

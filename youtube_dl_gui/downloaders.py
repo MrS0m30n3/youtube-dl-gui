@@ -34,8 +34,8 @@ class YoutubeDLDownloader(object):
         data_hook (function): Optional callback function to retrieve download
             process data.
 
-        log_manager (logmanager.LogManager): Object responsible for writing
-            errors to the log.
+        log_data (function): Optional callback function to write data to
+            the log file.
 
     Note:
         For available data keys check self._data under __init__().
@@ -61,10 +61,10 @@ class YoutubeDLDownloader(object):
     FILESIZE_ABORT = 4
     WARNING = 5
 
-    def __init__(self, youtubedl_path, data_hook=None, log_manager=None):
+    def __init__(self, youtubedl_path, data_hook=None, log_data=None):
         self.youtubedl_path = youtubedl_path
-        self.log_manager = log_manager
         self.data_hook = data_hook
+        self.log_data = log_data
 
         self._return_code = 0
         self._proc = None
@@ -200,9 +200,9 @@ class YoutubeDLDownloader(object):
             self._data[key] = data[key]
 
     def _log(self, data):
-        """Log data using log_manager. """
-        if self.log_manager is not None:
-            self.log_manager.log(data)
+        """Log data using the callback function. """
+        if self.log_data is not None:
+            self.log_data(data)
 
     def _hook_data(self):
         """Pass self._data back to the data_hook. """

@@ -23,7 +23,11 @@ from __future__ import unicode_literals
 
 import time
 import os.path
-from threading import Thread
+
+from threading import (
+    Thread,
+    Lock
+)
 
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1
@@ -72,7 +76,9 @@ class DownloadManager(Thread):
         self._successful = 0
         self._running = True
 
-        wparams = (opt_manager, self._youtubedl_path(), log_manager)
+        # Init the custom workers thread pool
+        log_lock = None if log_manager is None else Lock()
+        wparams = (opt_manager, self._youtubedl_path(), log_manager, log_lock)
         self._workers = [Worker(*wparams) for i in xrange(opt_manager.options['workers_number'])]
 
         self.start()
@@ -210,15 +216,21 @@ class Worker(Thread):
         log_manager (logmanager.LogManager): Check DownloadManager
             description.
 
+        log_lock (threading.Lock): Synchronization lock for the log_manager.
+            If the log_manager is set (not None) then the caller has to make
+            sure that the log_lock is also set.
+
     """
 
     WAIT_TIME = 0.1
 
-    def __init__(self, opt_manager, youtubedl, log_manager=None):
+    def __init__(self, opt_manager, youtubedl, log_manager=None, log_lock=None):
         super(Worker, self).__init__()
         self.opt_manager = opt_manager
+        self.log_manager = log_manager
+        self.log_lock = log_lock
 
-        self._downloader = YoutubeDLDownloader(youtubedl, self._data_hook, log_manager)
+        self._downloader = YoutubeDLDownloader(youtubedl, self._data_hook, self._log_data)
         self._options_parser = OptionsParser()
         self._running = True
         self._url = None
@@ -272,6 +284,21 @@ class Worker(Thread):
     def successful(self):
         """Return the number of successful downloads for current worker. """
         return self._successful
+
+    def _log_data(self, data):
+        """Callback method for self._downloader.
+
+        This method is used to write the given data in a synchronized way
+        to the log file using the self.log_manager and the self.log_lock.
+
+        Args:
+            data (string): String to write to the log file.
+
+        """
+        if self.log_manager is not None:
+            self.log_lock.acquire()
+            self.log_manager.log(data)
+            self.log_lock.release()
 
     def _data_hook(self, data):
         """Callback method to be used with the YoutubeDLDownloader object.

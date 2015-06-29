@@ -57,8 +57,14 @@ class LogManager(object):
         self._write('', 'w')
 
     def log(self, data):
-        """Log data to the log file. """
-        self._write(data + '\n', 'a')
+        """Log data to the log file.
+
+        Args:
+            data (string): String to write to the log file.
+
+        """
+        if isinstance(data, basestring):
+            self._write(data + '\n', 'a')
 
     def _write(self, data, mode):
         """Write data to the log file.

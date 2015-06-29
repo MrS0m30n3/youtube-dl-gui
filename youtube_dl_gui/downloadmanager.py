@@ -72,7 +72,9 @@ class DownloadManager(Thread):
         self._successful = 0
         self._running = True
 
-        self._workers = self._init_workers(opt_manager.options['workers_number'])
+        wparams = (opt_manager, self._youtubedl_path(), log_manager)
+        self._workers = [Worker(*wparams) for i in xrange(opt_manager.options['workers_number'])]
+
         self.start()
 
     @property
@@ -85,10 +87,6 @@ class DownloadManager(Thread):
         """Returns time(seconds) it took for the download process
         to complete. """
         return self._time_it_took
-
-    def increase_succ(self):
-        """Increase number of successful downloads. """
-        self._successful += 1
 
     def run(self):
         self._check_youtubedl()
@@ -108,6 +106,7 @@ class DownloadManager(Thread):
         for worker in self._workers:
             worker.close()
             worker.join()
+            self._successful += worker.successful
 
         self._time_it_took = time.time() - self._time_it_took
 
@@ -193,16 +192,6 @@ class DownloadManager(Thread):
         path = os.path.join(path, YOUTUBEDL_BIN)
         return path
 
-    def _init_workers(self, workers_number):
-        """Initialize the custom thread pool.
-
-        Returns:
-            Python list that contains the workers.
-
-        """
-        youtubedl = self._youtubedl_path()
-        return [Worker(self.opt_manager, youtubedl, self.increase_succ, self.log_manager) for i in xrange(workers_number)]
-
 
 class Worker(Thread):
 
@@ -218,9 +207,6 @@ class Worker(Thread):
 
         youtubedl (string): Absolute path to youtube-dl binary.
 
-        increase_succ (DownloadManager.increase_succ() method): Callback to
-            increase the number of successful downloads.
-
         log_manager (logmanager.LogManager): Check DownloadManager
             description.
 
@@ -228,9 +214,8 @@ class Worker(Thread):
 
     WAIT_TIME = 0.1
 
-    def __init__(self, opt_manager, youtubedl, increase_succ, log_manager=None):
+    def __init__(self, opt_manager, youtubedl, log_manager=None):
         super(Worker, self).__init__()
-        self.increase_succ = increase_succ
         self.opt_manager = opt_manager
 
         self._downloader = YoutubeDLDownloader(youtubedl, self._data_hook, log_manager)
@@ -238,6 +223,7 @@ class Worker(Thread):
         self._running = True
         self._url = None
         self._index = -1
+        self._successful = 0
 
         self.start()
 
@@ -249,7 +235,7 @@ class Worker(Thread):
 
                 if (ret_code == YoutubeDLDownloader.OK or
                         ret_code == YoutubeDLDownloader.ALREADY):
-                    self.increase_succ()
+                    self._successful += 1
 
                 # Reset url value
                 self._url = None
@@ -281,6 +267,11 @@ class Worker(Thread):
     def available(self):
         """Return True if the worker has no job else False. """
         return self._url is None
+
+    @property
+    def successful(self):
+        """Return the number of successful downloads for current worker. """
+        return self._successful
 
     def _data_hook(self, data):
         """Callback method to be used with the YoutubeDLDownloader object.

@@ -111,6 +111,9 @@ class DownloadManager(Thread):
         # Close all the workers
         for worker in self._workers:
             worker.close()
+
+        # Join and collect
+        for worker in self._workers:
             worker.join()
             self._successful += worker.successful
 
@@ -148,8 +151,6 @@ class DownloadManager(Thread):
         """
         self._talk_to_gui('closing')
         self._running = False
-        for worker in self._workers:
-            worker.stop_download()
 
     def add_url(self, url):
         """Add given url to the urls_list.

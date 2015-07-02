@@ -267,14 +267,14 @@ class TabPanel(wx.Panel):
 
         return combobox
 
-    def create_dirdialog(self, label):
+    def create_dirdialog(self, label, path=''):
         """Creates and returns an wx.DirDialog.
 
         Args:
             label (string): wx.DirDialog widget title.
 
         """
-        dlg = wx.DirDialog(self, label)
+        dlg = wx.DirDialog(self, label, path, wx.DD_CHANGE_DIR)
         return dlg
 
     def create_radiobutton(self, label, event_handler=None, style=None):
@@ -1328,7 +1328,7 @@ class GeneralTab(TabPanel):
 
     def _on_open(self, event):
         """Event handler of the self.open_button. """
-        dlg = self.create_dirdialog(self.PICK_DIR_LABEL)
+        dlg = self.create_dirdialog(self.PICK_DIR_LABEL, self.savepath_box.GetValue())
 
         if dlg.ShowModal() == wx.ID_OK:
             self.savepath_box.SetValue(dlg.GetPath())

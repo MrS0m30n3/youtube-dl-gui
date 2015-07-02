@@ -41,7 +41,7 @@ fi
 echo "[*]Building .MO files"
 
 for dir in $dirs; do
-    msgfmt --output-file "$dir/youtube_dl_gui.mo" "$dir/youtube_dl_gui.po"
+    msgfmt --use-fuzzy --output-file "$dir/youtube_dl_gui.mo" "$dir/youtube_dl_gui.po"
 done
 
 echo "[*]Done"

@@ -3,441 +3,442 @@
 # Snosi <fixall.dz@gmail.com>, 2015.
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.3.6\n"
-"POT-Creation-Date: 2015-03-09 18:21+EET\n"
-"PO-Revision-Date: 2015-03-19 17:39+0200\n"
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2015-07-02 15:31+EEST\n"
+"PO-Revision-Date: 2015-07-02 15:39+EEST\n"
 "Last-Translator: Snosi <fixall.dz@gmail.com>\n"
 "Language-Team: العربية <>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
 "X-Generator: Virtaal 0.7.1\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: mainframe.py:80
+#: mainframe.py:82
 msgid "URLs"
 msgstr "الرابط"
 
-#: mainframe.py:81
+#: mainframe.py:83
 msgid "Download"
 msgstr "بدأ التحميل"
 
-#: mainframe.py:82
+#: mainframe.py:84
 msgid "Update"
 msgstr "تحديث"
 
-#: mainframe.py:83 optionsframe.py:43
+#: mainframe.py:85 optionsframe.py:40
 msgid "Options"
 msgstr "الخيارات"
 
-#: mainframe.py:84
+#: mainframe.py:86
 msgid "Error"
 msgstr "خطأ"
 
-#: mainframe.py:85
+#: mainframe.py:87
 msgid "Stop"
 msgstr "إيقاف"
 
-#: mainframe.py:86
+#: mainframe.py:88
 msgid "Info"
 msgstr "معلومات"
 
-#: mainframe.py:87
+#: mainframe.py:89
 msgid "Welcome"
 msgstr "مرحباً"
 
-#: mainframe.py:88
+#: mainframe.py:90
 msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
 msgstr "إنتهاء التحميلات {0} رابط {1} يوم {2} ساعة {3} دقيقة {4} ثانية"
 
-#: mainframe.py:90
-msgid "Download completed"
+#: mainframe.py:92
+#, fuzzy
+msgid "Downloads completed"
 msgstr "إكتمال التحميل"
 
-#: mainframe.py:91
+#: mainframe.py:93
 msgid "Downloading {0} url(s)"
 msgstr "تحميل {0} رابط"
 
-#: mainframe.py:92
+#: mainframe.py:94
 msgid "Stopping downloads"
 msgstr "إيقاف التحميل"
 
-#: mainframe.py:93
+#: mainframe.py:95
 msgid "Downloads stopped"
 msgstr "تم إيقاف التحميل"
 
-#: mainframe.py:94
+#: mainframe.py:96
 msgid "You need to provide at least one url"
 msgstr "أدخل رابطا على الأقل"
 
-#: mainframe.py:95
-msgid "Download started"
+#: mainframe.py:97
+#, fuzzy
+msgid "Downloads started"
 msgstr "بدأ التحميل"
 
-#: mainframe.py:97
+#: mainframe.py:99
 msgid "Downloading latest youtube-dl. Please wait..."
 msgstr "تحديث محمل فيديوهات يوتيوب. يرجى الإنتظار..."
 
-#: mainframe.py:98
+#: mainframe.py:100
 msgid "Youtube-dl download failed [{0}]"
 msgstr "فشل تحديث محمل فيديوهات يوتيوب [{0}]"
 
-#: mainframe.py:99
+#: mainframe.py:101
 msgid "Youtube-dl downloaded correctly"
 msgstr "محمل فيديوهات يوتيوب محدث"
 
-#: mainframe.py:101
+#: mainframe.py:103
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
 msgstr "فعل لفتح الدليل : '{dir}'. المسار خاطئ"
 
-#: mainframe.py:103
+#: mainframe.py:105
 msgid "Error while shutting down. Make sure you typed the correct password"
 msgstr "تعذر إيقاف الجهاز . تأكد من كلمة المرور"
 
-#: mainframe.py:105
+#: mainframe.py:107
 msgid "Shutting down system"
 msgstr "إيقاف تشغيل النظام"
 
-#: mainframe.py:107
+#: mainframe.py:109
 msgid "Title"
 msgstr "العنوان"
 
-#: mainframe.py:108
+#: mainframe.py:110
 msgid "Size"
 msgstr "الحجم"
 
-#: mainframe.py:109
+#: mainframe.py:111
 msgid "Percent"
 msgstr "النِسبة"
 
-#: mainframe.py:110
+#: mainframe.py:112
 msgid "ETA"
 msgstr "الوقت المتبقي"
 
-#: mainframe.py:111
+#: mainframe.py:113
 msgid "Speed"
 msgstr "السرعة"
 
-#: mainframe.py:112
+#: mainframe.py:114
 msgid "Status"
 msgstr "الحالة"
 
-#: optionsframe.py:45
+#: optionsframe.py:42
 msgid "General"
 msgstr "عام"
 
-#: optionsframe.py:46
+#: optionsframe.py:43
 msgid "Video"
 msgstr "الفيديو"
 
-#: optionsframe.py:47
+#: optionsframe.py:44
 msgid "Audio"
 msgstr "الصوت"
 
-#: optionsframe.py:48
+#: optionsframe.py:45
 msgid "Playlist"
 msgstr "قائمة التشغيل"
 
-#: optionsframe.py:49
+#: optionsframe.py:46
 msgid "Output"
 msgstr "المخرجات"
 
-#: optionsframe.py:50
+#: optionsframe.py:47
 msgid "Subtitles"
 msgstr "الترجمة"
 
-#: optionsframe.py:51
+#: optionsframe.py:48
 msgid "Filesystem"
 msgstr "ملفات النظام"
 
-#: optionsframe.py:52
+#: optionsframe.py:49
 msgid "Shutdown"
 msgstr "إيقاف التشغيل"
 
-#: optionsframe.py:53
+#: optionsframe.py:50
 msgid "Authentication"
 msgstr "إستيثاق"
 
-#: optionsframe.py:54
+#: optionsframe.py:51
 msgid "Connection"
 msgstr "الإتصال"
 
-#: optionsframe.py:55
+#: optionsframe.py:52
 msgid "Log"
 msgstr "السِجِل"
 
-#: optionsframe.py:56
+#: optionsframe.py:53
 msgid "Commands"
 msgstr "أوامر"
 
-#: optionsframe.py:57
+#: optionsframe.py:54
 msgid "Localization"
 msgstr "اللغة"
 
-#: optionsframe.py:375
+#: optionsframe.py:400
 msgid "Enable Log"
 msgstr "فعّل السِجِل"
 
-#: optionsframe.py:376
+#: optionsframe.py:401
 msgid "Write Time"
 msgstr "كتابة الوقت"
 
-#: optionsframe.py:377
+#: optionsframe.py:402
 msgid "Clear Log"
 msgstr "إمسح السِجِل"
 
-#: optionsframe.py:378
+#: optionsframe.py:403
 msgid "View Log"
 msgstr "شاهد السِجِل"
 
-#: optionsframe.py:379
+#: optionsframe.py:404
 msgid "Path: {0}"
 msgstr "المسار: {0}"
 
-#: optionsframe.py:380
+#: optionsframe.py:405
 msgid "Log Size: {0} Bytes"
 msgstr "حجم السِجِل: {0} Octets"
 
-#: optionsframe.py:381 optionsframe.py:1394
+#: optionsframe.py:406 optionsframe.py:1425
 msgid "Restart"
 msgstr "إعادة التشغيل"
 
-#: optionsframe.py:382
+#: optionsframe.py:407
 msgid "Please restart {0}"
 msgstr "أعد التشغيل {0}"
 
-#: optionsframe.py:490
+#: optionsframe.py:517
 msgid "Shutdown when finished"
 msgstr "أوقف تشغيل النظام عند الإنتهاء"
 
-#: optionsframe.py:491
+#: optionsframe.py:518
 msgid "SUDO password"
 msgstr "كلمة مرور المسؤول"
 
-#: optionsframe.py:543
+#: optionsframe.py:570
 msgid "Playlist Start"
 msgstr "بدأ قائمة التشغيل"
 
-#: optionsframe.py:544
+#: optionsframe.py:571
 msgid "Playlist Stop"
 msgstr "إيقاف قائمة التشغيل"
 
-#: optionsframe.py:545
+#: optionsframe.py:572
 msgid "Max Downloads"
 msgstr "أقصى حد للتحميلات"
 
-#: optionsframe.py:603
+#: optionsframe.py:630
 msgid "Retries"
 msgstr "فحص"
 
-#: optionsframe.py:604
+#: optionsframe.py:631
 msgid "User Agent"
 msgstr "اسم العميل"
 
-#: optionsframe.py:605
+#: optionsframe.py:632
 msgid "Referer"
 msgstr "يدل"
 
-#: optionsframe.py:606
+#: optionsframe.py:633
 msgid "Proxy"
 msgstr "الخادم الوكيل"
 
-#: optionsframe.py:680
+#: optionsframe.py:707
 msgid "Username"
 msgstr "اسم المستخدم"
 
-#: optionsframe.py:681
+#: optionsframe.py:708
 msgid "Password"
 msgstr "كلمة المرور"
 
-#: optionsframe.py:682
+#: optionsframe.py:709
 msgid "Video Password (vimeo, smotri)"
 msgstr "كلمة المرور (vimeo, smotri)"
 
-#: optionsframe.py:740
+#: optionsframe.py:767
 msgid "high"
 msgstr "عالي"
 
-#: optionsframe.py:740
+#: optionsframe.py:767
 msgid "low"
 msgstr "منخفض"
 
-#: optionsframe.py:740
+#: optionsframe.py:767
 msgid "mid"
 msgstr "متوسط"
 
-#: optionsframe.py:743
+#: optionsframe.py:770
 msgid "Convert to Audio"
 msgstr "حول الى صوت"
 
-#: optionsframe.py:744
+#: optionsframe.py:771
 msgid "Keep Video"
 msgstr "فيديو"
 
-#: optionsframe.py:745
+#: optionsframe.py:772
 msgid "Audio Format"
 msgstr "صيغة الصوت"
 
-#: optionsframe.py:746
+#: optionsframe.py:773
 msgid "Audio Quality"
 msgstr "جودة الصوت"
 
-#: optionsframe.py:863
+#: optionsframe.py:890
 msgid "default"
 msgstr "مبدئي"
 
-#: optionsframe.py:864
+#: optionsframe.py:891
 msgid "none"
 msgstr "بدون"
 
-#: optionsframe.py:868
+#: optionsframe.py:895
 msgid "Video Format"
 msgstr "صيغة الفيديو"
 
-#: optionsframe.py:869
+#: optionsframe.py:896
 msgid "Mix Format"
 msgstr "خلط الصيغة"
 
-#: optionsframe.py:928
+#: optionsframe.py:955
 msgid "Restrict filenames (ASCII)"
 msgstr "حول الاسماء الى (ASCII)"
 
-#: optionsframe.py:929
+#: optionsframe.py:956
 msgid "ID as Name"
 msgstr "الإسم = الهوية"
 
-#: optionsframe.py:930
+#: optionsframe.py:957
 msgid "Title as Name"
 msgstr "الإسم = العنوان"
 
-#: optionsframe.py:931
+#: optionsframe.py:958
 msgid "Custom Template (youtube-dl)"
 msgstr "قالب مخصص"
 
-#: optionsframe.py:1025
+#: optionsframe.py:1052
 msgid "Ignore Errors"
 msgstr "تجاهل الأخطاء"
 
-#: optionsframe.py:1026
+#: optionsframe.py:1053
 msgid "Open destination folder"
 msgstr "افتح وجهة المجلد"
 
-#: optionsframe.py:1027
+#: optionsframe.py:1054
 msgid "Write info to (.json) file"
 msgstr "اكتب المعلومات في ملف (.json)"
 
-#: optionsframe.py:1028
+#: optionsframe.py:1055
 msgid "Write description to file"
 msgstr "اكتب الوصف"
 
-#: optionsframe.py:1029
+#: optionsframe.py:1056
 msgid "Write thumbnail to disk"
 msgstr "إحفظ المصغرات"
 
-#: optionsframe.py:1030
+#: optionsframe.py:1057
 msgid "Filesize"
 msgstr "حجم الملف"
 
-#: optionsframe.py:1031
+#: optionsframe.py:1058
 msgid "Min"
 msgstr "اقل"
 
-#: optionsframe.py:1032
+#: optionsframe.py:1059
 msgid "Max"
 msgstr "اقصى"
 
-#: optionsframe.py:1145
+#: optionsframe.py:1172
 msgid "English"
 msgstr "الانجليزية"
 
-#: optionsframe.py:1146
+#: optionsframe.py:1173
 msgid "Greek"
 msgstr "اليونانية"
 
-#: optionsframe.py:1147
+#: optionsframe.py:1174
 msgid "Portuguese"
 msgstr "البرتغالية"
 
-#: optionsframe.py:1148
+#: optionsframe.py:1175
 msgid "French"
 msgstr "الفرنسية"
 
-#: optionsframe.py:1149
+#: optionsframe.py:1176
 msgid "Italian"
 msgstr "الايطالية"
 
-#: optionsframe.py:1150
+#: optionsframe.py:1177
 msgid "Russian"
 msgstr "الروسية"
 
-#: optionsframe.py:1151
+#: optionsframe.py:1178
 msgid "Spanish"
 msgstr "الاسبانية"
 
-#: optionsframe.py:1152
+#: optionsframe.py:1179
 msgid "German"
 msgstr "الالمانية"
 
-#: optionsframe.py:1155
+#: optionsframe.py:1182
 msgid "Download subtitle file by language"
 msgstr "تحميل الترجمة حسب المرشح"
 
-#: optionsframe.py:1156
+#: optionsframe.py:1183
 msgid "Download all available subtitles"
 msgstr "تحميل كل الترجمات المتوفرة"
 
-#: optionsframe.py:1157
+#: optionsframe.py:1184
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
 msgstr "تحميل تلقائي للترجمة (يوتيوب فقط)"
 
-#: optionsframe.py:1158
-msgid "Embed subtitles in the video (only for mp4 videos)"
+#: optionsframe.py:1185
+#, fuzzy
+msgid "Embed subtitles in the video (only mp4 videos)"
 msgstr "اضف الترجمة للفيديو (mp4 فقط)"
 
-#: optionsframe.py:1159
+#: optionsframe.py:1186
 msgid "Subtitles Language"
 msgstr "لغة الترجمة"
 
-#: optionsframe.py:1253
+#: optionsframe.py:1280
 msgid "About"
 msgstr "عن"
 
-#: optionsframe.py:1254
+#: optionsframe.py:1281
 msgid "Open"
 msgstr "فتح"
 
-#: optionsframe.py:1255
+#: optionsframe.py:1282
 msgid "Reset Options"
 msgstr "إعادة تعين"
 
-#: optionsframe.py:1256
+#: optionsframe.py:1283
 msgid "Save Path"
 msgstr "حفظ المسار"
 
-#: optionsframe.py:1257
+#: optionsframe.py:1284
 msgid "Settings File: {0}"
 msgstr "خيارات الملف : {0}"
 
-#: optionsframe.py:1258
+#: optionsframe.py:1285
 msgid "Choose Directory"
 msgstr "اختيار الوجهة"
 
-#: optionsframe.py:1343
+#: optionsframe.py:1370
 msgid "Command line arguments (e.g. --help)"
 msgstr "معطيات سطر الاوامر (e.g. --help)"
 
-#: optionsframe.py:1395
+#: optionsframe.py:1426
 msgid "Localization Language"
 msgstr "اللغة"
 
-#: optionsframe.py:1396
+#: optionsframe.py:1427
 msgid "In order for the changes to take effect please restart {0}"
 msgstr "لتصبح التغييرات سارية المفعول أعد تشغيل {0}"
 
-#: optionsframe.py:1443
+#: optionsframe.py:1474
 msgid "Log Viewer"
 msgstr "عارض السجل"
-

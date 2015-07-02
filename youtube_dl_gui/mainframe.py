@@ -89,12 +89,12 @@ class MainFrame(wx.Frame):
     WELCOME_MSG = _("Welcome")
     SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
-    DL_COMPLETED_MSG = _("Download completed")
+    DL_COMPLETED_MSG = _("Downloads completed")
     URL_REPORT_MSG = _("Downloading {0} url(s)")
     CLOSING_MSG = _("Stopping downloads")
     CLOSED_MSG = _("Downloads stopped")
     PROVIDE_URL_MSG = _("You need to provide at least one url")
-    DOWNLOAD_STARTED = _("Download started")
+    DOWNLOAD_STARTED = _("Downloads started")
 
     UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")

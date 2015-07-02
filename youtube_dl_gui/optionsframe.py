@@ -1182,7 +1182,7 @@ class SubtitlesTab(TabPanel):
     DL_SUBS_LABEL = _("Download subtitle file by language")
     DL_ALL_SUBS_LABEL = _("Download all available subtitles")
     DL_AUTO_SUBS_LABEL = _("Download automatic subtitle file (YOUTUBE ONLY)")
-    EMBED_SUBS_LABEL = _("Embed subtitles in the video (only for mp4 videos)")
+    EMBED_SUBS_LABEL = _("Embed subtitles in the video (only mp4 videos)")
     SUBS_LANG_LABEL = _("Subtitles Language")
 
     def __init__(self, *args, **kwargs):

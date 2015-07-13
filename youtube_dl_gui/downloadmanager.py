@@ -255,6 +255,9 @@ class Worker(Thread):
 
             time.sleep(self.WAIT_TIME)
 
+        # Call the destructor function of YoutubeDLDownloader object
+        self._downloader.close()
+
     def download(self, item):
         """Download given item.
 

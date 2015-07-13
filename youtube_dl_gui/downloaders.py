@@ -17,6 +17,7 @@ from __future__ import unicode_literals
 import os
 import sys
 import locale
+import signal
 import subprocess
 
 from time import sleep
@@ -188,7 +189,14 @@ class YoutubeDLDownloader(object):
     def stop(self):
         """Stop the download process and set return code to STOPPED. """
         if self._proc_is_alive():
-            self._proc.kill()
+
+            if os.name == 'nt':
+                # os.killpg is not available on Windows
+                # See: https://bugs.python.org/issue5115
+                self._proc.kill()
+            else:
+                os.killpg(self._proc.pid, signal.SIGKILL)
+
             self._return_code = self.STOPPED
 
     def close(self):
@@ -316,12 +324,16 @@ class YoutubeDLDownloader(object):
             cmd (list): Python list that contains the command to execute.
 
         """
-        encoding = info = None
+        encoding = info = preexec = None
 
-        # Hide subprocess window on Windows
         if os.name == 'nt':
+            # Hide subprocess window
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        else:
+            # Make subprocess the process group leader
+            # in order to kill the whole process group with os.killpg
+            preexec = os.setsid
 
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
@@ -334,6 +346,7 @@ class YoutubeDLDownloader(object):
         self._proc = subprocess.Popen(cmd,
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE,
+                                      preexec_fn = preexec,
                                       startupinfo=info)
 
 

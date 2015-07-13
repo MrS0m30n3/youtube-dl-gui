@@ -420,6 +420,19 @@ def extract_data(stdout):
         if stdout[-1] == 'Aborting.':
             data_dictionary['status'] = 'Filesize Abort'
 
+    elif stdout[0] == '[hlsnative]':
+        # native hls extractor
+        # see: https://github.com/rg3/youtube-dl/blob/master/youtube_dl/downloader/hls.py#L54
+        data_dictionary['status'] = 'Downloading'
+
+        if len(stdout) == 7:
+            segment_no = float(stdout[6])
+            current_segment = float(stdout[4])
+
+            # Get the percentage
+            percent = '{0:.1f}%'.format(current_segment / segment_no * 100)
+            data_dictionary['percent'] = percent
+
     elif stdout[0] == '[ffmpeg]':
         data_dictionary['status'] = 'Post Processing'
 

@@ -399,6 +399,8 @@ def extract_data(stdout):
             if stdout[1] == '100%':
                 data_dictionary['speed'] = ''
                 data_dictionary['eta'] = ''
+                data_dictionary['percent'] = '100%'
+                data_dictionary['filesize'] = stdout[3]
             else:
                 data_dictionary['percent'] = stdout[1]
                 data_dictionary['filesize'] = stdout[3]

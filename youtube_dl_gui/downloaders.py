@@ -73,8 +73,11 @@ class YoutubeDLDownloader(object):
     """Python class for downloading videos using youtube-dl & subprocess.
 
     Attributes:
-        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT, WARNING (int): 'Random'
-        integers that describe the return code from the download() method.
+        OK, ERROR, STOPPED, ALREADY, FILESIZE_ABORT, WARNING (int): Integers
+            that describe the return code from the download() method. The
+            larger the number the higher is the hierarchy of the code.
+            Codes with smaller hierachy cannot overwrite codes with higher
+            hierarchy.
 
     Args:
         youtubedl_path (string): Absolute path to youtube-dl binary.
@@ -108,18 +111,18 @@ class YoutubeDLDownloader(object):
     """
 
     OK = 0
-    ERROR = 1
-    STOPPED = 2
-    ALREADY = 3
-    FILESIZE_ABORT = 4
-    WARNING = 5
+    WARNING = 1
+    ERROR = 2
+    FILESIZE_ABORT = 3
+    ALREADY = 4
+    STOPPED = 5
 
     def __init__(self, youtubedl_path, data_hook=None, log_data=None):
         self.youtubedl_path = youtubedl_path
         self.data_hook = data_hook
         self.log_data = log_data
 
-        self._return_code = 0
+        self._return_code = self.OK
         self._proc = None
         self._data = {
             'playlist_index': None,
@@ -144,15 +147,15 @@ class YoutubeDLDownloader(object):
 
         Returns:
             An integer that shows the status of the download process.
-            Right now we support 6 different return codes.
+            There are 6 different return codes.
 
             OK (0): The download process completed successfully.
-            ERROR (1): An error occured during the download process.
-            STOPPED (2): The download process was stopped from the user.
-            ALREADY (3): The given url is already downloaded.
-            FILESIZE_ABORT (4): The corresponding url video file was larger or
-                smaller from the given options filesize limit.
-            WARNING (5): A warning occured during the download process.
+            WARNING (1): A warning occured during the download process.
+            ERROR (2): An error occured during the download process.
+            FILESIZE_ABORT (3): The corresponding url video file was larger or
+                smaller from the given filesize limit.
+            ALREADY (4): The given url is already downloaded.
+            STOPPED (5): The download process was stopped by the user.
 
         """
         self._reset()
@@ -176,11 +179,10 @@ class YoutubeDLDownloader(object):
 
             self._log(stderr)
 
-            if self._return_code != self.STOPPED:
-                if self._is_warning(stderr):
-                    self._return_code = self.WARNING
-                else:
-                    self._return_code = self.ERROR
+            if self._is_warning(stderr):
+                self._set_returncode(self.WARNING)
+            else:
+                self._set_returncode(self.ERROR)
 
         self._last_data_hook()
 
@@ -197,11 +199,17 @@ class YoutubeDLDownloader(object):
             else:
                 os.killpg(self._proc.pid, signal.SIGKILL)
 
-            self._return_code = self.STOPPED
+            self._set_returncode(self.STOPPED)
 
     def close(self):
         """Destructor like function for the object. """
         self._stderr_reader.join()
+
+    def _set_returncode(self, code):
+        """Set self._return_code only if the hierarchy of the given code is
+        higher than the current self._return_code. """
+        if code >= self._return_code:
+            self._return_code = code
 
     def _is_warning(self, stderr):
         return stderr.split(':')[0] == 'WARNING'
@@ -231,7 +239,7 @@ class YoutubeDLDownloader(object):
 
     def _reset(self):
         """Reset the data. """
-        self._return_code = 0
+        self._return_code = self.OK
         self._data = {
             'playlist_index': None,
             'playlist_size': None,
@@ -261,13 +269,13 @@ class YoutubeDLDownloader(object):
                 if data['status'] == 'Already Downloaded':
                     # Set self._return_code to already downloaded
                     # and trash that key
-                    self._return_code = self.ALREADY
+                    self._set_returncode(self.ALREADY)
                     data['status'] = None
 
                 if data['status'] == 'Filesize Abort':
                     # Set self._return_code to filesize abort
                     # and trash that key
-                    self._return_code = self.FILESIZE_ABORT
+                    self._set_returncode(self.FILESIZE_ABORT)
                     data['status'] = None
 
             self._data[key] = data[key]

@@ -108,6 +108,8 @@ class DownloadManager(Thread):
             if not self.urls_list and self._jobs_done():
                 break
 
+            self._talk_to_gui('report_active')
+
         # Close all the workers
         for worker in self._workers:
             worker.close()
@@ -176,6 +178,8 @@ class DownloadManager(Thread):
                 1) closing: The download process is closing.
                 2) closed: The download process has closed.
                 3) finished: The download process was completed normally.
+                4) report_active: Signal the gui to read the number of active
+                    downloads using the active() method.
 
         """
         CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, data)

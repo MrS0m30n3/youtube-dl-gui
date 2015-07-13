@@ -335,13 +335,7 @@ class MainFrame(wx.Frame):
             See downloadmanager.Worker _talk_to_gui() method.
 
         """
-        data = msg.data
-
-        self._status_list.write(data)
-
-        # Report number of urls been downloaded
-        msg = self.URL_REPORT_MSG.format(self.download_manager.active())
-        self._status_bar_write(msg)
+        self._status_list.write(msg.data)
 
     def _download_manager_handler(self, msg):
         """downloadmanager.DownloadManager thread handler.
@@ -363,8 +357,12 @@ class MainFrame(wx.Frame):
             self._status_bar_write(self.CLOSED_MSG)
             self._reset_widgets()
             self.download_manager = None
-        else:
+        elif data == 'closing':
             self._status_bar_write(self.CLOSING_MSG)
+        elif data == 'report_active':
+            # Report number of urls been downloaded
+            msg = self.URL_REPORT_MSG.format(self.download_manager.active())
+            self._status_bar_write(msg)
 
     def _update_handler(self, msg):
         """updatemanager.UpdateThread thread handler.

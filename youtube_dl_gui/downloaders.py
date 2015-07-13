@@ -144,6 +144,7 @@ class YoutubeDLDownloader(object):
             'eta': None
         }
 
+        self._encoding = self._get_encoding()
         self._stderr_queue = Queue()
         self._stderr_reader = PipeReader(self._stderr_queue)
 
@@ -175,7 +176,8 @@ class YoutubeDLDownloader(object):
         self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
-            stdout = self._proc.stdout.readline().rstrip().decode(self._get_encoding(), 'ignore')
+            stdout = self._proc.stdout.readline().rstrip()
+            stdout = stdout.decode(self._encoding, 'ignore')
 
             if stdout:
                 self._sync_data(extract_data(stdout))
@@ -184,7 +186,8 @@ class YoutubeDLDownloader(object):
         # Read stderr after download process has been completed
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
-            stderr = self._stderr_queue.get_nowait().rstrip().decode(self._get_encoding(), 'ignore')
+            stderr = self._stderr_queue.get_nowait().rstrip()
+            stderr = stderr.decode(self._encoding, 'ignore')
 
             self._log(stderr)
 
@@ -341,7 +344,7 @@ class YoutubeDLDownloader(object):
             cmd (list): Python list that contains the command to execute.
 
         """
-        encoding = info = preexec = None
+        info = preexec = None
 
         if os.name == 'nt':
             # Hide subprocess window
@@ -355,15 +358,12 @@ class YoutubeDLDownloader(object):
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
         if sys.version_info < (3, 0):
-            encoding = self._get_encoding()
-
-        if encoding is not None:
-            cmd = [item.encode(encoding, 'ignore') for item in cmd]
+            cmd = [item.encode(self._encoding, 'ignore') for item in cmd]
 
         self._proc = subprocess.Popen(cmd,
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE,
-                                      preexec_fn = preexec,
+                                      preexec_fn=preexec,
                                       startupinfo=info)
 
 

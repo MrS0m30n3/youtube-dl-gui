@@ -50,12 +50,21 @@ class PipeReader(Thread):
         self.start()
 
     def run(self):
+        # Flag to ignore specific lines
+        ignore_line = False
+
         while self._running:
             if self._filedescriptor is not None:
                 for line in iter(self._filedescriptor.readline, ''):
-                    self._queue.put_nowait(line.rstrip())
+                    # Ignore ffmpeg stderr
+                    if str('ffmpeg version') in line:
+                        ignore_line = True
+
+                    if not ignore_line:
+                        self._queue.put_nowait(line)
 
                 self._filedescriptor = None
+                ignore_line = False
 
             sleep(self.WAIT_TIME)
 
@@ -175,7 +184,7 @@ class YoutubeDLDownloader(object):
         # Read stderr after download process has been completed
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
-            stderr = self._stderr_queue.get_nowait().decode(self._get_encoding(), 'ignore')
+            stderr = self._stderr_queue.get_nowait().rstrip().decode(self._get_encoding(), 'ignore')
 
             self._log(stderr)
 

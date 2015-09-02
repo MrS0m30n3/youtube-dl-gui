@@ -435,4 +435,4 @@ msgstr "Değişikliklerin etkin olaması için lütfen yeniden başlatın {0}"
 
 #: optionsframe.py:1474
 msgid "Log Viewer"
-msgstr "Günlük Görtünlüyücüsü"
+msgstr "Günlük Görütünlüyücüsü"

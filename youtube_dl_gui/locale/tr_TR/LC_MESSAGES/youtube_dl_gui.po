@@ -1,0 +1,438 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2015-07-24 04:31+EEST\n"
+"PO-Revision-Date: 2015-07-24 04:37+EEST\n"
+"Last-Translator: Ali KOÇ <alikoc@protonmail.ch>\n"
+"Language-Team: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: mainframe.py:82
+msgid "URLs"
+msgstr "Url(ler)"
+
+#: mainframe.py:83
+msgid "Download"
+msgstr "İndirme"
+
+#: mainframe.py:84
+msgid "Update"
+msgstr "Güncelleme"
+
+#: mainframe.py:85 optionsframe.py:40
+msgid "Options"
+msgstr "Ayarlar"
+
+#: mainframe.py:86
+msgid "Error"
+msgstr "Hata"
+
+#: mainframe.py:87
+msgid "Stop"
+msgstr "Dur"
+
+#: mainframe.py:88
+msgid "Info"
+msgstr "Bilgi"
+
+#: mainframe.py:89
+msgid "Welcome"
+msgstr "Hoşgeldiniz"
+
+#: mainframe.py:90
+msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "{0} url(ler) {1} gün {2} saat {3} dakika {4} saniye içinde başarı ile indirildi"
+
+#: mainframe.py:92
+msgid "Downloads completed"
+msgstr "İndirmeler tamamlandı"
+
+#: mainframe.py:93
+msgid "Downloading {0} url(s)"
+msgstr "İnidiriliyor {0} url(ler)"
+
+#: mainframe.py:94
+msgid "Stopping downloads"
+msgstr "İndirmeler durduruluyor"
+
+#: mainframe.py:95
+msgid "Downloads stopped"
+msgstr "İndirmeler durduruldu"
+
+#: mainframe.py:96
+msgid "You need to provide at least one url"
+msgstr "En az bir url belirtmeniz gerek"
+
+#: mainframe.py:97
+msgid "Downloads started"
+msgstr "İndirmeler başlatıldı"
+
+#: mainframe.py:99
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "youtube-dl'nin en son sürümü indiriliyor. Lütfen bekleyin..."
+
+#: mainframe.py:100
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Youtube-dl indirme başarısız"
+
+#: mainframe.py:101
+msgid "Youtube-dl downloaded correctly"
+msgstr "Youtube-dl başarılı olarak indirildi"
+
+#: mainframe.py:103
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "'{dir}' klasörüne erişilemiyor. Belirtilen yol geçerli değil"
+
+#: mainframe.py:105
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Kapanırken hata oluştu. Doğru şifreyi girdinizden emin olun"
+
+#: mainframe.py:107
+msgid "Shutting down system"
+msgstr "Sistem kapatılıyor"
+
+#: mainframe.py:109
+msgid "Title"
+msgstr "Başlık"
+
+#: mainframe.py:110
+msgid "Size"
+msgstr "Boyut"
+
+#: mainframe.py:111
+msgid "Percent"
+msgstr "Yüzde"
+
+#: mainframe.py:112
+msgid "ETA"
+msgstr "TKZ"
+
+#: mainframe.py:113
+msgid "Speed"
+msgstr "Hız"
+
+#: mainframe.py:114
+msgid "Status"
+msgstr "Durum"
+
+#: optionsframe.py:42
+msgid "General"
+msgstr "Genel"
+
+#: optionsframe.py:43
+msgid "Video"
+msgstr "Video"
+
+#: optionsframe.py:44
+msgid "Audio"
+msgstr "Ses"
+
+#: optionsframe.py:45
+msgid "Playlist"
+msgstr "Çalma listesi"
+
+#: optionsframe.py:46
+msgid "Output"
+msgstr "Çıkış"
+
+#: optionsframe.py:47
+msgid "Subtitles"
+msgstr ""
+
+#: optionsframe.py:48
+msgid "Filesystem"
+msgstr "Alt yazı"
+
+#: optionsframe.py:49
+msgid "Shutdown"
+msgstr "Kapat"
+
+#: optionsframe.py:50
+msgid "Authentication"
+msgstr "Yetkilendirme"
+
+#: optionsframe.py:51
+msgid "Connection"
+msgstr "Bağlantı"
+
+#: optionsframe.py:52
+msgid "Log"
+msgstr "Günlük"
+
+#: optionsframe.py:53
+msgid "Commands"
+msgstr "Komutlar"
+
+#: optionsframe.py:54
+msgid "Localization"
+msgstr "Bölgeselleştirme"
+
+#: optionsframe.py:400
+msgid "Enable Log"
+msgstr "Günlüğü Etkinleştir"
+
+#: optionsframe.py:401
+msgid "Write Time"
+msgstr "Yazma Zamanı"
+
+#: optionsframe.py:402
+msgid "Clear Log"
+msgstr "Günlüğü Temizle"
+
+#: optionsframe.py:403
+msgid "View Log"
+msgstr "Günlüğü Görüntüle"
+
+#: optionsframe.py:404
+msgid "Path: {0}"
+msgstr "Yol {0}"
+
+#: optionsframe.py:405
+msgid "Log Size: {0} Bytes"
+msgstr "Günlük Boyutu: {0} Bytes"
+
+#: optionsframe.py:406 optionsframe.py:1425
+msgid "Restart"
+msgstr "Yeniden başlat"
+
+#: optionsframe.py:407
+msgid "Please restart {0}"
+msgstr "Lütfen yeniden başlatın {0}"
+
+#: optionsframe.py:517
+msgid "Shutdown when finished"
+msgstr "Tamamlandığında kapat"
+
+#: optionsframe.py:518
+msgid "SUDO password"
+msgstr "SUDO parola"
+
+#: optionsframe.py:570
+msgid "Playlist Start"
+msgstr "Çalma listesini başlat"
+
+#: optionsframe.py:571
+msgid "Playlist Stop"
+msgstr "Çalma listesini durdur"
+
+#: optionsframe.py:572
+msgid "Max Downloads"
+msgstr "Maks İnidirme"
+
+#: optionsframe.py:630
+msgid "Retries"
+msgstr "yeniden denemeler"
+
+#: optionsframe.py:631
+msgid "User Agent"
+msgstr "Kullancı Aracısı"
+
+#: optionsframe.py:632
+msgid "Referer"
+msgstr "Yönlendirici"
+
+#: optionsframe.py:633
+msgid "Proxy"
+msgstr "Proxy"
+
+#: optionsframe.py:707
+msgid "Username"
+msgstr "Kullancı Adı"
+
+#: optionsframe.py:708
+msgid "Password"
+msgstr "Parola"
+
+#: optionsframe.py:709
+msgid "Video Password (vimeo, smotri)"
+msgstr "Video parolası (vimeo, smotri)"
+
+#: optionsframe.py:767
+msgid "high"
+msgstr "yüksek"
+
+#: optionsframe.py:767
+msgid "low"
+msgstr "düşük"
+
+#: optionsframe.py:767
+msgid "mid"
+msgstr "orta"
+
+#: optionsframe.py:770
+msgid "Convert to Audio"
+msgstr "Sese Çevir"
+
+#: optionsframe.py:771
+msgid "Keep Video"
+msgstr "Videoyu Tut"
+
+#: optionsframe.py:772
+msgid "Audio Format"
+msgstr "Ses Formatı"
+
+#: optionsframe.py:773
+msgid "Audio Quality"
+msgstr "Ses Kalitesi"
+
+#: optionsframe.py:890
+msgid "default"
+msgstr "varsayılan"
+
+#: optionsframe.py:891
+msgid "none"
+msgstr "hiçbiri"
+
+#: optionsframe.py:895
+msgid "Video Format"
+msgstr "Video Formatı"
+
+#: optionsframe.py:896
+msgid "Mix Format"
+msgstr "Karıştırma Formatı"
+
+#: optionsframe.py:955
+msgid "Restrict filenames (ASCII)"
+msgstr "Dosya isimlerini kısıtla (ASCII)"
+
+#: optionsframe.py:956
+msgid "ID as Name"
+msgstr "İsim yerine Kimlik"
+
+#: optionsframe.py:957
+msgid "Title as Name"
+msgstr "İsim yerine Başlık"
+
+#: optionsframe.py:958
+msgid "Custom Template (youtube-dl)"
+msgstr "Özel Şablon (youtube-dl)"
+
+#: optionsframe.py:1052
+msgid "Ignore Errors"
+msgstr "Hataları Yoksay"
+
+#: optionsframe.py:1053
+msgid "Open destination folder"
+msgstr "Hedef klasörü aç"
+
+#: optionsframe.py:1054
+msgid "Write info to (.json) file"
+msgstr "Bilgiyi (.json) dosyasına yaz"
+
+#: optionsframe.py:1055
+msgid "Write description to file"
+msgstr "Açıklamayı dosyaya yaz"
+
+#: optionsframe.py:1056
+msgid "Write thumbnail to disk"
+msgstr "Önizleme resimini diske kaydet"
+
+#: optionsframe.py:1057
+msgid "Filesize"
+msgstr "Dosya boyutu"
+
+#: optionsframe.py:1058
+msgid "Min"
+msgstr "En az"
+
+#: optionsframe.py:1059
+msgid "Max"
+msgstr "En fazla"
+
+#: optionsframe.py:1172
+msgid "English"
+msgstr "İngilizce"
+
+#: optionsframe.py:1173
+msgid "Greek"
+msgstr "Yunanca"
+
+#: optionsframe.py:1174
+msgid "Portuguese"
+msgstr "Portekizce"
+
+#: optionsframe.py:1175
+msgid "French"
+msgstr "Fransızca"
+
+#: optionsframe.py:1176
+msgid "Italian"
+msgstr "İtalyanca"
+
+#: optionsframe.py:1177
+msgid "Russian"
+msgstr "Rusça"
+
+#: optionsframe.py:1178
+msgid "Spanish"
+msgstr "İspanyolca"
+
+#: optionsframe.py:1179
+msgid "German"
+msgstr "Almanca"
+
+#: optionsframe.py:1182
+msgid "Download subtitle file by language"
+msgstr "Alt yazı dosyasını dile göre indir"
+
+#: optionsframe.py:1183
+msgid "Download all available subtitles"
+msgstr "Var olan tüm alt yazıları indir"
+
+#: optionsframe.py:1184
+msgid "Download automatic subtitle file (YOUTUBE ONLY)"
+msgstr "Otomatik alt yazıyı indir (SADECE YOUTUBE)"
+
+#: optionsframe.py:1185
+msgid "Embed subtitles in the video (only mp4 videos)"
+msgstr "Alt yazıyı video ya yerleştir (sadece mp4 videoları)"
+
+#: optionsframe.py:1186
+msgid "Subtitles Language"
+msgstr "Alt yazı Dili"
+
+#: optionsframe.py:1280
+msgid "About"
+msgstr "Hakkında"
+
+#: optionsframe.py:1281
+msgid "Open"
+msgstr "Aç"
+
+#: optionsframe.py:1282
+msgid "Reset Options"
+msgstr "Ayaları Sıfırla"
+
+#: optionsframe.py:1283
+msgid "Save Path"
+msgstr "Yolu Kaydet"
+
+#: optionsframe.py:1284
+msgid "Settings File: {0}"
+msgstr "Ayar Dosyası: {0}"
+
+#: optionsframe.py:1285
+msgid "Choose Directory"
+msgstr "Klasör Seç"
+
+#: optionsframe.py:1370
+msgid "Command line arguments (e.g. --help)"
+msgstr "Komut satırı argümanları (örn. --help)"
+
+#: optionsframe.py:1426
+msgid "Localization Language"
+msgstr "Dil"
+
+#: optionsframe.py:1427
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "Değişikliklerin etkin olaması için lütfen yeniden başlatın {0}"
+
+#: optionsframe.py:1474
+msgid "Log Viewer"
+msgstr "Günlük Görütünlüyücüsü"

@@ -1,0 +1,438 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2015-07-02 15:31+EEST\n"
+"PO-Revision-Date: 2015-09-28 16:28+EEST\n"
+"Last-Translator: Yuval Bar-on <hyuvii@gmail.com>\n"
+"Language-Team: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: mainframe.py:82
+msgid "URLs"
+msgstr "קישורים"
+
+#: mainframe.py:83
+msgid "Download"
+msgstr "הורדה"
+
+#: mainframe.py:84
+msgid "Update"
+msgstr "עדכן"
+
+#: mainframe.py:85 optionsframe.py:40
+msgid "Options"
+msgstr "אפשרויות"
+
+#: mainframe.py:86
+msgid "Error"
+msgstr "שגיאה"
+
+#: mainframe.py:87
+msgid "Stop"
+msgstr "עצור"
+
+#: mainframe.py:88
+msgid "Info"
+msgstr "מידע"
+
+#: mainframe.py:89
+msgid "Welcome"
+msgstr "ברוכים הבאים"
+
+#: mainframe.py:90
+msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "הוריד בהצלחה {0} קישור(ים) תוך {1} יום(ימים) {2} שעה(ות) {3} דקה(ות) {4} שנייה(ות)"
+
+#: mainframe.py:92
+msgid "Downloads completed"
+msgstr "ההורדה הושלמה"
+
+#: mainframe.py:93
+msgid "Downloading {0} url(s)"
+msgstr "מוריד {0} קישור(ים)"
+
+#: mainframe.py:94
+msgid "Stopping downloads"
+msgstr "מפסיק הורדה"
+
+#: mainframe.py:95
+msgid "Downloads stopped"
+msgstr "ההורדה נפסקה"
+
+#: mainframe.py:96
+msgid "You need to provide at least one url"
+msgstr "עלייך לספק לפחות קישור אחד"
+
+#: mainframe.py:97
+msgid "Downloads started"
+msgstr "ההורדה החלה"
+
+#: mainframe.py:99
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "מוריד את youtube-dl האחרון. אנא המתן..."
+
+#: mainframe.py:100
+msgid "Youtube-dl download failed [{0}]"
+msgstr "ההורדה של youtube-dl נכשלה [{0}]"
+
+#: mainframe.py:101
+msgid "Youtube-dl downloaded correctly"
+msgstr "youtube-dl ירד בהצלחה"
+
+#: mainframe.py:103
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "לא הצליח לפתוח תיקייה: '{dir}'. הכתובת שצויינה איננה קיימת"
+
+#: mainframe.py:105
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "שגיאה בזמן יציאה. אנא וודאו שהכנסתם את הסיסמא הנכונה"
+
+#: mainframe.py:107
+msgid "Shutting down system"
+msgstr "יוצא מהתוכנה"
+
+#: mainframe.py:109
+msgid "Title"
+msgstr "כותרת"
+
+#: mainframe.py:110
+msgid "Size"
+msgstr "גודל"
+
+#: mainframe.py:111
+msgid "Percent"
+msgstr "אחוז(ים)"
+
+#: mainframe.py:112
+msgid "ETA"
+msgstr "זמן סיום משוער"
+
+#: mainframe.py:113
+msgid "Speed"
+msgstr "מהירות"
+
+#: mainframe.py:114
+msgid "Status"
+msgstr "סטטוס"
+
+#: optionsframe.py:42
+msgid "General"
+msgstr "כללי"
+
+#: optionsframe.py:43
+msgid "Video"
+msgstr "וידאו"
+
+#: optionsframe.py:44
+msgid "Audio"
+msgstr "אודיו"
+
+#: optionsframe.py:45
+msgid "Playlist"
+msgstr "פלייליסט"
+
+#: optionsframe.py:46
+msgid "Output"
+msgstr "פלט"
+
+#: optionsframe.py:47
+msgid "Subtitles"
+msgstr "כתוביות"
+
+#: optionsframe.py:48
+msgid "Filesystem"
+msgstr "קבצים"
+
+#: optionsframe.py:49
+msgid "Shutdown"
+msgstr "כיבוי"
+
+#: optionsframe.py:50
+msgid "Authentication"
+msgstr "אימות משתמש"
+
+#: optionsframe.py:51
+msgid "Connection"
+msgstr "חיבור"
+
+#: optionsframe.py:52
+msgid "Log"
+msgstr "לוג"
+
+#: optionsframe.py:53
+msgid "Commands"
+msgstr "פקודות"
+
+#: optionsframe.py:54
+msgid "Localization"
+msgstr "שפה"
+
+#: optionsframe.py:400
+msgid "Enable Log"
+msgstr "אפשר לוג"
+
+#: optionsframe.py:401
+msgid "Write Time"
+msgstr "ציין זמן"
+
+#: optionsframe.py:402
+msgid "Clear Log"
+msgstr "נקה לוג"
+
+#: optionsframe.py:403
+msgid "View Log"
+msgstr "צפה לוג"
+
+#: optionsframe.py:404
+msgid "Path: {0}"
+msgstr "כתובת: {0}"
+
+#: optionsframe.py:405
+msgid "Log Size: {0} Bytes"
+msgstr "גודל לוג: {0} Bytes"
+
+#: optionsframe.py:406 optionsframe.py:1425
+msgid "Restart"
+msgstr "הפעל מחדש"
+
+#: optionsframe.py:407
+msgid "Please restart {0}"
+msgstr "אנא הפעל מחדש {0}"
+
+#: optionsframe.py:517
+msgid "Shutdown when finished"
+msgstr "צא בסיום הורדה"
+
+#: optionsframe.py:518
+msgid "SUDO password"
+msgstr "סיסמאת SUDO"
+
+#: optionsframe.py:570
+msgid "Playlist Start"
+msgstr "התחל פלייליסט בקטע"
+
+#: optionsframe.py:571
+msgid "Playlist Stop"
+msgstr "עצור פלייליסט בקטע"
+
+#: optionsframe.py:572
+msgid "Max Downloads"
+msgstr "מקסימום הורדות"
+
+#: optionsframe.py:630
+msgid "Retries"
+msgstr "נסיונות חוזרים"
+
+#: optionsframe.py:631
+msgid "User Agent"
+msgstr "User Agent"
+
+#: optionsframe.py:632
+msgid "Referer"
+msgstr "Referer"
+
+#: optionsframe.py:633
+msgid "Proxy"
+msgstr "Proxy"
+
+#: optionsframe.py:707
+msgid "Username"
+msgstr "שם משתמש"
+
+#: optionsframe.py:708
+msgid "Password"
+msgstr "סיסמא"
+
+#: optionsframe.py:709
+msgid "Video Password (vimeo, smotri)"
+msgstr "סיסמא לוידאו (vimeo, smorti)"
+
+#: optionsframe.py:767
+msgid "high"
+msgstr "גבוהה"
+
+#: optionsframe.py:767
+msgid "low"
+msgstr "נמוכה"
+
+#: optionsframe.py:767
+msgid "mid"
+msgstr "בינונית"
+
+#: optionsframe.py:770
+msgid "Convert to Audio"
+msgstr "המר לאודיו"
+
+#: optionsframe.py:771
+msgid "Keep Video"
+msgstr "שמור וידאו בנפרד"
+
+#: optionsframe.py:772
+msgid "Audio Format"
+msgstr "פורמט אודיו"
+
+#: optionsframe.py:773
+msgid "Audio Quality"
+msgstr "איכות אודיו"
+
+#: optionsframe.py:890
+msgid "default"
+msgstr "ברירת מחדל"
+
+#: optionsframe.py:891
+msgid "none"
+msgstr "ריק"
+
+#: optionsframe.py:895
+msgid "Video Format"
+msgstr "פורמט וידאו"
+
+#: optionsframe.py:896
+msgid "Mix Format"
+msgstr "פורמט משולב (mix)"
+
+#: optionsframe.py:955
+msgid "Restrict filenames (ASCII)"
+msgstr "הגבל שמות קבצים ללועזית (ASCII)"
+
+#: optionsframe.py:956
+msgid "ID as Name"
+msgstr "ID הוידאו כשם"
+
+#: optionsframe.py:957
+msgid "Title as Name"
+msgstr "כותרת הוידאו כשם"
+
+#: optionsframe.py:958
+msgid "Custom Template (youtube-dl)"
+msgstr "תבנית מותאמת אישית (youtube-dl)"
+
+#: optionsframe.py:1052
+msgid "Ignore Errors"
+msgstr "התעלם משגיאות"
+
+#: optionsframe.py:1053
+msgid "Open destination folder"
+msgstr "פתח תיקיית יעד"
+
+#: optionsframe.py:1054
+msgid "Write info to (.json) file"
+msgstr "שמור מידע בתוך קובץ (.json)"
+
+#: optionsframe.py:1055
+msgid "Write description to file"
+msgstr "שמור את הקובץ עם התיאור"
+
+#: optionsframe.py:1056
+msgid "Write thumbnail to disk"
+msgstr "שמור thumbnail"
+
+#: optionsframe.py:1057
+msgid "Filesize"
+msgstr "גודל הקובץ"
+
+#: optionsframe.py:1058
+msgid "Min"
+msgstr "מינימום"
+
+#: optionsframe.py:1059
+msgid "Max"
+msgstr "מקסימום"
+
+#: optionsframe.py:1172
+msgid "English"
+msgstr "אנגלית"
+
+#: optionsframe.py:1173
+msgid "Greek"
+msgstr "יוונית"
+
+#: optionsframe.py:1174
+msgid "Portuguese"
+msgstr "פורטוגזית"
+
+#: optionsframe.py:1175
+msgid "French"
+msgstr "צרפתית"
+
+#: optionsframe.py:1176
+msgid "Italian"
+msgstr "איטלקית"
+
+#: optionsframe.py:1177
+msgid "Russian"
+msgstr "רוסית"
+
+#: optionsframe.py:1178
+msgid "Spanish"
+msgstr "ספרדית"
+
+#: optionsframe.py:1179
+msgid "German"
+msgstr "גרמנית"
+
+#: optionsframe.py:1182
+msgid "Download subtitle file by language"
+msgstr "הורד קובץ כתוביות לפי שפה"
+
+#: optionsframe.py:1183
+msgid "Download all available subtitles"
+msgstr "הורד את כל הכתוביות הקיימות"
+
+#: optionsframe.py:1184
+msgid "Download automatic subtitle file (YOUTUBE ONLY)"
+msgstr "הורד כתוביות אוטומטיות (רק Youtube!)"
+
+#: optionsframe.py:1185
+msgid "Embed subtitles in the video (only mp4 videos)"
+msgstr "שמור כתוביות כחלק מהוידאו (רק לקבצי mp4)"
+
+#: optionsframe.py:1186
+msgid "Subtitles Language"
+msgstr "שפת כתוביות"
+
+#: optionsframe.py:1280
+msgid "About"
+msgstr "אודות"
+
+#: optionsframe.py:1281
+msgid "Open"
+msgstr "פתח"
+
+#: optionsframe.py:1282
+msgid "Reset Options"
+msgstr "אפס הגדרות"
+
+#: optionsframe.py:1283
+msgid "Save Path"
+msgstr "נתיב הורדה"
+
+#: optionsframe.py:1284
+msgid "Settings File: {0}"
+msgstr "קובץ הגדרות: {0}"
+
+#: optionsframe.py:1285
+msgid "Choose Directory"
+msgstr "בחר תיקייה"
+
+#: optionsframe.py:1370
+msgid "Command line arguments (e.g. --help)"
+msgstr "פקודות למסוף (למשל --help)"
+
+#: optionsframe.py:1426
+msgid "Localization Language"
+msgstr "שפה לוקאלית"
+
+#: optionsframe.py:1427
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "על מנת להחיל את השינויים יש לאתחל את {0}"
+
+#: optionsframe.py:1474
+msgid "Log Viewer"
+msgstr "צפייה בלוג"

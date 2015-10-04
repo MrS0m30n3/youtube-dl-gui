@@ -14,6 +14,7 @@ Note:
 
 from __future__ import unicode_literals
 
+import re
 import os
 import sys
 import locale
@@ -136,11 +137,13 @@ class YoutubeDLDownloader(object):
         self._data = {
             'playlist_index': None,
             'playlist_size': None,
+            'extension': None,
             'filesize': None,
             'filename': None,
             'percent': None,
             'status': None,
             'speed': None,
+            'path': None,
             'eta': None
         }
 
@@ -252,16 +255,9 @@ class YoutubeDLDownloader(object):
     def _reset(self):
         """Reset the data. """
         self._return_code = self.OK
-        self._data = {
-            'playlist_index': None,
-            'playlist_size': None,
-            'filesize': None,
-            'filename': None,
-            'percent': None,
-            'status': None,
-            'speed': None,
-            'eta': None
-        }
+
+        for key in self._data:
+            self._data[key] = None
 
     def _sync_data(self, data):
         """Synchronise self._data with data. It also filters some keys.
@@ -273,10 +269,6 @@ class YoutubeDLDownloader(object):
 
         """
         for key in data:
-            if key == 'filename':
-                # Keep only the filename on data['filename']
-                data['filename'] = os.path.basename(data['filename'])
-
             if key == 'status':
                 if data['status'] == 'Already Downloaded':
                     # Set self._return_code to already downloaded
@@ -390,9 +382,16 @@ def extract_data(stdout):
     if stdout[0] == '[download]':
         data_dictionary['status'] = 'Downloading'
 
-        # Get filename
+        # Get path, filename & extension
         if stdout[1] == 'Destination:':
-            data_dictionary['filename'] = ' '.join(stdout[2:])
+            path, fullname = os.path.split(' '.join(stdout[2:]))
+            filename, extension = os.path.splitext(fullname)
+
+            data_dictionary['path'] = path
+            data_dictionary['extension'] = extension
+            # remove the format that youtube-dl adds during the merging
+            # process at end of the filename
+            data_dictionary['filename'] = re.sub('\.f[0-9]{1,3}$', '', filename)
 
         # Get progress info
         if '%' in stdout[1]:
@@ -435,6 +434,10 @@ def extract_data(stdout):
 
     elif stdout[0] == '[ffmpeg]':
         data_dictionary['status'] = 'Post Processing'
+
+        # Get final extension after merging process
+        if stdout[1] == 'Merging':
+            data_dictionary['extension'] = os.path.splitext(' '.join(stdout[4:])[:-1])[1]
 
     else:
         data_dictionary['status'] = 'Pre Processing'

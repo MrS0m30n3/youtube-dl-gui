@@ -107,6 +107,7 @@ class MainFrame(wx.Frame):
     SHUTDOWN_MSG = _("Shutting down system")
 
     VIDEO_LABEL = _("Title")
+    EXTENSION_LABEL = _("Extension")
     SIZE_LABEL = _("Size")
     PERCENT_LABEL = _("Percent")
     ETA_LABEL = _("ETA")
@@ -117,11 +118,12 @@ class MainFrame(wx.Frame):
     # (column_name, column_index, column_label, minimum_width, resizable)
     STATUSLIST_COLUMNS = (
         ('filename', 0, VIDEO_LABEL, 150, True),
-        ('filesize', 1, SIZE_LABEL, 80, False),
-        ('percent', 2, PERCENT_LABEL, 65, False),
-        ('eta', 3, ETA_LABEL, 45, False),
-        ('speed', 4, SPEED_LABEL, 90, False),
-        ('status', 5, STATUS_LABEL, 160, False)
+        ('extension', 1, EXTENSION_LABEL, 60, False),
+        ('filesize', 2, SIZE_LABEL, 80, False),
+        ('percent', 3, PERCENT_LABEL, 65, False),
+        ('eta', 4, ETA_LABEL, 45, False),
+        ('speed', 5, SPEED_LABEL, 90, False),
+        ('status', 6, STATUS_LABEL, 160, False)
     )
 
     def __init__(self, opt_manager, log_manager, parent=None):
@@ -541,8 +543,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         """
         for column in self.columns:
-            column_key = column[0]
-            self._write_data(data[column_key], data['index'], column[1])
+            self._write_data(data[column[0]], data['index'], column[1])
 
     def load_urls(self, url_list, func=None):
         """Load URLs from the url_list on the ListCtrl widget.

@@ -98,9 +98,6 @@ class YoutubeDLDownloader(object):
         log_data (function): Optional callback function to write data to
             the log file.
 
-    Note:
-        For available data keys check self._data under __init__().
-
     Warnings:
         The caller is responsible for calling the close() method after he has
         finished with the object in order for the object to be able to properly
@@ -134,18 +131,6 @@ class YoutubeDLDownloader(object):
 
         self._return_code = self.OK
         self._proc = None
-        self._data = {
-            'playlist_index': None,
-            'playlist_size': None,
-            'extension': None,
-            'filesize': None,
-            'filename': None,
-            'percent': None,
-            'status': None,
-            'speed': None,
-            'path': None,
-            'eta': None
-        }
 
         self._encoding = self._get_encoding()
         self._stderr_queue = Queue()
@@ -171,7 +156,7 @@ class YoutubeDLDownloader(object):
             STOPPED (5): The download process was stopped by the user.
 
         """
-        self._reset()
+        self._return_code = self.OK
 
         cmd = self._get_cmd(url, options)
         self._create_process(cmd)
@@ -183,8 +168,9 @@ class YoutubeDLDownloader(object):
             stdout = stdout.decode(self._encoding, 'ignore')
 
             if stdout:
-                self._sync_data(extract_data(stdout))
-                self._hook_data()
+                data_dict = extract_data(stdout)
+                self._extract_info(data_dict)
+                self._hook_data(data_dict)
 
         # Read stderr after download process has been completed
         # We don't need to read stderr in real time
@@ -231,36 +217,31 @@ class YoutubeDLDownloader(object):
 
     def _last_data_hook(self):
         """Set the last data information based on the return code. """
+        data_dictionary = {}
+
         if self._return_code == self.OK:
-            self._data['status'] = 'Finished'
+            data_dictionary['status'] = 'Finished'
         elif self._return_code == self.ERROR:
-            self._data['status'] = 'Error'
-            self._data['speed'] = ''
-            self._data['eta'] = ''
+            data_dictionary['status'] = 'Error'
+            data_dictionary['speed'] = ''
+            data_dictionary['eta'] = ''
         elif self._return_code == self.WARNING:
-            self._data['status'] = 'Warning'
-            self._data['speed'] = ''
-            self._data['eta'] = ''
+            data_dictionary['status'] = 'Warning'
+            data_dictionary['speed'] = ''
+            data_dictionary['eta'] = ''
         elif self._return_code == self.STOPPED:
-            self._data['status'] = 'Stopped'
-            self._data['speed'] = ''
-            self._data['eta'] = ''
+            data_dictionary['status'] = 'Stopped'
+            data_dictionary['speed'] = ''
+            data_dictionary['eta'] = ''
         elif self._return_code == self.ALREADY:
-            self._data['status'] = 'Already Downloaded'
+            data_dictionary['status'] = 'Already Downloaded'
         else:
-            self._data['status'] = 'Filesize Abort'
+            data_dictionary['status'] = 'Filesize Abort'
 
-        self._hook_data()
+        self._hook_data(data_dictionary)
 
-    def _reset(self):
-        """Reset the data. """
-        self._return_code = self.OK
-
-        for key in self._data:
-            self._data[key] = None
-
-    def _sync_data(self, data):
-        """Synchronise self._data with data. It also filters some keys.
+    def _extract_info(self, data):
+        """Extract informations about the download process from the given data.
 
         Args:
             data (dictionary): Python dictionary that contains different
@@ -268,31 +249,28 @@ class YoutubeDLDownloader(object):
                 empty when there are no data to extract. See extract_data().
 
         """
-        for key in data:
-            if key == 'status':
-                if data['status'] == 'Already Downloaded':
-                    # Set self._return_code to already downloaded
-                    # and trash that key
-                    self._set_returncode(self.ALREADY)
-                    data['status'] = None
+        if 'status' in data:
+            if data['status'] == 'Already Downloaded':
+                # Set self._return_code to already downloaded
+                # and trash that key
+                self._set_returncode(self.ALREADY)
+                data['status'] = None
 
-                if data['status'] == 'Filesize Abort':
-                    # Set self._return_code to filesize abort
-                    # and trash that key
-                    self._set_returncode(self.FILESIZE_ABORT)
-                    data['status'] = None
-
-            self._data[key] = data[key]
+            if data['status'] == 'Filesize Abort':
+                # Set self._return_code to filesize abort
+                # and trash that key
+                self._set_returncode(self.FILESIZE_ABORT)
+                data['status'] = None
 
     def _log(self, data):
         """Log data using the callback function. """
         if self.log_data is not None:
             self.log_data(data)
 
-    def _hook_data(self):
-        """Pass self._data back to the data_hook. """
+    def _hook_data(self, data):
+        """Pass data back to the caller. """
         if self.data_hook is not None:
-            self.data_hook(self._data)
+            self.data_hook(data)
 
     def _proc_is_alive(self):
         """Returns True if self._proc is alive else False. """
@@ -366,11 +344,23 @@ def extract_data(stdout):
         stdout (string): String that contains the youtube-dl stdout.
 
     Returns:
-        Python dictionary. For available keys check self._data under
-        YoutubeDLDownloader.__init__().
+        Python dictionary. The returned dictionary can be empty if there are
+        no data to extract else it may contain one or more of the
+        following keys:
+
+        'status'         : Contains the status of the download process.
+        'path'           : Destination path.
+        'extension'      : The file extension.
+        'filename'       : The filename without the extension.
+        'percent'        : The percentage of the video being downloaded.
+        'eta'            : Estimated time for the completion of the download process.
+        'speed'          : Download speed.
+        'filesize'       : The size of the video file being downloaded.
+        'playlist_index' : The playlist index of the current video file being downloaded.
+        'playlist_size'  : The number of videos in the playlist.
 
     """
-    data_dictionary = dict()
+    data_dictionary = {}
 
     if not stdout:
         return data_dictionary

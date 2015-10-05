@@ -207,7 +207,7 @@ class DownloadManager(Thread):
 class Worker(Thread):
 
     """Simple worker which downloads the given url using a downloader
-    from the 'downloaders' module.
+    from the downloaders.py module.
 
     Attributes:
         WAIT_TIME (float): Time in seconds to sleep.
@@ -225,6 +225,9 @@ class Worker(Thread):
             If the log_manager is set (not None) then the caller has to make
             sure that the log_lock is also set.
 
+    Note:
+        For available data keys see self._data under the __init__() method.
+
     """
 
     WAIT_TIME = 0.1
@@ -237,25 +240,37 @@ class Worker(Thread):
 
         self._downloader = YoutubeDLDownloader(youtubedl, self._data_hook, self._log_data)
         self._options_parser = OptionsParser()
-        self._running = True
-        self._url = None
-        self._index = -1
         self._successful = 0
+        self._running = True
+
+        self._data = {
+            'playlist_index': None,
+            'playlist_size': None,
+            'extension': None,
+            'filesize': None,
+            'filename': None,
+            'percent': None,
+            'status': None,
+            'index': None,
+            'speed': None,
+            'path': None,
+            'eta': None,
+            'url': None
+        }
 
         self.start()
 
     def run(self):
         while self._running:
-            if self._url is not None:
+            if self._data['url'] is not None:
                 options = self._options_parser.parse(self.opt_manager.options)
-                ret_code = self._downloader.download(self._url, options)
+                ret_code = self._downloader.download(self._data['url'], options)
 
                 if (ret_code == YoutubeDLDownloader.OK or
                         ret_code == YoutubeDLDownloader.ALREADY):
                     self._successful += 1
 
-                # Reset url value
-                self._url = None
+                self._reset()
 
             time.sleep(self.WAIT_TIME)
 
@@ -272,8 +287,8 @@ class Worker(Thread):
                 download process.
 
         """
-        self._url = item['url']
-        self._index = item['index']
+        self._data['url'] = item['url']
+        self._data['index'] = item['index']
 
     def stop_download(self):
         """Stop the download process of the worker. """
@@ -286,12 +301,17 @@ class Worker(Thread):
 
     def available(self):
         """Return True if the worker has no job else False. """
-        return self._url is None
+        return self._data['url'] is None
 
     @property
     def successful(self):
         """Return the number of successful downloads for current worker. """
         return self._successful
+
+    def _reset(self):
+        """Reset self._data back to the original state. """
+        for key in self._data:
+            self._data[key] = None
 
     def _log_data(self, data):
         """Callback method for self._downloader.
@@ -309,43 +329,32 @@ class Worker(Thread):
             self.log_lock.release()
 
     def _data_hook(self, data):
-        """Callback method to be used with the YoutubeDLDownloader object.
+        """Callback method for self._downloader.
 
-        This method takes the data from the downloader, merges the
-        playlist_info with the current status(if any) and sends the
-        data back to the GUI using the self._talk_to_gui method.
+        This method updates self._data and sends them back to the GUI
+        using the self._talk_to_gui() method.
 
         Args:
             data (dictionary): Python dictionary which contains information
-                about the download process. (See YoutubeDLDownloader class).
+                about the download process. For more info see the
+                extract_data() function under the downloaders.py module.
 
         """
-        if data['status'] is not None and data['playlist_index'] is not None:
-            playlist_info = ' '
-            playlist_info += data['playlist_index']
-            playlist_info += '/'
-            playlist_info += data['playlist_size']
+        # Update each key
+        for key in data:
+           self._data[key] = data[key]
 
-            data['status'] += playlist_info
+        # Build the playlist status
+        if self._data['status'] is not None and self._data['playlist_index'] is not None:
+            self._data['status'] = '{status} {index}/{size}'.format(
+                    status=self._data['status'],
+                    index=self._data['playlist_index'],
+                    size=self._data['playlist_size']
+                )
 
-        self._talk_to_gui(data)
+        self._talk_to_gui()
 
-    def _talk_to_gui(self, data):
-        """Send data back to the GUI after inserting the index. """
-        data['index'] = self._index
-        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, data)
+    def _talk_to_gui(self):
+        """Send self._data back to the GUI. """
+        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, self._data)
 
-
-if __name__ == '__main__':
-    """Direct call of the module for testing.
-
-    Raises:
-        ValueError: Attempted relative import in non-package
-
-    Note:
-        Before you run the tests change relative imports else an exceptions
-        will be raised. You need to change relative imports on all the modules
-        you are gonna use.
-
-    """
-    print "No tests available"

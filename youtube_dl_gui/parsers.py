@@ -50,7 +50,7 @@ class OptionHolder(object):
         """Check if the required options are enabled.
 
         Args:
-            options_dict (dictionary): Dictionary with all the options.
+            options_dict (dict): Dictionary with all the options.
 
         Returns:
             True if any of the required options is enabled else False.
@@ -109,7 +109,7 @@ class OptionsParser(object):
         Parses the given options to youtube-dl command line arguments.
 
         Args:
-            options_dictionary (dictionary): Dictionary with all the options.
+            options_dictionary (dict): Dictionary with all the options.
 
         Returns:
             List of strings with all the youtube-dl command line options.
@@ -150,7 +150,7 @@ class OptionsParser(object):
         store it back to the options dictionary.
 
         Args:
-            options_dict (dictionary): Copy of the original options dictionary.
+            options_dict (dict): Copy of the original options dictionary.
 
         """
         save_path = remove_shortcuts(options_dict['save_path'])
@@ -171,7 +171,7 @@ class OptionsParser(object):
         store it back to the options dictionary.
 
         Args:
-            options_dict (dictionary): Copy of the original options dictionary.
+            options_dict (dict): Copy of the original options dictionary.
 
         """
         if options_dict['video_format'] != '0' and options_dict['second_video_format'] != '0':
@@ -184,7 +184,7 @@ class OptionsParser(object):
         'max_filesize' options and store them back to options dictionary.
 
         Args:
-            options_dict (dictionary): Copy of the original options dictionary.
+            options_dict (dict): Copy of the original options dictionary.
 
         """
         if options_dict['min_filesize']:

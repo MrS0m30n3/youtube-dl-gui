@@ -273,7 +273,7 @@ class OptionsManager(object):
         """Check settings.json dictionary.
 
         Args:
-            settings_dictionary (dictionary): Options dictionary loaded
+            settings_dictionary (dict): Options dictionary loaded
                 from the settings file. See load_from_file() method.
 
         Returns:

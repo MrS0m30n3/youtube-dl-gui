@@ -244,7 +244,7 @@ class YoutubeDLDownloader(object):
         """Extract informations about the download process from the given data.
 
         Args:
-            data (dictionary): Python dictionary that contains different
+            data (dict): Python dictionary that contains different
                 keys. The keys are not standar the dictionary can also be
                 empty when there are no data to extract. See extract_data().
 

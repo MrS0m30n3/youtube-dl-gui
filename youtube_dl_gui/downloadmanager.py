@@ -158,7 +158,7 @@ class DownloadManager(Thread):
         """Add given url to the urls_list.
 
         Args:
-            url (dictionary): Python dictionary that contains two keys.
+            url (dict): Python dictionary that contains two keys.
                 The url and the index of the corresponding row in which
                 the worker should send back the information about the
                 download process.
@@ -281,7 +281,7 @@ class Worker(Thread):
         """Download given item.
 
         Args:
-            item (dictionary): Python dictionary that contains two keys.
+            item (dict): Python dictionary that contains two keys.
                 The url and the index of the corresponding row in which
                 the worker should send back the information about the
                 download process.
@@ -331,30 +331,38 @@ class Worker(Thread):
     def _data_hook(self, data):
         """Callback method for self._downloader.
 
-        This method updates self._data and sends them back to the GUI
-        using the self._talk_to_gui() method.
+        This method updates self._data and sends the updates back to the
+        GUI using the self._talk_to_gui() method.
 
         Args:
-            data (dictionary): Python dictionary which contains information
+            data (dict): Python dictionary which contains information
                 about the download process. For more info see the
                 extract_data() function under the downloaders.py module.
 
         """
+        # Temp dictionary which holds the updates
+        temp_dict = {}
+
         # Update each key
         for key in data:
-           self._data[key] = data[key]
+            if self._data[key] != data[key]:
+                self._data[key] = data[key]
+                temp_dict[key] = data[key]
 
-        # Build the playlist status
-        if self._data['status'] is not None and self._data['playlist_index'] is not None:
-            self._data['status'] = '{status} {index}/{size}'.format(
-                    status=self._data['status'],
-                    index=self._data['playlist_index'],
-                    size=self._data['playlist_size']
-                )
+        # Build the playlist status if there is an update
+        if self._data['playlist_index'] is not None:
+            if 'status' in temp_dict or 'playlist_index' in temp_dict:
+                temp_dict['status'] = '{status} {index}/{size}'.format(
+                        status=self._data['status'],
+                        index=self._data['playlist_index'],
+                        size=self._data['playlist_size']
+                    )
 
-        self._talk_to_gui()
+        if len(temp_dict):
+            temp_dict['index'] = self._data['index']
+            self._talk_to_gui(temp_dict)
 
-    def _talk_to_gui(self):
-        """Send self._data back to the GUI. """
-        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, self._data)
+    def _talk_to_gui(self, data):
+        """Send data back to the GUI. """
+        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, data)
 

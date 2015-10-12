@@ -54,11 +54,9 @@ class MainFrame(wx.Frame):
 
         Labels area (strings): Strings for the widgets labels.
 
-        STATUSLIST_COLUMNS (tuple): Tuple of tuples that contains informations
-            about the ListCtrl columns. First item is the column name. Second
-            item is the column position. Third item is the column label.
-            Fourth item is the column default width. Last item is a boolean
-            flag if True the current column is resizable.
+        STATUSLIST_COLUMNS (dict): Python dictionary which holds informations
+            about the wxListCtrl columns. For more informations read the
+            comments above the STATUSLIST_COLUMNS declaration.
 
     Args:
         opt_manager (optionsmanager.OptionsManager): Object responsible for
@@ -115,16 +113,22 @@ class MainFrame(wx.Frame):
     STATUS_LABEL = _("Status")
     #################################
 
-    # (column_name, column_index, column_label, minimum_width, resizable)
-    STATUSLIST_COLUMNS = (
-        ('filename', 0, VIDEO_LABEL, 150, True),
-        ('extension', 1, EXTENSION_LABEL, 60, False),
-        ('filesize', 2, SIZE_LABEL, 80, False),
-        ('percent', 3, PERCENT_LABEL, 65, False),
-        ('eta', 4, ETA_LABEL, 45, False),
-        ('speed', 5, SPEED_LABEL, 90, False),
-        ('status', 6, STATUS_LABEL, 160, False)
-    )
+    # STATUSLIST_COLUMNS
+    #
+    # Dictionary which contains the columns for the wxListCtrl widget.
+    # Each key represents a column and holds informations about itself.
+    # Structure informations:
+    #  column_key: (column_number, column_label, minimum_width, is_resizable)
+    #
+    STATUSLIST_COLUMNS = {
+        'filename': (0, VIDEO_LABEL, 150, True),
+        'extension': (1, EXTENSION_LABEL, 60, False),
+        'filesize': (2, SIZE_LABEL, 80, False),
+        'percent': (3, PERCENT_LABEL, 65, False),
+        'eta': (4, ETA_LABEL, 45, False),
+        'speed': (5, SPEED_LABEL, 90, False),
+        'status': (6, STATUS_LABEL, 160, False)
+    }
 
     def __init__(self, opt_manager, log_manager, parent=None):
         wx.Frame.__init__(self, parent, title=__appname__, size=opt_manager.options['main_win_size'])
@@ -513,7 +517,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     """Custom ListCtrl widget.
 
     Args:
-        columns (tuple): See MainFrame class STATUSLIST_COLUMNS attribute.
+        columns (dict): See MainFrame class STATUSLIST_COLUMNS attribute.
 
     """
 
@@ -529,21 +533,16 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         """Write data on ListCtrl row-column.
 
         Args:
-            data (dictionary): Dictionary that contains the data to be
+            data (dict): Dictionary that contains the data to be
                 written on the ListCtrl. In order for this method to
                 write the given data there must be an 'index' key that
-                identifies the current row and a corresponding key for
-                each item of the self.columns.
-
-        Note:
-            Income data must contain all the columns keys else a KeyError will
-            be raised. Also there must be an 'index' key that identifies the
-            row to write the data. For a valid data dictionary see
-            downloaders.YoutubeDLDownloader self._data.
+                identifies the current row. For a valid data dictionary see
+                Worker class __init__() method under downloadmanager.py module.
 
         """
-        for column in self.columns:
-            self._write_data(data[column[0]], data['index'], column[1])
+        for key in data:
+            if key in self.columns:
+                self._write_data(data['index'], self.columns[key][0], data[key])
 
     def load_urls(self, url_list, func=None):
         """Load URLs from the url_list on the ListCtrl widget.
@@ -612,7 +611,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         return items
 
-    def _write_data(self, data, row, column):
+    def _write_data(self, row, column, data):
         """Write data on row-column. """
         if isinstance(data, basestring):
             self.SetStringItem(row, column, data)
@@ -636,14 +635,16 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def _set_columns(self):
         """Initializes ListCtrl columns.
         See MainFrame STATUSLIST_COLUMNS attribute for more info. """
-        for column in self.columns:
-            self.InsertColumn(column[1], column[2], width=wx.LIST_AUTOSIZE_USEHEADER)
+        for column_item in sorted(self.columns.values()):
+            self.InsertColumn(column_item[0], column_item[1], width=wx.LIST_AUTOSIZE_USEHEADER)
 
             # If the column width obtained from wxLIST_AUTOSIZE_USEHEADER
             # is smaller than the minimum allowed column width
             # then set the column width to the minumum allowed size
-            if self.GetColumnWidth(column[1]) < column[3]:
-                self.SetColumnWidth(column[1], column[3])
+            if self.GetColumnWidth(column_item[0]) < column_item[2]:
+                self.SetColumnWidth(column_item[0], column_item[2])
 
-            if column[4]:
-                self.setResizeColumn(column[1])
+            # Set auto-resize if enabled
+            if column_item[3]:
+                self.setResizeColumn(column_item[0])
+

@@ -173,7 +173,7 @@ class MainFrame(wx.Frame):
 
         # Set threads wxCallAfter handlers using subscribe
         self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
-        self._set_publisher(self._status_list_handler, WORKER_PUB_TOPIC)
+        self._set_publisher(self._download_worker_handler, WORKER_PUB_TOPIC)
         self._set_publisher(self._download_manager_handler, MANAGER_PUB_TOPIC)
 
     def _set_publisher(self, handler, topic):
@@ -332,7 +332,7 @@ class MainFrame(wx.Frame):
                 if not success:
                     self._status_bar_write(self.OPEN_DIR_ERR.format(dir=self.opt_manager.options['save_path']))
 
-    def _status_list_handler(self, msg):
+    def _download_worker_handler(self, msg):
         """downloadmanager.Worker thread handler.
 
         Handles messages from the Worker thread.
@@ -341,7 +341,13 @@ class MainFrame(wx.Frame):
             See downloadmanager.Worker _talk_to_gui() method.
 
         """
-        self._status_list.write(msg.data)
+        signal, data = msg.data
+
+        if signal == 'send':
+            self._status_list.write(data)
+
+        if signal == 'receive':
+            self.download_manager.send_to_worker(self._status_list.get(data))
 
     def _download_manager_handler(self, msg):
         """downloadmanager.DownloadManager thread handler.
@@ -528,6 +534,38 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index = 0
         self._url_list = set()
         self._set_columns()
+
+    def get(self, data):
+        """Return data from ListCtrl.
+
+        Args:
+            data (dict): Dictionary which contains three keys. The 'index'
+                that identifies the current row, the 'source' which identifies
+                a column in the wxListCtrl and the 'dest' which tells
+                wxListCtrl under which key to store the retrieved value. For
+                more informations see the _talk_to_gui() method under
+                downloadmanager.py Worker class.
+
+        Returns:
+            A dictionary which holds the 'index' (row) and the data from the
+            given row-column combination.
+
+        Example:
+            args: data = {'index': 0, 'source': 'filename', 'dest': 'new_filename'}
+
+            The wxListCtrl will store the value from the 'filename' column
+            into a new dictionary with a key value 'new_filename'.
+
+            return: {'index': 0, 'new_filename': 'The filename retrieved'}
+
+        """
+        value = None
+
+        # If the source column exists
+        if data['source'] in self.columns:
+            value = self.GetItemText(data['index'], self.columns[data['source']][0])
+
+        return {'index': data['index'], data['dest']: value}
 
     def write(self, data):
         """Write data on ListCtrl row-column.

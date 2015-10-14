@@ -166,6 +166,21 @@ class DownloadManager(Thread):
         """
         self.urls_list.append(url)
 
+    def send_to_worker(self, data):
+        """Send data to the Workers.
+
+        Args:
+            data (dict): Python dictionary that holds the 'index'
+            which is used to identify the Worker thread and the data which
+            can be any of the Worker's class valid data. For a list of valid
+            data keys see __init__() under the Worker class.
+
+        """
+        if 'index' in data:
+            for worker in self._workers:
+                if worker.has_index(data['index']):
+                    worker.update_data(data)
+
     def _talk_to_gui(self, data):
         """Send data back to the GUI using wxCallAfter and wxPublisher.
 
@@ -174,7 +189,7 @@ class DownloadManager(Thread):
                 download process.
 
         Note:
-            DownloadManager supports 3 signals.
+            DownloadManager supports 4 signals.
                 1) closing: The download process is closing.
                 2) closed: The download process has closed.
                 3) finished: The download process was completed normally.
@@ -243,9 +258,12 @@ class Worker(Thread):
         self._successful = 0
         self._running = True
 
+        self._wait_for_reply = False
+
         self._data = {
             'playlist_index': None,
             'playlist_size': None,
+            'new_filename': None,
             'extension': None,
             'filesize': None,
             'filename': None,
@@ -269,6 +287,13 @@ class Worker(Thread):
                 if (ret_code == YoutubeDLDownloader.OK or
                         ret_code == YoutubeDLDownloader.ALREADY):
                     self._successful += 1
+
+                # Ask GUI for name updates
+                self._talk_to_gui('receive', {'source': 'filename', 'dest': 'new_filename'})
+
+                # Wait until you get a reply
+                while self._wait_for_reply:
+                    time.sleep(self.WAIT_TIME)
 
                 self._reset()
 
@@ -302,6 +327,19 @@ class Worker(Thread):
     def available(self):
         """Return True if the worker has no job else False. """
         return self._data['url'] is None
+
+    def has_index(self, index):
+        """Return True if index is equal to self._data['index'] else False. """
+        return self._data['index'] == index
+
+    def update_data(self, data):
+        """Update self._data from the given data. """
+        if self._wait_for_reply:
+            # Update data only if a receive request has been issued
+            for key in data:
+                self._data[key] = data[key]
+
+            self._wait_for_reply = False
 
     @property
     def successful(self):
@@ -359,10 +397,44 @@ class Worker(Thread):
                     )
 
         if len(temp_dict):
-            temp_dict['index'] = self._data['index']
-            self._talk_to_gui(temp_dict)
+            self._talk_to_gui('send', temp_dict)
 
-    def _talk_to_gui(self, data):
-        """Send data back to the GUI. """
-        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, data)
+    def _talk_to_gui(self, signal, data):
+        """Communicate with the GUI using wxCallAfter and wxPublisher.
+
+        Send/Ask data to/from the GUI. Note that if the signal is 'receive'
+        then the Worker will wait until it receives a reply from the GUI.
+
+        Args:
+            signal (string): Unique string that informs the GUI about the
+                communication procedure.
+
+            data (dict): Python dictionary which holds the data to be sent
+                back to the GUI. If the signal is 'send' then the dictionary
+                contains the updates for the GUI (e.g. percentage, eta). If
+                the signal is 'receive' then the dictionary contains exactly
+                three keys. The 'index' (row) from which we want to retrieve
+                the data, the 'source' which identifies a column in the
+                wxListCtrl widget and the 'dest' which tells the wxListCtrl
+                under which key to store the retrieved data.
+
+        Note:
+            Worker class supports 2 signals.
+                1) send: The Worker sends data back to the GUI
+                         (e.g. Send status updates).
+                2) receive: The Worker asks data from the GUI
+                            (e.g. Receive the name of a file).
+
+        Structure:
+            ('send', {'index': <item_row>, data_to_send*})
+
+            ('receive', {'index': <item_row>, 'source': 'source_key', 'dest': 'destination_key'})
+
+        """
+        data['index'] = self._data['index']
+
+        if signal == 'receive':
+            self._wait_for_reply = True
+
+        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, (signal, data))
 

@@ -47,7 +47,7 @@ class OptionsManager(object):
     def __init__(self, config_path):
         self.config_path = config_path
         self.settings_file = os.path.join(config_path, self.SETTINGS_FILENAME)
-        self.options = {}
+        self.options = dict()
         self.load_default()
         self.load_from_file()
 

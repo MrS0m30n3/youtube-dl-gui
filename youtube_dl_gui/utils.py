@@ -87,7 +87,7 @@ def get_config_path():
 
     """
     if os.name == 'nt':
-        path = os.getenv('APPDATA').decode(get_encoding(), 'ignore')
+        path = os.getenv('APPDATA')
     else:
         path = os.path.join(os.path.expanduser('~'), '.config')
 
@@ -190,7 +190,7 @@ def get_locale_file():
     DIR_NAME = 'locale'
 
     SEARCH_DIRS = [
-        os.path.join(absolute_path(sys.argv[0].decode(get_encoding(), 'ignore')), DIR_NAME),
+        os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
         os.path.join(get_lib_path(), DIR_NAME),
         os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
@@ -223,7 +223,7 @@ def get_icon_file():
     ICONS_LIST = [ICON_NAME % size for size in SIZES]
 
     search_dirs = [
-        os.path.join(absolute_path(sys.argv[0].decode(get_encoding(), 'ignore')), 'icons'),
+        os.path.join(absolute_path(sys.argv[0]), 'icons'),
         os.path.join(get_lib_path(), 'icons'),
     ]
 
@@ -231,7 +231,6 @@ def get_icon_file():
     path = os.getenv('XDG_DATA_DIRS')
 
     if path is not None:
-        path = path.decode(get_encoding(), 'ignore')
         for xdg_path in path.split(':'):
             xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
 

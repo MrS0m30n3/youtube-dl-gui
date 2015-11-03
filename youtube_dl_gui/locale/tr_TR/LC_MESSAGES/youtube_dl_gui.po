@@ -143,11 +143,11 @@ msgstr "Çıkış"
 
 #: optionsframe.py:47
 msgid "Subtitles"
-msgstr ""
+msgstr "Altyazılar"
 
 #: optionsframe.py:48
 msgid "Filesystem"
-msgstr "Alt yazı"
+msgstr "Dosya sistemi"
 
 #: optionsframe.py:49
 msgid "Shutdown"
@@ -227,7 +227,7 @@ msgstr "Maks İnidirme"
 
 #: optionsframe.py:630
 msgid "Retries"
-msgstr "yeniden denemeler"
+msgstr "Deneme"
 
 #: optionsframe.py:631
 msgid "User Agent"
@@ -379,7 +379,7 @@ msgstr "Almanca"
 
 #: optionsframe.py:1182
 msgid "Download subtitle file by language"
-msgstr "Alt yazı dosyasını dile göre indir"
+msgstr "Altyazı dosyasını dile göre indir"
 
 #: optionsframe.py:1183
 msgid "Download all available subtitles"
@@ -387,15 +387,15 @@ msgstr "Var olan tüm alt yazıları indir"
 
 #: optionsframe.py:1184
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
-msgstr "Otomatik alt yazıyı indir (SADECE YOUTUBE)"
+msgstr "Otomatik altyazıyı indir (SADECE YOUTUBE)"
 
 #: optionsframe.py:1185
 msgid "Embed subtitles in the video (only mp4 videos)"
-msgstr "Alt yazıyı video ya yerleştir (sadece mp4 videoları)"
+msgstr "Altyazıyı video ya yerleştir (sadece mp4 videoları)"
 
 #: optionsframe.py:1186
 msgid "Subtitles Language"
-msgstr "Alt yazı Dili"
+msgstr "Altyazı Dili"
 
 #: optionsframe.py:1280
 msgid "About"

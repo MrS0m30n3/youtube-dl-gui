@@ -1420,7 +1420,7 @@ class LocalizationTab(TabPanel):
         ('ar_AR', 'Arabic'),
         ('pt_BR', 'Portuguese'),
         ('es_MX', 'Spanish'),
-	('tr_TR', 'Turkish')
+        ('tr_TR', 'Turkish')
     ])
 
     RESTART_LABEL = _("Restart")
@@ -1493,4 +1493,3 @@ class LogGUI(wx.Frame):
         """Load file content on the text area. """
         if os.path.exists(filename):
             self._text_area.LoadFile(filename)
-

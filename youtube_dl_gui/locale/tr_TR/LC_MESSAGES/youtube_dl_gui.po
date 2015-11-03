@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
-"POT-Creation-Date: 2015-07-24 04:31+EEST\n"
-"PO-Revision-Date: 2015-07-24 04:37+EEST\n"
+"POT-Creation-Date: 2015-11-03 16:31+EEST\n"
+"PO-Revision-Date: 2015-11-03 16:37+EEST\n"
 "Last-Translator: Ali KOÇ <alikoc@protonmail.ch>\n"
 "Language-Team: tr\n"
 "MIME-Version: 1.0\n"
@@ -383,7 +383,7 @@ msgstr "Altyazı dosyasını dile göre indir"
 
 #: optionsframe.py:1183
 msgid "Download all available subtitles"
-msgstr "Var olan tüm alt yazıları indir"
+msgstr "Var olan tüm altyazıları indir"
 
 #: optionsframe.py:1184
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
@@ -391,7 +391,7 @@ msgstr "Otomatik altyazıyı indir (SADECE YOUTUBE)"
 
 #: optionsframe.py:1185
 msgid "Embed subtitles in the video (only mp4 videos)"
-msgstr "Altyazıyı video ya yerleştir (sadece mp4 videoları)"
+msgstr "Altyazıyı videoya yerleştir (sadece mp4 videoları)"
 
 #: optionsframe.py:1186
 msgid "Subtitles Language"
@@ -407,7 +407,7 @@ msgstr "Aç"
 
 #: optionsframe.py:1282
 msgid "Reset Options"
-msgstr "Ayaları Sıfırla"
+msgstr "Ayarları Sıfırla"
 
 #: optionsframe.py:1283
 msgid "Save Path"

@@ -55,7 +55,7 @@ msgstr "İndirmeler tamamlandı"
 
 #: mainframe.py:93
 msgid "Downloading {0} url(s)"
-msgstr "İnidiriliyor {0} url(ler)"
+msgstr "İndiriliyor {0} url(ler)"
 
 #: mainframe.py:94
 msgid "Stopping downloads"
@@ -79,7 +79,7 @@ msgstr "youtube-dl'nin en son sürümü indiriliyor. Lütfen bekleyin..."
 
 #: mainframe.py:100
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Youtube-dl indirme başarısız"
+msgstr "Youtube-dl indirme başarısız [{0}]"
 
 #: mainframe.py:101
 msgid "Youtube-dl downloaded correctly"
@@ -223,7 +223,7 @@ msgstr "Çalma listesini durdur"
 
 #: optionsframe.py:572
 msgid "Max Downloads"
-msgstr "Maks İnidirme"
+msgstr "Maks İndirme"
 
 #: optionsframe.py:630
 msgid "Retries"

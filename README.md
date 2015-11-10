@@ -12,17 +12,19 @@ written in wxPython.
 
 ## INSTALLATION
 
-**Linux-source**: sudo python setup.py install
+**Linux-source**: `sudo python setup.py install`
 
-**Linux-pypi**: sudo pip install youtube-dlg
+**Linux-pypi**: `sudo pip install youtube-dlg`
+
+**Mac-pypi**: `sudo pip install youtube-dlg`
 
 Then you can call youtube-dlg from the command line
-using "youtube-dl-gui" command or by creating a desktop launcher
+using `youtube-dl-gui` command or by creating a desktop launcher
 
 **Windows**: Check WINDOWS_SETUP
 
 ## WINDOWS_SETUP
-http://code.google.com/p/youtube-dlg/
+https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-setup.zip
 
 ## LINUX_PACKAGES
 **Ubuntu**: http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/

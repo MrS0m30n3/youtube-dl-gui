@@ -1,0 +1,439 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+# Nikita «Arttse» Bystrov <arttsesoft@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2015-07-02 15:31+EEST\n"
+"PO-Revision-Date: 2015-11-22 00:18+0300\n"
+"Last-Translator: Nikita «Arttse» Bystrov <arttsesoft@gmail.com>\n"
+"Language-Team: ru\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: mainframe.py:82
+msgid "URLs"
+msgstr "Ссылки (каждая на новой строке)"
+
+#: mainframe.py:83
+msgid "Download"
+msgstr "Скачать"
+
+#: mainframe.py:84
+msgid "Update"
+msgstr "Обновить приложение"
+
+#: mainframe.py:85 optionsframe.py:40
+msgid "Options"
+msgstr "Настройки"
+
+#: mainframe.py:86
+msgid "Error"
+msgstr "Ошибка"
+
+#: mainframe.py:87
+msgid "Stop"
+msgstr "Остановить скачивание"
+
+#: mainframe.py:88
+msgid "Info"
+msgstr "Информация"
+
+#: mainframe.py:89
+msgid "Welcome"
+msgstr "Добро пожаловать"
+
+#: mainframe.py:90
+msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "Успешно скачано {0} по указанным ссылкам за {1} дней {2} часов {3} минут {4} секунд"
+
+#: mainframe.py:92
+msgid "Downloads completed"
+msgstr "Скачивание завершено"
+
+#: mainframe.py:93
+msgid "Downloading {0} url(s)"
+msgstr "Скачивание по {0} ссылке"
+
+#: mainframe.py:94
+msgid "Stopping downloads"
+msgstr "Производится остановка скачивания"
+
+#: mainframe.py:95
+msgid "Downloads stopped"
+msgstr "Скачивание остановлено"
+
+#: mainframe.py:96
+msgid "You need to provide at least one url"
+msgstr "Вы должны указать хотя бы одну ссылку"
+
+#: mainframe.py:97
+msgid "Downloads started"
+msgstr "Началось скачивание"
+
+#: mainframe.py:99
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "Производится скачивание последней версии youtube-dl. Пожалуйста, подождите..."
+
+#: mainframe.py:100
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Не удалось скачать Youtube-dl [{0}]"
+
+#: mainframe.py:101
+msgid "Youtube-dl downloaded correctly"
+msgstr "Youtube-dl скачан успешно"
+
+#: mainframe.py:103
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "Невозможно открыть каталог: '{dir}'. Указанный путь не существует"
+
+#: mainframe.py:105
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Ошибка при выключении. Убедитесь, что вы ввели корректный пароль вашей учетной записи администратора"
+
+#: mainframe.py:107
+msgid "Shutting down system"
+msgstr "Выключение системы"
+
+#: mainframe.py:109
+msgid "Title"
+msgstr "Заголовок"
+
+#: mainframe.py:110
+msgid "Size"
+msgstr "Размер"
+
+#: mainframe.py:111
+msgid "Percent"
+msgstr "Скачано"
+
+#: mainframe.py:112
+msgid "ETA"
+msgstr "Осталось"
+
+#: mainframe.py:113
+msgid "Speed"
+msgstr "Скорость скачивания"
+
+#: mainframe.py:114
+msgid "Status"
+msgstr "Статус"
+
+#: optionsframe.py:42
+msgid "General"
+msgstr "Главные"
+
+#: optionsframe.py:43
+msgid "Video"
+msgstr "Видео"
+
+#: optionsframe.py:44
+msgid "Audio"
+msgstr "Аудио"
+
+#: optionsframe.py:45
+msgid "Playlist"
+msgstr "Плейлист"
+
+#: optionsframe.py:46
+msgid "Output"
+msgstr "Вывод"
+
+#: optionsframe.py:47
+msgid "Subtitles"
+msgstr "Субтитры"
+
+#: optionsframe.py:48
+msgid "Filesystem"
+msgstr "Файловая система"
+
+#: optionsframe.py:49
+msgid "Shutdown"
+msgstr "Выключение"
+
+#: optionsframe.py:50
+msgid "Authentication"
+msgstr "Аутентификация"
+
+#: optionsframe.py:51
+msgid "Connection"
+msgstr "Подключение"
+
+#: optionsframe.py:52
+msgid "Log"
+msgstr "Журнал событий"
+
+#: optionsframe.py:53
+msgid "Commands"
+msgstr "Команды"
+
+#: optionsframe.py:54
+msgid "Localization"
+msgstr "Язык"
+
+#: optionsframe.py:400
+msgid "Enable Log"
+msgstr "Включить ведение журнала событий"
+
+#: optionsframe.py:401
+msgid "Write Time"
+msgstr "Время записи"
+
+#: optionsframe.py:402
+msgid "Clear Log"
+msgstr "Очистить журнал событий"
+
+#: optionsframe.py:403
+msgid "View Log"
+msgstr "Посмотреть журнал событий"
+
+#: optionsframe.py:404
+msgid "Path: {0}"
+msgstr "Путь: {0}"
+
+#: optionsframe.py:405
+msgid "Log Size: {0} Bytes"
+msgstr "Размер системного журнала: {0} Байт"
+
+#: optionsframe.py:406 optionsframe.py:1425
+msgid "Restart"
+msgstr "Перезагрузка"
+
+#: optionsframe.py:407
+msgid "Please restart {0}"
+msgstr "Пожалуйста, перезапустите {0}"
+
+#: optionsframe.py:517
+msgid "Shutdown when finished"
+msgstr "Завершение работы по завершении скачки"
+
+#: optionsframe.py:518
+msgid "SUDO password"
+msgstr "Пароль от вашей учетной записи (администратора)"
+
+#: optionsframe.py:570
+msgid "Playlist Start"
+msgstr "Начинать с видео под номером"
+
+#: optionsframe.py:571
+msgid "Playlist Stop"
+msgstr "Последнее видео под номером"
+
+#: optionsframe.py:572
+msgid "Max Downloads"
+msgstr "Максимальное число файлов для скачивания"
+
+#: optionsframe.py:630
+msgid "Retries"
+msgstr "Количество попыток"
+
+#: optionsframe.py:631
+msgid "User Agent"
+msgstr "Строка пользователя"
+
+#: optionsframe.py:632
+msgid "Referer"
+msgstr "Реферер"
+
+#: optionsframe.py:633
+msgid "Proxy"
+msgstr "Прокси"
+
+#: optionsframe.py:707
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: optionsframe.py:708
+msgid "Password"
+msgstr "Пароль"
+
+#: optionsframe.py:709
+msgid "Video Password (vimeo, smotri)"
+msgstr "Пароль для видео (vimeo, smotri)"
+
+#: optionsframe.py:767
+msgid "high"
+msgstr "высокое"
+
+#: optionsframe.py:767
+msgid "low"
+msgstr "низкое"
+
+#: optionsframe.py:767
+msgid "mid"
+msgstr "среднее"
+
+#: optionsframe.py:770
+msgid "Convert to Audio"
+msgstr "Конвертировать Аудио"
+
+#: optionsframe.py:771
+msgid "Keep Video"
+msgstr "Сохранить видео после пост-обработки"
+
+#: optionsframe.py:772
+msgid "Audio Format"
+msgstr "Формат Аудио"
+
+#: optionsframe.py:773
+msgid "Audio Quality"
+msgstr "Качество Аудио"
+
+#: optionsframe.py:890
+msgid "default"
+msgstr "По умолчанию"
+
+#: optionsframe.py:891
+msgid "none"
+msgstr "нет"
+
+#: optionsframe.py:895
+msgid "Video Format"
+msgstr "Формат Видео"
+
+#: optionsframe.py:896
+msgid "Mix Format"
+msgstr "Смешать формат"
+
+#: optionsframe.py:955
+msgid "Restrict filenames (ASCII)"
+msgstr "Сокращать имена файлов (ASCII)"
+
+#: optionsframe.py:956
+msgid "ID as Name"
+msgstr "ID как Имя"
+
+#: optionsframe.py:957
+msgid "Title as Name"
+msgstr "Заголовок как Имя"
+
+#: optionsframe.py:958
+msgid "Custom Template (youtube-dl)"
+msgstr "Пользовательский шаблон (youtube-dl)"
+
+#: optionsframe.py:1052
+msgid "Ignore Errors"
+msgstr "Игнорировать ошибки"
+
+#: optionsframe.py:1053
+msgid "Open destination folder"
+msgstr "Открыть папку назначения после скачки"
+
+#: optionsframe.py:1054
+msgid "Write info to (.json) file"
+msgstr "Записать информацию в (.json) файл"
+
+#: optionsframe.py:1055
+msgid "Write description to file"
+msgstr "Записать описание в файл"
+
+#: optionsframe.py:1056
+msgid "Write thumbnail to disk"
+msgstr "Записать миниатюру (thumbnail) на диск"
+
+#: optionsframe.py:1057
+msgid "Filesize"
+msgstr "Размер файла"
+
+#: optionsframe.py:1058
+msgid "Min"
+msgstr "Минимум"
+
+#: optionsframe.py:1059
+msgid "Max"
+msgstr "Максимум"
+
+#: optionsframe.py:1172
+msgid "English"
+msgstr "Английский"
+
+#: optionsframe.py:1173
+msgid "Greek"
+msgstr "Греческий"
+
+#: optionsframe.py:1174
+msgid "Portuguese"
+msgstr "Португальский"
+
+#: optionsframe.py:1175
+msgid "French"
+msgstr "Французский"
+
+#: optionsframe.py:1176
+msgid "Italian"
+msgstr "Итальянский"
+
+#: optionsframe.py:1177
+msgid "Russian"
+msgstr "Русский"
+
+#: optionsframe.py:1178
+msgid "Spanish"
+msgstr "Испанский"
+
+#: optionsframe.py:1179
+msgid "German"
+msgstr "Немецкий"
+
+#: optionsframe.py:1182
+msgid "Download subtitle file by language"
+msgstr "Скачать файл субтитров указанного языка"
+
+#: optionsframe.py:1183
+msgid "Download all available subtitles"
+msgstr "Скачать все имеющиеся субтитры"
+
+#: optionsframe.py:1184
+msgid "Download automatic subtitle file (YOUTUBE ONLY)"
+msgstr "Автоматическое скачивание файла субтитров (ТОЛЬКО YOUTUBE)"
+
+#: optionsframe.py:1185
+msgid "Embed subtitles in the video (only for mp4 videos)"
+msgstr "Встроить субтитры в видео (только для mp4)"
+
+#: optionsframe.py:1186
+msgid "Subtitles Language"
+msgstr "Язык Субтитров"
+
+#: optionsframe.py:1280
+msgid "About"
+msgstr "О программе"
+
+#: optionsframe.py:1281
+msgid "Open"
+msgstr "Открыть"
+
+#: optionsframe.py:1282
+msgid "Reset Options"
+msgstr "Сбросить настройки"
+
+#: optionsframe.py:1283
+msgid "Save Path"
+msgstr "Путь для сохранения"
+
+#: optionsframe.py:1284
+msgid "Settings File: {0}"
+msgstr "Файл настроек: {0}"
+
+#: optionsframe.py:1285
+msgid "Choose Directory"
+msgstr "Выбрать Директорию"
+
+#: optionsframe.py:1370
+msgid "Command line arguments (e.g. --help)"
+msgstr "Аргументы командной строки (например, --help)"
+
+#: optionsframe.py:1426
+msgid "Localization Language"
+msgstr "Язык"
+
+#: optionsframe.py:1427
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "Для того, чтобы изменения вступили в силу, пожалуйста, перезапустите {0}"
+
+#: optionsframe.py:1474
+msgid "Log Viewer"
+msgstr "Журнал событий"

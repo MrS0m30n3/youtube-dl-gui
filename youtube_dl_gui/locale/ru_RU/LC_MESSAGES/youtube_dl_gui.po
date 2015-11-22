@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
 "POT-Creation-Date: 2015-07-02 15:31+EEST\n"
-"PO-Revision-Date: 2015-11-22 00:18+0300\n"
+"PO-Revision-Date: 2015-11-22 10:05+0300\n"
 "Last-Translator: Nikita «Arttse» Bystrov <arttsesoft@gmail.com>\n"
 "Language-Team: ru\n"
 "Language: ru\n"
@@ -391,8 +391,8 @@ msgid "Download automatic subtitle file (YOUTUBE ONLY)"
 msgstr "Автоматическое скачивание файла субтитров (ТОЛЬКО YOUTUBE)"
 
 #: optionsframe.py:1185
-msgid "Embed subtitles in the video (only for mp4 videos)"
-msgstr "Встроить субтитры в видео (только для mp4)"
+msgid "Embed subtitles in the video (only mp4 videos)"
+msgstr "Встроить субтитры в видео (только mp4)"
 
 #: optionsframe.py:1186
 msgid "Subtitles Language"

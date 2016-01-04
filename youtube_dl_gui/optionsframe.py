@@ -765,7 +765,7 @@ class AudioTab(TabPanel):
 
     """
     AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
-    AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis"]
+    AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
 
     TO_AUDIO_LABEL = _("Convert to Audio")
     KEEP_VIDEO_LABEL = _("Keep Video")

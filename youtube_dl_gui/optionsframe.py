@@ -1176,7 +1176,8 @@ class SubtitlesTab(TabPanel):
         ("it", _("Italian")),
         ("ru", _("Russian")),
         ("es", _("Spanish")),
-        ("de", _("German"))
+        ("de", _("German")),
+        ("zh", _("Chinese"))
     ])
 
     DL_SUBS_LABEL = _("Download subtitle file by language")

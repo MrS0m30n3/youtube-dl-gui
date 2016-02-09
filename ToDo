@@ -1,7 +1,8 @@
-* Merge pull requests #42, #43
-* Fix issue #39
-* Implement downloads history #44
+* Merge pull requests #43, #69, #71
+* Fix issues #65, #57, #52, #44, #39
+* Update translation files
+* Add support for right to left languages
 * Create new website for http://mrs0m30n3.github.io/youtube-dl-gui/
-* Upload the new GUI (Closes issues #24, #19, #16) (Seperate branch)
+* Add some test on the code ???
 * Use youtube-dl directly from python instead of using the subprocess module
 

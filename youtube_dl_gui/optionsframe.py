@@ -630,6 +630,7 @@ class ConnectionTab(TabPanel):
 
     SPINCTRL_SIZE = (60, -1)
 
+    MAXSIMDLS_LABEL = _("Max Simultaneous Downloads")
     RETRIES_LABEL = _("Retries")
     USERAGENT_LABEL = _("User Agent")
     REF_LABEL = _("Referer")
@@ -639,10 +640,12 @@ class ConnectionTab(TabPanel):
         super(ConnectionTab, self).__init__(*args, **kwargs)
 
         self.retries_spinctrl = self.create_spinctrl((1, 999))
+        self.maxsimdls_spinctrl = self.create_spinctrl((1, 999))
         self.useragent_box = self.create_textctrl()
         self.referer_box = self.create_textctrl()
         self.proxy_box = self.create_textctrl()
 
+        self.maxsimdls_text = self.create_statictext(self.MAXSIMDLS_LABEL)
         self.retries_text = self.create_statictext(self.RETRIES_LABEL)
         self.useragent_text = self.create_statictext(self.USERAGENT_LABEL)
         self.referer_text = self.create_statictext(self.REF_LABEL)
@@ -656,11 +659,23 @@ class ConnectionTab(TabPanel):
 
         vertical_sizer.AddSpacer(self.SIZE_10)
 
-        retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        top_hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
+	
+	retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
         retries_sizer.Add(self.retries_text)
         retries_sizer.AddSpacer(self.SIZE_5)
         retries_sizer.Add(self.retries_spinctrl)
-        vertical_sizer.Add(retries_sizer)
+
+        maxsimdls_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        maxsimdls_sizer.Add(self.maxsimdls_text)
+        maxsimdls_sizer.AddSpacer(self.SIZE_5)
+        maxsimdls_sizer.Add(self.maxsimdls_spinctrl)
+
+	top_hor_sizer.Add(retries_sizer)
+	top_hor_sizer.AddSpacer(self.SIZE_20)
+	top_hor_sizer.Add(maxsimdls_sizer)
+
+        vertical_sizer.Add(top_hor_sizer)
 
         vertical_sizer.AddSpacer(self.SIZE_10)
         vertical_sizer.Add(self.useragent_text)
@@ -683,12 +698,14 @@ class ConnectionTab(TabPanel):
     def load_options(self):
         self.proxy_box.SetValue(self.opt_manager.options['proxy'])
         self.referer_box.SetValue(self.opt_manager.options['referer'])
+        self.maxsimdls_spinctrl.SetValue(self.opt_manager.options['workers_number'])
         self.retries_spinctrl.SetValue(self.opt_manager.options['retries'])
         self.useragent_box.SetValue(self.opt_manager.options['user_agent'])
 
     def save_options(self):
         self.opt_manager.options['proxy'] = self.proxy_box.GetValue()
         self.opt_manager.options['referer'] = self.referer_box.GetValue()
+        self.opt_manager.options['workers_number'] = self.maxsimdls_spinctrl.GetValue()
         self.opt_manager.options['retries'] = self.retries_spinctrl.GetValue()
         self.opt_manager.options['user_agent'] = self.useragent_box.GetValue()
 

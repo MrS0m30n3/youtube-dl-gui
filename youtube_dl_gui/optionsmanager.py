@@ -9,6 +9,8 @@ import json
 import os.path
 
 from .utils import (
+    os_path_expanduser,
+    os_path_exists,
     encode_tuple,
     decode_tuple,
     check_path
@@ -198,7 +200,7 @@ class OptionsManager(object):
 
         """
         self.options = {
-            'save_path': os.path.expanduser('~'),
+            'save_path': os_path_expanduser('~'),
             'video_format': '0',
             'second_video_format': '0',
             'to_audio': False,
@@ -246,7 +248,7 @@ class OptionsManager(object):
 
     def load_from_file(self):
         """Load options from settings file. """
-        if not os.path.exists(self.settings_file):
+        if not os_path_exists(self.settings_file):
             return
 
         with open(self.settings_file, 'rb') as settings_file:

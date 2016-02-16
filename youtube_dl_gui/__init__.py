@@ -17,7 +17,6 @@ Example:
 from __future__ import unicode_literals
 
 import sys
-import os.path
 import gettext
 
 try:

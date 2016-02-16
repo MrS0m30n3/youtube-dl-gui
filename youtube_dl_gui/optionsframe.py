@@ -20,7 +20,10 @@ from .info import (
     __author__
 )
 
-from .utils import TwoWayOrderedDict as twodict
+from .utils import (
+    TwoWayOrderedDict as twodict,
+    os_path_exists
+)
 
 
 class OptionsFrame(wx.Frame):
@@ -1493,5 +1496,5 @@ class LogGUI(wx.Frame):
 
     def load(self, filename):
         """Load file content on the text area. """
-        if os.path.exists(filename):
+        if os_path_exists(filename):
             self._text_area.LoadFile(filename)

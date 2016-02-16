@@ -37,7 +37,10 @@ from .parsers import OptionsParser
 from .updatemanager import UpdateThread
 from .downloaders import YoutubeDLDownloader
 
-from .utils import YOUTUBEDL_BIN
+from .utils import (
+    YOUTUBEDL_BIN,
+    os_path_exists
+)
 
 
 MANAGER_PUB_TOPIC = 'dlmanager'
@@ -201,7 +204,7 @@ class DownloadManager(Thread):
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
-        if not os.path.exists(self._youtubedl_path()):
+        if not os_path_exists(self._youtubedl_path()):
             UpdateThread(self.opt_manager.options['youtubedl_path'], True).join()
 
     def _jobs_done(self):

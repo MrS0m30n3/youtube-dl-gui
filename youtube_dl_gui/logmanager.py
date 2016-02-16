@@ -9,6 +9,7 @@ import os.path
 from time import strftime
 
 from .utils import (
+    os_path_exists,
     get_encoding,
     check_path
 )
@@ -35,7 +36,7 @@ class LogManager(object):
 
     LOG_FILENAME = "log"
     TIME_TEMPLATE = "[{time}] {error_msg}"
-    MAX_LOGSIZE = 524288
+    MAX_LOGSIZE = 524288  # Bytes
 
     def __init__(self, config_path, add_time=False):
         self.config_path = config_path
@@ -47,7 +48,7 @@ class LogManager(object):
 
     def log_size(self):
         """Return log file size in Bytes. """
-        if not os.path.exists(self.log_file):
+        if not os_path_exists(self.log_file):
             return 0
 
         return os.path.getsize(self.log_file)
@@ -88,7 +89,7 @@ class LogManager(object):
 
     def _init_log(self):
         """Initialize the log file if not exist. """
-        if not os.path.exists(self.log_file):
+        if not os_path_exists(self.log_file):
             self._write('', 'w')
 
     def _auto_clear_log(self):

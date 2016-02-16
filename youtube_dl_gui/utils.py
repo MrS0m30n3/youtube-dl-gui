@@ -29,21 +29,91 @@ if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
 
 
+def get_encoding():
+    """Return system encoding. """
+    try:
+        encoding = locale.getpreferredencoding()
+        'TEST'.encode(encoding)
+    except:
+        encoding = 'UTF-8'
+
+    return encoding
+
+
+def convert_on_bounds(func):
+    """Decorator to convert string inputs & outputs.
+
+    Covert string inputs & outputs between 'str' and 'unicode' at the
+    application bounds using the preferred system encoding. It will convert
+    all the string params (args, kwargs) to 'str' type and all the
+    returned strings values back to 'unicode'.
+
+    """
+    def convert_item(item, to_unicode=False):
+        """The actual function which handles the conversion.
+
+        Args:
+            item (-): Can be any python item.
+
+            to_unicode (boolean): When True it will convert all the 'str' types
+                to 'unicode'. When False it will convert all the 'unicode'
+                types back to 'str'.
+
+        """
+        if to_unicode and isinstance(item, str):
+            # Convert str to unicode
+            return item.decode(get_encoding(), 'ignore')
+
+        if not to_unicode and isinstance(item, unicode):
+            # Convert unicode to str
+            return item.encode(get_encoding(), 'ignore')
+
+        if hasattr(item, '__iter__'):
+            # Handle iterables
+            temp_list = []
+
+            for sub_item in item:
+                if isinstance(item, dict):
+                    temp_list.append((sub_item, covert_item(item[sub_item])))
+                else:
+                    temp_list.append(convert_item(sub_item))
+
+            return type(item)(temp_list)
+
+        return item
+
+    def wrapper(*args, **kwargs):
+        returned_value = func(*convert_item(args), **convert_item(kwargs))
+
+        return convert_item(returned_value, True)
+
+    return wrapper
+
+
+# See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
+# Patch os functions to convert between 'str' and 'unicode' on app bounds
+os_getenv = convert_on_bounds(os.getenv)
+os_makedirs = convert_on_bounds(os.makedirs)
+os_path_isdir = convert_on_bounds(os.path.isdir)
+os_path_exists = convert_on_bounds(os.path.exists)
+os_path_dirname = convert_on_bounds(os.path.dirname)
+os_path_abspath = convert_on_bounds(os.path.abspath)
+os_path_realpath = convert_on_bounds(os.path.realpath)
+os_path_expanduser = convert_on_bounds(os.path.expanduser)
+
+# Patch Windows specific functions
+if os.name == 'nt':
+    os_startfile = convert_on_bounds(os.startfile)
+
+
 def remove_shortcuts(path):
     """Return given path after removing the shortcuts. """
-    path = path.replace('~', os.path.expanduser('~'))
-    return path
+    return path.replace('~', os_path_expanduser('~'))
 
 
 def absolute_path(filename):
     """Return absolute path to the given file. """
-    path = os.path.realpath(os.path.abspath(filename))
-    return os.path.dirname(path).decode(get_encoding(), 'ignore')
-
-
-def get_lib_path():
-    """Return path to the current file. """
-    return os.path.dirname(__file__).decode(get_encoding(), 'ignore')
+    return os_path_dirname(os_path_realpath(os_path_abspath(filename)))
 
 
 def open_dir(path):
@@ -51,11 +121,11 @@ def open_dir(path):
     Return True if path exists else False. """
     path = remove_shortcuts(path)
 
-    if not os.path.exists(path):
+    if not os_path_exists(path):
         return False
 
     if os.name == 'nt':
-        os.startfile(path)
+        os_startfile(path)
     else:
         subprocess.call(('xdg-open', path))
 
@@ -66,6 +136,7 @@ def encode_tuple(tuple_to_encode):
     """Turn size tuple into string. """
     return '%s/%s' % (tuple_to_encode[0], tuple_to_encode[1])
 
+
 def decode_tuple(encoded_tuple):
     """Turn tuple string back to tuple. """
     s = encoded_tuple.split('/')
@@ -74,8 +145,8 @@ def decode_tuple(encoded_tuple):
 
 def check_path(path):
     """Create path if not exist. """
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not os_path_exists(path):
+        os_makedirs(path)
 
 
 def get_config_path():
@@ -87,9 +158,9 @@ def get_config_path():
 
     """
     if os.name == 'nt':
-        path = os.getenv('APPDATA')
+        path = os_getenv('APPDATA')
     else:
-        path = os.path.join(os.path.expanduser('~'), '.config')
+        path = os.path.join(os_path_expanduser('~'), '.config')
 
     return os.path.join(path, __appname__.lower())
 
@@ -164,17 +235,6 @@ def get_time(seconds):
     return dtime
 
 
-def get_encoding():
-    """Return system encoding. """
-    try:
-        encoding = locale.getpreferredencoding()
-        'TEST'.encode(encoding)
-    except:
-        encoding = 'UTF-8'
-
-    return encoding
-
-
 def get_locale_file():
     """Search for youtube-dlg locale file.
 
@@ -191,7 +251,7 @@ def get_locale_file():
 
     SEARCH_DIRS = [
         os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
-        os.path.join(get_lib_path(), DIR_NAME),
+        os.path.join(os_path_dirname(__file__), DIR_NAME),
         os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
 
@@ -199,7 +259,7 @@ def get_locale_file():
       SEARCH_DIRS.append('/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__))
 
     for directory in SEARCH_DIRS:
-        if os.path.isdir(directory):
+        if os_path_isdir(directory):
             return directory
 
     return None
@@ -224,11 +284,11 @@ def get_icon_file():
 
     search_dirs = [
         os.path.join(absolute_path(sys.argv[0]), 'icons'),
-        os.path.join(get_lib_path(), 'icons'),
+        os.path.join(os_path_dirname(__file__), 'icons'),
     ]
 
     # Append $XDG_DATA_DIRS on search_dirs
-    path = os.getenv('XDG_DATA_DIRS')
+    path = os_getenv('XDG_DATA_DIRS')
 
     if path is not None:
         for xdg_path in path.split(':'):
@@ -244,7 +304,7 @@ def get_icon_file():
         for icon in ICONS_LIST:
             icon_file = os.path.join(directory, icon)
 
-            if os.path.exists(icon_file):
+            if os_path_exists(icon_file):
                 return icon_file
 
     return None

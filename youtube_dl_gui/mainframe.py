@@ -34,6 +34,9 @@ from .utils import (
 from .info import (
     __appname__
 )
+from .shortcuts import (
+    get_key_press
+)
 
 
 class MainFrame(wx.Frame):
@@ -154,6 +157,14 @@ class MainFrame(wx.Frame):
         self._url_text = self._create_statictext(self.URLS_LABEL)
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
+        def _key_pressed_url_list(event):
+            key = get_key_press(event)
+            # TODO: Get shortcut from settings?
+            if key == 'Ctrl+A':
+                self._url_list.SelectAll()
+            else:
+                event.Skip()
+        self._url_list.Bind(wx.EVT_KEY_DOWN, _key_pressed_url_list, self._url_list)
         self._download_btn = self._create_button(self.DOWNLOAD_LABEL, self._on_download)
         self._update_btn = self._create_button(self.UPDATE_LABEL, self._on_update)
         self._options_btn = self._create_button(self.OPTIONS_LABEL, self._on_options)

@@ -50,7 +50,7 @@ from .utils import get_locale_file
 # Set config path and create options and log managers
 config_path = get_config_path()
 
-opt_manager = OptionsManager(config_path)
+opt_manager = OptionsManager()
 log_manager = None
 
 if opt_manager.options['enable_log']:

@@ -54,5 +54,23 @@ class TestConfigPath(unittest.TestCase):
         os.name = 'java'
         self.assertRaises(Exception, get_config_path())
 
+    def test_get_settings_json_unix(self):
+        """Get the absolute path to the file settings.json in Unix."""
+        os.environ['HOME'] = '/home/username'
+        self.assertEqual(
+            get_config_path('posix', settings_file=True),
+            "/home/username/.config/youtube-dlg/settings.json"
+        )
+
+    def test_get_settings_json_win(self):
+        """Get the absolute path to the file settings.json in Windows."""
+        os.environ['APPDATA'] = 'C:\\Documents and Settings\\' \
+            'User Name\\Application Data'
+        self.assertEqual(
+            get_config_path('nt', settings_file=True),
+            'C:\\Documents and Settings\\User Name\\'
+            'Application Data\\youtube-dlg\\settings.json'
+        )
+
 if __name__ == "__main__":
     unittest.main()

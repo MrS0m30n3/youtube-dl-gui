@@ -24,14 +24,18 @@ elif os.name == 'posix':
     PLATFORM = 'posix'
 
 
-def get_config_path(platform=None):
+def get_config_path(platform=None, settings_file=False):
     """Return user config path.
 
     Note:
         Windows = %AppData% + app_name
         Linux   = ~/.config + app_name
 
+    SETTINGS_FILENAME (string): Filename of the settings file.
+
     """
+    SETTINGS_FILENAME = 'settings.json'
+
     if not platform:
         platform = PLATFORM
     if platform == 'nt':
@@ -42,7 +46,12 @@ def get_config_path(platform=None):
         settings_path = path.join(os.getenv('HOME').decode('utf-8'), '.config')
     else:
         raise Exception("Unsupported platform")
-    return path.join(settings_path, __appname__.lower())
+    settings_path = path.join(settings_path, __appname__.lower())
+    if settings_file:
+        # TODO: Devolver con archivo settings.json
+        return path.join(settings_path, SETTINGS_FILENAME)
+    else:
+        return settings_path
 
 
 class OptionsManager(object):
@@ -52,13 +61,8 @@ class OptionsManager(object):
     This class is responsible for storing and retrieving the options.
 
     Attributes:
-        SETTINGS_FILENAME (string): Filename of the settings file.
         SENSITIVE_KEYS (tuple): Contains the keys that we don't want
             to store on the settings file. (SECURITY ISSUES).
-
-    Args:
-        config_path (string): Absolute path where OptionsManager
-            should store the settings file.
 
     Note:
         See load_default() method for available options.
@@ -71,12 +75,11 @@ class OptionsManager(object):
 
     """
 
-    SETTINGS_FILENAME = 'settings.json'
     SENSITIVE_KEYS = ('sudo_password', 'password', 'video_password')
 
-    def __init__(self, config_path):
-        self.config_path = config_path
-        self.settings_file = os.path.join(config_path, self.SETTINGS_FILENAME)
+    def __init__(self):
+        self.config_path = get_config_path()
+        self.settings_file = get_config_path(settings_file=True)
         self.options = dict()
         self.load_default()
         self.load_from_file()

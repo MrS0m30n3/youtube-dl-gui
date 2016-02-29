@@ -11,11 +11,7 @@ from youtube_dl_gui.optionsmanager import get_config_path
 
 class TestConfigPath(unittest.TestCase):
 
-    """Minor test for get_config_path.
-
-    TODO: Support unicode
-
-    """
+    """Minor test for get_config_path."""
 
     def test_get_path_posix_unicode(self):
         """Check path for posix system with unicode character."""

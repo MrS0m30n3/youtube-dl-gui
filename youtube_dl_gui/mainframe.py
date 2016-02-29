@@ -154,6 +154,16 @@ class MainFrame(wx.Frame):
         # Create components
         self._panel = wx.Panel(self)
 
+        def _key_pressed_panel(event):
+            key = get_key_press(event)
+            # TODO: Get shortcut from settings?
+            if key == 'Ctrl+Q':
+                self.Close()
+            else:
+                event.Skip()
+
+        self.Bind(wx.EVT_CHAR_HOOK, _key_pressed_panel)
+
         self._url_text = self._create_statictext(self.URLS_LABEL)
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 

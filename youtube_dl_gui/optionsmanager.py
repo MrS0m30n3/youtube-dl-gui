@@ -6,15 +6,43 @@
 from __future__ import unicode_literals
 
 import json
+import os
 import os.path
 
+from .info import __appname__
 from .utils import (
-    os_path_expanduser,
-    os_path_exists,
-    encode_tuple,
+    check_path,
     decode_tuple,
-    check_path
+    encode_tuple,
+    os_path_exists,
+    os_path_expanduser
 )
+
+if os.name == 'nt':
+    PLATFORM = 'nt'
+elif os.name == 'posix':
+    PLATFORM = 'posix'
+
+
+def get_config_path(platform=None):
+    """Return user config path.
+
+    Note:
+        Windows = %AppData% + app_name
+        Linux   = ~/.config + app_name
+
+    """
+    if not platform:
+        platform = PLATFORM
+    if platform == 'nt':
+        import ntpath as path
+        settings_path = os.getenv('APPDATA').decode('utf-8')
+    elif platform == 'posix':
+        import posixpath as path
+        settings_path = path.join(os.getenv('HOME').decode('utf-8'), '.config')
+    else:
+        raise Exception("Unsupported platform")
+    return path.join(settings_path, __appname__.lower())
 
 
 class OptionsManager(object):
@@ -353,4 +381,3 @@ class OptionsManager(object):
         temp_options['opts_win_size'] = encode_tuple(temp_options['opts_win_size'])
 
         return temp_options
-

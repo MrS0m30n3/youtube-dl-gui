@@ -39,12 +39,12 @@ from .info import (
 )
 
 from .logmanager import LogManager
-from .optionsmanager import OptionsManager
-
-from .utils import (
-    get_config_path,
-    get_locale_file
+from .optionsmanager import (
+    OptionsManager,
+    get_config_path
 )
+
+from .utils import get_locale_file
 
 
 # Set config path and create options and log managers

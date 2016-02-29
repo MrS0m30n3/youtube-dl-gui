@@ -71,6 +71,15 @@ class OptionsFrame(wx.Frame):
         panel = wx.Panel(self)
         notebook = wx.Notebook(panel)
 
+        def _key_pressed_panel(event):
+            key = event.GetKeyCode()
+            if key == wx.WXK_ESCAPE:
+                self.Close()
+            else:
+                event.Skip()
+
+        panel.Bind(wx.EVT_CHAR_HOOK, _key_pressed_panel)
+
         # Create Tabs
         tab_args = (self, notebook)
 

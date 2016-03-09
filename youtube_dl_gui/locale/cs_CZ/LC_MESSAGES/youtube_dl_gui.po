@@ -1,0 +1,440 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+# Ondrej Kovar <ondrej95kovar@gmail.com>, 2016.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2015-07-02 15:31+EEST\n"
+"PO-Revision-Date: 2016-09-03 15:37+EEST\n"
+"Last-Translator: Ondrej Kovar <ondrej95kovar@gmail.com>\n"
+"Language-Team: Czech\n"
+"Language: cs_CS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: mainframe.py:82
+msgid "URLs"
+msgstr "Odkazy"
+
+#: mainframe.py:83
+msgid "Download"
+msgstr "Stáhni"
+
+#: mainframe.py:84
+msgid "Update"
+msgstr "Update"
+
+#: mainframe.py:85 optionsframe.py:40
+msgid "Options"
+msgstr "Nastavení"
+
+#: mainframe.py:86
+msgid "Error"
+msgstr "Chyba"
+
+#: mainframe.py:87
+msgid "Stop"
+msgstr "Stop"
+
+#: mainframe.py:88
+msgid "Info"
+msgstr "Info"
+
+#: mainframe.py:89
+msgid "Welcome"
+msgstr "Vítejte"
+
+#: mainframe.py:90
+msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "Úspěšně staženo {0} odkaz(ů) za {1} dní {2} hodin {3} minut {4} sekund"
+
+#: mainframe.py:92
+msgid "Downloads completed"
+msgstr "Stahování dokončeno"
+
+#: mainframe.py:93
+msgid "Downloading {0} url(s)"
+msgstr "Stahuji {0} odkaz(y)"
+
+#: mainframe.py:94
+msgid "Stopping downloads"
+msgstr "Zastavují stahování"
+
+#: mainframe.py:95
+msgid "Downloads stopped"
+msgstr "Stahování zastaveno"
+
+#: mainframe.py:96
+msgid "You need to provide at least one url"
+msgstr "Musíte poskytnout alespoň jeden odkaz"
+
+#: mainframe.py:97
+msgid "Downloads started"
+msgstr "Stahování zahájeno"
+
+#: mainframe.py:99
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "Stahuji poslední youtube-dl. Prosím vyčkejte..."
+
+#: mainframe.py:100
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Youtube-dl stažení skončilo chybou [{0}]"
+
+#: mainframe.py:101
+msgid "Youtube-dl downloaded correctly"
+msgstr "Youtube-dl staženo"
+
+#: mainframe.py:103
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "Nemohu otevřít adresář: '{dir}'. Zadaná cesta neexistuje"
+
+#: mainframe.py:105
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Chyba při ukončování. Ujistěte se, že jste zadali správné heslo"
+
+#: mainframe.py:107
+msgid "Shutting down system"
+msgstr "Vypínám"
+
+#: mainframe.py:109
+msgid "Title"
+msgstr "Titul"
+
+#: mainframe.py:110
+msgid "Size"
+msgstr "Velikost"
+
+#: mainframe.py:111
+msgid "Percent"
+msgstr "Procent"
+
+#: mainframe.py:112
+msgid "ETA"
+msgstr "OZČ"
+
+#: mainframe.py:113
+msgid "Speed"
+msgstr "Rychlost"
+
+#: mainframe.py:114
+msgid "Status"
+msgstr "Status"
+
+#: optionsframe.py:42
+msgid "General"
+msgstr "Obecné"
+
+#: optionsframe.py:43
+msgid "Video"
+msgstr "Video"
+
+#: optionsframe.py:44
+msgid "Audio"
+msgstr "Zvuk"
+
+#: optionsframe.py:45
+msgid "Playlist"
+msgstr "Seznam stop"
+
+#: optionsframe.py:46
+msgid "Output"
+msgstr "Výstup"
+
+#: optionsframe.py:47
+msgid "Subtitles"
+msgstr "Titulky"
+
+#: optionsframe.py:48
+msgid "Filesystem"
+msgstr "Filesystem"
+
+#: optionsframe.py:49
+msgid "Shutdown"
+msgstr "Vypnout"
+
+#: optionsframe.py:50
+msgid "Authentication"
+msgstr "Autentikace"
+
+#: optionsframe.py:51
+msgid "Connection"
+msgstr "Připojení"
+
+#: optionsframe.py:52
+msgid "Log"
+msgstr "Log"
+
+#: optionsframe.py:53
+msgid "Commands"
+msgstr "Příkazy"
+
+#: optionsframe.py:54
+msgid "Localization"
+msgstr "Lokalizace"
+
+#: optionsframe.py:400
+msgid "Enable Log"
+msgstr "Povolit logování"
+
+#: optionsframe.py:401
+msgid "Write Time"
+msgstr "Zapiš čas"
+
+#: optionsframe.py:402
+msgid "Clear Log"
+msgstr "Vyčisti log"
+
+#: optionsframe.py:403
+msgid "View Log"
+msgstr "Zhlédni log"
+
+#: optionsframe.py:404
+msgid "Path: {0}"
+msgstr "Cesta: {0}"
+
+#: optionsframe.py:405
+msgid "Log Size: {0} Bytes"
+msgstr "Velikost logu: {0}"
+
+#: optionsframe.py:406 optionsframe.py:1425
+msgid "Restart"
+msgstr "Restart"
+
+#: optionsframe.py:407
+msgid "Please restart {0}"
+msgstr "Restartujte prosím {0}"
+
+#: optionsframe.py:517
+msgid "Shutdown when finished"
+msgstr "Po skončení vypnout"
+
+#: optionsframe.py:518
+msgid "SUDO password"
+msgstr "SUDO password"
+
+#: optionsframe.py:570
+msgid "Playlist Start"
+msgstr "Začít seznam stop"
+
+#: optionsframe.py:571
+msgid "Playlist Stop"
+msgstr "Zastavit seznam stop"
+
+#: optionsframe.py:572
+msgid "Max Downloads"
+msgstr "Max stažení"
+
+#: optionsframe.py:630
+msgid "Retries"
+msgstr "Obnovení"
+
+#: optionsframe.py:631
+msgid "User Agent"
+msgstr "User Agent"
+
+#: optionsframe.py:632
+msgid "Referer"
+msgstr "Referer"
+
+#: optionsframe.py:633
+msgid "Proxy"
+msgstr "Proxy"
+
+#: optionsframe.py:707
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: optionsframe.py:708
+msgid "Password"
+msgstr "Heslo"
+
+#: optionsframe.py:709
+msgid "Video Password (vimeo, smotri)"
+msgstr "Video heslo (vimeo, smotri)"
+
+#: optionsframe.py:767
+msgid "high"
+msgstr "vysoké"
+
+#: optionsframe.py:767
+msgid "low"
+msgstr "nízké"
+
+#: optionsframe.py:767
+msgid "mid"
+msgstr "střední"
+
+#: optionsframe.py:770
+msgid "Convert to Audio"
+msgstr "Překonvertovat do zvuku"
+
+#: optionsframe.py:771
+msgid "Keep Video"
+msgstr "Zachovej video"
+
+#: optionsframe.py:772
+msgid "Audio Format"
+msgstr "Formát zvuku"
+
+#: optionsframe.py:773
+msgid "Audio Quality"
+msgstr "Kvalita zvuku"
+
+#: optionsframe.py:890
+msgid "default"
+msgstr "výchozí"
+
+#: optionsframe.py:891
+msgid "none"
+msgstr "žádné"
+
+#: optionsframe.py:895
+msgid "Video Format"
+msgstr "Formát videa"
+
+#: optionsframe.py:896
+msgid "Mix Format"
+msgstr "Formát mix"
+
+#: optionsframe.py:955
+msgid "Restrict filenames (ASCII)"
+msgstr "Omezit názvy souborů (ASCII)"
+
+#: optionsframe.py:956
+msgid "ID as Name"
+msgstr "ID jako název"
+
+#: optionsframe.py:957
+msgid "Title as Name"
+msgstr "Titul jako název"
+
+#: optionsframe.py:958
+msgid "Custom Template (youtube-dl)"
+msgstr "Vlastní šablona (youtube-dl)"
+
+#: optionsframe.py:1052
+msgid "Ignore Errors"
+msgstr "Ignorovat chyby"
+
+#: optionsframe.py:1053
+msgid "Open destination folder"
+msgstr "Otevřít cílový adresář"
+
+#: optionsframe.py:1054
+msgid "Write info to (.json) file"
+msgstr "Zapiš info do (.json) souboru"
+
+#: optionsframe.py:1055
+msgid "Write description to file"
+msgstr "Zapiš popis do souboru"
+
+#: optionsframe.py:1056
+msgid "Write thumbnail to disk"
+msgstr "Zapiš nádhled na disk"
+
+#: optionsframe.py:1057
+msgid "Filesize"
+msgstr "Velikost souboru"
+
+#: optionsframe.py:1058
+msgid "Min"
+msgstr "Min"
+
+#: optionsframe.py:1059
+msgid "Max"
+msgstr "Max"
+
+#: optionsframe.py:1172
+msgid "English"
+msgstr "Angličtina"
+
+#: optionsframe.py:1173
+msgid "Greek"
+msgstr "Řečtina"
+
+#: optionsframe.py:1174
+msgid "Portuguese"
+msgstr "Portugalština"
+
+#: optionsframe.py:1175
+msgid "French"
+msgstr "Francouzština"
+
+#: optionsframe.py:1176
+msgid "Italian"
+msgstr "Italština"
+
+#: optionsframe.py:1177
+msgid "Russian"
+msgstr "Ruština"
+
+#: optionsframe.py:1178
+msgid "Spanish"
+msgstr "Španělština"
+
+#: optionsframe.py:1179
+msgid "German"
+msgstr "Němčina"
+
+#: optionsframe.py:1182
+msgid "Download subtitle file by language"
+msgstr "Stáhni soubor s titulkami podle jazyka"
+
+#: optionsframe.py:1183
+msgid "Download all available subtitles"
+msgstr "Stáhni všechny dostupné titulky"
+
+#: optionsframe.py:1184
+msgid "Download automatic subtitle file (YOUTUBE ONLY)"
+msgstr "Stáhni automaticky soubor s titulkami (POUZE YOUTUBE)"
+
+#: optionsframe.py:1185
+msgid "Embed subtitles in the video (only mp4 videos)"
+msgstr "Vlož titulky přímo do videa (pouze mp4)"
+
+#: optionsframe.py:1186
+msgid "Subtitles Language"
+msgstr "Jazyk titulek"
+
+#: optionsframe.py:1280
+msgid "About"
+msgstr "O aplikaci"
+
+#: optionsframe.py:1281
+msgid "Open"
+msgstr "Otevřít"
+
+#: optionsframe.py:1282
+msgid "Reset Options"
+msgstr "Obnovit nastavení"
+
+#: optionsframe.py:1283
+msgid "Save Path"
+msgstr "Uložit cestu"
+
+#: optionsframe.py:1284
+msgid "Settings File: {0}"
+msgstr "Soubor nastavení: {0}"
+
+#: optionsframe.py:1285
+msgid "Choose Directory"
+msgstr "Vyberte adresář"
+
+#: optionsframe.py:1370
+msgid "Command line arguments (e.g. --help)"
+msgstr "Argumenty příkazové řádky (např. --help)"
+
+#: optionsframe.py:1426
+msgid "Localization Language"
+msgstr "Jazyk"
+
+#: optionsframe.py:1427
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "Restartuje prosím, aby se projevily změny {0}"
+
+#: optionsframe.py:1474
+msgid "Log Viewer"
+msgstr "Náhled logu"

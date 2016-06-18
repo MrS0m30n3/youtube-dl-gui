@@ -1427,7 +1427,8 @@ class LocalizationTab(TabPanel):
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
         ('es_MX', 'Spanish'),
-        ('tr_TR', 'Turkish')
+        ('tr_TR', 'Turkish'),
+        ('cs_CZ', 'Czech')
     ])
 
     RESTART_LABEL = _("Restart")

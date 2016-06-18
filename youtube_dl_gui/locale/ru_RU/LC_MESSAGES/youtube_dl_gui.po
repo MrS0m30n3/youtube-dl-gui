@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
 "POT-Creation-Date: 2015-07-02 15:31+EEST\n"
-"PO-Revision-Date: 2016-02-08 10:40+0300\n"
+"PO-Revision-Date: 2016-06-06 18:54+1000\n"
 "Last-Translator: Nikita «Arttse» Bystrov <arttsesoft@gmail.com>\n"
 "Language-Team: ru\n"
 "Language: ru\n"
@@ -13,6 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: mainframe.py:82
 msgid "URLs"
@@ -392,7 +393,7 @@ msgstr "Скачать все имеющиеся субтитры"
 
 #: optionsframe.py:1184
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
-msgstr "Автоматическое скачивание файла субтитров (ТОЛЬКО YOUTUBE)"
+msgstr "Скачать файл авто-субтитров (ТОЛЬКО YOUTUBE)"
 
 #: optionsframe.py:1185
 msgid "Embed subtitles in the video (only mp4 videos)"

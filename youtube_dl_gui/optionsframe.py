@@ -1418,6 +1418,7 @@ class LocalizationTab(TabPanel):
 
     LOCALE_NAMES = twodict([
         ('ar_AR', 'Arabic'),
+        ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),
         ('de_DE', 'German'),
@@ -1426,9 +1427,9 @@ class LocalizationTab(TabPanel):
         ('hu_HU', 'Hungarian'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
-        ('es_MX', 'Spanish'),
-        ('tr_TR', 'Turkish'),
-        ('cs_CZ', 'Czech')
+        ('es_ES', 'Spanish'),
+        ('es_MX', 'Mexican Spanish'),
+        ('tr_TR', 'Turkish')
     ])
 
     RESTART_LABEL = _("Restart")

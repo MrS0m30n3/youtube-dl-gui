@@ -1179,6 +1179,7 @@ class SubtitlesTab(TabPanel):
         ("it", _("Italian")),
         ("ru", _("Russian")),
         ("es", _("Spanish")),
+        ("tr", _("Türkçe")),
         ("de", _("German"))
     ])
 

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
 "POT-Creation-Date: 2015-07-02 15:31+EEST\n"
-"PO-Revision-Date: 2016-06-06 18:54+1000\n"
+"PO-Revision-Date: 2016-06-22 07:43+1000\n"
 "Last-Translator: Nikita «Arttse» Bystrov <arttsesoft@gmail.com>\n"
 "Language-Team: ru\n"
 "Language: ru\n"
@@ -237,7 +237,7 @@ msgstr "Количество попыток"
 
 #: optionsframe.py:631
 msgid "User Agent"
-msgstr "Строка пользователя"
+msgstr "Агент пользователя"
 
 #: optionsframe.py:632
 msgid "Referer"

@@ -1179,6 +1179,7 @@ class SubtitlesTab(TabPanel):
         ("it", _("Italian")),
         ("ru", _("Russian")),
         ("es", _("Spanish")),
+        ("tr", _("Türkçe")),
         ("de", _("German"))
     ])
 
@@ -1418,14 +1419,17 @@ class LocalizationTab(TabPanel):
 
     LOCALE_NAMES = twodict([
         ('ar_AR', 'Arabic'),
+        ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),
         ('de_DE', 'German'),
+        ('it_IT', 'Italian'),
         ('he_IS', 'Hebrew'),
         ('hu_HU', 'Hungarian'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
-        ('es_MX', 'Spanish'),
+        ('es_ES', 'Spanish'),
+        ('es_MX', 'Mexican Spanish'),
         ('tr_TR', 'Turkish')
     ])
 

@@ -1,61 +1,59 @@
-## NAME
-youtube-dlG - GUI for youtube-dl
+# youtube-dlG
 
-## DESCRIPTION
-A cross platform front-end GUI of the popular youtube-dl 
-written in wxPython.
+A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/youtube-dl/) media downloader, written in wxPython. [List of supported sites](https://rg3.github.io/youtube-dl/supportedsites.html).
 
-## SCREENSHOT
+## Screenshots
+
+**Main window**
+
 ![Youtube-dl-gui main window](http://i.imgur.com/I4oXPWs.png)
+
+**Options window**
 
 ![Options window](http://i.imgur.com/eShdoLD.png)
 
-## INSTALLATION
+## Installation
 
-**Linux-source**: `sudo python setup.py install`
+**Linux (from source):** `sudo python setup.py install`
 
-**Linux-pypi**: `sudo pip install youtube-dlg`
+**Linux (Ubuntu PPA):** http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/ (TODO: update)
 
-**Mac-pypi**: `sudo pip install youtube-dlg`
+**Linux (Arch AUR):** https://aur.archlinux.org/packages/youtube-dl-gui-git/ (TODO: update)
 
-Then you can call youtube-dlg from the command line
-using `youtube-dl-gui` command or by creating a desktop launcher
+**Windows:** TODO Package MSI/portable ZIP
 
-**Windows**: Check WINDOWS_SETUP
+**Mac:** TODO Package app
 
-## WINDOWS_SETUP
-https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-setup.zip
+Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` command, or by creating a desktop launcher (TODO)
 
-## LINUX_PACKAGES
-**Ubuntu**: http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/
+## Contributing
 
-**Arch**: https://aur.archlinux.org/packages/youtube-dl-gui-git/
+**Support for new language:** See [Localization HOWTO](locale_build/HOWTO.md).
 
-## ADD SUPPORT FOR NEW LANGUAGE
-See https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/locale_build/HOWTO.md
+**Reporting bugs:** See [Issues](https://github.com/youtube-dlg/youtube-dl-gui/issues/).
 
-## REQUIREMENTS
-[Python (version 2.7+)](http://www.python.org)
 
-[wxPython](http://wxpython.org)
+## Requirements
+[Python](http://www.python.org) 2.7+, [wxPython](http://wxpython.org), [FFMPEG & FFPROBE](http://www.ffmpeg.org) (optional, to convert video files to audio-only files).
 
-[FFMPEG & FFPROBE](http://www.ffmpeg.org)
-**Optional (In order to conver video files to audio-only files)
+## Authors
 
-## PROJECT HOMEPAGE
+    278	MrS0m30n3 <ytubedlg@gmail.com>
+      7	Sergey M․ <dstftw@gmail.com>
+      6	nodiscc <nodiscc@gmail.com>
+      5	Nikita Bystrov <arttsesoft@gmail.com>
+      4	Marcin Nowicki <pr0d1r2@gmail.com>
+      4	dnlsrl <dnlsrl.kaiser@gmail.com>
+      2	Fironet <dolphinssmile@hotmail.com>
+      2	Henrique Pereira <ikkibr@gmail.com>
+      2	Max Bruckner <max@maxbruckner.de>
+      2	okovarec <okovarec.o.k@gmail.com>
+      1	David Wales <daviewales@gmail.com>
+      1	Məhəmməd <smehemmed@users.noreply.github.com>
+      1	Penaz91 <penazarea@altervista.org>
+      1	Swyter <swyterzone@gmail.com>
+      1	unreal666 <vit.space.gol@gmail.com>
+      
+## License
 
-**Youtube-dlG**: http://mrs0m30n3.github.io/youtube-dl-gui/
-
-**Youtube-dl**: http://rg3.github.io/youtube-dl/
-
-## AUTHOR
-
-Sotiris Papadopoulos
-
-email:  <ytubedlg@gmail.com>
-
-twitter: https://twitter.com/MrS0m30n3
-
-## THANKS
-
-Thanks to youtube-dl authors for creating such and amazing tool.
+The [Public Domain License](LICENSE)

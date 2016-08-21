@@ -58,4 +58,4 @@ twitter: https://twitter.com/MrS0m30n3
 
 ## THANKS
 
-Thanks to youtube-dl authors for creating such and amazing tool.
+Thanks to youtube-dl authors for creating such an amazing tool.

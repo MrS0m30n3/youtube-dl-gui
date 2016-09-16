@@ -1,444 +1,438 @@
 # Youtube-dlG localization file.
 # FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
-# Nikita «Arttse» Bystrov <arttsesoft@gmail.com>, 2015.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
 "POT-Creation-Date: 2015-07-02 15:31+EEST\n"
-"PO-Revision-Date: 2016-06-22 07:43+1000\n"
-"Last-Translator: Nikita «Arttse» Bystrov <arttsesoft@gmail.com>\n"
-"Language-Team: ru\n"
-"Language: ru\n"
+"PO-Revision-Date: 2016-09-16 14:20+EEST\n"
+"Last-Translator: Penaz <https://github.com/Penaz91>\n"
+"Language-Team: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Generator: Poedit 1.7.4\n"
 
 #: mainframe.py:82
 msgid "URLs"
-msgstr "Ссылки (каждая на новой строке)"
+msgstr "Indirizzi"
 
 #: mainframe.py:83
 msgid "Download"
-msgstr "Скачать"
+msgstr "Scaricamenti"
 
 #: mainframe.py:84
 msgid "Update"
-msgstr "Обновить приложение"
+msgstr "Aggiorna"
 
 #: mainframe.py:85 optionsframe.py:40
 msgid "Options"
-msgstr "Настройки"
+msgstr "Opzioni"
 
 #: mainframe.py:86
 msgid "Error"
-msgstr "Ошибка"
+msgstr "Errore"
 
 #: mainframe.py:87
 msgid "Stop"
-msgstr "Остановить скачивание"
+msgstr "Ferma"
 
 #: mainframe.py:88
 msgid "Info"
-msgstr "Информация"
+msgstr "Informazioni"
 
 #: mainframe.py:89
 msgid "Welcome"
-msgstr "Добро пожаловать"
+msgstr "Benvenuto"
 
 #: mainframe.py:90
 msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "Успешно скачано {0} по указанным ссылкам за {1} дней {2} часов {3} минут {4} секунд"
+msgstr "{0} URL scaricati in {1} giorni {2} ore {3} minuti e {4} secondi"
 
 #: mainframe.py:92
 msgid "Downloads completed"
-msgstr "Скачивание завершено"
+msgstr "Scaricamenti Completati"
 
 #: mainframe.py:93
 msgid "Downloading {0} url(s)"
-msgstr "Скачивание по {0} ссылке"
+msgstr "Scaricamento di {0} URLs"
 
 #: mainframe.py:94
 msgid "Stopping downloads"
-msgstr "Производится остановка скачивания"
+msgstr "Sto fermando gli scaricamenti"
 
 #: mainframe.py:95
 msgid "Downloads stopped"
-msgstr "Скачивание остановлено"
+msgstr "Scaricamenti Fermati"
 
 #: mainframe.py:96
 msgid "You need to provide at least one url"
-msgstr "Вы должны указать хотя бы одну ссылку"
+msgstr "Devi inserire almeno un indirizzo"
 
 #: mainframe.py:97
 msgid "Downloads started"
-msgstr "Началось скачивание"
+msgstr "Scaricamenti Iniziati"
 
 #: mainframe.py:99
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "Производится скачивание последней версии youtube-dl. Пожалуйста, подождите..."
+msgstr "Aggiornamento di youtube-dl. Attendere..."
 
 #: mainframe.py:100
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Не удалось скачать Youtube-dl [{0}]"
+msgstr "Scaricamento di Youtube-dl Fallito [{0}]"
 
 #: mainframe.py:101
 msgid "Youtube-dl downloaded correctly"
-msgstr "Youtube-dl скачан успешно"
+msgstr "Youtube-dl scaricato correttamente"
 
 #: mainframe.py:103
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr "Невозможно открыть каталог: '{dir}'. Указанный путь не существует"
+msgstr "Impossibile aprire la cartella: '{dir}'. Il percorso non esiste"
 
 #: mainframe.py:105
 msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr "Ошибка при выключении. Убедитесь, что вы ввели корректный пароль вашей учетной записи администратора"
+msgstr "Errore durante lo spegnimento. Assicurati di aver digitato la password corretta."
 
 #: mainframe.py:107
 msgid "Shutting down system"
-msgstr "Выключение системы"
+msgstr "Spegnimento del sistema"
 
 #: mainframe.py:109
 msgid "Title"
-msgstr "Заголовок"
-
-#: mainframe.py:108
-msgid "Extension"
-msgstr "Расширение"
+msgstr "Titolo"
 
 #: mainframe.py:110
 msgid "Size"
-msgstr "Размер"
+msgstr "Dimensione"
 
 #: mainframe.py:111
 msgid "Percent"
-msgstr "Процент"
+msgstr "Percentuale"
 
 #: mainframe.py:112
 msgid "ETA"
-msgstr "Осталось"
+msgstr "Tempo Rimanente"
 
 #: mainframe.py:113
 msgid "Speed"
-msgstr "Скорость скачивания"
+msgstr "Velocità"
 
 #: mainframe.py:114
 msgid "Status"
-msgstr "Статус"
+msgstr "Stato"
 
 #: optionsframe.py:42
 msgid "General"
-msgstr "Главные"
+msgstr "Generale"
 
 #: optionsframe.py:43
 msgid "Video"
-msgstr "Видео"
+msgstr "Video"
 
 #: optionsframe.py:44
 msgid "Audio"
-msgstr "Аудио"
+msgstr "Audio"
 
 #: optionsframe.py:45
 msgid "Playlist"
-msgstr "Плейлист"
+msgstr "Playlist"
 
 #: optionsframe.py:46
 msgid "Output"
-msgstr "Вывод"
+msgstr "Output"
 
 #: optionsframe.py:47
 msgid "Subtitles"
-msgstr "Субтитры"
+msgstr "Sottotitoli"
 
 #: optionsframe.py:48
 msgid "Filesystem"
-msgstr "Файловая система"
+msgstr "Filesystem"
 
 #: optionsframe.py:49
 msgid "Shutdown"
-msgstr "Выключение"
+msgstr "Spegnimento"
 
 #: optionsframe.py:50
 msgid "Authentication"
-msgstr "Аутентификация"
+msgstr "Autenticazione"
 
 #: optionsframe.py:51
 msgid "Connection"
-msgstr "Подключение"
+msgstr "Connessione"
 
 #: optionsframe.py:52
 msgid "Log"
-msgstr "Журнал событий"
+msgstr "Log"
 
 #: optionsframe.py:53
 msgid "Commands"
-msgstr "Команды"
+msgstr "Comandi"
 
 #: optionsframe.py:54
 msgid "Localization"
-msgstr "Язык"
+msgstr "Traduzioni"
 
 #: optionsframe.py:400
 msgid "Enable Log"
-msgstr "Включить ведение журнала событий"
+msgstr "Abilita Log"
 
 #: optionsframe.py:401
 msgid "Write Time"
-msgstr "Время записи"
+msgstr "Inserisci l'ora"
 
 #: optionsframe.py:402
 msgid "Clear Log"
-msgstr "Очистить журнал событий"
+msgstr "Cancella Log"
 
 #: optionsframe.py:403
 msgid "View Log"
-msgstr "Посмотреть журнал событий"
+msgstr "Visualizza Log"
 
 #: optionsframe.py:404
 msgid "Path: {0}"
-msgstr "Путь: {0}"
+msgstr "Percorso: {0}"
 
 #: optionsframe.py:405
 msgid "Log Size: {0} Bytes"
-msgstr "Размер системного журнала: {0} Байт"
+msgstr "Dimensione Log: {0} Bytes"
 
 #: optionsframe.py:406 optionsframe.py:1425
 msgid "Restart"
-msgstr "Перезагрузка"
+msgstr "Riavvia"
 
 #: optionsframe.py:407
 msgid "Please restart {0}"
-msgstr "Пожалуйста, перезапустите {0}"
+msgstr "Per favore, riavviare {0}"
 
 #: optionsframe.py:517
 msgid "Shutdown when finished"
-msgstr "Завершение работы по завершении скачки"
+msgstr "Spegni al termine"
 
 #: optionsframe.py:518
 msgid "SUDO password"
-msgstr "Пароль от вашей учетной записи (администратора)"
+msgstr "Password per SUDO"
 
 #: optionsframe.py:570
 msgid "Playlist Start"
-msgstr "Начинать с видео под номером"
+msgstr "Inizia Playlist"
 
 #: optionsframe.py:571
 msgid "Playlist Stop"
-msgstr "Последнее видео под номером"
+msgstr "Ferma Playlist"
 
 #: optionsframe.py:572
 msgid "Max Downloads"
-msgstr "Максимальное число файлов для скачивания"
+msgstr "Download Massimi"
 
 #: optionsframe.py:630
 msgid "Retries"
-msgstr "Количество попыток"
+msgstr "Tentativi"
 
 #: optionsframe.py:631
 msgid "User Agent"
-msgstr "Агент пользователя"
+msgstr "User Agent"
 
 #: optionsframe.py:632
 msgid "Referer"
-msgstr "Реферер"
+msgstr "Referente"
 
 #: optionsframe.py:633
 msgid "Proxy"
-msgstr "Прокси"
+msgstr "Proxy"
 
 #: optionsframe.py:707
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr "Nome Utente"
 
 #: optionsframe.py:708
 msgid "Password"
-msgstr "Пароль"
+msgstr "Password"
 
 #: optionsframe.py:709
 msgid "Video Password (vimeo, smotri)"
-msgstr "Пароль для видео (vimeo, smotri)"
+msgstr "Passowrd Video (vimeo, smotri)"
 
 #: optionsframe.py:767
 msgid "high"
-msgstr "высокое"
+msgstr "alto"
 
 #: optionsframe.py:767
 msgid "low"
-msgstr "низкое"
+msgstr "basso"
 
 #: optionsframe.py:767
 msgid "mid"
-msgstr "среднее"
+msgstr "medio"
 
 #: optionsframe.py:770
 msgid "Convert to Audio"
-msgstr "Конвертировать Аудио"
+msgstr "Converti ad Audio"
 
 #: optionsframe.py:771
 msgid "Keep Video"
-msgstr "Сохранить видео после пост-обработки"
+msgstr "Mantieni Video"
 
 #: optionsframe.py:772
 msgid "Audio Format"
-msgstr "Формат Аудио"
+msgstr "Formato Audio"
 
 #: optionsframe.py:773
 msgid "Audio Quality"
-msgstr "Качество Аудио"
+msgstr "Qualità Audio"
 
 #: optionsframe.py:890
 msgid "default"
-msgstr "По умолчанию"
+msgstr "predefinito"
 
 #: optionsframe.py:891
 msgid "none"
-msgstr "нет"
+msgstr "nessuno"
 
 #: optionsframe.py:895
 msgid "Video Format"
-msgstr "Формат Видео"
+msgstr "Formato Video"
 
 #: optionsframe.py:896
 msgid "Mix Format"
-msgstr "Смешать формат"
+msgstr "Formato di Miscelazione"
 
 #: optionsframe.py:955
 msgid "Restrict filenames (ASCII)"
-msgstr "Сокращать имена файлов (ASCII)"
+msgstr "Restrizione nomi file (ASCII)"
 
 #: optionsframe.py:956
 msgid "ID as Name"
-msgstr "ID как Имя"
+msgstr "ID come Nome"
 
 #: optionsframe.py:957
 msgid "Title as Name"
-msgstr "Заголовок как Имя"
+msgstr "Titolo come Nome"
 
 #: optionsframe.py:958
 msgid "Custom Template (youtube-dl)"
-msgstr "Пользовательский шаблон (youtube-dl)"
+msgstr "Personalizzato (youtube-dl)"
 
 #: optionsframe.py:1052
 msgid "Ignore Errors"
-msgstr "Игнорировать ошибки"
+msgstr "Ignora Errori"
 
 #: optionsframe.py:1053
 msgid "Open destination folder"
-msgstr "Открыть папку назначения после скачки"
+msgstr "Apri cartella di destinazione"
 
 #: optionsframe.py:1054
 msgid "Write info to (.json) file"
-msgstr "Записать информацию в (.json) файл"
+msgstr "Scrivi informazioni in un file (.json)"
 
 #: optionsframe.py:1055
 msgid "Write description to file"
-msgstr "Записать описание в файл"
+msgstr "Scrivi descrizione in un file"
 
 #: optionsframe.py:1056
 msgid "Write thumbnail to disk"
-msgstr "Записать миниатюру (thumbnail) на диск"
+msgstr "Scrivi anteprime su disco"
 
 #: optionsframe.py:1057
 msgid "Filesize"
-msgstr "Размер файла"
+msgstr "Dimensione File"
 
 #: optionsframe.py:1058
 msgid "Min"
-msgstr "Минимум"
+msgstr "Min"
 
 #: optionsframe.py:1059
 msgid "Max"
-msgstr "Максимум"
+msgstr "Max"
 
 #: optionsframe.py:1172
 msgid "English"
-msgstr "Английский"
+msgstr "Inglese"
 
 #: optionsframe.py:1173
 msgid "Greek"
-msgstr "Греческий"
+msgstr "Greco"
 
 #: optionsframe.py:1174
 msgid "Portuguese"
-msgstr "Португальский"
+msgstr "Portoghese"
 
 #: optionsframe.py:1175
 msgid "French"
-msgstr "Французский"
+msgstr "Francese"
 
 #: optionsframe.py:1176
 msgid "Italian"
-msgstr "Итальянский"
+msgstr "Italiano"
 
 #: optionsframe.py:1177
 msgid "Russian"
-msgstr "Русский"
+msgstr "Russo"
 
 #: optionsframe.py:1178
 msgid "Spanish"
-msgstr "Испанский"
+msgstr "Spagnolo"
 
 #: optionsframe.py:1179
 msgid "German"
-msgstr "Немецкий"
+msgstr "Tedesco"
 
 #: optionsframe.py:1182
 msgid "Download subtitle file by language"
-msgstr "Скачать файл субтитров указанного языка"
+msgstr "Scarica sottotitoli per lingua"
 
 #: optionsframe.py:1183
 msgid "Download all available subtitles"
-msgstr "Скачать все имеющиеся субтитры"
+msgstr "Scarica tutti i sottotitoli disponibili"
 
 #: optionsframe.py:1184
 msgid "Download automatic subtitle file (YOUTUBE ONLY)"
-msgstr "Скачать файл авто-субтитров (ТОЛЬКО YOUTUBE)"
+msgstr "Scarica file sottotitoli automatici (SOLO YOUTUBE)"
 
 #: optionsframe.py:1185
 msgid "Embed subtitles in the video (only mp4 videos)"
-msgstr "Встроить субтитры в видео (только mp4)"
+msgstr "Incorpora sottotitoli nel video (Solo mp4)"
 
 #: optionsframe.py:1186
 msgid "Subtitles Language"
-msgstr "Язык Субтитров"
+msgstr "Lingua Sottotitoli"
 
 #: optionsframe.py:1280
 msgid "About"
-msgstr "О программе"
+msgstr "Info Su"
 
 #: optionsframe.py:1281
 msgid "Open"
-msgstr "Открыть"
+msgstr "Apri"
 
 #: optionsframe.py:1282
 msgid "Reset Options"
-msgstr "Сбросить настройки"
+msgstr "Resetta Opzioni"
 
 #: optionsframe.py:1283
 msgid "Save Path"
-msgstr "Путь для сохранения"
+msgstr "Salva Percorso"
 
 #: optionsframe.py:1284
 msgid "Settings File: {0}"
-msgstr "Файл настроек: {0}"
+msgstr "File Impostazioni: {0}"
 
 #: optionsframe.py:1285
 msgid "Choose Directory"
-msgstr "Выбрать Директорию"
+msgstr "Scegli Directory"
 
 #: optionsframe.py:1370
 msgid "Command line arguments (e.g. --help)"
-msgstr "Аргументы командной строки (например, --help)"
+msgstr "Argomenti da linea di comando (es. --help)"
 
 #: optionsframe.py:1426
 msgid "Localization Language"
-msgstr "Язык"
+msgstr "Lingua traduzione"
 
 #: optionsframe.py:1427
 msgid "In order for the changes to take effect please restart {0}"
-msgstr "Для того, чтобы изменения вступили в силу, пожалуйста, перезапустите {0}"
+msgstr "Per applicare le modifiche, per favore riavvia {0}"
 
 #: optionsframe.py:1474
 msgid "Log Viewer"
-msgstr "Журнал событий"
+msgstr "Visualizzatore Log"

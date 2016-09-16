@@ -30,7 +30,7 @@ Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` 
 
 **Support for new language:** See [Localization HOWTO](locale_build/HOWTO.md).
 
-**Reporting bugs:** See [Issues](https://github.com/youtube-dlg/youtube-dl-gui/issues/).
+**Reporting bugs:** See [Issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues).
 
 
 ## Requirements
@@ -38,7 +38,7 @@ Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` 
 
 ## Authors
 
-See [AUTHORS](https://github.com/youtube-dlg/youtube-dl-gui/blob/master/AUTHORS) file
+See [AUTHORS](AUTHORS) file
       
 ## License
 

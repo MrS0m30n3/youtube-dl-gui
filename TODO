@@ -1,5 +1,7 @@
 GUI
 ===
+* Change MainFrame layout
+    (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
 * Create new button widget (groups, auto width, General tab)
 * Add more statistics (Average download speed)
 * Auto video format detection
@@ -8,7 +10,7 @@ GUI
 Structure
 =========
 * Create devscripts/ directory and move all the utility scripts there
-* Create guides/ directory and move all the guides there
+* Create docs/ directory and move all the guides there
 * Remove twodict from utils and use it directly from the library
 * Give icons the same name and keep them on different directories
     (see: https://github.com/deluge-torrent/deluge/tree/develop/deluge/ui/data/icons/hicolor)
@@ -35,6 +37,7 @@ Other
 * README.md add slackbuild
 * README.md add new images
 
+* Add FAQs into docs/
 * Add tests
 * Add support for Python 3.*
 * Logging system using the Python 'logging' module

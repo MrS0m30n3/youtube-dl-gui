@@ -5,8 +5,8 @@
 
 from __future__ import unicode_literals
 
+import os
 import gettext
-from os import name as os_name
 
 import wx
 from wx.lib.pubsub import setuparg1
@@ -26,6 +26,7 @@ from .downloadmanager import (
 )
 
 from .utils import (
+    get_pixmaps_dir,
     get_icon_file,
     shutdown_sys,
     get_time,
@@ -70,21 +71,33 @@ class MainFrame(wx.Frame):
     """
     wxEVT_TEXT_PASTE = 'wxClipboardTextEvent'
 
-    BUTTONS_SIZE = (-1, 30)
-    BUTTONS_SPACE = (80, -1)
-    SIZE_20 = 20
+    FRAMES_MIN_SIZE = (440, 360)
+    BUTTONS_SIZE = (-1, 30)     # TODO remove not used anymore
+    BUTTONS_SPACE = (80, -1)    # TODO remove not used anymore
+    SIZE_20 = 20                # TODO write directly
     SIZE_10 = 10
     SIZE_5 = 5
 
     # Labels area
-    URLS_LABEL = _("URLs")
-    DOWNLOAD_LABEL = _("Download")
+    URLS_LABEL = _("Enter URLs below")
+    DOWNLOAD_LABEL = _("Download")  # TODO remove not used anymore
     UPDATE_LABEL = _("Update")
     OPTIONS_LABEL = _("Options")
     ERROR_LABEL = _("Error")
     STOP_LABEL = _("Stop")
     INFO_LABEL = _("Info")
     WELCOME_MSG = _("Welcome")
+
+    ADD_LABEL = _("Add")
+    DOWNLOAD_LIST_LABEL = _("Download list")
+    DELETE_LABEL = _("Delete")
+    PLAY_LABEL = _("Play")
+    UP_LABEL = _("Up")
+    DOWN_LABEL = _("Down")
+    RELOAD_LABEL = _("Reload")
+    PAUSE_LABEL = _("Pause")
+    START_LABEL = _("Start")
+
     SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = _("Downloads completed")
@@ -136,45 +149,78 @@ class MainFrame(wx.Frame):
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        self.app_icon = get_icon_file()
 
-        self.Center()
+        # Get the pixmaps directory
+        self._pixmaps_path = get_pixmaps_dir()
 
-        # Create the app icon
-        if self.app_icon is not None:
-            self.app_icon = wx.Icon(self.app_icon, wx.BITMAP_TYPE_PNG)
-            self.SetIcon(self.app_icon)
+        # Set the app icon
+        app_icon_path = get_icon_file()
+        if app_icon_path is not None:
+            self.SetIcon(wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG))
 
         # Create options frame
         self._options_frame = OptionsFrame(self)
 
-        # Create components
+        # Set the data for all the wx.Button items
+        # name, label, icon, size
+        buttons_data = (
+            ("delete", self.DELETE_LABEL, "delete_32px.png", (55, 55)),
+            ("play", self.PLAY_LABEL, "camera_32px.png", (55, 55)),
+            ("up", self.UP_LABEL, "arrow_up_32px.png", (55, 55)),
+            ("down", self.DOWN_LABEL, "arrow_down_32px.png", (55, 55)),
+            ("reload", self.RELOAD_LABEL, "reload_32px.png", (55, 55)),
+            ("pause", self.PAUSE_LABEL, "pause_32px.png", (55, 55)),
+            ("start", self.START_LABEL, "cloud_download_32px.png", (55, 55)),
+            ("savepath", "...", None, (40, 27)),
+            ("add", self.ADD_LABEL, None, (-1, -1))
+        )
+
+        # Create frame components
         self._panel = wx.Panel(self)
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
+        self._settings_button = self._create_bitmap_button("settings_20px.png", (30, 30))
+
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
-        self._download_btn = self._create_button(self.DOWNLOAD_LABEL, self._on_download)
-        self._update_btn = self._create_button(self.UPDATE_LABEL, self._on_update)
-        self._options_btn = self._create_button(self.OPTIONS_LABEL, self._on_options)
+        self._folder_icon = self._create_static_bitmap("folder_32px.png")
+        self._path_combobox = wx.ComboBox(self._panel)
+        self._videoformat_combobox = wx.ComboBox(self._panel)
 
+        self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
                                      parent=self._panel,
                                      style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
 
-        self._status_bar = self._create_statictext(self.WELCOME_MSG)
+        # Dictionary to store all the buttons
+        self._buttons = {}
 
-        self._set_buttons_width()
+        for item in buttons_data:
+            name, label, icon, size = item
+
+            self._buttons[name] = wx.Button(self._panel, label=label, size=size)
+
+            if icon is not None:
+                self._buttons[name].SetBitmap(wx.Bitmap(os.path.join(self._pixmaps_path, icon)), wx.TOP)
+
+        self._status_bar = self.CreateStatusBar()
 
         # Bind extra events
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
-        self._set_sizers()
-
-        # Set threads wxCallAfter handlers using subscribe
+        # Set threads wxCallAfter handlers
         self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
         self._set_publisher(self._download_worker_handler, WORKER_PUB_TOPIC)
         self._set_publisher(self._download_manager_handler, MANAGER_PUB_TOPIC)
+
+        # Set up extra stuff
+        self.Center()
+        self.SetMinSize(self.FRAMES_MIN_SIZE)
+
+        self._set_buttons_width()
+        self._status_bar_write(self.WELCOME_MSG)
+
+        self._set_layout()
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.
@@ -194,9 +240,9 @@ class MainFrame(wx.Frame):
         """Re-adjust buttons size on runtime so that all buttons
         look the same. """
         widths = [
-            self._download_btn.GetSize()[0],
-            self._update_btn.GetSize()[0],
-            self._options_btn.GetSize()[0],
+            #self._download_btn.GetSize()[0],
+            #self._update_btn.GetSize()[0],
+            #self._options_btn.GetSize()[0],
         ]
 
         max_width = -1
@@ -205,15 +251,22 @@ class MainFrame(wx.Frame):
             if item > max_width:
                 max_width = item
 
-        self._download_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
-        self._update_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
-        self._options_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+        #self._download_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+        #self._update_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
+        #self._options_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
 
         self._panel.Layout()
 
     def _create_statictext(self, label):
-        statictext = wx.StaticText(self._panel, label=label)
-        return statictext
+        return wx.StaticText(self._panel, label=label)
+
+    def _create_bitmap_button(self, icon, size=(-1, -1)):
+        bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))
+        return wx.BitmapButton(self._panel, bitmap=bitmap, size=size, style=wx.NO_BORDER)
+
+    def _create_static_bitmap(self, icon):
+        bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))
+        return wx.StaticBitmap(self._panel, bitmap=bitmap)
 
     def _create_textctrl(self, style=None, event_handler=None):
         if style is None:
@@ -225,7 +278,7 @@ class MainFrame(wx.Frame):
             textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
             textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
 
-        if os_name == 'nt':
+        if os.name == 'nt':
             # Enable CTRL+A on Windows
             def win_ctrla_eventhandler(event):
                 if event.GetKeyCode() == wx.WXK_CONTROL_A:
@@ -238,6 +291,7 @@ class MainFrame(wx.Frame):
         return textctrl
 
     def _create_button(self, label, event_handler=None):
+        # TODO remove not used anymore
         btn = wx.Button(self._panel, label=label, size=self.BUTTONS_SIZE)
 
         if event_handler is not None:
@@ -248,52 +302,64 @@ class MainFrame(wx.Frame):
     def _create_popup(self, text, title, style):
         wx.MessageBox(text, title, style)
 
-    def _set_sizers(self):
-        """Sets the sizers of the main window. """
-        hor_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+    def _set_layout(self):
+        """Sets the layout of the main window. """
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        vertical_sizer.AddSpacer(self.SIZE_10)
+        panel_sizer = wx.BoxSizer(wx.VERTICAL)
 
-        vertical_sizer.Add(self._url_text)
-        vertical_sizer.Add(self._url_list, 1, wx.EXPAND)
+        top_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        top_sizer.Add(self._url_text, 0, wx.ALIGN_BOTTOM | wx.BOTTOM, 5)
+        top_sizer.AddSpacer((100, 20), 1)
+        top_sizer.Add(self._settings_button, flag=wx.ALIGN_RIGHT)
+        panel_sizer.Add(top_sizer, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
 
-        vertical_sizer.AddSpacer(self.SIZE_10)
+        panel_sizer.Add(self._url_list, 1, wx.EXPAND)
 
-        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        buttons_sizer.Add(self._download_btn)
-        buttons_sizer.Add(self.BUTTONS_SPACE, 1)
-        buttons_sizer.Add(self._update_btn)
-        buttons_sizer.Add(self.BUTTONS_SPACE, 1)
-        buttons_sizer.Add(self._options_btn)
-        vertical_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        mid_sizer.Add(self._folder_icon)
+        mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.AddSpacer((100, 20), 1)
+        mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
+        panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
-        vertical_sizer.AddSpacer(self.SIZE_10)
-        vertical_sizer.Add(self._status_list, 2, wx.EXPAND)
+        panel_sizer.Add(self._download_text, 0, wx.BOTTOM | wx.LEFT, 5)
+        panel_sizer.Add(self._status_list, 2, wx.EXPAND)
 
-        vertical_sizer.AddSpacer(self.SIZE_5)
-        vertical_sizer.Add(self._status_bar)
-        vertical_sizer.AddSpacer(self.SIZE_5)
+        bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        bottom_sizer.Add(self._buttons["delete"])
+        bottom_sizer.Add(self._buttons["play"])
+        bottom_sizer.Add(self._buttons["up"])
+        bottom_sizer.Add(self._buttons["down"])
+        bottom_sizer.Add(self._buttons["reload"])
+        bottom_sizer.Add(self._buttons["pause"])
+        bottom_sizer.AddSpacer((100, 20), 1)
+        bottom_sizer.Add(self._buttons["start"])
+        panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
 
-        hor_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, border=self.SIZE_20)
+        self._panel.SetSizer(panel_sizer)
 
-        self._panel.SetSizer(hor_sizer)
+        main_sizer.Add(self._panel, 1, wx.ALL | wx.EXPAND, 10)
+        self.SetSizer(main_sizer)
 
     def _update_youtubedl(self):
         """Update youtube-dl binary to the latest version. """
-        self._update_btn.Disable()
-        self._download_btn.Disable()
+        #self._update_btn.Disable()
+        #self._download_btn.Disable()
         self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'])
 
     def _status_bar_write(self, msg):
         """Display msg in the status bar. """
-        self._status_bar.SetLabel(msg)
+        self._status_bar.SetStatusText(msg)
 
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
-        self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
-        self._download_btn.Enable()
-        self._update_btn.Enable()
+        pass
+        #self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
+        #self._download_btn.Enable()
+        #self._update_btn.Enable()
 
     def _print_stats(self):
         """Display download stats in the status bar. """
@@ -416,8 +482,8 @@ class MainFrame(wx.Frame):
                                                     self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
-            self._download_btn.SetLabel(self.STOP_LABEL)
-            self._update_btn.Disable()
+            #self._download_btn.SetLabel(self.STOP_LABEL)
+            #self._update_btn.Disable()
 
     def _paste_from_clipboard(self):
         """Paste the content of the clipboard to the self._url_list widget.

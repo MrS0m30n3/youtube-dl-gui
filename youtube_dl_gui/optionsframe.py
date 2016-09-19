@@ -22,7 +22,8 @@ from .info import (
 
 from .utils import (
     TwoWayOrderedDict as twodict,
-    os_path_exists
+    os_path_exists,
+    get_icon_file
 )
 
 
@@ -60,9 +61,11 @@ class OptionsFrame(wx.Frame):
         wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options['opts_win_size'])
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
-        self.app_icon = parent.app_icon
 
-        if self.app_icon is not None:
+        # Set the app icon
+        app_icon_path = get_icon_file()
+        if app_icon_path is not None:
+            self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
 
         self._was_shown = False

@@ -274,40 +274,45 @@ def get_icon_file():
     Note:
         Paths that get_icon_file() function searches.
 
-        __main__ dir, library dir, /usr/share/pixmaps, $XDG_DATA_DIRS
+        __main__ dir, library dir, $XDG_DATA_DIRS
 
     """
-    SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
-    ICON_NAME = 'youtube-dl-gui_%s.png'
+    ICON_NAME = "youtube-dl-gui.png"
+    SIZES = ("256", "128", "64", "48", "32", "16")
 
-    ICONS_LIST = [ICON_NAME % size for size in SIZES]
+    DIR_TEMPLATE = os.path.join("icons", "hicolor", "{size}x{size}", "apps", ICON_NAME)
+
+    ICONS = [DIR_TEMPLATE.format(size=size) for size in SIZES]
 
     search_dirs = [
-        os.path.join(absolute_path(sys.argv[0]), 'icons'),
-        os.path.join(os_path_dirname(__file__), 'icons'),
+        os.path.join(absolute_path(sys.argv[0]), "data"),
+        os.path.join(os_path_dirname(__file__), "data"),
     ]
 
     # Append $XDG_DATA_DIRS on search_dirs
-    path = os_getenv('XDG_DATA_DIRS')
+    path = os_getenv("XDG_DATA_DIRS")
 
     if path is not None:
         for xdg_path in path.split(':'):
-            xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
-
-            for size in SIZES:
-                search_dirs.append(os.path.join(xdg_path, size, 'apps'))
+            search_dirs.append(xdg_path)
 
     # Also append /usr/share/pixmaps on search_dirs
-    search_dirs.append('/usr/share/pixmaps')
+    #search_dirs.append("/usr/share/pixmaps")
 
     for directory in search_dirs:
-        for icon in ICONS_LIST:
+        for icon in ICONS:
             icon_file = os.path.join(directory, icon)
 
             if os_path_exists(icon_file):
                 return icon_file
 
     return None
+
+
+def get_pixmaps_dir():
+    """Return absolute path to the pixmaps icons folder."""
+    # TODO probably will need support for other directories py2exe etc
+    return os.path.join(absolute_path(__file__), "data", "pixmaps")
 
 
 class TwoWayOrderedDict(dict):

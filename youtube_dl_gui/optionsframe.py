@@ -1421,6 +1421,7 @@ class LocalizationTab(TabPanel):
         ('ar_AR', 'Arabic'),
         ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
+        ('nl_NL', 'Nederlands'),
         ('fr_FR', 'French'),
         ('de_DE', 'German'),
         ('it_IT', 'Italian'),

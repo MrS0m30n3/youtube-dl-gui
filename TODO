@@ -27,6 +27,7 @@ Localization
 
 Options
 =======
+* Option for basic - advanced video formats
 * Options reset delete - clear 'youtubedlg/spaths'
 * Option to disable-enable the 'download finished' pop up message
 * Option to close the program after download process

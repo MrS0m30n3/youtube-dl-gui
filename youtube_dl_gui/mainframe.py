@@ -162,24 +162,24 @@ class MainFrame(wx.Frame):
         self._options_frame = OptionsFrame(self)
 
         # Set the data for all the wx.Button items
-        # name, label, icon, size
+        # name, label, icon, size, event_handler
         buttons_data = (
-            ("delete", self.DELETE_LABEL, "delete_32px.png", (55, 55)),
-            ("play", self.PLAY_LABEL, "camera_32px.png", (55, 55)),
-            ("up", self.UP_LABEL, "arrow_up_32px.png", (55, 55)),
-            ("down", self.DOWN_LABEL, "arrow_down_32px.png", (55, 55)),
-            ("reload", self.RELOAD_LABEL, "reload_32px.png", (55, 55)),
-            ("pause", self.PAUSE_LABEL, "pause_32px.png", (55, 55)),
-            ("start", self.START_LABEL, "cloud_download_32px.png", (55, 55)),
-            ("savepath", "...", None, (40, 27)),
-            ("add", self.ADD_LABEL, None, (-1, -1))
+            ("delete", self.DELETE_LABEL, "delete_32px.png", (55, 55), self._on_delete),
+            ("play", self.PLAY_LABEL, "camera_32px.png", (55, 55), self._on_play),
+            ("up", self.UP_LABEL, "arrow_up_32px.png", (55, 55), self._on_arrow_up),
+            ("down", self.DOWN_LABEL, "arrow_down_32px.png", (55, 55), self._on_arrow_down),
+            ("reload", self.RELOAD_LABEL, "reload_32px.png", (55, 55), self._on_reload),
+            ("pause", self.PAUSE_LABEL, "pause_32px.png", (55, 55), self._on_pause),
+            ("start", self.START_LABEL, "cloud_download_32px.png", (55, 55), self._on_start),
+            ("savepath", "...", None, (40, 27), self._on_savepath),
+            ("add", self.ADD_LABEL, None, (-1, -1), self._on_add)
         )
 
         # Create frame components
         self._panel = wx.Panel(self)
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
-        self._settings_button = self._create_bitmap_button("settings_20px.png", (30, 30))
+        self._settings_button = self._create_bitmap_button("settings_20px.png", (30, 30), self._on_settings)
 
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
@@ -196,12 +196,17 @@ class MainFrame(wx.Frame):
         self._buttons = {}
 
         for item in buttons_data:
-            name, label, icon, size = item
+            name, label, icon, size, evt_handler = item
 
-            self._buttons[name] = wx.Button(self._panel, label=label, size=size)
+            button = wx.Button(self._panel, label=label, size=size)
 
             if icon is not None:
-                self._buttons[name].SetBitmap(wx.Bitmap(os.path.join(self._pixmaps_path, icon)), wx.TOP)
+                button.SetBitmap(wx.Bitmap(os.path.join(self._pixmaps_path, icon)), wx.TOP)
+
+            if evt_handler is not None:
+                button.Bind(wx.EVT_BUTTON, evt_handler)
+
+            self._buttons[name] = button
 
         self._status_bar = self.CreateStatusBar()
 
@@ -221,6 +226,36 @@ class MainFrame(wx.Frame):
         self._status_bar_write(self.WELCOME_MSG)
 
         self._set_layout()
+
+    def _on_delete(self, event):
+        raise Exception("Implement me!")
+
+    def _on_play(self, event):
+        raise Exception("Implement me!")
+
+    def _on_arrow_up(self, event):
+        raise Exception("Implement me!")
+
+    def _on_arrow_down(self, event):
+        raise Exception("Implement me!")
+
+    def _on_reload(self, event):
+        raise Exception("Implement me!")
+
+    def _on_pause(self, event):
+        raise Exception("Implement me!")
+
+    def _on_start(self, event):
+        raise Exception("Implement me!")
+
+    def _on_savepath(self, event):
+        raise Exception("Implement me!")
+
+    def _on_add(self, event):
+        raise Exception("Implement me!")
+
+    def _on_settings(self, event):
+        raise Exception("Implement me!")
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.
@@ -260,9 +295,14 @@ class MainFrame(wx.Frame):
     def _create_statictext(self, label):
         return wx.StaticText(self._panel, label=label)
 
-    def _create_bitmap_button(self, icon, size=(-1, -1)):
+    def _create_bitmap_button(self, icon, size=(-1, -1), handler=None):
         bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))
-        return wx.BitmapButton(self._panel, bitmap=bitmap, size=size, style=wx.NO_BORDER)
+        button = wx.BitmapButton(self._panel, bitmap=bitmap, size=size, style=wx.NO_BORDER)
+
+        if handler is not None:
+            button.Bind(wx.EVT_BUTTON, handler)
+
+        return button
 
     def _create_static_bitmap(self, icon):
         bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))

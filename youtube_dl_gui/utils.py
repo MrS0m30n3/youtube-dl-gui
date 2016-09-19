@@ -14,6 +14,7 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import json
 import locale
 import subprocess
 
@@ -313,6 +314,19 @@ def get_pixmaps_dir():
     """Return absolute path to the pixmaps icons folder."""
     # TODO probably will need support for other directories py2exe etc
     return os.path.join(absolute_path(__file__), "data", "pixmaps")
+
+
+def json_load(filename):
+    if os_path_exists(filename):
+        with open(filename) as input_json_file:
+            return json.load(input_json_file)
+
+    return []
+
+
+def json_store(filename, item):
+    with open(filename, 'w') as output_json_file:
+        json.dump(item, output_json_file)
 
 
 class TwoWayOrderedDict(dict):

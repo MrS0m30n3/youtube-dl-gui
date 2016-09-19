@@ -27,8 +27,11 @@ from .downloadmanager import (
 
 from .utils import (
     get_pixmaps_dir,
+    get_config_path,
     get_icon_file,
     shutdown_sys,
+    json_store,
+    json_load,
     get_time,
     open_dir
 )
@@ -106,6 +109,7 @@ class MainFrame(wx.Frame):
     CLOSED_MSG = _("Downloads stopped")
     PROVIDE_URL_MSG = _("You need to provide at least one url")
     DOWNLOAD_STARTED = _("Downloads started")
+    CHOOSE_DIRECTORY = _("Choose Directory")
 
     UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
@@ -153,6 +157,9 @@ class MainFrame(wx.Frame):
         # Get the pixmaps directory
         self._pixmaps_path = get_pixmaps_dir()
 
+        # Get stored save paths file
+        self._stored_paths = os.path.join(get_config_path(), "spaths")
+
         # Set the app icon
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
@@ -184,7 +191,7 @@ class MainFrame(wx.Frame):
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
         self._folder_icon = self._create_static_bitmap("folder_32px.png")
-        self._path_combobox = wx.ComboBox(self._panel)
+        self._path_combobox = ComboBoxLimit(self._panel)
         self._videoformat_combobox = wx.ComboBox(self._panel)
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
@@ -225,6 +232,8 @@ class MainFrame(wx.Frame):
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 
+        self._path_combobox.LoadMultiple(json_load(self._stored_paths))
+
         self._set_layout()
 
     def _on_delete(self, event):
@@ -249,7 +258,16 @@ class MainFrame(wx.Frame):
         raise Exception("Implement me!")
 
     def _on_savepath(self, event):
-        raise Exception("Implement me!")
+        dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)
+
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+
+            self._path_combobox.Append(path)
+            self._path_combobox.SetSelection(path)
+            self.opt_manager.options["save_path"] = path
+
+        dlg.Destroy()
 
     def _on_add(self, event):
         raise Exception("Implement me!")
@@ -621,6 +639,9 @@ class MainFrame(wx.Frame):
 
         self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
+
+        json_store(self._stored_paths, self._path_combobox.content)
+
         self.Destroy()
 
 
@@ -792,3 +813,43 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             if column_item[3]:
                 self.setResizeColumn(column_item[0])
 
+# TODO Extra widgets below should move to other module with widgets
+
+class ComboBoxLimit(wx.ComboBox):
+
+    def __init__(self, parent, max_items=5, *args, **kwargs):
+        super(ComboBoxLimit, self).__init__(parent, *args, **kwargs)
+
+        assert max_items > 0
+
+        self.max_items = max_items
+        self._content = []
+
+    def Append(self, text):
+        if text not in self._content:
+            self._content.append(text)
+
+            if len(self._content) > self.max_items:
+                self._content = self._content[1:]
+
+        self.SetItems(self._content)
+
+    def SetSelection(self, text):
+        if text in self._content:
+            super(ComboBoxLimit, self).SetSelection(self._content.index(text))
+            super(ComboBoxLimit, self).SetValue(text)
+
+    def LoadMultiple(self, items_list):
+        for item in items_list:
+            self._content.append(item)
+
+            if len(self._content) >= self.max_items:
+                break
+
+        if self._content:
+            self.SetItems(self._content)
+            super(ComboBoxLimit, self).SetSelection(0)
+
+    @property
+    def content(self):
+        return self._content

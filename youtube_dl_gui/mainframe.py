@@ -14,11 +14,16 @@ from wx.lib.pubsub import pub as Publisher
 
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
-from .optionsframe import OptionsFrame
+from .optionsframe import (
+    OptionsFrame,
+    LogGUI
+)
+
 from .updatemanager import (
     UPDATE_PUB_TOPIC,
     UpdateThread
 )
+
 from .downloadmanager import (
     MANAGER_PUB_TOPIC,
     WORKER_PUB_TOPIC,
@@ -35,9 +40,16 @@ from .utils import (
     get_time,
     open_dir
 )
+
 from .info import (
-    __appname__
+    __descriptionfull__,
+    __licensefull__,
+    __projecturl__,
+    __appname__,
+    __author__
 )
+
+from .version import __version__
 
 
 class MainFrame(wx.Frame):
@@ -100,6 +112,8 @@ class MainFrame(wx.Frame):
     RELOAD_LABEL = _("Reload")
     PAUSE_LABEL = _("Pause")
     START_LABEL = _("Start")
+    ABOUT_LABEL = _("About")
+    VIEWLOG_LABEL = _("View Log")
 
     SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
@@ -110,6 +124,9 @@ class MainFrame(wx.Frame):
     PROVIDE_URL_MSG = _("You need to provide at least one url")
     DOWNLOAD_STARTED = _("Downloads started")
     CHOOSE_DIRECTORY = _("Choose Directory")
+
+    DOWNLOAD_ACTIVE = _("Download in progress. Please wait for all the downloads to complete")
+    UPDATE_ACTIVE = _("Update already in progress.")
 
     UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
@@ -153,6 +170,7 @@ class MainFrame(wx.Frame):
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
+        self.app_icon = None
 
         # Get the pixmaps directory
         self._pixmaps_path = get_pixmaps_dir()
@@ -163,7 +181,8 @@ class MainFrame(wx.Frame):
         # Set the app icon
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
-            self.SetIcon(wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG))
+            self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
+            self.SetIcon(self.app_icon)
 
         # Create options frame
         self._options_frame = OptionsFrame(self)
@@ -180,6 +199,15 @@ class MainFrame(wx.Frame):
             ("start", self.START_LABEL, "cloud_download_32px.png", (55, 55), self._on_start),
             ("savepath", "...", None, (40, 27), self._on_savepath),
             ("add", self.ADD_LABEL, None, (-1, -1), self._on_add)
+        )
+
+        # Set the data for the settings menu item
+        # label, event_handler
+        menu_data = (
+            (self.OPTIONS_LABEL, self._on_options),
+            (self.UPDATE_LABEL, self._on_update),
+            (self.VIEWLOG_LABEL, self._on_viewlog),
+            (self.ABOUT_LABEL, self._on_about)
         )
 
         # Create frame components
@@ -216,6 +244,18 @@ class MainFrame(wx.Frame):
             self._buttons[name] = button
 
         self._status_bar = self.CreateStatusBar()
+
+        # Create extra components
+        self._settings_menu = wx.Menu()
+
+        for item in menu_data:
+            label, evt_handler = item
+            menu_item = self._settings_menu.Append(-1, label)
+
+            self.Bind(wx.EVT_MENU, evt_handler, menu_item)
+
+        # Overwrite the hover event to avoid changing the statusbar
+        self._settings_menu.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
 
         # Bind extra events
         self.Bind(wx.EVT_CLOSE, self._on_close)
@@ -273,7 +313,32 @@ class MainFrame(wx.Frame):
         raise Exception("Implement me!")
 
     def _on_settings(self, event):
-        raise Exception("Implement me!")
+        event_object_pos = event.EventObject.GetPosition()
+
+        # Update the object +30 on Y axis to make the menu look like it belongs to the button
+        event_object_pos = (event_object_pos[0], event_object_pos[1] + 30)
+
+        self.PopupMenu(self._settings_menu, event_object_pos)
+
+    def _on_viewlog(self, event):
+        log_window = LogGUI(self)
+        log_window.load(self.log_manager.log_file)
+        log_window.Show()
+
+    def _on_about(self, event):
+        info = wx.AboutDialogInfo()
+
+        if self.app_icon is not None:
+            info.SetIcon(self.app_icon)
+
+        info.SetName(__appname__)
+        info.SetVersion(__version__)
+        info.SetDescription(__descriptionfull__)
+        info.SetWebSite(__projecturl__)
+        info.SetLicense(__licensefull__)
+        info.AddDeveloper(__author__)
+
+        wx.AboutBox(info)
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.
@@ -406,7 +471,17 @@ class MainFrame(wx.Frame):
         """Update youtube-dl binary to the latest version. """
         #self._update_btn.Disable()
         #self._download_btn.Disable()
-        self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'])
+
+        if self.download_manager is not None and self.download_manager.is_alive():
+            self._create_popup(self.DOWNLOAD_ACTIVE,
+                               self.ERROR_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
+        elif self.update_thread is not None and self.update_thread.is_alive():
+            self._create_popup(self.UPDATE_ACTIVE,
+                               self.INFO_LABEL,
+                               wx.OK | wx.ICON_INFORMATION)
+        else:
+            self.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'])
 
     def _status_bar_write(self, msg):
         """Display msg in the status bar. """
@@ -615,8 +690,9 @@ class MainFrame(wx.Frame):
         the options window.
 
         """
-        self._options_frame.load_all_options()
-        self._options_frame.Show()
+        print "Have to adjust the options window first!!"
+        #self._options_frame.load_all_options()
+        #self._options_frame.Show()
 
     def _on_close(self, event):
         """Event handler for the wx.EVT_CLOSE event.

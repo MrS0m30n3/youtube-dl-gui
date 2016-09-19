@@ -61,6 +61,7 @@ class OptionsFrame(wx.Frame):
         wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options['opts_win_size'])
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
+        self.app_icon = None
 
         # Set the app icon
         app_icon_path = get_icon_file()
@@ -1484,6 +1485,8 @@ class LogGUI(wx.Frame):
         parent (wx.Window): Frame parent.
 
     """
+
+    #TODO move it on widgets module
 
     TITLE = _("Log Viewer")
     FRAME_SIZE = (650, 200)

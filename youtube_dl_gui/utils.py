@@ -328,6 +328,24 @@ def json_store(filename, item):
     with open(filename, 'w') as output_json_file:
         json.dump(item, output_json_file)
 
+def read_formats():
+    """Returns a twodict containing all the formats from 'data/formats'."""
+    # TODO Support for other directories? Test with py2exe
+    formats_file = os.path.join(absolute_path(__file__), "data", "formats")
+
+    if os_path_exists(formats_file):
+        formats_dict = TwoWayOrderedDict()
+
+        with open(formats_file) as input_file:
+            for line in input_file:
+                format_id, format_label = line.split('-')
+
+                formats_dict[format_id.strip()] = format_label.strip()
+
+        return formats_dict
+
+    return None
+
 
 class TwoWayOrderedDict(dict):
 

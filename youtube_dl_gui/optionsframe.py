@@ -941,7 +941,7 @@ class VideoTab(TabPanel):
         self._on_videoformat(None)
 
     def save_options(self):
-        self.opt_manager.options['video_format'] = self.FORMATS.get(self.videoformat_combo.GetValue(), '0')
+        #self.opt_manager.options['video_format'] = self.FORMATS.get(self.videoformat_combo.GetValue(), '0')
         self.opt_manager.options['second_video_format'] = self.FORMATS.get(self.sec_videoformat_combo.GetValue(), '0')
 
 

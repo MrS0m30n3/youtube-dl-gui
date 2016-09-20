@@ -35,6 +35,7 @@ from .utils import (
     get_config_path,
     get_icon_file,
     shutdown_sys,
+    read_formats,
     json_store,
     json_load,
     get_time,
@@ -178,14 +179,14 @@ class MainFrame(wx.Frame):
         # Get stored save paths file
         self._stored_paths = os.path.join(get_config_path(), "spaths")
 
+        # Get video formats
+        self._video_formats = read_formats()
+
         # Set the app icon
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
             self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
-
-        # Create options frame
-        self._options_frame = OptionsFrame(self)
 
         # Set the data for all the wx.Button items
         # name, label, icon, size, event_handler
@@ -210,6 +211,9 @@ class MainFrame(wx.Frame):
             (self.ABOUT_LABEL, self._on_about)
         )
 
+        # Create options frame
+        self._options_frame = OptionsFrame(self)
+
         # Create frame components
         self._panel = wx.Panel(self)
 
@@ -219,8 +223,10 @@ class MainFrame(wx.Frame):
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
         self._folder_icon = self._create_static_bitmap("folder_32px.png")
+
+        #TODO on change event update save path
         self._path_combobox = ComboBoxLimit(self._panel)
-        self._videoformat_combobox = wx.ComboBox(self._panel)
+        self._videoformat_combobox = wx.ComboBox(self._panel, choices=self._video_formats.values())
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
@@ -271,6 +277,10 @@ class MainFrame(wx.Frame):
 
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
+
+        # TODO method to do this in one line
+        self._videoformat_combobox.SetValue(self._video_formats[self.opt_manager.options["video_format"]])
+        self._videoformat_combobox.SetSelection(self._videoformat_combobox.FindString(self._videoformat_combobox.GetValue()))
 
         self._path_combobox.LoadMultiple(json_load(self._stored_paths))
 
@@ -712,6 +722,9 @@ class MainFrame(wx.Frame):
         # Store main-options frame size
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
+
+        #TODO update opt_manager on ComboBox edit
+        self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
 
         self._options_frame.save_all_options()
         self.opt_manager.save_to_file()

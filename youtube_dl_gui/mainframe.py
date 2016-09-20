@@ -224,9 +224,8 @@ class MainFrame(wx.Frame):
 
         self._folder_icon = self._create_static_bitmap("folder_32px.png")
 
-        #TODO on change event update save path
-        self._path_combobox = ComboBoxLimit(self._panel)
-        self._videoformat_combobox = wx.ComboBox(self._panel, choices=self._video_formats.values())
+        self._path_combobox = ExtComboBox(self._panel, 5)
+        self._videoformat_combobox = ExtComboBox(self._panel, choices=self._video_formats.values())
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
@@ -264,6 +263,8 @@ class MainFrame(wx.Frame):
         self._settings_menu.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
 
         # Bind extra events
+        self.Bind(wx.EVT_TEXT, self._update_videoformat, self._videoformat_combobox)
+        self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
         # Set threads wxCallAfter handlers
@@ -278,13 +279,17 @@ class MainFrame(wx.Frame):
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 
-        # TODO method to do this in one line
         self._videoformat_combobox.SetValue(self._video_formats[self.opt_manager.options["video_format"]])
-        self._videoformat_combobox.SetSelection(self._videoformat_combobox.FindString(self._videoformat_combobox.GetValue()))
-
         self._path_combobox.LoadMultiple(json_load(self._stored_paths))
+        self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
         self._set_layout()
+
+    def _update_videoformat(self, event):
+        self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
+
+    def _update_savepath(self, event):
+        self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
 
     def _on_delete(self, event):
         raise Exception("Implement me!")
@@ -314,8 +319,8 @@ class MainFrame(wx.Frame):
             path = dlg.GetPath()
 
             self._path_combobox.Append(path)
-            self._path_combobox.SetSelection(path)
-            self.opt_manager.options["save_path"] = path
+            self._path_combobox.SetValue(path)
+            self._update_savepath(None)
 
         dlg.Destroy()
 
@@ -723,13 +728,11 @@ class MainFrame(wx.Frame):
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
 
-        #TODO update opt_manager on ComboBox edit
-        self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
-
-        self._options_frame.save_all_options()
+        #TODO re-enable after options frame update
+        #self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
 
-        json_store(self._stored_paths, self._path_combobox.content)
+        json_store(self._stored_paths, self._path_combobox.GetStrings())
 
         self.Destroy()
 
@@ -904,41 +907,27 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
 # TODO Extra widgets below should move to other module with widgets
 
-class ComboBoxLimit(wx.ComboBox):
+class ExtComboBox(wx.ComboBox):
 
-    def __init__(self, parent, max_items=5, *args, **kwargs):
-        super(ComboBoxLimit, self).__init__(parent, *args, **kwargs)
+    def __init__(self, parent, max_items=-1, *args, **kwargs):
+        super(ExtComboBox, self).__init__(parent, *args, **kwargs)
 
-        assert max_items > 0
-
+        assert max_items > 0 or max_items == -1
         self.max_items = max_items
-        self._content = []
 
-    def Append(self, text):
-        if text not in self._content:
-            self._content.append(text)
+    def Append(self, new_value):
+        if self.FindString(new_value) == wx.NOT_FOUND:
+            super(ExtComboBox, self).Append(new_value)
 
-            if len(self._content) > self.max_items:
-                self._content = self._content[1:]
+            if self.max_items != -1 and self.GetCount() > self.max_items:
+                self.SetItems(self.GetStrings()[1:])
 
-        self.SetItems(self._content)
+    def SetValue(self, new_value):
+        if self.FindString(new_value) == wx.NOT_FOUND:
+            self.Append(new_value)
 
-    def SetSelection(self, text):
-        if text in self._content:
-            super(ComboBoxLimit, self).SetSelection(self._content.index(text))
-            super(ComboBoxLimit, self).SetValue(text)
+        self.SetSelection(self.FindString(new_value))
 
     def LoadMultiple(self, items_list):
         for item in items_list:
-            self._content.append(item)
-
-            if len(self._content) >= self.max_items:
-                break
-
-        if self._content:
-            self.SetItems(self._content)
-            super(ComboBoxLimit, self).SetSelection(0)
-
-    @property
-    def content(self):
-        return self._content
+            self.Append(item)

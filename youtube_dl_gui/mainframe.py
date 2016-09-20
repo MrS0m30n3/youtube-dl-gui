@@ -931,3 +931,49 @@ class ExtComboBox(wx.ComboBox):
     def LoadMultiple(self, items_list):
         for item in items_list:
             self.Append(item)
+
+
+class DownloadItem(object):
+
+    def __init__(self, url, options, filename="", extension="", path="", filesize=0.0, playlist_index=-1):
+        self.url = url
+        self.path = path
+        self.options = options
+        self.filename = filename
+        self.filesize = filesize
+        self.extension = extension
+        self.playlist_index = playlist_index
+
+        self._progress_stats = {
+            "filesize": "",
+            "percent": "",
+            "status": "",
+            "speed": "",
+            "eta": ""
+        }
+
+        self.object_id = id(self)
+
+        def get_eta(self):
+            return self._progress_stats["eta"]
+
+        def get_speed(self):
+            return self._progress_stats["speed"]
+
+        def get_status(self):
+            return self._progress_stats["status"]
+
+        def get_percentage(self):
+            return self._progress_stats["percent"]
+
+        def get_absolute_path(self):
+            return os.path.join(self.path, self.filename, self.extension)
+
+
+class DownloadPlaylist(object):
+
+    # TODO feauture use
+
+    def __init__(self, size, items):
+        self.size = size
+        self.items = items

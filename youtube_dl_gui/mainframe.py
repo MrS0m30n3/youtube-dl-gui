@@ -14,6 +14,8 @@ from wx.lib.pubsub import pub as Publisher
 
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
+from .parsers import OptionsParser
+
 from .optionsframe import (
     OptionsFrame,
     LogGUI
@@ -38,6 +40,7 @@ from .utils import (
     read_formats,
     json_store,
     json_load,
+    to_string,
     get_time,
     open_dir
 )
@@ -172,6 +175,12 @@ class MainFrame(wx.Frame):
         self.download_manager = None
         self.update_thread = None
         self.app_icon = None
+
+        # TODO move it elsewhere?
+        self._download_items = {}
+
+        # Set up youtube-dl options parser
+        self._options_parser = OptionsParser()
 
         # Get the pixmaps directory
         self._pixmaps_path = get_pixmaps_dir()
@@ -325,7 +334,35 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def _on_add(self, event):
-        raise Exception("Implement me!")
+        options = self._options_parser.parse(self.opt_manager.options)
+
+        urls = self._get_urls()
+        self._url_list.SetValue("")
+
+        # Try to get the extension
+        extension = self._videoformat_combobox.GetValue().split()[0]
+        if extension == "default":
+            extension = "-"
+        else:
+            extension = "." + extension
+
+        for url in urls:
+            # TODO validate url? youtube-dl can support keywords
+            download_item = DownloadItem(url, options, extension=extension)
+
+            if download_item.object_id not in self._download_items:
+                download_item.progress_stats["status"] = "Queued"
+
+                self._download_items[download_item.object_id] = download_item
+                self._status_list.bind_item(download_item)
+
+        if not urls:
+            self._create_popup(self.PROVIDE_URL_MSG,
+                               self.ERROR_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
+
+        # TODO Call download manager here
+
 
     def _on_settings(self, event):
         event_object_pos = event.EventObject.GetPosition()
@@ -663,6 +700,7 @@ class MainFrame(wx.Frame):
         click of the mouse.
 
         """
+        #TODO Remove not used anymore
         if event.ClassName == self.wxEVT_TEXT_PASTE:
             self._paste_from_clipboard()
         else:
@@ -830,6 +868,25 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         """
         return url in self._url_list
 
+    def bind_item(self, download_item):
+        #TODO remove line below
+        print self._list_index, download_item.object_id
+        self.InsertStringItem(self._list_index, download_item.url)
+
+        self.SetItemData(self._list_index, download_item.object_id)
+
+        self._update_from_item(self._list_index, download_item)
+
+        self._list_index += 1
+
+    def _update_from_item(self, row, download_item):
+        for key in download_item.progress_stats:
+            column = self.columns[key][0]
+
+            #TODO remove line below
+            print row, column, download_item.progress_stats[key]
+            self.SetStringItem(row, column, download_item.progress_stats[key])
+
     def add_url(self, url):
         """Adds the given url in the ListCtrl.
 
@@ -944,27 +1001,16 @@ class DownloadItem(object):
         self.extension = extension
         self.playlist_index = playlist_index
 
-        self._progress_stats = {
-            "filesize": "",
-            "percent": "",
-            "status": "",
-            "speed": "",
-            "eta": ""
+        self.progress_stats = {
+            "extension": extension,
+            "filesize": "-",
+            "percent": "0%",
+            "status": "-",
+            "speed": "-",
+            "eta": "-"
         }
 
-        self.object_id = id(self)
-
-        def get_eta(self):
-            return self._progress_stats["eta"]
-
-        def get_speed(self):
-            return self._progress_stats["speed"]
-
-        def get_status(self):
-            return self._progress_stats["status"]
-
-        def get_percentage(self):
-            return self._progress_stats["percent"]
+        self.object_id = hash(url + to_string(options))
 
         def get_absolute_path(self):
             return os.path.join(self.path, self.filename, self.extension)

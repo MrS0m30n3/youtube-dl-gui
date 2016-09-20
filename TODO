@@ -42,6 +42,7 @@ Other
 
 * Add FAQs into docs/
 * Add tests
+* Review - rewrite threads communications
 * Update setup.py
 * Add support for Python 3.*
 * Logging system using the Python 'logging' module

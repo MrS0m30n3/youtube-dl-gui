@@ -613,7 +613,7 @@ class MainFrame(wx.Frame):
 
     def _get_urls(self):
         """Returns urls list. """
-        return self._url_list.GetValue().split('\n')
+        return [line for line in self._url_list.GetValue().split('\n') if line]
 
     def _start_download(self):
         """Handles pre-download tasks & starts the download process. """

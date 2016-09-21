@@ -1,3 +1,4 @@
+include youtube_dl_gui/data/pixmaps/icons-license
 include youtube_dl_gui/data/formats
 include README.md
 include AUTHORS

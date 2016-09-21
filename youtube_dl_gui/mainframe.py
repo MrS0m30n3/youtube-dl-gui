@@ -285,6 +285,8 @@ class MainFrame(wx.Frame):
         self.Center()
         self.SetMinSize(self.FRAMES_MIN_SIZE)
 
+        self._videoformat_combobox.SetMaxSize((210 ,-1))
+
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 

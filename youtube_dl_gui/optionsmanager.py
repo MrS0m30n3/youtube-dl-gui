@@ -242,7 +242,7 @@ class OptionsManager(object):
             'log_time': False,
             'workers_number': 3,
             'locale_name': 'en_US',
-            'main_win_size': (700, 490),
+            'main_win_size': (710, 490),
             'opts_win_size': (640, 270)
         }
 

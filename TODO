@@ -2,7 +2,6 @@ GUI
 ===
 * Change MainFrame layout
     (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
-* Increase MainFrames default size
 * Create new button widget (groups, auto width, General tab)
 * Add more statistics (Average download speed)
 * Auto video format detection

@@ -497,7 +497,7 @@ class MainFrame(wx.Frame):
         mid_sizer.Add(self._folder_icon)
         mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
-        mid_sizer.AddSpacer((100, 20), 1)
+        mid_sizer.AddSpacer((10, 20), 1)
         mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
         panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)

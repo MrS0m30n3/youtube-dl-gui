@@ -514,7 +514,7 @@ class MainFrame(wx.Frame):
         bottom_sizer.Add(self._buttons["pause"])
         bottom_sizer.AddSpacer((100, 20), 1)
         bottom_sizer.Add(self._buttons["start"])
-        panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, 10)
+        panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.TOP, 10)
 
         self._panel.SetSizer(panel_sizer)
 

@@ -233,8 +233,8 @@ class MainFrame(wx.Frame):
 
         self._folder_icon = self._create_static_bitmap("folder_32px.png")
 
-        self._path_combobox = ExtComboBox(self._panel, 5)
-        self._videoformat_combobox = ExtComboBox(self._panel, choices=self._video_formats.values())
+        self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
+        self._videoformat_combobox = ExtComboBox(self._panel, choices=self._video_formats.values(), style=wx.CB_READONLY)
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,

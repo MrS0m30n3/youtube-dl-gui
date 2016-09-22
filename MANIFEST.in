@@ -5,6 +5,7 @@ include AUTHORS
 include LICENSE
 include TODO
 
+include tests/*.py
 include locale_build/*
 
 recursive-include youtube_dl_gui/data *.png *.ico *.icns

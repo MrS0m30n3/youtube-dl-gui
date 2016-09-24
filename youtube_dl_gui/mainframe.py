@@ -346,10 +346,34 @@ class MainFrame(wx.Frame):
                 self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
-        raise Exception("Implement me!")
+        selected_row = self._status_list.get_selected()
+
+        if selected_row == -1:
+            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            object_id = self._status_list.GetItemData(selected_row)
+            download_item = self._download_list.get_item(object_id)
+
+            if self._download_list.move_up(object_id):
+                self._status_list.move_item_up(selected_row)
+                self._status_list._update_from_item(selected_row - 1, download_item)
+
+            print self._download_list._items_list
 
     def _on_arrow_down(self, event):
-        raise Exception("Implement me!")
+        selected_row = self._status_list.get_selected()
+
+        if selected_row == -1:
+            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            object_id = self._status_list.GetItemData(selected_row)
+            download_item = self._download_list.get_item(object_id)
+
+            if self._download_list.move_down(object_id):
+                self._status_list.move_item_down(selected_row)
+                self._status_list._update_from_item(selected_row + 1, download_item)
+
+            print self._download_list._items_list
 
     def _on_reload(self, event):
         raise Exception("Implement me!")
@@ -855,6 +879,23 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self.DeleteItem(row_number)
         self._list_index -= 1
 
+    def move_item_up(self, row_number):
+        self._move_item(row_number, row_number - 1)
+
+    def move_item_down(self, row_number):
+        self._move_item(row_number, row_number + 1)
+
+    def _move_item(self, cur_row, new_row):
+        self.Freeze()
+        item = self.GetItem(cur_row)
+        self.DeleteItem(cur_row)
+
+        item.SetId(new_row)
+        self.InsertItem(item)
+
+        self.Select(new_row)
+        self.Thaw()
+
     def write(self, data):
         """Write data on ListCtrl row-column.
 
@@ -901,7 +942,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def bind_item(self, download_item):
         #TODO remove line below
-        print self._list_index, download_item.object_id
         self.InsertStringItem(self._list_index, download_item.url)
 
         self.SetItemData(self._list_index, download_item.object_id)
@@ -911,6 +951,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index += 1
 
     def _update_from_item(self, row, download_item):
+        print row, download_item.object_id
         for key in download_item.progress_stats:
             column = self.columns[key][0]
 

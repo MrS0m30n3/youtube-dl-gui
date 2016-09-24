@@ -331,7 +331,19 @@ class MainFrame(wx.Frame):
                 self._download_list.remove(object_id)
 
     def _on_play(self, event):
-        raise Exception("Implement me!")
+        selected_row = self._status_list.get_selected()
+
+        if selected_row == -1:
+            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            object_id = self._status_list.GetItemData(selected_row)
+            selected_download_item = self._download_list.get_item(object_id)
+
+            if selected_download_item.stage == "Completed":
+                filename = selected_download_item.get_files()[-1]
+                open_file(filename)
+            else:
+                self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
         raise Exception("Implement me!")

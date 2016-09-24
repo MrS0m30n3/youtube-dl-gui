@@ -116,6 +116,15 @@ class DownloadItem(object):
         if value not in self.STAGES:
             raise ValueError(value)
 
+        if value == "Queued":
+            self.progress_stats["status"] = value
+        if value == "Active":
+            self.progress_stats["status"] = self.ACTIVE_STAGES[0]
+        if value == "Completed":
+            self.progress_stats["status"] = self.COMPLETED_STAGES[0]
+        if value == "Paused":
+            self.progress_stats["status"] = value
+
         self._stage = value
 
     def get_files(self):

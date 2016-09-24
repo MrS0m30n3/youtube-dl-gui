@@ -102,15 +102,19 @@ class TestSetItemStage(unittest.TestCase):
     def test_set_stage_valid(self):
         self.ditem.stage = "Queued"
         self.assertEqual(self.ditem.stage, "Queued")
+        self.assertEqual(self.ditem.progress_stats["status"], "Queued")
 
         self.ditem.stage = "Active"
         self.assertEqual(self.ditem.stage, "Active")
+        self.assertEqual(self.ditem.progress_stats["status"], "Pre Processing")
 
         self.ditem.stage = "Completed"
         self.assertEqual(self.ditem.stage, "Completed")
+        self.assertEqual(self.ditem.progress_stats["status"], "Finished")
 
         self.ditem.stage = "Paused"
         self.assertEqual(self.ditem.stage, "Paused")
+        self.assertEqual(self.ditem.progress_stats["status"], "Paused")
 
     def test_set_stage_invalid(self):
         raised = False

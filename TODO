@@ -39,6 +39,7 @@ Other
 * README.md add slackbuild
 * README.md add new images
 
+* Save freq. used paths to 'settings.json' instead of 'spaths'
 * Add FAQs into docs/
 * Add tests
 * Review - rewrite threads communications

@@ -123,18 +123,22 @@ def absolute_path(filename):
     return os_path_dirname(os_path_realpath(os_path_abspath(filename)))
 
 
-def open_dir(path):
-    """Open path using default file navigator.
-    Return True if path exists else False. """
-    path = remove_shortcuts(path)
+def open_file(file_path):
+    """Open file in file_path using the default OS application.
 
-    if not os_path_exists(path):
+    Returns:
+        True on success else False.
+
+    """
+    file_path = remove_shortcuts(file_path)
+
+    if not os_path_exists(file_path):
         return False
 
-    if os.name == 'nt':
-        os_startfile(path)
+    if os.name == "nt":
+        os_startfile(file_path)
     else:
-        subprocess.call(('xdg-open', path))
+        subprocess.call(("xdg-open", file_path))
 
     return True
 

@@ -44,8 +44,8 @@ from .utils import (
     json_store,
     json_load,
     to_string,
-    get_time,
-    open_dir
+    open_file,
+    get_time
 )
 
 from .info import (
@@ -593,7 +593,7 @@ class MainFrame(wx.Frame):
         else:
             self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
             if self.opt_manager.options['open_dl_dir']:
-                success = open_dir(self.opt_manager.options['save_path'])
+                success = open_file(self.opt_manager.options['save_path'])
 
                 if not success:
                     self._status_bar_write(self.OPEN_DIR_ERR.format(dir=self.opt_manager.options['save_path']))

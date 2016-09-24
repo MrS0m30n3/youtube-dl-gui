@@ -118,11 +118,11 @@ class TestMoveUp(unittest.TestCase):
         self.dlist = DownloadList(mocks)
 
     def test_move_up(self):
-        self.dlist.move_up(1)
+        self.assertTrue(self.dlist.move_up(1))
         self.assertEqual(self.dlist._items_list, [1, 0, 2])
 
     def test_move_up_already_on_top(self):
-        self.dlist.move_up(0)
+        self.assertFalse(self.dlist.move_up(0))
         self.assertEqual(self.dlist._items_list, [0, 1, 2])
 
     def test_move_up_not_exist(self):
@@ -138,11 +138,11 @@ class TestMoveDown(unittest.TestCase):
         self.dlist = DownloadList(mocks)
 
     def test_move_down(self):
-        self.dlist.move_down(1)
+        self.assertTrue(self.dlist.move_down(1))
         self.assertEqual(self.dlist._items_list, [0, 2, 1])
 
     def test_move_down_already_on_bottom(self):
-        self.dlist.move_down(2)
+        self.assertFalse(self.dlist.move_down(2))
         self.assertEqual(self.dlist._items_list, [0, 1, 2])
 
     def test_move_down_not_exist(self):

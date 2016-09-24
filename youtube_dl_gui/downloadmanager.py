@@ -235,6 +235,9 @@ class DownloadList(object):
 
         if index > 0:
             self._swap(index, index - 1)
+            return True
+
+        return False
 
     @synchronized(_SYNC_LOCK)
     def move_down(self, object_id):
@@ -243,6 +246,9 @@ class DownloadList(object):
 
         if index < (len(self._items_list) - 1):
             self._swap(index, index + 1)
+            return True
+
+        return False
 
     @synchronized(_SYNC_LOCK)
     def get_item(self, object_id):

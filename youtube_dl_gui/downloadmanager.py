@@ -26,6 +26,7 @@ import os.path
 
 from threading import (
     Thread,
+    RLock,
     Lock
 )
 
@@ -39,12 +40,225 @@ from .downloaders import YoutubeDLDownloader
 
 from .utils import (
     YOUTUBEDL_BIN,
-    os_path_exists
+    os_path_exists,
+    to_string
 )
 
 
 MANAGER_PUB_TOPIC = 'dlmanager'
 WORKER_PUB_TOPIC = 'dlworker'
+
+_SYNC_LOCK = RLock()
+
+# Decorator that adds thread synchronization to a function
+def synchronized(lock):
+    def _decorator(func):
+        def _wrapper(*args, **kwargs):
+            lock.acquire()
+            ret_value = func(*args, **kwargs)
+            lock.release()
+            return ret_value
+        return _wrapper
+    return _decorator
+
+
+class DownloadItem(object):
+
+    """Object that represents a download.
+
+    Attributes:
+        STAGES (tuple): Main stages of the download item.
+
+        ACTIVE_STAGES (tuple): Sub stages of the 'Active' stage.
+
+        COMPLETED_STAGES (tuple): Sub stages of the 'Completed' stage.
+
+    Args:
+        url (string): URL that corresponds to the download item.
+
+        options (list): Options list to use during the download phase.
+
+    """
+
+    STAGES = ("Queued", "Active", "Paused", "Completed")
+
+    ACTIVE_STAGES = ("Pre Processing", "Downloading", "Post Processing")
+
+    COMPLETED_STAGES = ("Finished", "Error", "Warning", "Stopped", "Already Downloaded", "Filesize Abort")
+
+    def __init__(self, url, options):
+        self.url = url
+        self.options = options
+        self._stage = self.STAGES[0]
+
+        self.object_id = hash(url + to_string(options))
+
+        self.path = ""
+        self.filenames = []
+        self.extensions = []
+
+        self.progress_stats = {
+            "filename": url,
+            "extension": "-",
+            "filesize": "-",
+            "percent": "0%",
+            "speed": "-",
+            "eta": "-",
+            "status": self.stage
+        }
+
+    @property
+    def stage(self):
+        return self._stage
+
+    @stage.setter
+    def stage(self, value):
+        if value not in self.STAGES:
+            raise ValueError(value)
+
+        self._stage = value
+
+    def get_files(self):
+        """Returns a list that contains all the system files bind to this object."""
+        files = []
+
+        for index, item in enumerate(self.filenames):
+            path = os.path.join(self.path, item, self.extensions[index])
+            files.append(path)
+
+        return files
+
+    def update_stats(self, stats_dict):
+        """Updates the progress_stats dict from the given dictionary."""
+        assert isinstance(stats_dict, dict)
+
+        for key in stats_dict:
+            if key in self.progress_stats:
+                self.progress_stats[key] = stats_dict[key]
+
+            # Extract extra stuff
+            if key == "filename":
+                if stats_dict[key] not in self.filenames:
+                    self.filenames.append(stats_dict[key])
+
+            if key == "extension":
+                if stats_dict[key] not in self.extensions:
+                    self.extensions.append(stats_dict[key])
+
+            if key == "path":
+                self.path = stats_dict[key]
+
+            if key == "status":
+                self._set_stage(stats_dict[key])
+
+    def _set_stage(self, status):
+        if status in self.ACTIVE_STAGES:
+            self._stage = self.STAGES[1]
+
+        if status in self.COMPLETED_STAGES:
+            self._stage = self.STAGES[3]
+
+    def __eq__(self, other):
+        return self.object_id == other.object_id
+
+
+
+class DownloadList(object):
+
+    """List like data structure that contains DownloadItems.
+
+    Args:
+        items (list): List that contains DownloadItems.
+
+    """
+
+    def __init__(self, items=None):
+        assert isinstance(items, list) or items is None
+
+        if items is None:
+            self._items_dict = {}  # Speed up lookup
+            self._items_list = []  # Keep the sequence
+        else:
+            self._items_list = [item.object_id for item in items]
+            self._items_dict = {item.object_id: item for item in items}
+
+    @synchronized(_SYNC_LOCK)
+    def insert(self, item):
+        """Inserts the given item to the list. Does not check for duplicates. """
+        self._items_list.append(item.object_id)
+        self._items_dict[item.object_id] = item
+
+    @synchronized(_SYNC_LOCK)
+    def remove(self, object_id):
+        """Removes an item from the list.
+
+        Removes the item with the corresponding object_id from
+        the list if the item is not in 'Active' state.
+
+        Returns:
+            True on success else False.
+
+        """
+        if self._items_dict[object_id].stage != "Active":
+            self._items_list.remove(object_id)
+            del self._items_dict[object_id]
+
+            return True
+        return False
+
+    @synchronized(_SYNC_LOCK)
+    def fetch_next(self):
+        """Returns the next queued item on the list.
+
+        Returns:
+            Next queued item or None if no other item exist.
+
+        """
+        for object_id in self._items_list:
+            cur_item = self._items_dict[object_id]
+
+            if cur_item.stage == "Queued":
+                return cur_item
+
+        return None
+
+    @synchronized(_SYNC_LOCK)
+    def move_up(self, object_id):
+        """Moves the item with the corresponding object_id up to the list."""
+        index = self._items_list.index(object_id)
+
+        if index > 0:
+            self._swap(index, index - 1)
+
+    @synchronized(_SYNC_LOCK)
+    def move_down(self, object_id):
+        """Moves the item with the corresponding object_id down to the list."""
+        index = self._items_list.index(object_id)
+
+        if index < (len(self._items_list) - 1):
+            self._swap(index, index + 1)
+
+    @synchronized(_SYNC_LOCK)
+    def get_item(self, object_id):
+        """Returns the DownloadItem with the given object_id."""
+        return self._items_dict[object_id]
+
+    @synchronized(_SYNC_LOCK)
+    def has_item(self, object_id):
+        """Returns True if the given object_id is in the list else False."""
+        return object_id in self._items_list
+
+    @synchronized(_SYNC_LOCK)
+    def get_items(self):
+        """Returns a list with all the items."""
+        return [self._items_dict[object_id] for object_id in self._items_list]
+
+    @synchronized(_SYNC_LOCK)
+    def __len__(self):
+        return len(self._items_list)
+
+    def _swap(self, index1, index2):
+        self._items_list[index1], self._items_list[index2] = self._items_list[index2], self._items_list[index1]
 
 
 class DownloadManager(Thread):

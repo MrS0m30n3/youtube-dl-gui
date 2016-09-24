@@ -208,6 +208,18 @@ class TestGetItems(unittest.TestCase):
         self.assertEqual(dlist.get_items(), [])
 
 
+class TestClear(unittest.TestCase):
+
+    """Test case for the DownloadList clear method."""
+
+    def test_clear(self):
+        dlist = DownloadList([mock.Mock() for _ in range(3)])
+
+        self.assertEqual(len(dlist), 3)
+        dlist.clear()
+        self.assertEqual(len(dlist), 0)
+
+
 class TestSynchronizeDecorator(unittest.TestCase):
 
     def test_synchronize(self):

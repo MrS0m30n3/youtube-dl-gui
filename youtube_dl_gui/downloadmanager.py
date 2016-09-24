@@ -183,6 +183,12 @@ class DownloadList(object):
             self._items_dict = {item.object_id: item for item in items}
 
     @synchronized(_SYNC_LOCK)
+    def clear(self):
+        """Removes all the items from the list even the 'Active' ones."""
+        self._items_list = []
+        self._items_dict = {}
+
+    @synchronized(_SYNC_LOCK)
     def insert(self, item):
         """Inserts the given item to the list. Does not check for duplicates. """
         self._items_list.append(item.object_id)

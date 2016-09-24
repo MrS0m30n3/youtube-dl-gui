@@ -40,6 +40,7 @@ from .utils import (
     get_icon_file,
     shutdown_sys,
     read_formats,
+    remove_file,
     json_store,
     json_load,
     to_string,
@@ -241,7 +242,7 @@ class MainFrame(wx.Frame):
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
                                      parent=self._panel,
-                                     style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+                                     style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL)
 
         # Dictionary to store all the buttons
         self._buttons = {}
@@ -305,7 +306,29 @@ class MainFrame(wx.Frame):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
 
     def _on_delete(self, event):
-        raise Exception("Implement me!")
+        selected_row = self._status_list.get_selected()
+
+        if selected_row == -1:
+            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            object_id = self._status_list.GetItemData(selected_row)
+            selected_download_item = self._download_list.get_item(object_id)
+
+            if selected_download_item.stage == "Active":
+                self._create_popup("Selected item is active. Cannot remove", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+            else:
+                if selected_download_item.stage == "Completed":
+                    dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
+
+                    result = dlg.ShowModal() == wx.ID_YES
+                    dlg.Destroy()
+
+                    if result:
+                        for cur_file in selected_download_item.get_files():
+                            remove_file(cur_file)
+
+                self._status_list.remove_row(selected_row)
+                self._download_list.remove(object_id)
 
     def _on_play(self, event):
         raise Exception("Implement me!")
@@ -816,6 +839,10 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         return {'index': data['index'], data['dest']: value}
 
+    def remove_row(self, row_number):
+        self.DeleteItem(row_number)
+        self._list_index -= 1
+
     def write(self, data):
         """Write data on ListCtrl row-column.
 
@@ -900,6 +927,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def is_empty(self):
         """Returns True if the list is empty else False. """
         return self._list_index == 0
+
+    def get_selected(self):
+        return self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
 
     def get_items(self):
         """Returns a list of items inside the ListCtrl.

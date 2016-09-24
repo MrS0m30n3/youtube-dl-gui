@@ -29,7 +29,9 @@ from .updatemanager import (
 from .downloadmanager import (
     MANAGER_PUB_TOPIC,
     WORKER_PUB_TOPIC,
-    DownloadManager
+    DownloadManager,
+    DownloadList,
+    DownloadItem
 )
 
 from .utils import (
@@ -177,7 +179,7 @@ class MainFrame(wx.Frame):
         self.app_icon = None
 
         # TODO move it elsewhere?
-        self._download_items = {}
+        self._download_list = DownloadList()
 
         # Set up youtube-dl options parser
         self._options_parser = OptionsParser()
@@ -336,34 +338,22 @@ class MainFrame(wx.Frame):
         dlg.Destroy()
 
     def _on_add(self, event):
-        options = self._options_parser.parse(self.opt_manager.options)
-
         urls = self._get_urls()
-        self._url_list.SetValue("")
-
-        # Try to get the extension
-        extension = self._videoformat_combobox.GetValue().split()[0]
-        if extension == "default":
-            extension = "-"
-        else:
-            extension = "." + extension
-
-        for url in urls:
-            # TODO validate url? youtube-dl can support keywords
-            download_item = DownloadItem(url, options, extension=extension)
-
-            if download_item.object_id not in self._download_items:
-                download_item.progress_stats["status"] = "Queued"
-
-                self._download_items[download_item.object_id] = download_item
-                self._status_list.bind_item(download_item)
 
         if not urls:
             self._create_popup(self.PROVIDE_URL_MSG,
                                self.ERROR_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            self._url_list.Clear()
+            options = self._options_parser.parse(self.opt_manager.options)
 
-        # TODO Call download manager here
+            for url in urls:
+                download_item = DownloadItem(url, options)
+
+                if not self._download_list.has_item(download_item.object_id):
+                    self._status_list.bind_item(download_item)
+                    self._download_list.insert(download_item)
 
 
     def _on_settings(self, event):

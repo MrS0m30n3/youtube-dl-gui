@@ -64,7 +64,7 @@ class TestGetFiles(unittest.TestCase):
         self.ditem.filenames = ["file1", "file2"]
         self.ditem.extensions = [".mp4", ".m4a"]
 
-        self.assertEqual(self.ditem.get_files(), [os.path.join(path, "file1", ".mp4"), os.path.join(path, "file2", ".m4a")])
+        self.assertEqual(self.ditem.get_files(), [os.path.join(path, "file1" + ".mp4"), os.path.join(path, "file2" + ".m4a")])
 
     def test_get_files_no_data(self):
         self.assertEqual(self.ditem.get_files(), [])

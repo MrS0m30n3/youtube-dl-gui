@@ -123,8 +123,8 @@ class DownloadItem(object):
         files = []
 
         for index, item in enumerate(self.filenames):
-            path = os.path.join(self.path, item, self.extensions[index])
-            files.append(path)
+            filename = item + self.extensions[index]
+            files.append(os.path.join(self.path, filename))
 
         return files
 

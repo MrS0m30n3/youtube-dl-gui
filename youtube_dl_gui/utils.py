@@ -106,6 +106,12 @@ os_path_expanduser = convert_on_bounds(os.path.expanduser)
 if os.name == 'nt':
     os_startfile = convert_on_bounds(os.startfile)
 
+def remove_file(filename):
+    if os_path_exists(filename):
+        os.remove(filename)
+        return True
+
+    return False
 
 def remove_shortcuts(path):
     """Return given path after removing the shortcuts. """

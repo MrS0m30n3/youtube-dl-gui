@@ -6,6 +6,8 @@ GUI
 * Add more statistics (Average download speed)
 * Auto video format detection
 * GUI command line builder like zenmap
+* Swap some of the Error messages with Info
+* Add clear list button
 
 Structure
 =========
@@ -49,3 +51,4 @@ Other
 * Use youtube-dl directly from python instead of using the subprocess module
 * Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
+* Extract filename info on 'Already Downloaded'

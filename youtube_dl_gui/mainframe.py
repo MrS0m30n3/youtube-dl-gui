@@ -401,7 +401,10 @@ class MainFrame(wx.Frame):
             print self._download_list._items_list
 
     def _on_reload(self, event):
-        raise Exception("Implement me!")
+        for index, item in enumerate(self._download_list.get_items()):
+            if item.stage == "Paused" or item.progress_stats["status"] == "Error":
+                item.reset()
+                self._status_list._update_from_item(index, item)
 
     def _on_pause(self, event):
         selected_row = self._status_list.get_selected()

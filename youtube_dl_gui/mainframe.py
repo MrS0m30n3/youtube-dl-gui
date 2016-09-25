@@ -365,6 +365,7 @@ class MainFrame(wx.Frame):
             selected_download_item = self._download_list.get_item(object_id)
 
             if selected_download_item.stage == "Completed":
+                # TODO Check if list has items
                 filename = selected_download_item.get_files()[-1]
                 open_file(filename)
             else:
@@ -424,7 +425,10 @@ class MainFrame(wx.Frame):
             self._status_list._update_from_item(selected_row, download_item)
 
     def _on_start(self, event):
-        raise Exception("Implement me!")
+        if self.download_manager is None:
+            self._start_download()
+        else:
+            self.download_manager.stop_downloads()
 
     def _on_savepath(self, event):
         dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)
@@ -634,7 +638,9 @@ class MainFrame(wx.Frame):
 
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
-        pass
+        self._buttons["start"].SetLabel("Start")
+        icon = wx.Bitmap(os.path.join(self._pixmaps_path, "cloud_download_32px.png"))
+        self._buttons["start"].SetBitmap(icon, wx.TOP)
         #self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
         #self._download_btn.Enable()
         #self._update_btn.Enable()
@@ -687,11 +693,18 @@ class MainFrame(wx.Frame):
         """
         signal, data = msg.data
 
-        if signal == 'send':
-            self._status_list.write(data)
+        download_item = self._download_list.get_item(data["index"])
+        download_item.update_stats(data)
+        #TODO Add get index from object_id on download_list instead
+        row = self._download_list._items_list.index(data["index"])
 
-        if signal == 'receive':
-            self.download_manager.send_to_worker(self._status_list.get(data))
+        self._status_list._update_from_item(row, download_item)
+
+        #if signal == 'send':
+            #self._status_list.write(data)
+
+        #if signal == 'receive':
+            #self.download_manager.send_to_worker(self._status_list.get(data))
 
     def _download_manager_handler(self, msg):
         """downloadmanager.DownloadManager thread handler.
@@ -746,22 +759,17 @@ class MainFrame(wx.Frame):
         return [line for line in self._url_list.GetValue().split('\n') if line]
 
     def _start_download(self):
-        """Handles pre-download tasks & starts the download process. """
-        self._status_list.clear()
-        self._status_list.load_urls(self._get_urls())
-
         if self._status_list.is_empty():
-            self._create_popup(self.PROVIDE_URL_MSG,
+            self._create_popup("No items to download",
                                self.ERROR_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
-            self.download_manager = DownloadManager(self._status_list.get_items(),
-                                                    self.opt_manager,
-                                                    self.log_manager)
+            self.download_manager = DownloadManager(self._download_list, self.opt_manager, self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
-            #self._download_btn.SetLabel(self.STOP_LABEL)
-            #self._update_btn.Disable()
+            self._buttons["start"].SetLabel(self.STOP_LABEL)
+            icon = wx.Bitmap(os.path.join(self._pixmaps_path, "stop_32px.png"))
+            self._buttons["start"].SetBitmap(icon, wx.TOP)
 
     def _paste_from_clipboard(self):
         """Paste the content of the clipboard to the self._url_list widget.
@@ -993,12 +1001,12 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index += 1
 
     def _update_from_item(self, row, download_item):
-        print row, download_item.object_id
+        #print row, download_item.object_id
         for key in download_item.progress_stats:
             column = self.columns[key][0]
 
             #TODO remove line below
-            print row, column, download_item.progress_stats[key]
+            #print row, column, download_item.progress_stats[key]
             self.SetStringItem(row, column, download_item.progress_stats[key])
 
     def add_url(self, url):

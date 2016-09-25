@@ -295,9 +295,7 @@ class DownloadManager(Thread):
         WAIT_TIME (float): Time in seconds to sleep.
 
     Args:
-        urls_list (list): Python list that contains multiple dictionaries
-            with the url to download and the corresponding row(index) in
-            which the worker should send the download process information.
+        download_list (DownloadList): List that contains items to download.
 
         opt_manager (optionsmanager.OptionsManager): Object responsible for
             managing the youtubedlg options.
@@ -309,11 +307,11 @@ class DownloadManager(Thread):
 
     WAIT_TIME = 0.1
 
-    def __init__(self, urls_list, opt_manager, log_manager=None):
+    def __init__(self, download_list, opt_manager, log_manager=None):
         super(DownloadManager, self).__init__()
         self.opt_manager = opt_manager
         self.log_manager = log_manager
-        self.urls_list = urls_list
+        self.download_list = download_list
 
         self._time_it_took = 0
         self._successful = 0
@@ -322,7 +320,7 @@ class DownloadManager(Thread):
         # Init the custom workers thread pool
         log_lock = None if log_manager is None else Lock()
         wparams = (opt_manager, self._youtubedl_path(), log_manager, log_lock)
-        self._workers = [Worker(*wparams) for i in xrange(opt_manager.options['workers_number'])]
+        self._workers = [Worker(*wparams) for _ in xrange(opt_manager.options["workers_number"])]
 
         self.start()
 
@@ -342,16 +340,22 @@ class DownloadManager(Thread):
         self._time_it_took = time.time()
 
         while self._running:
-            for worker in self._workers:
-                if worker.available() and self.urls_list:
-                    worker.download(self.urls_list.pop(0))
+            item = self.download_list.fetch_next()
+
+            if item is not None:
+                # TODO create a get_worker method?
+                for worker in self._workers:
+                    if worker.available():
+                        worker.download(item.url, item.options, item.object_id)
+                        item.stage = "Active"  #TODO Add change_stage method to download list
+                        break
+            else:
+                if self._jobs_done():
+                    break
 
             time.sleep(self.WAIT_TIME)
 
-            if not self.urls_list and self._jobs_done():
-                break
-
-            self._talk_to_gui('report_active')
+            self._talk_to_gui("report_active") #TODO Use wx.Timer for this
 
         # Close all the workers
         for worker in self._workers:
@@ -376,14 +380,14 @@ class DownloadManager(Thread):
             active_items = (workers that work) + (items waiting in the url_list).
 
         """
-        counter = 0
-        for worker in self._workers:
-            if not worker.available():
-                counter += 1
+        #counter = 0
+        #for worker in self._workers:
+            #if not worker.available():
+                #counter += 1
 
-        counter += len(self.urls_list)
+        #counter += len(self.download_list)
 
-        return counter
+        return len(self.download_list)
 
     def stop_downloads(self):
         """Stop the download process. Also send 'closing'
@@ -398,7 +402,7 @@ class DownloadManager(Thread):
         self._running = False
 
     def add_url(self, url):
-        """Add given url to the urls_list.
+        """Add given url to the download_list.
 
         Args:
             url (dict): Python dictionary that contains two keys.
@@ -407,7 +411,7 @@ class DownloadManager(Thread):
                 download process.
 
         """
-        self.urls_list.append(url)
+        self.download_list.append(url)
 
     def send_to_worker(self, data):
         """Send data to the Workers.
@@ -500,6 +504,7 @@ class Worker(Thread):
         self._options_parser = OptionsParser()
         self._successful = 0
         self._running = True
+        self._options = None
 
         self._wait_for_reply = False
 
@@ -524,19 +529,19 @@ class Worker(Thread):
     def run(self):
         while self._running:
             if self._data['url'] is not None:
-                options = self._options_parser.parse(self.opt_manager.options)
-                ret_code = self._downloader.download(self._data['url'], options)
+                #options = self._options_parser.parse(self.opt_manager.options)
+                ret_code = self._downloader.download(self._data['url'], self._options)
 
                 if (ret_code == YoutubeDLDownloader.OK or
                         ret_code == YoutubeDLDownloader.ALREADY):
                     self._successful += 1
 
                 # Ask GUI for name updates
-                self._talk_to_gui('receive', {'source': 'filename', 'dest': 'new_filename'})
+                #self._talk_to_gui('receive', {'source': 'filename', 'dest': 'new_filename'})
 
                 # Wait until you get a reply
-                while self._wait_for_reply:
-                    time.sleep(self.WAIT_TIME)
+                #while self._wait_for_reply:
+                    #time.sleep(self.WAIT_TIME)
 
                 self._reset()
 
@@ -545,7 +550,7 @@ class Worker(Thread):
         # Call the destructor function of YoutubeDLDownloader object
         self._downloader.close()
 
-    def download(self, item):
+    def download(self, url, options, object_id):
         """Download given item.
 
         Args:
@@ -555,8 +560,9 @@ class Worker(Thread):
                 download process.
 
         """
-        self._data['url'] = item['url']
-        self._data['index'] = item['index']
+        self._data['url'] = url
+        self._options = options
+        self._data['index'] = object_id
 
     def stop_download(self):
         """Stop the download process of the worker. """
@@ -631,6 +637,7 @@ class Worker(Thread):
                 temp_dict[key] = data[key]
 
         # Build the playlist status if there is an update
+        # TODO re-implement this on DownloadItem or ListCtrl level?
         if self._data['playlist_index'] is not None:
             if 'status' in temp_dict or 'playlist_index' in temp_dict:
                 temp_dict['status'] = '{status} {index}/{size}'.format(

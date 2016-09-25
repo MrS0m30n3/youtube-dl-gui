@@ -179,7 +179,6 @@ class MainFrame(wx.Frame):
         self.update_thread = None
         self.app_icon = None
 
-        # TODO move it elsewhere?
         self._download_list = DownloadList()
 
         # Set up youtube-dl options parser
@@ -373,9 +372,9 @@ class MainFrame(wx.Frame):
             selected_download_item = self._download_list.get_item(object_id)
 
             if selected_download_item.stage == "Completed":
-                # TODO Check if list has items
-                filename = selected_download_item.get_files()[-1]
-                open_file(filename)
+                if selected_download_item.filenames:
+                    filename = selected_download_item.get_files()[-1]
+                    open_file(filename)
             else:
                 self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 

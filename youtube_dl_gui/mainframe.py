@@ -194,6 +194,9 @@ class MainFrame(wx.Frame):
         # Get video formats
         self._video_formats = read_formats()
 
+        # Set the Timer
+        self._app_timer = wx.Timer(self)
+
         # Set the app icon
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
@@ -280,6 +283,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self._update_pause_button, self._status_list)
         self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self._update_pause_button, self._status_list)
         self.Bind(wx.EVT_CLOSE, self._on_close)
+        self.Bind(wx.EVT_TIMER, self._on_timer, self._app_timer)
 
         # Set threads wxCallAfter handlers
         self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
@@ -300,6 +304,10 @@ class MainFrame(wx.Frame):
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
         self._set_layout()
+
+    def _on_timer(self, event):
+        msg = self.URL_REPORT_MSG.format(self.download_manager.active())
+        self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
         #TODO keep all icons in a data stracture instead of creating them each time
@@ -726,17 +734,17 @@ class MainFrame(wx.Frame):
             self._print_stats()
             self._reset_widgets()
             self.download_manager = None
+            self._app_timer.Stop()
             self._after_download()
         elif data == 'closed':
             self._status_bar_write(self.CLOSED_MSG)
             self._reset_widgets()
             self.download_manager = None
+            self._app_timer.Stop()
         elif data == 'closing':
             self._status_bar_write(self.CLOSING_MSG)
         elif data == 'report_active':
-            # Report number of urls been downloaded
-            msg = self.URL_REPORT_MSG.format(self.download_manager.active())
-            self._status_bar_write(msg)
+            pass
 
     def _update_handler(self, msg):
         """updatemanager.UpdateThread thread handler.
@@ -769,6 +777,7 @@ class MainFrame(wx.Frame):
                                self.ERROR_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
+            self._app_timer.Start(1000)
             self.download_manager = DownloadManager(self._download_list, self.opt_manager, self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)

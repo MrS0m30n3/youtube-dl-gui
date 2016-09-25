@@ -366,8 +366,6 @@ class DownloadManager(Thread):
 
             time.sleep(self.WAIT_TIME)
 
-            self._talk_to_gui("report_active") #TODO Use wx.Timer for this
-
         # Close all the workers
         for worker in self._workers:
             worker.close()

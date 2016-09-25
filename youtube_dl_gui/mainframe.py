@@ -407,6 +407,11 @@ class MainFrame(wx.Frame):
                 item.reset()
                 self._status_list._update_from_item(index, item)
 
+                # Create deselect event to reset Pause button
+                selected_row = self._status_list.get_selected()
+                if selected_row != -1:
+                    self._status_list.Select(selected_row, 0)
+
     def _on_pause(self, event):
         selected_row = self._status_list.get_selected()
 

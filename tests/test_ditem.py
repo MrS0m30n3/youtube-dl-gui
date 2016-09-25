@@ -200,6 +200,71 @@ class TestDownloadItemPrivate(unittest.TestCase):
             self.assertEqual(ditem.stage, "Completed")
 
 
+class TestReset(unittest.TestCase):
+
+    """Test case for the DownloadItem reset method."""
+
+    def setUp(self):
+        self.ditem = DownloadItem("url", ["-f", "flv"])
+
+    def test_reset_error_status(self):
+        self.ditem._stage = "Completed"
+        self.ditem.path = os.path.join("/home", "user")
+        self.ditem.filenames = ["file1", "file2", "file"]
+        self.ditem.extensions = [".mp4", ".m4a", ".mp4"]
+        self.ditem.progress_stats = {
+            "filename": "file",
+            "extension": ".mp4",
+            "filsize": "9.45MiB",
+            "percent": "100%",
+            "speed": "-",
+            "eta": "00:00",
+            "status": "Error"
+        }
+
+        self.ditem.reset()
+
+        self.assertEqual(self.ditem._stage, "Queued")
+        self.assertEqual(self.ditem.path, "")
+        self.assertEqual(self.ditem.filenames, [])
+        self.assertEqual(self.ditem.extensions, [])
+        self.assertEqual(
+            self.ditem.progress_stats,
+            {"filename": "url",
+             "extension": "-",
+             "filesize": "-",
+             "percent": "0%",
+             "speed": "-",
+             "eta": "-",
+             "status": "Queued"}
+        )
+
+    def test_reset_paused_stage(self):
+        self.ditem._stage = "Paused"
+        # No need to change filanames, extension, etc
+        # since everything in pause state has the default value
+
+        self.ditem.reset()
+        self.assertEqual(self.ditem._stage, "Queued")
+
+    def test_reset_active_stage(self):
+        self.ditem._stage = "Active"
+        self.ditem.path = os.path.join("/home", "user")
+        self.ditem.filenames = ["file1"]
+        self.ditem.extensions = [".mp4"]
+        self.ditem.progress_stats = {
+            "filename": "file1",
+            "extension": ".mp4",
+            "filsize": "9.45MiB",
+            "percent": "75.5%",
+            "speed": "200.00KiB/s",
+            "eta": "00:10",
+            "status": "Downloading"
+        }
+
+        self.assertRaises(RuntimeError, self.ditem.reset)
+
+
 def main():
     unittest.main()
 

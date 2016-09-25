@@ -89,23 +89,9 @@ class DownloadItem(object):
     def __init__(self, url, options):
         self.url = url
         self.options = options
-        self._stage = self.STAGES[0]
-
         self.object_id = hash(url + to_string(options))
 
-        self.path = ""
-        self.filenames = []
-        self.extensions = []
-
-        self.progress_stats = {
-            "filename": url,
-            "extension": "-",
-            "filesize": "-",
-            "percent": "0%",
-            "speed": "-",
-            "eta": "-",
-            "status": self.stage
-        }
+        self.reset()
 
     @property
     def stage(self):
@@ -126,6 +112,25 @@ class DownloadItem(object):
             self.progress_stats["status"] = value
 
         self._stage = value
+
+    def reset(self):
+        if hasattr(self, "_stage") and self._stage == self.STAGES[1]:
+            raise RuntimeError("Cannot reset an 'Active' item")
+
+        self._stage = self.STAGES[0]
+        self.path = ""
+        self.filenames = []
+        self.extensions = []
+
+        self.progress_stats = {
+            "filename": self.url,
+            "extension": "-",
+            "filesize": "-",
+            "percent": "0%",
+            "speed": "-",
+            "eta": "-",
+            "status": self.stage
+        }
 
     def get_files(self):
         """Returns a list that contains all the system files bind to this object."""

@@ -277,6 +277,8 @@ class MainFrame(wx.Frame):
         # Bind extra events
         self.Bind(wx.EVT_TEXT, self._update_videoformat, self._videoformat_combobox)
         self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
+        self.Bind(wx.EVT_LIST_ITEM_SELECTED, self._update_pause_button, self._status_list)
+        self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self._update_pause_button, self._status_list)
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
         # Set threads wxCallAfter handlers
@@ -298,6 +300,29 @@ class MainFrame(wx.Frame):
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
         self._set_layout()
+
+    def _update_pause_button(self, event):
+        #TODO keep all icons in a data stracture instead of creating them each time
+        #TODO create double stage buttons?
+        pause_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "pause_32px.png"))
+        resume_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "play_arrow_32px.png"))
+
+        selected_row = self._status_list.get_selected()
+
+        if selected_row != -1:
+            object_id = self._status_list.GetItemData(selected_row)
+            download_item = self._download_list.get_item(object_id)
+
+            if download_item.stage == "Paused":
+                self._buttons["pause"].SetLabel("Resume")
+                self._buttons["pause"].SetBitmap(resume_icon, wx.TOP)
+            elif download_item.stage == "Queued":
+                self._buttons["pause"].SetLabel("Pause")
+                self._buttons["pause"].SetBitmap(pause_icon, wx.TOP)
+        else:
+            if self._buttons["pause"].GetLabel() == "Resume":
+                self._buttons["pause"].SetLabel("Pause")
+                self._buttons["pause"].SetBitmap(pause_icon, wx.TOP)
 
     def _update_videoformat(self, event):
         self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
@@ -379,7 +404,21 @@ class MainFrame(wx.Frame):
         raise Exception("Implement me!")
 
     def _on_pause(self, event):
-        raise Exception("Implement me!")
+        selected_row = self._status_list.get_selected()
+
+        if selected_row == -1:
+            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            object_id = self._status_list.GetItemData(selected_row)
+            download_item = self._download_list.get_item(object_id)
+
+            if download_item.stage == "Queued":
+                download_item.stage = "Paused"
+            elif download_item.stage == "Paused":
+                download_item.stage = "Queued"
+
+            self._update_pause_button(None)
+            self._status_list._update_from_item(selected_row, download_item)
 
     def _on_start(self, event):
         raise Exception("Implement me!")

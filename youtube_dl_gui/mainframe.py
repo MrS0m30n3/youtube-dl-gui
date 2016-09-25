@@ -707,8 +707,7 @@ class MainFrame(wx.Frame):
 
         download_item = self._download_list.get_item(data["index"])
         download_item.update_stats(data)
-        #TODO Add get index from object_id on download_list instead
-        row = self._download_list._items_list.index(data["index"])
+        row = self._download_list.index(data["index"])
 
         self._status_list._update_from_item(row, download_item)
 

@@ -236,6 +236,21 @@ class TestChangeStage(unittest.TestCase):
         self.assertRaises(KeyError, self.dlist.change_stage, 3, "Active")
 
 
+class TestIndex(unittest.TestCase):
+
+    """Test case for the DownloadList index method."""
+
+    def setUp(self):
+        self.mocks = [mock.Mock(object_id=i) for i in range(3)]
+        self.dlist = DownloadList(self.mocks)
+
+    def test_index(self):
+        self.assertEqual(self.dlist.index(2), 2)
+
+    def test_index_not_exist(self):
+        self.assertEqual(self.dlist.index(3), -1)
+
+
 class TestSynchronizeDecorator(unittest.TestCase):
 
     def test_synchronize(self):

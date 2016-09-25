@@ -292,6 +292,13 @@ class DownloadList(object):
         self._items_dict[object_id].stage = new_stage
 
     @synchronized(_SYNC_LOCK)
+    def index(self, object_id):
+        """Get the zero based index of the item with the given object_id."""
+        if object_id in self._items_list:
+            return self._items_list.index(object_id)
+        return -1
+
+    @synchronized(_SYNC_LOCK)
     def __len__(self):
         return len(self._items_list)
 

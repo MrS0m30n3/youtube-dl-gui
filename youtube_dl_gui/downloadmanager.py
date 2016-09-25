@@ -355,15 +355,14 @@ class DownloadManager(Thread):
             item = self.download_list.fetch_next()
 
             if item is not None:
-                # TODO create a get_worker method?
-                for worker in self._workers:
-                    if worker.available():
-                        worker.download(item.url, item.options, item.object_id)
-                        self.download_list.change_stage(item.object_id, "Active")
-                        break
-            else:
-                if self._jobs_done():
-                    break
+                worker = self._get_worker()
+
+                if worker is not None:
+                    worker.download(item.url, item.options, item.object_id)
+                    self.download_list.change_stage(item.object_id, "Active")
+
+            if item is None and self._jobs_done():
+                break
 
             time.sleep(self.WAIT_TIME)
 
@@ -462,6 +461,13 @@ class DownloadManager(Thread):
         """Check if youtube-dl binary exists. If not try to download it. """
         if not os_path_exists(self._youtubedl_path()):
             UpdateThread(self.opt_manager.options['youtubedl_path'], True).join()
+
+    def _get_worker(self):
+        for worker in self._workers:
+            if worker.available():
+                return worker
+
+        return None
 
     def _jobs_done(self):
         """Returns True if the workers have finished their jobs else False. """

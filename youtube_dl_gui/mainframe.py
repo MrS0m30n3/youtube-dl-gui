@@ -403,7 +403,7 @@ class MainFrame(wx.Frame):
 
     def _on_reload(self, event):
         for index, item in enumerate(self._download_list.get_items()):
-            if item.stage == "Paused" or item.progress_stats["status"] == "Error":
+            if item.stage == "Paused" or item.stage == "Completed":
                 item.reset()
                 self._status_list._update_from_item(index, item)
 

@@ -422,9 +422,9 @@ class MainFrame(wx.Frame):
             download_item = self._download_list.get_item(object_id)
 
             if download_item.stage == "Queued":
-                download_item.stage = "Paused"
+                self._download_list.change_stage(object_id, "Paused")
             elif download_item.stage == "Paused":
-                download_item.stage = "Queued"
+                self._download_list.change_stage(object_id, "Queued")
 
             self._update_pause_button(None)
             self._status_list._update_from_item(selected_row, download_item)

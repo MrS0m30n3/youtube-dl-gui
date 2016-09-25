@@ -287,6 +287,11 @@ class DownloadList(object):
         return [self._items_dict[object_id] for object_id in self._items_list]
 
     @synchronized(_SYNC_LOCK)
+    def change_stage(self, object_id, new_stage):
+        """Change the stage of the item with the given object_id."""
+        self._items_dict[object_id].stage = new_stage
+
+    @synchronized(_SYNC_LOCK)
     def __len__(self):
         return len(self._items_list)
 
@@ -354,7 +359,7 @@ class DownloadManager(Thread):
                 for worker in self._workers:
                     if worker.available():
                         worker.download(item.url, item.options, item.object_id)
-                        item.stage = "Active"  #TODO Add change_stage method to download list
+                        self.download_list.change_stage(item.object_id, "Active")
                         break
             else:
                 if self._jobs_done():

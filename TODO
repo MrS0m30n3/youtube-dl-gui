@@ -8,6 +8,7 @@ GUI
 * GUI command line builder like zenmap
 * Swap some of the Error messages with Info
 * Add clear list button
+* Delete dialog add cancel
 
 Structure
 =========

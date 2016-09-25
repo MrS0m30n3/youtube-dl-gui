@@ -178,6 +178,33 @@ class TestUpdateStats(unittest.TestCase):
     def test_update_stats_invalid_input(self):
         self.assertRaises(AssertionError, self.ditem.update_stats, [])
 
+    def test_update_stats_empty_strings(self):
+        self.ditem.update_stats({"filename": "",
+                                 "extension": "",
+                                 "filesize": "",
+                                 "percent": "",
+                                 "speed": "",
+                                 "eta": "",
+                                 "status": ""})
+
+        self.assertEqual(
+            self.ditem.progress_stats,
+            {"filename": "url",
+             "extension": "-",
+             "filesize": "-",
+             "percent": "0%",
+             "speed": "-",
+             "eta": "-",
+             "status": "Queued"}
+        )
+
+    def test_update_stats_not_string(self):
+        self.ditem.update_stats({"filename": None, "status": 1234, "eta": False})
+
+        self.assertEqual(self.ditem.progress_stats["filename"], "url")
+        self.assertEqual(self.ditem.progress_stats["status"], "Queued")
+        self.assertEqual(self.ditem.progress_stats["eta"], "-")
+
 
 class TestDownloadItemPrivate(unittest.TestCase):
 

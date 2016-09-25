@@ -122,7 +122,7 @@ class DownloadItem(object):
         self.filenames = []
         self.extensions = []
 
-        self.progress_stats = {
+        self.default_values = {
             "filename": self.url,
             "extension": "-",
             "filesize": "-",
@@ -131,6 +131,8 @@ class DownloadItem(object):
             "eta": "-",
             "status": self.stage
         }
+
+        self.progress_stats = dict(self.default_values)
 
     def get_files(self):
         """Returns a list that contains all the system files bind to this object."""
@@ -148,7 +150,12 @@ class DownloadItem(object):
 
         for key in stats_dict:
             if key in self.progress_stats:
-                self.progress_stats[key] = stats_dict[key]
+                value = stats_dict[key]
+
+                if not isinstance(value, basestring) or not value:
+                    self.progress_stats[key] = self.default_values[key]
+                else:
+                    self.progress_stats[key] = value
 
             # Extract extra stuff
             if key == "filename":

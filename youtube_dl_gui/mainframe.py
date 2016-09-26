@@ -94,15 +94,15 @@ class MainFrame(wx.Frame):
     wxEVT_TEXT_PASTE = 'wxClipboardTextEvent'
 
     FRAMES_MIN_SIZE = (440, 360)
-    BUTTONS_SIZE = (-1, 30)     # TODO remove not used anymore
-    BUTTONS_SPACE = (80, -1)    # TODO remove not used anymore
-    SIZE_20 = 20                # TODO write directly
+    BUTTONS_SIZE = (-1, 30)     # REFACTOR remove not used anymore
+    BUTTONS_SPACE = (80, -1)    # REFACTOR remove not used anymore
+    SIZE_20 = 20                # REFACTOR write directly
     SIZE_10 = 10
     SIZE_5 = 5
 
     # Labels area
     URLS_LABEL = _("Enter URLs below")
-    DOWNLOAD_LABEL = _("Download")  # TODO remove not used anymore
+    DOWNLOAD_LABEL = _("Download")  # REFACTOR remove not used anymore
     UPDATE_LABEL = _("Update")
     OPTIONS_LABEL = _("Options")
     ERROR_LABEL = _("Error")
@@ -309,8 +309,7 @@ class MainFrame(wx.Frame):
         self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
-        #TODO keep all icons in a data stracture instead of creating them each time
-        #TODO create double stage buttons?
+        # REFACTOR keep all icons in a data stracture instead of creating them each time
         pause_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "pause_32px.png"))
         resume_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "play_arrow_32px.png"))
 
@@ -575,7 +574,7 @@ class MainFrame(wx.Frame):
         return textctrl
 
     def _create_button(self, label, event_handler=None):
-        # TODO remove not used anymore
+        # REFACTOR remove not used anymore
         btn = wx.Button(self._panel, label=label, size=self.BUTTONS_SIZE)
 
         if event_handler is not None:
@@ -813,7 +812,7 @@ class MainFrame(wx.Frame):
         click of the mouse.
 
         """
-        #TODO Remove not used anymore
+        # REFACTOR Remove not used anymore
         if event.ClassName == self.wxEVT_TEXT_PASTE:
             self._paste_from_clipboard()
         else:
@@ -879,7 +878,6 @@ class MainFrame(wx.Frame):
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
 
-        #TODO re-enable after options frame update
         #self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
 
@@ -1003,7 +1001,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         return url in self._url_list
 
     def bind_item(self, download_item):
-        #TODO remove line below
         self.InsertStringItem(self._list_index, download_item.url)
 
         self.SetItemData(self._list_index, download_item.object_id)
@@ -1013,12 +1010,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index += 1
 
     def _update_from_item(self, row, download_item):
-        #print row, download_item.object_id
         for key in download_item.progress_stats:
             column = self.columns[key][0]
 
-            #TODO remove line below
-            #print row, column, download_item.progress_stats[key]
             self.SetStringItem(row, column, download_item.progress_stats[key])
 
     def add_url(self, url):
@@ -1099,7 +1093,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
             if column_item[3]:
                 self.setResizeColumn(column_item[0])
 
-# TODO Extra widgets below should move to other module with widgets
+# REFACTOR Extra widgets below should move to other module with widgets
 
 class ExtComboBox(wx.ComboBox):
 

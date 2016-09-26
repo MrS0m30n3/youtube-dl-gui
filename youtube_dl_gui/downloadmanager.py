@@ -660,7 +660,7 @@ class Worker(Thread):
                 temp_dict[key] = data[key]
 
         # Build the playlist status if there is an update
-        # TODO re-implement this on DownloadItem or ListCtrl level?
+        # REFACTOR re-implement this on DownloadItem or ListCtrl level?
         if self._data['playlist_index'] is not None:
             if 'status' in temp_dict or 'playlist_index' in temp_dict:
                 temp_dict['status'] = '{status} {index}/{size}'.format(

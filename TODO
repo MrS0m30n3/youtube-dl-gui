@@ -1,20 +1,31 @@
+NEW_LAYOUT
+==========
+* Add context menu on wx.ListCtrl
+* Change download msg: "Total Progress: 0% | Completed (1) Downloading (2) Queued (3)...etc"
+* Create new button widget (groups, auto width)
+* Create new button with two stages (like toggle)
+* Add more statistics (Average download speed, etc)
+* Adjust layout see #131
+* GUI command line builder like zenmap
+* Swap some of the Error messages with Info
+* Add clear list button ?
+* Delete dialog, add cancel
+* Icons theme selection (vote on github)
+* Save freq. used paths to 'settings.json' instead of 'spaths'
+* Update & re-enable options window
+
 GUI
 ===
 * Change MainFrame layout
     (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
-* Create new button widget (groups, auto width, General tab)
-* Add more statistics (Average download speed)
 * Auto video format detection
-* GUI command line builder like zenmap
-* Swap some of the Error messages with Info
-* Add clear list button
-* Delete dialog add cancel
+* Remember list of urls after closing & re-opening
 
 Structure
 =========
 * Create devscripts/ directory and move all the utility scripts there
 * Create docs/ directory and move all the guides there
-* Remove twodict from utils and use it directly from the library
+* Remove twodict from utils and use it directly from the library [add as depen.]
 * Give icons the same name and keep them on different directories
     (see: https://github.com/deluge-torrent/deluge/tree/develop/deluge/ui/data/icons/hicolor)
 
@@ -30,9 +41,8 @@ Localization
 Options
 =======
 * Option for basic - advanced video formats
-* Options reset delete - clear 'youtubedlg/spaths'
 * Option to disable-enable the 'download finished' pop up message
-* Option to close the program after download process
+* Option to enable-disable items deletion from the filesystem
 * Add 'native hls option' see issue #49
 * Add Swedish on available subtitles
 * Add Hebrew on available subtitles
@@ -42,14 +52,18 @@ Other
 * README.md add slackbuild
 * README.md add new images
 
-* Save freq. used paths to 'settings.json' instead of 'spaths'
-* Add FAQs into docs/
-* Add tests
-* Review - rewrite threads communications
+* Extract filename info on 'Already Downloaded'
 * Update setup.py
+* Add FAQs into docs/
+* Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui
+
+* Refactor
+* Review - rewrite threads communications
 * Add support for Python 3.*
 * Logging system using the Python 'logging' module
 * Use youtube-dl directly from python instead of using the subprocess module
-* Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
-* Extract filename info on 'Already Downloaded'
+
+Invalid
+=======
+* Options reset delete - clear 'youtubedlg/spaths'

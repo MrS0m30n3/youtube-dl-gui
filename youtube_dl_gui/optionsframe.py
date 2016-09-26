@@ -1486,7 +1486,7 @@ class LogGUI(wx.Frame):
 
     """
 
-    #TODO move it on widgets module
+    # REFACTOR move it on widgets module
 
     TITLE = _("Log Viewer")
     FRAME_SIZE = (650, 200)

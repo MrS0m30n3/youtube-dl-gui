@@ -3,6 +3,8 @@
 
 """Contains test cases for the DownloadList object."""
 
+from __future__ import unicode_literals
+
 import sys
 import os.path
 import unittest

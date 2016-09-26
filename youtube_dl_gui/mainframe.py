@@ -218,11 +218,15 @@ class MainFrame(wx.Frame):
 
         # Set the data for the settings menu item
         # label, event_handler
-        menu_data = (
+        settings_menu_data = (
             (self.OPTIONS_LABEL, self._on_options),
             (self.UPDATE_LABEL, self._on_update),
             (self.VIEWLOG_LABEL, self._on_viewlog),
             (self.ABOUT_LABEL, self._on_about)
+        )
+
+        statuslist_menu_data = (
+            (_("Get url"), self._on_geturl),
         )
 
         # Create options frame
@@ -265,18 +269,11 @@ class MainFrame(wx.Frame):
         self._status_bar = self.CreateStatusBar()
 
         # Create extra components
-        self._settings_menu = wx.Menu()
-
-        for item in menu_data:
-            label, evt_handler = item
-            menu_item = self._settings_menu.Append(-1, label)
-
-            self.Bind(wx.EVT_MENU, evt_handler, menu_item)
-
-        # Overwrite the hover event to avoid changing the statusbar
-        self._settings_menu.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
+        self._settings_menu = self._create_menu_item(settings_menu_data)
+        self._statuslist_menu = self._create_menu_item(statuslist_menu_data)
 
         # Bind extra events
+        self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self._on_statuslist_right_click, self._status_list)
         self.Bind(wx.EVT_TEXT, self._update_videoformat, self._videoformat_combobox)
         self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self._update_pause_button, self._status_list)
@@ -303,6 +300,42 @@ class MainFrame(wx.Frame):
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
         self._set_layout()
+
+    def _create_menu_item(self, items):
+        menu = wx.Menu()
+
+        for item in items:
+            label, evt_handler = item
+            menu_item = menu.Append(-1, label)
+
+            menu.Bind(wx.EVT_MENU, evt_handler, menu_item)
+
+        # Overwrite the hover event to avoid changing the statusbar
+        menu.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
+
+        return menu
+
+    def _on_statuslist_right_click(self, event):
+        selected = self._status_list.get_selected()
+
+        if selected != -1:
+            self.PopupMenu(self._statuslist_menu)
+
+    def _on_geturl(self, event):
+        selected = self._status_list.get_selected()
+
+        if selected != -1:
+            object_id = self._status_list.GetItemData(selected)
+            download_item = self._download_list.get_item(object_id)
+
+            url = download_item.url
+
+            if not wx.TheClipboard.IsOpened():
+                clipdata = wx.TextDataObject()
+                clipdata.SetText(url)
+                wx.TheClipboard.Open()
+                wx.TheClipboard.SetData(clipdata)
+                wx.TheClipboard.Close()
 
     def _on_timer(self, event):
         msg = self.URL_REPORT_MSG.format(self.download_manager.active())

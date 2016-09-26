@@ -188,9 +188,6 @@ class MainFrame(wx.Frame):
         # Get the pixmaps directory
         self._pixmaps_path = get_pixmaps_dir()
 
-        # Get stored save paths file
-        self._stored_paths = os.path.join(get_config_path(), "spaths")
-
         # Get video formats
         self._video_formats = read_formats()
 
@@ -298,7 +295,7 @@ class MainFrame(wx.Frame):
         self._status_bar_write(self.WELCOME_MSG)
 
         self._videoformat_combobox.SetValue(self._video_formats[self.opt_manager.options["video_format"]])
-        self._path_combobox.LoadMultiple(json_load(self._stored_paths))
+        self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
         self._set_layout()
@@ -930,10 +927,10 @@ class MainFrame(wx.Frame):
         self.opt_manager.options['main_win_size'] = self.GetSize()
         self.opt_manager.options['opts_win_size'] = self._options_frame.GetSize()
 
+        self.opt_manager.options["save_path_dirs"] = self._path_combobox.GetStrings()
+
         #self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
-
-        json_store(self._stored_paths, self._path_combobox.GetStrings())
 
         self.Destroy()
 

@@ -198,9 +198,12 @@ class OptionsManager(object):
                 If window becomes to small the program will reset its size.
                 See _settings_are_valid method MIN_FRAME_SIZE.
 
+            save_path_dirs (list): List that contains temporary save paths.
+
         """
         self.options = {
             'save_path': os_path_expanduser('~'),
+            'save_path_dirs': [],
             'video_format': '0',
             'second_video_format': '0',
             'to_audio': False,

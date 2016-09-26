@@ -8,7 +8,6 @@ NEW_LAYOUT
 * Swap some of the Error messages with Info
 * Add clear list button ?
 * Icons theme selection (vote on github)
-* Save freq. used paths to 'settings.json' instead of 'spaths'
 * Update & re-enable options window
 
 GUI

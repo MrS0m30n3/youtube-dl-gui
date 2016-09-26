@@ -43,6 +43,7 @@ Options
 * Add 'native hls option' see issue #49
 * Add Swedish on available subtitles
 * Add Hebrew on available subtitles
+* Localization option: add country flags
 
 Other
 =====

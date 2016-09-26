@@ -35,6 +35,7 @@ from .downloadmanager import (
 )
 
 from .utils import (
+    YOUTUBEDL_BIN,
     get_pixmaps_dir,
     get_config_path,
     get_icon_file,
@@ -227,6 +228,7 @@ class MainFrame(wx.Frame):
 
         statuslist_menu_data = (
             (_("Get url"), self._on_geturl),
+            (_("Get command"), self._on_getcmd)
         )
 
         # Create options frame
@@ -333,6 +335,23 @@ class MainFrame(wx.Frame):
             if not wx.TheClipboard.IsOpened():
                 clipdata = wx.TextDataObject()
                 clipdata.SetText(url)
+                wx.TheClipboard.Open()
+                wx.TheClipboard.SetData(clipdata)
+                wx.TheClipboard.Close()
+
+    def _on_getcmd(self, event):
+        selected = self._status_list.get_selected()
+
+        if selected != -1:
+            object_id = self._status_list.GetItemData(selected)
+            download_item = self._download_list.get_item(object_id)
+
+            cmd = [YOUTUBEDL_BIN] + download_item.options + [download_item.url]
+            cmd = " ".join(cmd)
+
+            if not wx.TheClipboard.IsOpened():
+                clipdata = wx.TextDataObject()
+                clipdata.SetText(cmd)
                 wx.TheClipboard.Open()
                 wx.TheClipboard.SetData(clipdata)
                 wx.TheClipboard.Close()

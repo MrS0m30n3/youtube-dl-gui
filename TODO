@@ -5,7 +5,6 @@ NEW_LAYOUT
 * Create new button with two stages (like toggle)
 * Add more statistics (Average download speed, etc)
 * Adjust layout see #131
-* GUI command line builder like zenmap
 * Swap some of the Error messages with Info
 * Add clear list button ?
 * Icons theme selection (vote on github)

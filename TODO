@@ -9,7 +9,6 @@ NEW_LAYOUT
 * GUI command line builder like zenmap
 * Swap some of the Error messages with Info
 * Add clear list button ?
-* Delete dialog, add cancel
 * Icons theme selection (vote on github)
 * Save freq. used paths to 'settings.json' instead of 'spaths'
 * Update & re-enable options window
@@ -43,6 +42,7 @@ Options
 * Option for basic - advanced video formats
 * Option to disable-enable the 'download finished' pop up message
 * Option to enable-disable items deletion from the filesystem
+* Option to validate item deletion 'Are you sure?'
 * Add 'native hls option' see issue #49
 * Add Swedish on available subtitles
 * Add Hebrew on available subtitles

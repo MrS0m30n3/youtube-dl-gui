@@ -2,17 +2,17 @@ NEW_LAYOUT
 ==========
 * Create new button widget (groups, auto width)
 * Create new button with two stages (like toggle)
-* Add more statistics (Average download speed, etc)
-* Adjust layout see #131
+* Settings menu add "Statistics"
 * Swap some of the Error messages with Info
 * Add clear list button ?
-* Icons theme selection (vote on github)
 * Update & re-enable options window
+* Adjust layout see #131
 
 GUI
 ===
 * Change MainFrame layout
     (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
+* Icons theme selection (vote on github)
 * Auto video format detection
 * Remember list of urls after closing & re-opening
 

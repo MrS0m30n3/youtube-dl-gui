@@ -1190,3 +1190,36 @@ class ExtComboBox(wx.ComboBox):
     def LoadMultiple(self, items_list):
         for item in items_list:
             self.Append(item)
+
+
+class DoubleStageButton(wx.Button):
+
+    def __init__(self, parent, labels, bitmaps, bitmap_pos=wx.TOP, *args, **kwargs):
+        super(DoubleStageButton, self).__init__(parent, *args, **kwargs)
+
+        assert isinstance(labels, tuple) and isinstance(bitmaps, tuple)
+        assert len(labels) == 2
+        assert len(bitmaps) == 0 or len(bitmaps) == 2
+
+        self.labels = labels
+        self.bitmaps = bitmaps
+        self.bitmap_pos = bitmap_pos
+
+        self._stage = 0
+        self._set_layout()
+
+    def _set_layout(self):
+        self.SetLabel(self.labels[self._stage])
+
+        if len(self.bitmaps):
+            self.SetBitmap(self.bitmaps[self._stage], self.bitmap_pos)
+
+    def change_stage(self):
+        self._stage = 0 if self._stage else 1
+        self._set_layout()
+
+    def set_stage(self, new_stage):
+        assert new_stage == 0 or new_stage == 1
+
+        self._stage = new_stage
+        self._set_layout()

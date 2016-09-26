@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Change download msg: "Total Progress: 0% | Completed (1) Downloading (2) Queued (3)...etc"
 * Create new button widget (groups, auto width)
 * Create new button with two stages (like toggle)
 * Add more statistics (Average download speed, etc)

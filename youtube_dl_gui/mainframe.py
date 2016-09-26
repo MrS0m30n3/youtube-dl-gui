@@ -126,7 +126,7 @@ class MainFrame(wx.Frame):
     SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = _("Downloads completed")
-    URL_REPORT_MSG = _("Downloading {0} url(s)")
+    URL_REPORT_MSG = _("Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4})")
     CLOSING_MSG = _("Stopping downloads")
     CLOSED_MSG = _("Downloads stopped")
     PROVIDE_URL_MSG = _("You need to provide at least one url")
@@ -354,7 +354,29 @@ class MainFrame(wx.Frame):
                 wx.TheClipboard.Close()
 
     def _on_timer(self, event):
-        msg = self.URL_REPORT_MSG.format(self.download_manager.active())
+        total_percentage = 0.0
+        queued = paused = active = completed = 0
+
+        for item in self._download_list.get_items():
+            if item.stage == "Queued":
+                queued += 1
+            if item.stage == "Paused":
+                paused += 1
+            if item.stage == "Active":
+                active += 1
+                total_percentage += float(item.progress_stats["percent"].split('%')[0])
+            if item.stage == "Completed":
+                completed += 1
+
+        # TODO Store percentage as float in the DownloadItem?
+        # TODO DownloadList keep track for each item stage?
+        # TODO Should i count the paused items?
+
+        # total_percentage += queued * 0.0% + paused * 0.0% + completed * 100.0%
+        total_percentage += completed * 100.0
+        total_percentage /= len(self._download_list)
+
+        msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed)
         self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
@@ -823,7 +845,7 @@ class MainFrame(wx.Frame):
                                self.ERROR_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
-            self._app_timer.Start(1000)
+            self._app_timer.Start(100)
             self.download_manager = DownloadManager(self._download_list, self.opt_manager, self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)

@@ -200,18 +200,38 @@ class MainFrame(wx.Frame):
             self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
             self.SetIcon(self.app_icon)
 
+        bitmap_data = (
+           ("down", "arrow_down_32px.png"),
+           ("up", "arrow_up_32px.png"),
+           ("play", "camera_32px.png"),
+           ("start", "cloud_download_32px.png"),
+           ("delete", "delete_32px.png"),
+           ("folder", "folder_32px.png"),
+           ("pause", "pause_32px.png"),
+           ("resume", "play_arrow_32px.png"),
+           ("reload", "reload_32px.png"),
+           ("settings", "settings_20px.png"),
+           ("stop", "stop_32px.png")
+        )
+
+        self._bitmaps = {}
+
+        for item in bitmap_data:
+            target, name = item
+            self._bitmaps[target] = wx.Bitmap(os.path.join(self._pixmaps_path, name))
+
         # Set the data for all the wx.Button items
-        # name, label, icon, size, event_handler
+        # name, label, size, event_handler
         buttons_data = (
-            ("delete", self.DELETE_LABEL, "delete_32px.png", (55, 55), self._on_delete),
-            ("play", self.PLAY_LABEL, "camera_32px.png", (55, 55), self._on_play),
-            ("up", self.UP_LABEL, "arrow_up_32px.png", (55, 55), self._on_arrow_up),
-            ("down", self.DOWN_LABEL, "arrow_down_32px.png", (55, 55), self._on_arrow_down),
-            ("reload", self.RELOAD_LABEL, "reload_32px.png", (55, 55), self._on_reload),
-            ("pause", self.PAUSE_LABEL, "pause_32px.png", (55, 55), self._on_pause),
-            ("start", self.START_LABEL, "cloud_download_32px.png", (55, 55), self._on_start),
-            ("savepath", "...", None, (40, 27), self._on_savepath),
-            ("add", self.ADD_LABEL, None, (-1, -1), self._on_add)
+            ("delete", self.DELETE_LABEL, (55, 55), self._on_delete),
+            ("play", self.PLAY_LABEL, (55, 55), self._on_play),
+            ("up", self.UP_LABEL, (55, 55), self._on_arrow_up),
+            ("down", self.DOWN_LABEL, (55, 55), self._on_arrow_down),
+            ("reload", self.RELOAD_LABEL, (55, 55), self._on_reload),
+            ("pause", self.PAUSE_LABEL, (55, 55), self._on_pause),
+            ("start", self.START_LABEL, (55, 55), self._on_start),
+            ("savepath", "...", (40, 27), self._on_savepath),
+            ("add", self.ADD_LABEL, (-1, -1), self._on_add)
         )
 
         # Set the data for the settings menu item
@@ -235,11 +255,11 @@ class MainFrame(wx.Frame):
         self._panel = wx.Panel(self)
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
-        self._settings_button = self._create_bitmap_button("settings_20px.png", (30, 30), self._on_settings)
+        self._settings_button = self._create_bitmap_button(self._bitmaps["settings"], (30, 30), self._on_settings)
 
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
-        self._folder_icon = self._create_static_bitmap("folder_32px.png")
+        self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"])
 
         self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
         self._videoformat_combobox = ExtComboBox(self._panel, choices=self._video_formats.values(), style=wx.CB_READONLY)
@@ -253,12 +273,12 @@ class MainFrame(wx.Frame):
         self._buttons = {}
 
         for item in buttons_data:
-            name, label, icon, size, evt_handler = item
+            name, label, size, evt_handler = item
 
             button = wx.Button(self._panel, label=label, size=size)
 
-            if icon is not None:
-                button.SetBitmap(wx.Bitmap(os.path.join(self._pixmaps_path, icon)), wx.TOP)
+            if name in self._bitmaps:
+                button.SetBitmap(self._bitmaps[name], wx.TOP)
 
             if evt_handler is not None:
                 button.Bind(wx.EVT_BUTTON, evt_handler)
@@ -380,10 +400,6 @@ class MainFrame(wx.Frame):
         self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
-        # REFACTOR keep all icons in a data stracture instead of creating them each time
-        pause_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "pause_32px.png"))
-        resume_icon = wx.Bitmap(os.path.join(self._pixmaps_path, "play_arrow_32px.png"))
-
         selected_row = self._status_list.get_selected()
 
         if selected_row != -1:
@@ -392,14 +408,14 @@ class MainFrame(wx.Frame):
 
             if download_item.stage == "Paused":
                 self._buttons["pause"].SetLabel("Resume")
-                self._buttons["pause"].SetBitmap(resume_icon, wx.TOP)
+                self._buttons["pause"].SetBitmap(self._bitmaps["resume"], wx.TOP)
             elif download_item.stage == "Queued":
                 self._buttons["pause"].SetLabel("Pause")
-                self._buttons["pause"].SetBitmap(pause_icon, wx.TOP)
+                self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
         else:
             if self._buttons["pause"].GetLabel() == "Resume":
                 self._buttons["pause"].SetLabel("Pause")
-                self._buttons["pause"].SetBitmap(pause_icon, wx.TOP)
+                self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
 
     def _update_videoformat(self, event):
         self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
@@ -610,8 +626,7 @@ class MainFrame(wx.Frame):
         return wx.StaticText(self._panel, label=label)
 
     def _create_bitmap_button(self, icon, size=(-1, -1), handler=None):
-        bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))
-        button = wx.BitmapButton(self._panel, bitmap=bitmap, size=size, style=wx.NO_BORDER)
+        button = wx.BitmapButton(self._panel, bitmap=icon, size=size, style=wx.NO_BORDER)
 
         if handler is not None:
             button.Bind(wx.EVT_BUTTON, handler)
@@ -619,8 +634,7 @@ class MainFrame(wx.Frame):
         return button
 
     def _create_static_bitmap(self, icon):
-        bitmap = wx.Bitmap(os.path.join(self._pixmaps_path, icon))
-        return wx.StaticBitmap(self._panel, bitmap=bitmap)
+        return wx.StaticBitmap(self._panel, bitmap=icon)
 
     def _create_textctrl(self, style=None, event_handler=None):
         if style is None:
@@ -721,11 +735,7 @@ class MainFrame(wx.Frame):
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
         self._buttons["start"].SetLabel("Start")
-        icon = wx.Bitmap(os.path.join(self._pixmaps_path, "cloud_download_32px.png"))
-        self._buttons["start"].SetBitmap(icon, wx.TOP)
-        #self._download_btn.SetLabel(self.DOWNLOAD_LABEL)
-        #self._download_btn.Enable()
-        #self._update_btn.Enable()
+        self._buttons["start"].SetBitmap(self._bitmaps["start"], wx.TOP)
 
     def _print_stats(self):
         """Display download stats in the status bar. """
@@ -850,8 +860,7 @@ class MainFrame(wx.Frame):
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._buttons["start"].SetLabel(self.STOP_LABEL)
-            icon = wx.Bitmap(os.path.join(self._pixmaps_path, "stop_32px.png"))
-            self._buttons["start"].SetBitmap(icon, wx.TOP)
+            self._buttons["start"].SetBitmap(self._bitmaps["stop"], wx.TOP)
 
     def _paste_from_clipboard(self):
         """Paste the content of the clipboard to the self._url_list widget.

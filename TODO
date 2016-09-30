@@ -1,9 +1,11 @@
 NEW_LAYOUT
 ==========
 * Create new button widget (groups, auto width)
-* Settings menu add "Statistics"
+* Context menu 'Open destination folder'
+* Context menu 'Rename'
 * Swap some of the Error messages with Info
-* Add clear list button ?
+* Add clear list button ? (Or use 'delete' button with no selections for that)
+* REFACTOR tag downloadmanager.py:663
 * Update & re-enable options window
 * Adjust layout see #131
 
@@ -14,11 +16,13 @@ GUI
 * Icons theme selection (vote on github)
 * Auto video format detection
 * Remember list of urls after closing & re-opening
+* Settings menu add "Statistics"
 
 Structure
 =========
 * Create devscripts/ directory and move all the utility scripts there
 * Create docs/ directory and move all the guides there
+* Re-structure package
 * Remove twodict from utils and use it directly from the library [add as depen.]
 * Give icons the same name and keep them on different directories
     (see: https://github.com/deluge-torrent/deluge/tree/develop/deluge/ui/data/icons/hicolor)

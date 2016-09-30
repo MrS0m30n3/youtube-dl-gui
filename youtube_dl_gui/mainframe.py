@@ -245,7 +245,8 @@ class MainFrame(wx.Frame):
 
         statuslist_menu_data = (
             (_("Get url"), self._on_geturl),
-            (_("Get command"), self._on_getcmd)
+            (_("Get command"), self._on_getcmd),
+            (_("Open destination"), self._on_open_dest)
         )
 
         # Create options frame
@@ -339,6 +340,16 @@ class MainFrame(wx.Frame):
 
         if selected != -1:
             self.PopupMenu(self._statuslist_menu)
+
+    def _on_open_dest(self, event):
+        selected = self._status_list.get_selected()
+
+        if selected != -1:
+            object_id = self._status_list.GetItemData(selected)
+            download_item = self._download_list.get_item(object_id)
+
+            if download_item.stage == "Completed" and download_item.path:
+                open_file(download_item.path)
 
     def _on_geturl(self, event):
         selected = self._status_list.get_selected()

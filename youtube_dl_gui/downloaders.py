@@ -360,6 +360,12 @@ def extract_data(stdout):
         'playlist_size'  : The number of videos in the playlist.
 
     """
+    def extract_filename(input_data):
+        path, fullname = os.path.split(input_data.strip("\""))
+        filename, extension = os.path.splitext(fullname)
+
+        return path, filename, extension
+
     data_dictionary = {}
 
     if not stdout:
@@ -374,14 +380,11 @@ def extract_data(stdout):
 
         # Get path, filename & extension
         if stdout[1] == 'Destination:':
-            path, fullname = os.path.split(' '.join(stdout[2:]))
-            filename, extension = os.path.splitext(fullname)
+            path, filename, extension = extract_filename(' '.join(stdout[2:]))
 
             data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
             data_dictionary['extension'] = extension
-            # remove the format that youtube-dl adds during the merging
-            # process at end of the filename
-            data_dictionary['filename'] = re.sub('\.f[0-9]{1,3}$', '', filename)
 
         # Get progress info
         if '%' in stdout[1]:
@@ -427,7 +430,11 @@ def extract_data(stdout):
 
         # Get final extension after merging process
         if stdout[1] == 'Merging':
-            data_dictionary['extension'] = os.path.splitext(' '.join(stdout[4:])[:-1])[1]
+            path, filename, extension = extract_filename(' '.join(stdout[4:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
 
     else:
         data_dictionary['status'] = 'Pre Processing'

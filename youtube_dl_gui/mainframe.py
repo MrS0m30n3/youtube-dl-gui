@@ -348,7 +348,7 @@ class MainFrame(wx.Frame):
             object_id = self._status_list.GetItemData(selected)
             download_item = self._download_list.get_item(object_id)
 
-            if download_item.stage == "Completed" and download_item.path:
+            if download_item.path:
                 open_file(download_item.path)
 
     def _on_geturl(self, event):
@@ -564,6 +564,7 @@ class MainFrame(wx.Frame):
 
             for url in urls:
                 download_item = DownloadItem(url, options)
+                download_item.path = self.opt_manager.options["save_path"]
 
                 if not self._download_list.has_item(download_item.object_id):
                     self._status_list.bind_item(download_item)

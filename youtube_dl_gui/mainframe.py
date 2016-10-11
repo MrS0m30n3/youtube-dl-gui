@@ -1328,21 +1328,11 @@ class ButtonsChoiceDialog(wx.Dialog):
 
         panel.SetSizer(vertical_sizer)
 
-        # Calculate & set frame's size
-        calc_width = ButtonsChoiceDialog._calc_dialog_width(len(choices), max_width)
-        min_width = msg_text.GetSize()[0] + 100
-
-        if calc_width < min_width:
-            calc_width = min_width
-
-        self.SetSize((calc_width, 130))
+        width, height = panel.GetBestSize()
+        self.SetSize((width, height * 1.25))
 
     def _on_close(self, event):
         self.EndModal(event.GetEventObject().GetId())
-
-    @staticmethod
-    def _calc_dialog_width(buttons_count, max_button_width):
-        return (buttons_count + 1) * max_button_width
 
 
 class ButtonsGroup(object):

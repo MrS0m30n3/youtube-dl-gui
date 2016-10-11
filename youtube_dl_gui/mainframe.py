@@ -438,7 +438,24 @@ class MainFrame(wx.Frame):
         selected_row = self._status_list.get_selected()
 
         if selected_row == -1:
-            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+
+            dlg = ButtonsChoiceDialog(self, ["Remove all", "Remove completed"], "No items selected. Please pick an action.", "Delete")
+            ret_code = dlg.ShowModal()
+            dlg.Destroy()
+
+            #TODO Maybe add this functionality directly to DownloadList?
+            if ret_code == 1:
+                for ditem in self._download_list.get_items():
+                    if ditem.stage != "Active":
+                        self._status_list.remove_row(self._download_list.index(ditem.object_id))
+                        self._download_list.remove(ditem.object_id)
+
+            if ret_code == 2:
+                for ditem in self._download_list.get_items():
+                    if ditem.stage == "Completed":
+                        self._status_list.remove_row(self._download_list.index(ditem.object_id))
+                        self._download_list.remove(ditem.object_id)
         else:
             object_id = self._status_list.GetItemData(selected_row)
             selected_download_item = self._download_list.get_item(object_id)

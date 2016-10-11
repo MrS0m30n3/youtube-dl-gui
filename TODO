@@ -2,7 +2,6 @@ NEW_LAYOUT
 ==========
 * Context menu 'Rename'
 * Swap some of the Error messages with Info
-* Add clear list button ? (Or use 'delete' button with no selections for that)
 * REFACTOR tag downloadmanager.py:663
 * Update & re-enable options window
 * Adjust layout see #131

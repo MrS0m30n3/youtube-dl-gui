@@ -1326,3 +1326,68 @@ class ButtonsChoiceDialog(wx.Dialog):
     @staticmethod
     def _calc_dialog_width(buttons_count, max_button_width):
         return (buttons_count + 1) * max_button_width
+
+
+class ButtonsGroup(object):
+
+    WIDTH = 0
+    HEIGHT = 1
+
+    def __init__(self, buttons_list=None, squared=False):
+        if buttons_list is None:
+            self._buttons_list = []
+        else:
+            self._buttons_list = buttons_list
+
+        self._squared = squared
+
+    def set_size(self, size):
+        assert len(size) == 2
+
+        width, height = size
+
+        if width == -1:
+            for button in self._buttons_list:
+                cur_width = button.GetSize()[self.WIDTH]
+
+                if cur_width > width:
+                    width = cur_width
+
+        if height == -1:
+            for button in self._buttons_list:
+                cur_height = button.GetSize()[self.HEIGHT]
+
+                if cur_height > height:
+                    height = cur_height
+
+        if self._squared:
+            width = height = (width if width > height else height)
+
+        for button in self._buttons_list:
+            button.SetMinSize((width, height))
+
+    def create_sizer(self, orient=wx.HORIZONTAL, space=-1):
+        box_sizer = wx.BoxSizer(orient)
+
+        for button in self._buttons_list:
+            box_sizer.Add(button)
+
+            if space != -1:
+                box_sizer.AddSpacer((space, space))
+
+        return box_sizer
+
+    def bind_event(self, event, event_handler):
+        for button in self._buttons_list:
+            button.Bind(event, event_handler)
+
+    def disable_all(self):
+        for button in self._buttons_list:
+            button.Enable(False)
+
+    def enable_all(self):
+        for button in self._buttons_list:
+            button.Enable(True)
+
+    def add(self, button):
+        self._buttons_list.append(button)

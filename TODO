@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Create new button widget (groups, auto width)
 * Context menu 'Rename'
 * Swap some of the Error messages with Info
 * Add clear list button ? (Or use 'delete' button with no selections for that)

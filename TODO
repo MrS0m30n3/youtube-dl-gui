@@ -1,9 +1,8 @@
 NEW_LAYOUT
 ==========
-* Context menu 'Rename'
+* Update & re-enable options window
 * Swap some of the Error messages with Info
 * REFACTOR tag downloadmanager.py:663
-* Update & re-enable options window
 * Adjust layout see #131
 
 GUI
@@ -14,6 +13,7 @@ GUI
 * Auto video format detection
 * Remember list of urls after closing & re-opening
 * Settings menu add "Statistics"
+* ListCtrl double click to "Rename"
 
 Structure
 =========

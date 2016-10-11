@@ -654,9 +654,9 @@ class MainFrame(wx.Frame):
         else:
             textctrl = wx.TextCtrl(self._panel, style=style)
 
-        if event_handler is not None:
-            textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
-            textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
+        #if event_handler is not None:
+            #textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
+            #textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
 
         if os.name == 'nt':
             # Enable CTRL+A on Windows

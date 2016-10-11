@@ -4,6 +4,8 @@ NEW_LAYOUT
 * Swap some of the Error messages with Info
 * REFACTOR tag downloadmanager.py:663
 * Adjust layout see #131
+    * Multiple items selection (ListCtrl)
+    * Change default video formats
 
 GUI
 ===
@@ -50,6 +52,7 @@ Other
 * README.md add new images
 
 * Extract filename info on 'Already Downloaded'
+* Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
 * Update setup.py
 * Add FAQs into docs/
 * Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui

@@ -1244,3 +1244,85 @@ class DoubleStageButton(wx.Button):
 
         self._stage = new_stage
         self._set_layout()
+
+
+class ButtonsChoiceDialog(wx.Dialog):
+
+    STYLE = wx.DEFAULT_DIALOG_STYLE | wx.MAXIMIZE_BOX
+
+    BORDER = 10
+
+    def __init__(self, parent, choices, message, *args, **kwargs):
+        super(ButtonsChoiceDialog, self).__init__(parent, wx.ID_ANY, *args, style=self.STYLE, **kwargs)
+
+        buttons = []
+
+        # Create components
+        panel = wx.Panel(self)
+
+        info_bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MESSAGE_BOX)
+        cancel_bmp = wx.ArtProvider.GetBitmap(wx.ART_CLOSE, wx.ART_BUTTON)
+
+        info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
+        msg_text = wx.StaticText(panel, wx.ID_ANY, message)
+
+        buttons.append(wx.Button(panel, wx.ID_CANCEL, "Close"))
+        buttons[0].SetBitmap(cancel_bmp)
+
+        for index, label in enumerate(choices):
+            buttons.append(wx.Button(panel, index + 1, label))
+
+        # Get the maximum button width
+        max_width = -1
+
+        for button in buttons:
+            button_width = button.GetSize()[0]
+            if button_width > max_width:
+                max_width = button_width
+
+        max_width += 10
+
+        # Set buttons width & bind events
+        for button in buttons:
+            if button != buttons[0]:
+                # Dont change the Close button width
+                button.SetMinSize((max_width, -1))
+
+            button.Bind(wx.EVT_BUTTON, self._on_close)
+
+        # Set sizers
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        message_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        message_sizer.Add(info_icon)
+        message_sizer.AddSpacer((10, 10))
+        message_sizer.Add(msg_text, flag=wx.EXPAND)
+
+        vertical_sizer.Add(message_sizer, 1, wx.ALL, border=self.BORDER)
+
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        for button in buttons[1:]:
+            buttons_sizer.Add(button)
+            buttons_sizer.AddSpacer((5, -1))
+
+        buttons_sizer.AddSpacer((-1, -1), 1)
+        buttons_sizer.Add(buttons[0], flag=wx.ALIGN_RIGHT)
+        vertical_sizer.Add(buttons_sizer, flag=wx.EXPAND | wx.ALL, border=self.BORDER)
+
+        panel.SetSizer(vertical_sizer)
+
+        # Calculate & set frame's size
+        calc_width = ButtonsChoiceDialog._calc_dialog_width(len(choices), max_width)
+        min_width = msg_text.GetSize()[0] + 100
+
+        if calc_width < min_width:
+            calc_width = min_width
+
+        self.SetSize((calc_width, 130))
+
+    def _on_close(self, event):
+        self.EndModal(event.GetEventObject().GetId())
+
+    @staticmethod
+    def _calc_dialog_width(buttons_count, max_button_width):
+        return (buttons_count + 1) * max_button_width

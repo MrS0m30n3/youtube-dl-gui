@@ -87,7 +87,8 @@ class OptionsFrame(wx.Frame):
             (GeneralTab(*tab_args), self.GENERAL_TAB),
             (FormatsTab(*tab_args), "Formats"),
             (DownloadsTab(*tab_args), "Downloads"),
-            (AdvancedTab(*tab_args), "Advanced")
+            (AdvancedTab(*tab_args), "Advanced"),
+            (ExtraTab(*tab_args), "Extra")
             #(VideoTab(*tab_args), self.VIDEO_TAB),
             #(AudioTab(*tab_args), self.AUDIO_TAB),
             #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
@@ -1641,6 +1642,43 @@ class AdvancedTab(TabPanel):
         logging_sizer.AddSpacer((10, -1))
 
         vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.ALL, border=5)
+
+        main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
+        self.SetSizer(main_sizer)
+
+    def load_options(self):
+        pass
+
+    def save_options(self):
+        pass
+
+
+class ExtraTab(TabPanel):
+
+    def __init__(self, *args, **kwargs):
+        super(ExtraTab, self).__init__(*args, **kwargs)
+
+        self.cmdline_args_label = wx.StaticText(self, label="Command line arguments (e.g. --help)")
+        self.cmdline_args_textctrl = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_LINEWRAP)
+
+        self.extra_opts_label = wx.StaticText(self, label="Extra options")
+        self.ignore_errors_checkbox = wx.CheckBox(self, label="Ignore errors")
+
+        self._set_layout()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.Add(self.cmdline_args_label)
+        vertical_sizer.Add(self.cmdline_args_textctrl, 1, wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.extra_opts_label)
+
+        extra_opts_sizer = wx.WrapSizer()
+        extra_opts_sizer.Add(self.ignore_errors_checkbox)
+
+        vertical_sizer.Add(extra_opts_sizer, flag=wx.ALL, border=5)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)

@@ -643,11 +643,11 @@ class ExtraTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(ExtraTab, self).__init__(*args, **kwargs)
 
-        self.cmdline_args_label = wx.StaticText(self, label="Command line arguments (e.g. --help)")
-        self.cmdline_args_textctrl = wx.TextCtrl(self, style=wx.TE_MULTILINE | wx.TE_LINEWRAP)
+        self.cmdline_args_label = self.crt_statictext("Command line arguments (e.g. --help)")
+        self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE | wx.TE_LINEWRAP)
 
-        self.extra_opts_label = wx.StaticText(self, label="Extra options")
-        self.ignore_errors_checkbox = wx.CheckBox(self, label="Ignore errors")
+        self.extra_opts_label = self.crt_statictext("Extra options")
+        self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
 
         self._set_layout()
 

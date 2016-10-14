@@ -23,7 +23,8 @@ from .info import (
 from .utils import (
     TwoWayOrderedDict as twodict,
     os_path_exists,
-    get_icon_file
+    get_icon_file,
+    read_formats
 )
 #TODO Set up load-save methods
 #TODO Adjust layout
@@ -318,7 +319,7 @@ class FormatsTab(TabPanel):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
         self.video_formats_label = self.crt_statictext("Video formats")
-        self.video_formats_checklistbox = self.crt_checklistbox([])
+        self.video_formats_checklistbox = self.crt_checklistbox(read_formats().values())
 
         self.audio_formats_label = self.crt_statictext("Audio formats")
         self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)

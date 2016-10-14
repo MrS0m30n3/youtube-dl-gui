@@ -209,6 +209,9 @@ class TabPanel(wx.Panel):
     def crt_statictext(self, label):
         return wx.StaticText(self, wx.ID_ANY, label)
 
+    def crt_staticbox(self, label):
+        return wx.StaticBox(self, wx.ID_ANY, label)
+
     def crt_checklistbox(self, choices, style=None):
         if style is None:
             checklistbox = wx.CheckListBox(self, choices=choices)
@@ -380,33 +383,40 @@ class DownloadsTab(TabPanel):
         ("y", "Yottabytes")
     ])
 
+    SUBS_CHOICES = [
+        "None",
+        "Automatic subtitles (YOUTUBE ONLY)",
+        "All available subtitles",
+        "Subtitles by language"
+    ]
+
     def __init__(self, *args, **kwargs):
         super(DownloadsTab, self).__init__(*args, **kwargs)
 
-        self.subtitles_label = wx.StaticText(self, label="Subtitles")
-        self.subtitles_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
-        self.subtitles_lang_listbox = wx.ListBox(self)
+        self.subtitles_label = self.crt_statictext("Subtitles")
+        self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES)
+        self.subtitles_lang_listbox = self.crt_checklistbox(self.SUBS_LANG.values())
 
-        self.subtitles_opts_label = wx.StaticText(self, label="Subtitles options")
-        self.embed_subs_checkbox = wx.CheckBox(self, label="Embed subtitles into video file (mp4 ONLY)")
+        self.subtitles_opts_label = self.crt_statictext("Subtitles options")
+        self.embed_subs_checkbox = self.crt_checkbox("Embed subtitles into video file (mp4 ONLY)")
 
-        self.playlist_box = wx.StaticBox(self, label="Playlist")
+        self.playlist_box = self.crt_staticbox("Playlist")
 
-        self.playlist_start_label = wx.StaticText(self, label="Start")
-        self.playlist_start_spinctrl = wx.SpinCtrl(self, size=(80, -1))
-        self.playlist_stop_label = wx.StaticText(self, label="Stop")
-        self.playlist_stop_spinctrl = wx.SpinCtrl(self, size=(80, -1))
-        self.playlist_max_label = wx.StaticText(self, label="Max")
-        self.playlist_max_spinctrl = wx.SpinCtrl(self, size=(80, -1))
+        self.playlist_start_label = self.crt_statictext("Start")
+        self.playlist_start_spinctrl = self.crt_spinctrl()
+        self.playlist_stop_label = self.crt_statictext("Stop")
+        self.playlist_stop_spinctrl = self.crt_spinctrl()
+        self.playlist_max_label = self.crt_statictext("Max")
+        self.playlist_max_spinctrl = self.crt_spinctrl()
 
-        self.filesize_box = wx.StaticBox(self, label="Filesize")
+        self.filesize_box = self.crt_staticbox("Filesize")
 
-        self.filesize_min_label = wx.StaticText(self, label="Min")
-        self.filesize_min_spinctrl = wx.SpinCtrl(self)
-        self.filesize_min_sizeunit_combobox = wx.ComboBox(self)
-        self.filesize_max_label = wx.StaticText(self, label="Max")
-        self.filesize_max_spinctrl = wx.SpinCtrl(self)
-        self.filesize_max_sizeunit_combobox = wx.ComboBox(self)
+        self.filesize_min_label = self.crt_statictext("Min")
+        self.filesize_min_spinctrl = self.crt_spinctrl()
+        self.filesize_min_sizeunit_combobox = self.crt_combobox(self.FILESIZES.values())
+        self.filesize_max_label = self.crt_statictext("Max")
+        self.filesize_max_spinctrl = self.crt_spinctrl()
+        self.filesize_max_sizeunit_combobox = self.crt_combobox(self.FILESIZES.values())
 
         self._set_layout()
 

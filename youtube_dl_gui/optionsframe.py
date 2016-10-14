@@ -331,6 +331,8 @@ class FormatsTab(TabPanel):
 
     AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
 
+    VIDEO_FORMATS = read_formats()
+
     #TODO Move those to separate file
     AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
 
@@ -338,7 +340,7 @@ class FormatsTab(TabPanel):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
         self.video_formats_label = self.crt_statictext("Video formats")
-        self.video_formats_checklistbox = self.crt_checklistbox(read_formats().values())
+        self.video_formats_checklistbox = self.crt_checklistbox(self.VIDEO_FORMATS.values())
 
         self.audio_formats_label = self.crt_statictext("Audio formats")
         self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)
@@ -375,10 +377,16 @@ class FormatsTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        pass
+        #TODO Add video_formats_checklistbox
+        #TODO Add audio_formats_checklistbox
+        self.keep_video_checkbox.SetValue(self.opt_manager.options["keep_video"])
+        self.audio_quality_combobox.SetValue(self.AUDIO_QUALITY[self.opt_manager.options["audio_quality"]])
 
     def save_options(self):
-        pass
+        #TODO Add video_formats_checklistbox
+        #TODO Add audio_formats_checklistbox
+        self.opt_manager.options["keep_video"] = self.keep_video_checkbox.GetValue()
+        self.opt_manager.options["audio_quality"] = self.AUDIO_QUALITY[self.audio_quality_combobox.GetValue()]
 
 
 class DownloadsTab(TabPanel):

@@ -138,46 +138,25 @@ class TabPanel(wx.Panel):
 
     """Main tab class from which each tab inherits.
 
-    Contains methods to create widgets, load options etc..
-
-    Attributes:
-        Each of this attributes is the Default one. In order to use a
-        different size you must overwrite the corresponding attribute
-        on the child object.
-
-        CHECKBOX_SIZE (tuple): wx.Checkbox size (width, height). On Windows
-            we change the height value in order to look the same with Linux.
-
-        BUTTONS_SIZE (tuple): wx.Button size (width, height)
-
-        TEXTCTRL_SIZE (tuple): wx.TextCtrl size (width, height)
-
-        SPINCTRL_SIZE (tuple): wx.SpinCtrl size (width, height)
-
-        SIZE_* (int): Constant size number.
-
     Args:
         parent (OptionsFrame): The parent of all tabs.
+
         notebook (wx.Notebook): The container for each tab.
+
+    Notes:
+        In order to use a different size you must overwrite the below *_SIZE
+        attributes on the corresponding child object.
 
     """
 
     CHECKBOX_SIZE = (-1, -1)
-    if os.name == 'nt':
+    if os.name == "nt":
+        # Make checkboxes look the same on Windows
         CHECKBOX_SIZE = (-1, 25)
 
     BUTTONS_SIZE = (-1, -1)
     TEXTCTRL_SIZE = (-1, -1)
-    SPINCTRL_SIZE = (70, 20)
-
-    SIZE_80 = 80
-    SIZE_50 = 50
-    SIZE_40 = 40
-    SIZE_30 = 30
-    SIZE_20 = 20
-    SIZE_15 = 15
-    SIZE_10 = 10
-    SIZE_5 = 5
+    SPINCTRL_SIZE = (70, -1)
 
     def __init__(self, parent, notebook):
         wx.Panel.__init__(self, notebook)
@@ -187,20 +166,9 @@ class TabPanel(wx.Panel):
 
         self.reset_handler = parent.reset
 
+    # Shortcut methods below
+
     def create_button(self, label, event_handler=None):
-        """Creates and returns an wx.Button.
-
-        Args:
-            label (string): wx.Button label.
-
-            event_handler (function): Can be any function with one parameter
-                the event item.
-
-        Note:
-            In order to change the button size you need to overwrite the
-            BUTTONS_SIZE attribute on the child class.
-
-        """
         button = wx.Button(self, label=label, size=self.BUTTONS_SIZE)
 
         if event_handler is not None:
@@ -209,19 +177,6 @@ class TabPanel(wx.Panel):
         return button
 
     def create_checkbox(self, label, event_handler=None):
-        """Creates and returns an wx.CheckBox.
-
-        Args:
-            label (string): wx.CheckBox label.
-
-            event_handler (function): Can be any function with one parameter
-                the event item.
-
-        Note:
-            In order to change the checkbox size you need to overwrite the
-            CHECKBOX_SIZE attribute on the child class.
-
-        """
         checkbox = wx.CheckBox(self, label=label, size=self.CHECKBOX_SIZE)
 
         if event_handler is not None:
@@ -230,16 +185,6 @@ class TabPanel(wx.Panel):
         return checkbox
 
     def create_textctrl(self, style=None):
-        """Creates and returns an wx.TextCtrl.
-
-        Args:
-            style (long): Can be any valid wx.TextCtrl style.
-
-        Note:
-            In order to change the textctrl size you need to overwrite the
-            TEXTCTRL_SIZE attribute on the child class.
-
-        """
         if style is None:
             textctrl = wx.TextCtrl(self, size=self.TEXTCTRL_SIZE)
         else:
@@ -248,18 +193,6 @@ class TabPanel(wx.Panel):
         return textctrl
 
     def create_combobox(self, choices, size=(-1, -1), event_handler=None):
-        """Creates and returns an wx.ComboBox.
-
-        Args:
-            choices (list): List of strings that contains the choices for the
-                wx.ComboBox widget.
-
-            size (tuple): wx.ComboBox size (width, height).
-
-            event_handler (function): Can be any function with one parameter
-                the event item.
-
-        """
         combobox = wx.ComboBox(self, choices=choices, size=size)
 
         if event_handler is not None:
@@ -267,125 +200,15 @@ class TabPanel(wx.Panel):
 
         return combobox
 
-    def create_dirdialog(self, label, path=''):
-        """Creates and returns an wx.DirDialog.
-
-        Args:
-            label (string): wx.DirDialog widget title.
-
-        """
-        dlg = wx.DirDialog(self, label, path, wx.DD_CHANGE_DIR)
-        return dlg
-
-    def create_radiobutton(self, label, event_handler=None, style=None):
-        """Creates and returns an wx.RadioButton.
-
-        Args:
-            label (string): wx.RadioButton label.
-
-            event_handler (function): Can be any function with one parameter
-                the event item.
-
-            style (long): Can be any valid wx.RadioButton style.
-
-        """
-        if style is None:
-            radiobutton = wx.RadioButton(self, label=label)
-        else:
-            radiobutton = wx.RadioButton(self, label=label, style=style)
-
-        if event_handler is not None:
-            radiobutton.Bind(wx.EVT_RADIOBUTTON, event_handler)
-
-        return radiobutton
-
     def create_spinctrl(self, spin_range=(0, 999)):
-        """Creates and returns an wx.SpinCtrl.
-
-        Args:
-            spin_range (tuple): wx.SpinCtrl range (min, max).
-
-        Note:
-            In order to change the size of the spinctrl widget you need
-            to overwrite the SPINCTRL_SIZE attribute on the child class.
-
-        """
         spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
         spinctrl.SetRange(*spin_range)
 
         return spinctrl
 
     def create_statictext(self, label):
-        """Creates and returns an wx.StaticText.
+        return wx.StaticText(self, wx.ID_ANY, label)
 
-        Args:
-            label (string): wx.StaticText label.
-
-        """
-        statictext = wx.StaticText(self, label=label)
-        return statictext
-
-    def create_popup(self, text, title, style):
-        """Creates an wx.MessageBox.
-
-        Args:
-            text (string): wx.MessageBox message.
-
-            title (string): wx.MessageBox title.
-
-            style (long): Can be any valid wx.MessageBox style.
-
-        """
-        wx.MessageBox(text, title, style)
-
-    def _set_sizer(self):
-        """Sets the sizer for the current panel.
-
-        You need to overwrite this method on the child class in order
-        to set the panels sizers.
-
-        """
-        pass
-
-    def _disable_items(self):
-        """Disables widgets.
-
-        If you want any widgets to be disabled by default you specify
-        them in this method.
-
-        Example:
-            mybutton.Disable()
-
-        """
-        pass
-
-    def _auto_buttons_width(self, *buttons):
-        """Re-adjust *buttons width so that all the buttons have the same
-        width and all the labels fit on their buttons. """
-
-        max_width = -1
-
-        widths = [button.GetSize()[0] for button in buttons]
-
-        for current_width in widths:
-            if current_width > max_width:
-                max_width = current_width
-
-        for button in buttons:
-            button.SetMinSize((max_width, button.GetSize()[1]))
-
-        self.Layout()
-
-
-    def load_options(self):
-        """Load options from the optionsmanager.OptionsManager object
-        to the current tab. """
-        pass
-
-    def save_options(self):
-        """Save options of the current tab back to
-        optionsmanager.OptionsManager object. """
-        pass
 
 #TODO Move to new file?
 #AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])

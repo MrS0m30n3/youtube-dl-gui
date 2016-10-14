@@ -158,6 +158,8 @@ class TabPanel(wx.Panel):
     TEXTCTRL_SIZE = (-1, -1)
     SPINCTRL_SIZE = (70, -1)
 
+    CHECKLISTBOX_MAX_SIZE = (-1, 120)
+
     def __init__(self, parent, notebook):
         wx.Panel.__init__(self, notebook)
         self.opt_manager = parent.opt_manager
@@ -217,6 +219,8 @@ class TabPanel(wx.Panel):
             checklistbox = wx.CheckListBox(self, choices=choices)
         else:
             checklistbox = wx.CheckListBox(self, choices=choices, style=style)
+
+        checklistbox.SetMaxSize(self.CHECKLISTBOX_MAX_SIZE)
 
         return checklistbox
 

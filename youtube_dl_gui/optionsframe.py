@@ -535,10 +535,28 @@ class DownloadsTab(TabPanel):
         return filesize_box_sizer
 
     def load_options(self):
-        pass
+        #TODO Add subtitles_combobox
+        self.subtitles_lang_listbox.SetStringSelection(self.SUBS_LANG[self.opt_manager.options["subs_lang"]])
+        self.embed_subs_checkbox.SetValue(self.opt_manager.options["embed_subs"])
+        self.playlist_start_spinctrl.SetValue(self.opt_manager.options["playlist_start"])
+        self.playlist_stop_spinctrl.SetValue(self.opt_manager.options["playlist_end"])
+        self.playlist_max_spinctrl.SetValue(self.opt_manager.options["max_downloads"])
+        self.filesize_min_spinctrl.SetValue(self.opt_manager.options["min_filesize"])
+        self.filesize_max_spinctrl.SetValue(self.opt_manager.options["max_filesize"])
+        self.filesize_min_sizeunit_combobox.SetValue(self.FILESIZES[self.opt_manager.options["min_filesize_unit"]])
+        self.filesize_max_sizeunit_combobox.SetValue(self.FILESIZES[self.opt_manager.options["max_filesize_unit"]])
 
     def save_options(self):
-        pass
+        #TODO Add subtitles_combobox
+        self.opt_manager.options["subs_lang"] = self.SUBS_LANG[self.subtitles_lang_listbox.GetStringSelection()]
+        self.opt_manager.options["embed_subs"] = self.embed_subs_checkbox.GetValue()
+        self.opt_manager.options["playlist_start"] = self.playlist_start_spinctrl.GetValue()
+        self.opt_manager.options["playlist_end"] = self.playlist_stop_spinctrl.GetValue()
+        self.opt_manager.options["max_downloads"] = self.playlist_max_spinctrl.GetValue()
+        self.opt_manager.options["min_filesize"] = self.filesize_min_spinctrl.GetValue()
+        self.opt_manager.options["max_filesize"] = self.filesize_max_spinctrl.GetValue()
+        self.opt_manager.options["min_filesize_unit"] = self.FILESIZES[self.filesize_min_sizeunit_combobox.GetValue()]
+        self.opt_manager.options["max_filesize_unit"] = self.FILESIZES[self.filesize_max_sizeunit_combobox.GetValue()]
 
 
 class AdvancedTab(TabPanel):

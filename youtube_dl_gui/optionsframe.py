@@ -682,10 +682,24 @@ class AdvancedTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        pass
+        self.retries_spinctrl.SetValue(self.opt_manager.options["retries"])
+        self.username_textctrl.SetValue(self.opt_manager.options["username"])
+        self.password_textctrl.SetValue(self.opt_manager.options["password"])
+        self.video_pass_textctrl.SetValue(self.opt_manager.options["video_password"])
+        self.proxy_textctrl.SetValue(self.opt_manager.options["proxy"])
+        self.useragent_textctrl.SetValue(self.opt_manager.options["user_agent"])
+        self.referer_textctrl.SetValue(self.opt_manager.options["referer"])
+        self.enable_log_checkbox.SetValue(self.opt_manager.options["enable_log"])
 
     def save_options(self):
-        pass
+        self.opt_manager.options["retries"] = self.retries_spinctrl.GetValue()
+        self.opt_manager.options["username"] = self.username_textctrl.GetValue()
+        self.opt_manager.options["password"] = self.password_textctrl.GetValue()
+        self.opt_manager.options["video_password"] = self.video_pass_textctrl.GetValue()
+        self.opt_manager.options["proxy"] = self.proxy_textctrl.GetValue()
+        self.opt_manager.options["user_agent"] = self.useragent_textctrl.GetValue()
+        self.opt_manager.options["referer"] = self.referer_textctrl.GetValue()
+        self.opt_manager.options["enable_log"] = self.enable_log_checkbox.GetValue()
 
 
 class ExtraTab(TabPanel):

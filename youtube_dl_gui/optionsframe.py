@@ -71,40 +71,62 @@ class OptionsFrame(wx.Frame):
 
         self._was_shown = False
 
-        # Create GUI
-        panel = wx.Panel(self)
-        notebook = wx.Notebook(panel)
+        # Create options frame basic components
+        self.panel = wx.Panel(self)
+
+        self.notebook = wx.Notebook(self.panel)
+        self.separator_line = wx.StaticLine(self.panel)
+        self.reset_button = wx.Button(self.panel, label="Reset")
+        self.close_button = wx.Button(self.panel, label="Close")
 
         # Create Tabs
-        tab_args = (self, notebook)
+        #tab_args = (self, notebook)
 
-        self.tabs = (
-            (GeneralTab(*tab_args), self.GENERAL_TAB),
-            (VideoTab(*tab_args), self.VIDEO_TAB),
-            (AudioTab(*tab_args), self.AUDIO_TAB),
-            (PlaylistTab(*tab_args), self.PLAYLIST_TAB),
-            (OutputTab(*tab_args), self.OUTPUT_TAB),
-            (SubtitlesTab(*tab_args), self.SUBTITLES_TAB),
-            (FilesystemTab(*tab_args), self.FILESYS_TAB),
-            (ShutdownTab(*tab_args), self.SHUTDOWN_TAB),
-            (AuthenticationTab(*tab_args), self.AUTH_TAB),
-            (ConnectionTab(*tab_args), self.CONNECTION_TAB),
-            (LogTab(*tab_args), self.LOG_TAB),
-            (CMDTab(*tab_args), self.CMD_TAB),
-            (LocalizationTab(*tab_args), self.LOCALIZATION_TAB)
-        )
+        #self.tabs = (
+            #(GeneralTab(*tab_args), self.GENERAL_TAB),
+            #(VideoTab(*tab_args), self.VIDEO_TAB),
+            #(AudioTab(*tab_args), self.AUDIO_TAB),
+            #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
+            #(OutputTab(*tab_args), self.OUTPUT_TAB),
+            #(SubtitlesTab(*tab_args), self.SUBTITLES_TAB),
+            #(FilesystemTab(*tab_args), self.FILESYS_TAB),
+            #(ShutdownTab(*tab_args), self.SHUTDOWN_TAB),
+            #(AuthenticationTab(*tab_args), self.AUTH_TAB),
+            #(ConnectionTab(*tab_args), self.CONNECTION_TAB),
+            #(LogTab(*tab_args), self.LOG_TAB),
+            #(CMDTab(*tab_args), self.CMD_TAB),
+            #(LocalizationTab(*tab_args), self.LOCALIZATION_TAB)
+        #)
 
         # Add tabs on notebook
-        for tab, label in self.tabs:
-            notebook.AddPage(tab, label)
+        #for tab, label in self.tabs:
+            #notebook.AddPage(tab, label)
 
-        sizer = wx.BoxSizer()
-        sizer.Add(notebook, 1, wx.EXPAND)
-        panel.SetSizer(sizer)
+        #sizer = wx.BoxSizer()
+        #sizer.Add(notebook, 1, wx.EXPAND)
+        #panel.SetSizer(sizer)
 
+        # TODO Bind reset button
+        self.Bind(wx.EVT_BUTTON, self._on_close, self.close_button)
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
-        self.load_all_options()
+        self._set_layout()
+
+        #self.load_all_options()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        main_sizer.Add(self.notebook, 1, wx.EXPAND | wx.ALL, border=5)
+        main_sizer.Add(self.separator_line, 0, wx.EXPAND)
+
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_sizer.Add(self.reset_button)
+        buttons_sizer.Add(self.close_button)
+
+        main_sizer.Add(buttons_sizer, flag=wx.ALIGN_RIGHT | wx.ALL, border=5)
+
+        self.panel.SetSizer(main_sizer)
 
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event.
@@ -112,7 +134,7 @@ class OptionsFrame(wx.Frame):
         This method is used to save the options and hide the options window.
 
         """
-        self.save_all_options()
+        #self.save_all_options()
         self.Hide()
 
     def reset(self):

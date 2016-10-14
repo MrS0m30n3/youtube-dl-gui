@@ -966,7 +966,7 @@ class MainFrame(wx.Frame):
         """
         print "Have to adjust the options window first!!"
         #self._options_frame.load_all_options()
-        #self._options_frame.Show()
+        self._options_frame.Show()
 
     def _on_close(self, event):
         """Event handler for the wx.EVT_CLOSE event.

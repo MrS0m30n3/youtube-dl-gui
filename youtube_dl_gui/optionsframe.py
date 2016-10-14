@@ -1295,29 +1295,10 @@ class SubtitlesTab(TabPanel):
 
 class GeneralTab(TabPanel):
 
-    """Options frame general tab.
-
-    Attributes:
-        BUTTONS_SIZE (tuple): Overwrites the BUTTONS_SIZE attribute of the
-            TabPanel class.
-
-        *_LABEL (string): Constant string label for the widgets.
-
-    """
-
-    BUTTONS_SIZE = (110, 35)
-
-    ABOUT_LABEL = _("About")
-    OPEN_LABEL = _("Open")
-    RESET_LABEL = _("Reset Options")
-    SAVEPATH_LABEL = _("Save Path")
-    SETTINGS_DIR_LABEL = _("Settings File: {0}")
-    PICK_DIR_LABEL = _("Choose Directory")
+    #TODO Add labels to gettext
 
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
-
-        #self.panel = wx.Panel(self)
 
         self.language_label = wx.StaticText(self, label="Language")
         self.language_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
@@ -1335,18 +1316,6 @@ class GeneralTab(TabPanel):
         self.sudo_textctrl = wx.TextCtrl(self, style=wx.TE_PASSWORD)
 
         self._set_layout()
-
-        #self.savepath_box = self.create_textctrl()
-        #self.about_button = self.create_button(self.ABOUT_LABEL, self._on_about)
-        #self.open_button = self.create_button(self.OPEN_LABEL, self._on_open)
-        #self.reset_button = self.create_button(self.RESET_LABEL, self._on_reset)
-
-        #self.savepath_text = self.create_statictext(self.SAVEPATH_LABEL)
-
-        #cfg_file = self.SETTINGS_DIR_LABEL.format(self.opt_manager.settings_file)
-        #self.cfg_file_dir = self.create_statictext(cfg_file)
-
-        #self._set_sizer()
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -1375,63 +1344,11 @@ class GeneralTab(TabPanel):
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
 
-    def _set_sizer(self):
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-
-        main_sizer.AddSpacer(self.SIZE_20)
-        main_sizer.Add(self.savepath_text, flag=wx.ALIGN_CENTER_HORIZONTAL)
-
-        main_sizer.AddSpacer(self.SIZE_10)
-        savepath_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        savepath_sizer.Add(self.savepath_box, 1, wx.LEFT | wx.RIGHT, self.SIZE_80)
-        main_sizer.Add(savepath_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL | wx.EXPAND)
-
-        main_sizer.AddSpacer(self.SIZE_20)
-        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        buttons_sizer.Add(self.about_button)
-        buttons_sizer.Add(self.open_button, flag=wx.LEFT | wx.RIGHT, border=self.SIZE_50)
-        buttons_sizer.Add(self.reset_button)
-        main_sizer.Add(buttons_sizer, flag=wx.ALIGN_CENTER_HORIZONTAL)
-
-        main_sizer.AddSpacer(self.SIZE_20)
-        main_sizer.Add(self.cfg_file_dir, flag=wx.ALIGN_CENTER_HORIZONTAL)
-
-        self.SetSizer(main_sizer)
-
-    def _on_reset(self, event):
-        """Event handler of the self.reset_button. """
-        self.reset_handler()
-
-    def _on_open(self, event):
-        """Event handler of the self.open_button. """
-        dlg = self.create_dirdialog(self.PICK_DIR_LABEL, self.savepath_box.GetValue())
-
-        if dlg.ShowModal() == wx.ID_OK:
-            self.savepath_box.SetValue(dlg.GetPath())
-
-        dlg.Destroy()
-
-    def _on_about(self, event):
-        """Event handler of the self.about_button. """
-        info = wx.AboutDialogInfo()
-
-        if self.app_icon is not None:
-            info.SetIcon(self.app_icon)
-
-        info.SetName(__appname__)
-        info.SetVersion(__version__)
-        info.SetDescription(__descriptionfull__)
-        info.SetWebSite(__projecturl__)
-        info.SetLicense(__licensefull__)
-        info.AddDeveloper(__author__)
-
-        wx.AboutBox(info)
-
     def load_options(self):
-        self.savepath_box.SetValue(self.opt_manager.options['save_path'])
+        pass
 
     def save_options(self):
-        self.opt_manager.options['save_path'] = self.savepath_box.GetValue()
+        pass
 
 
 class CMDTab(TabPanel):

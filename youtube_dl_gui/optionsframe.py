@@ -36,11 +36,6 @@ class OptionsFrame(wx.Frame):
 
     """Youtubedlg options frame class.
 
-    Attributes:
-        FRAME_TITLE (string): Options window title.
-
-        *_TAB (string): Constant string with the name of each tab.
-
     Args:
         parent (mainframe.MainFrame): Parent class.
 
@@ -70,7 +65,7 @@ class OptionsFrame(wx.Frame):
         self.reset_button = wx.Button(self.panel, label="Reset")
         self.close_button = wx.Button(self.panel, label="Close")
 
-        # Create Tabs
+        # Create tabs
         tab_args = (self, self.notebook)
 
         self.tabs = (
@@ -85,6 +80,7 @@ class OptionsFrame(wx.Frame):
         for tab, label in self.tabs:
             self.notebook.AddPage(tab, label)
 
+        # Bind events
         self.Bind(wx.EVT_BUTTON, self._on_reset, self.reset_button)
         self.Bind(wx.EVT_BUTTON, self._on_close, self.close_button)
         self.Bind(wx.EVT_CLOSE, self._on_close)
@@ -107,31 +103,26 @@ class OptionsFrame(wx.Frame):
         self.panel.SetSizer(main_sizer)
 
     def _on_close(self, event):
-        """Event handler for wx.EVT_CLOSE event.
-
-        This method is used to save the options and hide the options window.
-
-        """
+        """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()
         self.Hide()
 
     def _on_reset(self, event):
+        """Event handler for the reset button wx.EVT_BUTTON event."""
         self.reset()
 
     def reset(self):
-        """Resets the default options. """
+        """Reset the default options."""
         self.opt_manager.load_default()
         self.load_all_options()
 
     def load_all_options(self):
-        """Load options from optionsmanager.OptionsManager
-        on each tab. """
+        """Load all the options on each tab."""
         for tab, _ in self.tabs:
             tab.load_options()
 
     def save_all_options(self):
-        """Save options back to optionsmanager.OptionsManager
-        from each tab. """
+        """Save all the options from all the tabs back to the OptionsManager."""
         for tab, _ in self.tabs:
             tab.save_options()
 

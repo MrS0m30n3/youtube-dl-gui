@@ -74,7 +74,7 @@ class OptionsFrame(wx.Frame):
         tab_args = (self, self.notebook)
 
         self.tabs = (
-            (GeneralTab(*tab_args), self.GENERAL_TAB),
+            (GeneralTab(*tab_args), "General"),
             (FormatsTab(*tab_args), "Formats"),
             (DownloadsTab(*tab_args), "Downloads"),
             (AdvancedTab(*tab_args), "Advanced"),
@@ -90,8 +90,7 @@ class OptionsFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
         self._set_layout()
-
-        #self.load_all_options()
+        self.load_all_options()
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -113,7 +112,7 @@ class OptionsFrame(wx.Frame):
         This method is used to save the options and hide the options window.
 
         """
-        #self.save_all_options()
+        self.save_all_options()
         self.Hide()
 
     def reset(self):

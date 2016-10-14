@@ -26,7 +26,7 @@ from .utils import (
     get_icon_file,
     read_formats
 )
-#TODO Set up load-save methods
+#TODO Bind events
 #TODO Adjust layout
 #TODO Set frame's min size
 #TODO Add labels to gettext
@@ -333,7 +333,7 @@ class FormatsTab(TabPanel):
 
     VIDEO_FORMATS = read_formats()
 
-    #TODO Move those to separate file
+    #TODO Move those to separate file?
     AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
 
     def __init__(self, *args, **kwargs):

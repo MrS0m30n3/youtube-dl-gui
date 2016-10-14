@@ -84,6 +84,7 @@ class OptionsFrame(wx.Frame):
 
         self.tabs = (
             (GeneralTab(*tab_args), self.GENERAL_TAB),
+            (FormatsTab(*tab_args), "Formats")
             #(VideoTab(*tab_args), self.VIDEO_TAB),
             #(AudioTab(*tab_args), self.AUDIO_TAB),
             #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
@@ -1340,6 +1341,55 @@ class GeneralTab(TabPanel):
         shutdown_sizer.Add(self.sudo_textctrl, 1)
 
         vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+
+        main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
+        self.SetSizer(main_sizer)
+
+    def load_options(self):
+        pass
+
+    def save_options(self):
+        pass
+
+
+class FormatsTab(TabPanel):
+
+    def __init__(self, *args, **kwargs):
+        super(FormatsTab, self).__init__(*args, **kwargs)
+
+        self.video_formats_label = wx.StaticText(self, label="Video formats")
+        self.video_formats_checklistbox = wx.CheckListBox(self)
+
+        self.audio_formats_label = wx.StaticText(self, label="Audio formats")
+        self.audio_formats_checklistbox = wx.CheckListBox(self)
+
+        self.post_proc_opts_label = wx.StaticText(self, label="Post-Process options")
+        self.keep_video_checkbox = wx.CheckBox(self, label="Keep original video")
+
+        self.audio_quality_label = wx.StaticText(self, label="Audio quality")
+        self.audio_quality_combobox = wx.ComboBox(self, size=(100, -1), style=wx.CB_READONLY)
+
+        self._set_layout()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.Add(self.video_formats_label)
+        vertical_sizer.Add(self.video_formats_checklistbox, 1, wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.audio_formats_label)
+        vertical_sizer.Add(self.audio_formats_checklistbox, 1, wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.post_proc_opts_label)
+        vertical_sizer.Add(self.keep_video_checkbox, flag=wx.ALL, border=5)
+
+        audio_quality_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        audio_quality_sizer.Add(self.audio_quality_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        audio_quality_sizer.AddSpacer((20, -1))
+        audio_quality_sizer.Add(self.audio_quality_combobox)
+
+        vertical_sizer.Add(audio_quality_sizer, flag=wx.LEFT | wx.RIGHT, border=10)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)

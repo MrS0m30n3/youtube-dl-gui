@@ -48,22 +48,8 @@ class OptionsFrame(wx.Frame):
 
     FRAME_TITLE = _("Options")
 
-    GENERAL_TAB = _("General")
-    VIDEO_TAB = _("Video")
-    AUDIO_TAB = _("Audio")
-    PLAYLIST_TAB = _("Playlist")
-    OUTPUT_TAB = _("Output")
-    SUBTITLES_TAB = _("Subtitles")
-    FILESYS_TAB = _("Filesystem")
-    SHUTDOWN_TAB = _("Shutdown")
-    AUTH_TAB = _("Authentication")
-    CONNECTION_TAB = _("Connection")
-    LOG_TAB = _("Log")
-    CMD_TAB = _("Commands")
-    LOCALIZATION_TAB = _("Localization")
-
     def __init__(self, parent):
-        wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options['opts_win_size'])
+        wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options["opts_win_size"])
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
         self.app_icon = None
@@ -93,27 +79,11 @@ class OptionsFrame(wx.Frame):
             (DownloadsTab(*tab_args), "Downloads"),
             (AdvancedTab(*tab_args), "Advanced"),
             (ExtraTab(*tab_args), "Extra")
-            #(VideoTab(*tab_args), self.VIDEO_TAB),
-            #(AudioTab(*tab_args), self.AUDIO_TAB),
-            #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
-            #(OutputTab(*tab_args), self.OUTPUT_TAB),
-            #(SubtitlesTab(*tab_args), self.SUBTITLES_TAB),
-            #(FilesystemTab(*tab_args), self.FILESYS_TAB),
-            #(ShutdownTab(*tab_args), self.SHUTDOWN_TAB),
-            #(AuthenticationTab(*tab_args), self.AUTH_TAB),
-            #(ConnectionTab(*tab_args), self.CONNECTION_TAB),
-            #(LogTab(*tab_args), self.LOG_TAB),
-            #(CMDTab(*tab_args), self.CMD_TAB),
-            #(LocalizationTab(*tab_args), self.LOCALIZATION_TAB)
         )
 
         # Add tabs on notebook
         for tab, label in self.tabs:
             self.notebook.AddPage(tab, label)
-
-        #sizer = wx.BoxSizer()
-        #sizer.Add(notebook, 1, wx.EXPAND)
-        #panel.SetSizer(sizer)
 
         # TODO Bind reset button
         self.Bind(wx.EVT_BUTTON, self._on_close, self.close_button)

@@ -26,9 +26,9 @@ from .utils import (
     get_icon_file
 )
 #TODO Set up load-save methods
+#TODO Adjust layout
 #TODO Set frame's min size
 #TODO Add labels to gettext
-#TODO Review layout
 
 
 class OptionsFrame(wx.Frame):

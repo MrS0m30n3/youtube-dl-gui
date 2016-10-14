@@ -80,10 +80,10 @@ class OptionsFrame(wx.Frame):
         self.close_button = wx.Button(self.panel, label="Close")
 
         # Create Tabs
-        #tab_args = (self, notebook)
+        tab_args = (self, self.notebook)
 
-        #self.tabs = (
-            #(GeneralTab(*tab_args), self.GENERAL_TAB),
+        self.tabs = (
+            (GeneralTab(*tab_args), self.GENERAL_TAB),
             #(VideoTab(*tab_args), self.VIDEO_TAB),
             #(AudioTab(*tab_args), self.AUDIO_TAB),
             #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
@@ -96,11 +96,11 @@ class OptionsFrame(wx.Frame):
             #(LogTab(*tab_args), self.LOG_TAB),
             #(CMDTab(*tab_args), self.CMD_TAB),
             #(LocalizationTab(*tab_args), self.LOCALIZATION_TAB)
-        #)
+        )
 
         # Add tabs on notebook
-        #for tab, label in self.tabs:
-            #notebook.AddPage(tab, label)
+        for tab, label in self.tabs:
+            self.notebook.AddPage(tab, label)
 
         #sizer = wx.BoxSizer()
         #sizer.Add(notebook, 1, wx.EXPAND)
@@ -1317,17 +1317,63 @@ class GeneralTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
-        self.savepath_box = self.create_textctrl()
-        self.about_button = self.create_button(self.ABOUT_LABEL, self._on_about)
-        self.open_button = self.create_button(self.OPEN_LABEL, self._on_open)
-        self.reset_button = self.create_button(self.RESET_LABEL, self._on_reset)
+        #self.panel = wx.Panel(self)
 
-        self.savepath_text = self.create_statictext(self.SAVEPATH_LABEL)
+        self.language_label = wx.StaticText(self, label="Language")
+        self.language_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
 
-        cfg_file = self.SETTINGS_DIR_LABEL.format(self.opt_manager.settings_file)
-        self.cfg_file_dir = self.create_statictext(cfg_file)
+        self.filename_format_label = wx.StaticText(self, label="Filename format")
+        self.filename_format_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
+        self.filename_custom_format = wx.TextCtrl(self)
 
-        self._set_sizer()
+        self.filename_opts_label = wx.StaticText(self, label="Filename options")
+        self.filename_ascii_checkbox = wx.CheckBox(self, label="Restrict filenames to ASCII")
+
+        self.more_opts_label = wx.StaticText(self, label="More options")
+        self.confirm_exit_checkbox = wx.CheckBox(self, label="Confirm on exit")
+        self.shutdown_checkbox = wx.CheckBox(self, label="Shutdown")
+        self.sudo_textctrl = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+
+        self._set_layout()
+
+        #self.savepath_box = self.create_textctrl()
+        #self.about_button = self.create_button(self.ABOUT_LABEL, self._on_about)
+        #self.open_button = self.create_button(self.OPEN_LABEL, self._on_open)
+        #self.reset_button = self.create_button(self.RESET_LABEL, self._on_reset)
+
+        #self.savepath_text = self.create_statictext(self.SAVEPATH_LABEL)
+
+        #cfg_file = self.SETTINGS_DIR_LABEL.format(self.opt_manager.settings_file)
+        #self.cfg_file_dir = self.create_statictext(cfg_file)
+
+        #self._set_sizer()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.Add(self.language_label)
+        vertical_sizer.Add(self.language_combobox, flag=wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.filename_format_label)
+        vertical_sizer.Add(self.filename_format_combobox, flag=wx.EXPAND | wx.ALL, border=5)
+        vertical_sizer.Add(self.filename_custom_format, flag=wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.filename_opts_label)
+        vertical_sizer.Add(self.filename_ascii_checkbox, flag=wx.ALL, border=5)
+
+        vertical_sizer.Add(self.more_opts_label)
+        vertical_sizer.Add(self.confirm_exit_checkbox, flag=wx.ALL, border=5)
+
+        shutdown_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        shutdown_sizer.Add(self.shutdown_checkbox)
+        shutdown_sizer.AddSpacer((-1, -1), 1)
+        shutdown_sizer.Add(self.sudo_textctrl, 1)
+
+        vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+
+        main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
+        self.SetSizer(main_sizer)
 
     def _set_sizer(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)

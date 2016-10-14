@@ -210,51 +210,23 @@ class TabPanel(wx.Panel):
         return wx.StaticText(self, wx.ID_ANY, label)
 
 
-#TODO Move to new file?
-#AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
-#AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
-
-    #FILESIZES = twodict([
-        #("", "Bytes"),
-        #("k", "Kilobytes"),
-        #("m", "Megabytes"),
-        #("g", "Gigabytes"),
-        #("t", "Terabytes"),
-        #("p", "Petabytes"),
-        #("e", "Exabytes"),
-        #("z", "Zettabytes"),
-        #("y", "Yottabytes")
-    #])
-
-    #SUBS_LANG = twodict([
-        #("en", _("English")),
-        #("gr", _("Greek")),
-        #("pt", _("Portuguese")),
-        #("fr", _("French")),
-        #("it", _("Italian")),
-        #("ru", _("Russian")),
-        #("es", _("Spanish")),
-        #("tr", _("Turkish")),
-        #("de", _("German"))
-    #])
-
-    #LOCALE_NAMES = twodict([
-        #('ar_AR', 'Arabic'),
-        #('cs_CZ', 'Czech'),
-        #('en_US', 'English'),
-        #('fr_FR', 'French'),
-        #('de_DE', 'German'),
-        #('it_IT', 'Italian'),
-        #('he_IS', 'Hebrew'),
-        #('hu_HU', 'Hungarian'),
-        #('pt_BR', 'Portuguese'),
-        #('ru_RU', 'Russian'),
-        #('es_ES', 'Spanish'),
-        #('es_MX', 'Mexican Spanish'),
-        #('tr_TR', 'Turkish')
-    #])
-
 class GeneralTab(TabPanel):
+
+    LOCALE_NAMES = twodict([
+        ('ar_AR', 'Arabic'),
+        ('cs_CZ', 'Czech'),
+        ('en_US', 'English'),
+        ('fr_FR', 'French'),
+        ('de_DE', 'German'),
+        ('it_IT', 'Italian'),
+        ('he_IS', 'Hebrew'),
+        ('hu_HU', 'Hungarian'),
+        ('pt_BR', 'Portuguese'),
+        ('ru_RU', 'Russian'),
+        ('es_ES', 'Spanish'),
+        ('es_MX', 'Mexican Spanish'),
+        ('tr_TR', 'Turkish')
+    ])
 
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
@@ -312,6 +284,11 @@ class GeneralTab(TabPanel):
 
 class FormatsTab(TabPanel):
 
+    AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
+
+    #TODO Move those to separate file
+    AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
+
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
@@ -360,6 +337,30 @@ class FormatsTab(TabPanel):
 
 
 class DownloadsTab(TabPanel):
+
+    SUBS_LANG = twodict([
+        ("en", _("English")),
+        ("gr", _("Greek")),
+        ("pt", _("Portuguese")),
+        ("fr", _("French")),
+        ("it", _("Italian")),
+        ("ru", _("Russian")),
+        ("es", _("Spanish")),
+        ("tr", _("Turkish")),
+        ("de", _("German"))
+    ])
+
+    FILESIZES = twodict([
+        ("", "Bytes"),
+        ("k", "Kilobytes"),
+        ("m", "Megabytes"),
+        ("g", "Gigabytes"),
+        ("t", "Terabytes"),
+        ("p", "Petabytes"),
+        ("e", "Exabytes"),
+        ("z", "Zettabytes"),
+        ("y", "Yottabytes")
+    ])
 
     def __init__(self, *args, **kwargs):
         super(DownloadsTab, self).__init__(*args, **kwargs)

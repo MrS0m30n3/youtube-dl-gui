@@ -626,7 +626,7 @@ class AdvancedTab(TabPanel):
         logging_sizer.Add(self.clear_log_button)
         logging_sizer.AddSpacer((10, -1))
 
-        vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.ALL, border=5)
+        vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.TOP, border=5)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)

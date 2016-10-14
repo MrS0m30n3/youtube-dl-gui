@@ -733,10 +733,12 @@ class ExtraTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        pass
+        self.cmdline_args_textctrl.SetValue(self.opt_manager.options["cmd_args"])
+        self.ignore_errors_checkbox.SetValue(self.opt_manager.options["ignore_errors"])
 
     def save_options(self):
-        pass
+        self.opt_manager.options["cmd_args"] = self.cmdline_args_textctrl.GetValue()
+        self.opt_manager.options["ignore_errors"] = self.ignore_errors_checkbox.GetValue()
 
 
 class LogGUI(wx.Frame):

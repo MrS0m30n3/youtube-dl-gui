@@ -159,7 +159,8 @@ class TabPanel(wx.Panel):
     TEXTCTRL_SIZE = (-1, -1)
     SPINCTRL_SIZE = (70, -1)
 
-    CHECKLISTBOX_MAX_SIZE = (-1, 120)
+    CHECKLISTBOX_SIZE = (-1, 100)
+    LISTBOX_SIZE = (-1, 100)
 
     def __init__(self, parent, notebook):
         wx.Panel.__init__(self, notebook)
@@ -217,19 +218,17 @@ class TabPanel(wx.Panel):
 
     def crt_checklistbox(self, choices, style=None):
         if style is None:
-            checklistbox = wx.CheckListBox(self, choices=choices)
+            checklistbox = wx.CheckListBox(self, choices=choices, size=self.CHECKLISTBOX_SIZE)
         else:
-            checklistbox = wx.CheckListBox(self, choices=choices, style=style)
-
-        checklistbox.SetMaxSize(self.CHECKLISTBOX_MAX_SIZE)
+            checklistbox = wx.CheckListBox(self, choices=choices, style=style, size=self.CHECKLISTBOX_SIZE)
 
         return checklistbox
 
     def crt_listbox(self, choices, style=None):
         if style is None:
-            listbox = wx.ListBox(self, choices=choices)
+            listbox = wx.ListBox(self, choices=choices, size=self.LISTBOX_SIZE)
         else:
-            listbox = wx.ListBox(self, choices=choices, style=style)
+            listbox = wx.ListBox(self, choices=choices, style=style, size=self.LISTBOX_SIZE)
 
         return listbox
 

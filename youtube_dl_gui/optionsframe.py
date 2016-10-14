@@ -25,7 +25,11 @@ from .utils import (
     os_path_exists,
     get_icon_file
 )
+#TODO Remove old code
+#TODO Set up load-save methods
 #TODO Set frame's min size
+#TODO Add labels to gettext
+#TODO Review layout
 
 
 class OptionsFrame(wx.Frame):
@@ -1299,8 +1303,6 @@ class SubtitlesTab(TabPanel):
 
 
 class GeneralTab(TabPanel):
-
-    #TODO Add labels to gettext
 
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)

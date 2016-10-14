@@ -228,23 +228,33 @@ class GeneralTab(TabPanel):
         ('tr_TR', 'Turkish')
     ])
 
+    # TODO Add support on parsers.py
+    OUTPUT_FORMATS = [
+        "Title",
+        "Title + Quality",
+        "Title + ID",
+        "Title + ID + Quality",
+        "Custom"
+    ]
+
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
-        self.language_label = wx.StaticText(self, label="Language")
-        self.language_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
+        self.language_label = self.crt_statictext("Language")
+        self.language_combobox = self.crt_combobox(self.LOCALE_NAMES.values())
 
-        self.filename_format_label = wx.StaticText(self, label="Filename format")
-        self.filename_format_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
-        self.filename_custom_format = wx.TextCtrl(self)
+        self.filename_format_label = self.crt_statictext("Filename format")
+        self.filename_format_combobox = self.crt_combobox(self.OUTPUT_FORMATS)
+        self.filename_custom_format = self.crt_textctrl()
 
-        self.filename_opts_label = wx.StaticText(self, label="Filename options")
-        self.filename_ascii_checkbox = wx.CheckBox(self, label="Restrict filenames to ASCII")
+        self.filename_opts_label = self.crt_statictext("Filename options")
+        self.filename_ascii_checkbox = self.crt_checkbox("Restrict filenames to ASCII")
 
-        self.more_opts_label = wx.StaticText(self, label="More options")
-        self.confirm_exit_checkbox = wx.CheckBox(self, label="Confirm on exit")
-        self.shutdown_checkbox = wx.CheckBox(self, label="Shutdown")
-        self.sudo_textctrl = wx.TextCtrl(self, style=wx.TE_PASSWORD)
+        self.more_opts_label = self.crt_statictext("More options")
+        self.confirm_exit_checkbox = self.crt_checkbox("Confirm on exit")
+
+        self.shutdown_checkbox = self.crt_checkbox("Shutdown")
+        self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
         self._set_layout()
 

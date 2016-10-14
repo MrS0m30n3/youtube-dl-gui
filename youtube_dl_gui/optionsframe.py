@@ -511,35 +511,37 @@ class DownloadsTab(TabPanel):
 
 class AdvancedTab(TabPanel):
 
+    TEXTCTRL_SIZE = (250, -1)
+
     def __init__(self, *args, **kwargs):
         super(AdvancedTab, self).__init__(*args, **kwargs)
 
-        self.retries_label = wx.StaticText(self, label="Retries")
-        self.retries_spinctrl = wx.SpinCtrl(self, size=(70, -1))
+        self.retries_label = self.crt_statictext("Retries")
+        self.retries_spinctrl = self.crt_spinctrl()
 
-        self.auth_label = wx.StaticText(self, label="Authentication")
+        self.auth_label = self.crt_statictext("Authentication")
 
-        self.username_label = wx.StaticText(self, label="Username")
-        self.username_textctrl = wx.TextCtrl(self, size=(250, -1))
-        self.password_label = wx.StaticText(self, label="Password")
-        self.password_textctrl = wx.TextCtrl(self, size=(250, -1), style=wx.TE_PASSWORD)
-        self.video_pass_label = wx.StaticText(self, label="Video password")
-        self.video_pass_textctrl = wx.TextCtrl(self, size=(250, -1), style=wx.TE_PASSWORD)
+        self.username_label = self.crt_statictext("Username")
+        self.username_textctrl = self.crt_textctrl()
+        self.password_label = self.crt_statictext("Password")
+        self.password_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
+        self.video_pass_label = self.crt_statictext("Video password")
+        self.video_pass_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
-        self.network_label = wx.StaticText(self, label="Network")
+        self.network_label = self.crt_statictext("Network")
 
-        self.proxy_label = wx.StaticText(self, label="Proxy")
-        self.proxy_textctrl = wx.TextCtrl(self, size=(250, -1))
-        self.useragent_label = wx.StaticText(self, label="User agent")
-        self.useragent_textctrl = wx.TextCtrl(self, size=(250, -1))
-        self.referer_label = wx.StaticText(self, label="Referer")
-        self.referer_textctrl = wx.TextCtrl(self, size=(250, -1))
+        self.proxy_label = self.crt_statictext("Proxy")
+        self.proxy_textctrl = self.crt_textctrl()
+        self.useragent_label = self.crt_statictext("User agent")
+        self.useragent_textctrl = self.crt_textctrl()
+        self.referer_label = self.crt_statictext("Referer")
+        self.referer_textctrl = self.crt_textctrl()
 
-        self.logging_label = wx.StaticText(self, label="Logging")
+        self.logging_label = self.crt_statictext("Logging")
 
-        self.enable_log_checkbox = wx.CheckBox(self, label="Enable log")
-        self.view_log_button = wx.Button(self, label="View")
-        self.clear_log_button = wx.Button(self, label="Clear")
+        self.enable_log_checkbox = self.crt_checkbox("Enable log")
+        self.view_log_button = self.crt_button("View")
+        self.clear_log_button = self.crt_button("Clear")
 
         self._set_layout()
 

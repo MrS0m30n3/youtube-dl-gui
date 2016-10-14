@@ -225,6 +225,14 @@ class TabPanel(wx.Panel):
 
         return checklistbox
 
+    def crt_listbox(self, choices, style=None):
+        if style is None:
+            listbox = wx.ListBox(self, choices=choices)
+        else:
+            listbox = wx.ListBox(self, choices=choices, style=style)
+
+        return listbox
+
 
 class GeneralTab(TabPanel):
 
@@ -400,7 +408,7 @@ class DownloadsTab(TabPanel):
 
         self.subtitles_label = self.crt_statictext("Subtitles")
         self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES)
-        self.subtitles_lang_listbox = self.crt_checklistbox(self.SUBS_LANG.values())
+        self.subtitles_lang_listbox = self.crt_listbox(self.SUBS_LANG.values())
 
         self.subtitles_opts_label = self.crt_statictext("Subtitles options")
         self.embed_subs_checkbox = self.crt_checkbox("Embed subtitles into video file (mp4 ONLY)")

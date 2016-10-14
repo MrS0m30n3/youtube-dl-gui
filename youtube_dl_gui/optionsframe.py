@@ -86,7 +86,8 @@ class OptionsFrame(wx.Frame):
         self.tabs = (
             (GeneralTab(*tab_args), self.GENERAL_TAB),
             (FormatsTab(*tab_args), "Formats"),
-            (DownloadsTab(*tab_args), "Downloads")
+            (DownloadsTab(*tab_args), "Downloads"),
+            (AdvancedTab(*tab_args), "Advanced")
             #(VideoTab(*tab_args), self.VIDEO_TAB),
             #(AudioTab(*tab_args), self.AUDIO_TAB),
             #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
@@ -1516,6 +1517,133 @@ class DownloadsTab(TabPanel):
         filesize_box_sizer.Add(min_filesize_sizer, flag=wx.EXPAND | wx.TOP, border=5)
 
         return filesize_box_sizer
+
+    def load_options(self):
+        pass
+
+    def save_options(self):
+        pass
+
+
+class AdvancedTab(TabPanel):
+
+    def __init__(self, *args, **kwargs):
+        super(AdvancedTab, self).__init__(*args, **kwargs)
+
+        self.retries_label = wx.StaticText(self, label="Retries")
+        self.retries_spinctrl = wx.SpinCtrl(self, size=(70, -1))
+
+        self.auth_label = wx.StaticText(self, label="Authentication")
+
+        self.username_label = wx.StaticText(self, label="Username")
+        self.username_textctrl = wx.TextCtrl(self, size=(250, -1))
+        self.password_label = wx.StaticText(self, label="Password")
+        self.password_textctrl = wx.TextCtrl(self, size=(250, -1), style=wx.TE_PASSWORD)
+        self.video_pass_label = wx.StaticText(self, label="Video password")
+        self.video_pass_textctrl = wx.TextCtrl(self, size=(250, -1), style=wx.TE_PASSWORD)
+
+        self.network_label = wx.StaticText(self, label="Network")
+
+        self.proxy_label = wx.StaticText(self, label="Proxy")
+        self.proxy_textctrl = wx.TextCtrl(self, size=(250, -1))
+        self.useragent_label = wx.StaticText(self, label="User agent")
+        self.useragent_textctrl = wx.TextCtrl(self, size=(250, -1))
+        self.referer_label = wx.StaticText(self, label="Referer")
+        self.referer_textctrl = wx.TextCtrl(self, size=(250, -1))
+
+        self.logging_label = wx.StaticText(self, label="Logging")
+
+        self.enable_log_checkbox = wx.CheckBox(self, label="Enable log")
+        self.view_log_button = wx.Button(self, label="View")
+        self.clear_log_button = wx.Button(self, label="Clear")
+
+        self._set_layout()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        retries_sizer.AddSpacer((10, -1))
+        retries_sizer.Add(self.retries_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        retries_sizer.AddSpacer((20, -1))
+        retries_sizer.Add(self.retries_spinctrl)
+        retries_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(retries_sizer, flag=wx.ALIGN_RIGHT | wx.TOP, border=5)
+
+        vertical_sizer.Add(self.auth_label, flag=wx.TOP, border=5)
+
+        username_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        username_sizer.AddSpacer((10, -1))
+        username_sizer.Add(self.username_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        username_sizer.AddSpacer((-1, -1), 1)
+        username_sizer.Add(self.username_textctrl)
+        username_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(username_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        password_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        password_sizer.AddSpacer((10, -1))
+        password_sizer.Add(self.password_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        password_sizer.AddSpacer((-1, -1), 1)
+        password_sizer.Add(self.password_textctrl)
+        password_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(password_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        video_pass_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        video_pass_sizer.AddSpacer((10, -1))
+        video_pass_sizer.Add(self.video_pass_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        video_pass_sizer.AddSpacer((-1, -1), 1)
+        video_pass_sizer.Add(self.video_pass_textctrl)
+        video_pass_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(video_pass_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        vertical_sizer.Add(self.network_label, flag=wx.TOP, border=15)
+
+        proxy_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        proxy_sizer.AddSpacer((10, -1))
+        proxy_sizer.Add(self.proxy_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        proxy_sizer.AddSpacer((-1, -1), 1)
+        proxy_sizer.Add(self.proxy_textctrl)
+        proxy_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(proxy_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        useragent_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        useragent_sizer.AddSpacer((10, -1))
+        useragent_sizer.Add(self.useragent_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        useragent_sizer.AddSpacer((-1, -1), 1)
+        useragent_sizer.Add(self.useragent_textctrl)
+        useragent_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(useragent_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        referer_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        referer_sizer.AddSpacer((10, -1))
+        referer_sizer.Add(self.referer_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        referer_sizer.AddSpacer((-1, -1), 1)
+        referer_sizer.Add(self.referer_textctrl)
+        referer_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(referer_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        vertical_sizer.Add(self.logging_label, flag=wx.TOP, border=15)
+
+        logging_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        logging_sizer.AddSpacer((10, -1))
+        logging_sizer.Add(self.enable_log_checkbox)
+        logging_sizer.AddSpacer((-1, -1), 1)
+        logging_sizer.Add(self.view_log_button)
+        logging_sizer.Add(self.clear_log_button)
+        logging_sizer.AddSpacer((10, -1))
+
+        vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.ALL, border=5)
+
+        main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
+        self.SetSizer(main_sizer)
 
     def load_options(self):
         pass

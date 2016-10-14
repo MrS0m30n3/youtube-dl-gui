@@ -25,6 +25,7 @@ from .utils import (
     os_path_exists,
     get_icon_file
 )
+#TODO Set frame's min size
 
 
 class OptionsFrame(wx.Frame):
@@ -84,7 +85,8 @@ class OptionsFrame(wx.Frame):
 
         self.tabs = (
             (GeneralTab(*tab_args), self.GENERAL_TAB),
-            (FormatsTab(*tab_args), "Formats")
+            (FormatsTab(*tab_args), "Formats"),
+            (DownloadsTab(*tab_args), "Downloads")
             #(VideoTab(*tab_args), self.VIDEO_TAB),
             #(AudioTab(*tab_args), self.AUDIO_TAB),
             #(PlaylistTab(*tab_args), self.PLAYLIST_TAB),
@@ -1393,6 +1395,127 @@ class FormatsTab(TabPanel):
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
+
+    def load_options(self):
+        pass
+
+    def save_options(self):
+        pass
+
+
+class DownloadsTab(TabPanel):
+
+    def __init__(self, *args, **kwargs):
+        super(DownloadsTab, self).__init__(*args, **kwargs)
+
+        self.subtitles_label = wx.StaticText(self, label="Subtitles")
+        self.subtitles_combobox = wx.ComboBox(self, style=wx.CB_READONLY)
+        self.subtitles_lang_listbox = wx.ListBox(self)
+
+        self.subtitles_opts_label = wx.StaticText(self, label="Subtitles options")
+        self.embed_subs_checkbox = wx.CheckBox(self, label="Embed subtitles into video file (mp4 ONLY)")
+
+        self.playlist_box = wx.StaticBox(self, label="Playlist")
+
+        self.playlist_start_label = wx.StaticText(self, label="Start")
+        self.playlist_start_spinctrl = wx.SpinCtrl(self, size=(80, -1))
+        self.playlist_stop_label = wx.StaticText(self, label="Stop")
+        self.playlist_stop_spinctrl = wx.SpinCtrl(self, size=(80, -1))
+        self.playlist_max_label = wx.StaticText(self, label="Max")
+        self.playlist_max_spinctrl = wx.SpinCtrl(self, size=(80, -1))
+
+        self.filesize_box = wx.StaticBox(self, label="Filesize")
+
+        self.filesize_min_label = wx.StaticText(self, label="Min")
+        self.filesize_min_spinctrl = wx.SpinCtrl(self)
+        self.filesize_min_sizeunit_combobox = wx.ComboBox(self)
+        self.filesize_max_label = wx.StaticText(self, label="Max")
+        self.filesize_max_spinctrl = wx.SpinCtrl(self)
+        self.filesize_max_sizeunit_combobox = wx.ComboBox(self)
+
+        self._set_layout()
+
+    def _set_layout(self):
+        main_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        vertical_sizer.Add(self.subtitles_label)
+        vertical_sizer.Add(self.subtitles_combobox, flag=wx.EXPAND | wx.ALL, border=5)
+        vertical_sizer.Add(self.subtitles_lang_listbox, 1, wx.EXPAND | wx.ALL, border=5)
+
+        vertical_sizer.Add(self.subtitles_opts_label)
+        vertical_sizer.Add(self.embed_subs_checkbox, flag=wx.ALL, border=5)
+
+        plist_and_fsize_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        plist_and_fsize_sizer.Add(self._build_playlist_sizer(), 1, wx.EXPAND)
+        plist_and_fsize_sizer.AddSpacer((10, -1))
+        plist_and_fsize_sizer.Add(self._build_filesize_sizer(), 1, wx.EXPAND)
+
+        vertical_sizer.Add(plist_and_fsize_sizer, 1, wx.EXPAND | wx.TOP, border=5)
+
+        main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
+        self.SetSizer(main_sizer)
+
+    def _build_playlist_sizer(self):
+        left_right_border = 80
+
+        playlist_box_sizer = wx.StaticBoxSizer(self.playlist_box, wx.VERTICAL)
+        playlist_box_sizer.AddSpacer((-1, 10))
+
+        start_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        start_plist_sizer.AddSpacer((left_right_border, -1))
+        start_plist_sizer.Add(self.playlist_start_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        start_plist_sizer.AddSpacer((-1, -1), 1)
+        start_plist_sizer.Add(self.playlist_start_spinctrl)
+        start_plist_sizer.AddSpacer((left_right_border, -1))
+
+        stop_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        stop_plist_sizer.AddSpacer((left_right_border, -1))
+        stop_plist_sizer.Add(self.playlist_stop_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        stop_plist_sizer.AddSpacer((-1, -1), 1)
+        stop_plist_sizer.Add(self.playlist_stop_spinctrl)
+        stop_plist_sizer.AddSpacer((left_right_border, -1))
+
+        max_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        max_plist_sizer.AddSpacer((left_right_border, -1))
+        max_plist_sizer.Add(self.playlist_max_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        max_plist_sizer.AddSpacer((-1, -1), 1)
+        max_plist_sizer.Add(self.playlist_max_spinctrl)
+        max_plist_sizer.AddSpacer((left_right_border, -1))
+
+        playlist_box_sizer.Add(start_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        playlist_box_sizer.Add(stop_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        playlist_box_sizer.Add(max_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        return playlist_box_sizer
+
+    def _build_filesize_sizer(self):
+        left_right_border = 40
+
+        filesize_box_sizer = wx.StaticBoxSizer(self.filesize_box, wx.VERTICAL)
+        filesize_box_sizer.AddSpacer((-1, 10))
+
+        max_filesize_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        max_filesize_sizer.AddSpacer((left_right_border, -1))
+        max_filesize_sizer.Add(self.filesize_max_spinctrl)
+        max_filesize_sizer.AddSpacer((-1, -1), 1)
+        max_filesize_sizer.Add(self.filesize_max_sizeunit_combobox)
+        max_filesize_sizer.AddSpacer((left_right_border, -1))
+
+        min_filesize_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        min_filesize_sizer.AddSpacer((left_right_border, -1))
+        min_filesize_sizer.Add(self.filesize_min_spinctrl)
+        min_filesize_sizer.AddSpacer((-1, -1), 1)
+        min_filesize_sizer.Add(self.filesize_min_sizeunit_combobox)
+        min_filesize_sizer.AddSpacer((left_right_border, -1))
+
+        filesize_box_sizer.Add(self.filesize_max_label, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        filesize_box_sizer.Add(max_filesize_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        filesize_box_sizer.Add(self.filesize_min_label, flag=wx.ALIGN_CENTER_HORIZONTAL)
+        filesize_box_sizer.Add(min_filesize_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+
+        return filesize_box_sizer
 
     def load_options(self):
         pass

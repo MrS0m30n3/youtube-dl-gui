@@ -209,6 +209,14 @@ class TabPanel(wx.Panel):
     def crt_statictext(self, label):
         return wx.StaticText(self, wx.ID_ANY, label)
 
+    def crt_checklistbox(self, choices, style=None):
+        if style is None:
+            checklistbox = wx.CheckListBox(self, choices=choices)
+        else:
+            checklistbox = wx.CheckListBox(self, choices=choices, style=style)
+
+        return checklistbox
+
 
 class GeneralTab(TabPanel):
 
@@ -302,17 +310,17 @@ class FormatsTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
-        self.video_formats_label = wx.StaticText(self, label="Video formats")
-        self.video_formats_checklistbox = wx.CheckListBox(self)
+        self.video_formats_label = self.crt_statictext("Video formats")
+        self.video_formats_checklistbox = self.crt_checklistbox([])
 
-        self.audio_formats_label = wx.StaticText(self, label="Audio formats")
-        self.audio_formats_checklistbox = wx.CheckListBox(self)
+        self.audio_formats_label = self.crt_statictext("Audio formats")
+        self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)
 
-        self.post_proc_opts_label = wx.StaticText(self, label="Post-Process options")
-        self.keep_video_checkbox = wx.CheckBox(self, label="Keep original video")
+        self.post_proc_opts_label = self.crt_statictext("Post-Process options")
+        self.keep_video_checkbox = self.crt_checkbox("Keep original video")
 
-        self.audio_quality_label = wx.StaticText(self, label="Audio quality")
-        self.audio_quality_combobox = wx.ComboBox(self, size=(100, -1), style=wx.CB_READONLY)
+        self.audio_quality_label = self.crt_statictext("Audio quality")
+        self.audio_quality_combobox = self.crt_combobox(self.AUDIO_QUALITY.values())
 
         self._set_layout()
 

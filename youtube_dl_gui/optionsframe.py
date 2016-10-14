@@ -168,7 +168,7 @@ class TabPanel(wx.Panel):
 
     # Shortcut methods below
 
-    def create_button(self, label, event_handler=None):
+    def crt_button(self, label, event_handler=None):
         button = wx.Button(self, label=label, size=self.BUTTONS_SIZE)
 
         if event_handler is not None:
@@ -176,7 +176,7 @@ class TabPanel(wx.Panel):
 
         return button
 
-    def create_checkbox(self, label, event_handler=None):
+    def crt_checkbox(self, label, event_handler=None):
         checkbox = wx.CheckBox(self, label=label, size=self.CHECKBOX_SIZE)
 
         if event_handler is not None:
@@ -184,7 +184,7 @@ class TabPanel(wx.Panel):
 
         return checkbox
 
-    def create_textctrl(self, style=None):
+    def crt_textctrl(self, style=None):
         if style is None:
             textctrl = wx.TextCtrl(self, size=self.TEXTCTRL_SIZE)
         else:
@@ -192,21 +192,21 @@ class TabPanel(wx.Panel):
 
         return textctrl
 
-    def create_combobox(self, choices, size=(-1, -1), event_handler=None):
-        combobox = wx.ComboBox(self, choices=choices, size=size)
+    def crt_combobox(self, choices, size=(-1, -1), event_handler=None):
+        combobox = wx.ComboBox(self, choices=choices, size=size, style=wx.CB_READONLY)
 
         if event_handler is not None:
             combobox.Bind(wx.EVT_COMBOBOX, event_handler)
 
         return combobox
 
-    def create_spinctrl(self, spin_range=(0, 999)):
+    def crt_spinctrl(self, spin_range=(0, 9999)):
         spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
         spinctrl.SetRange(*spin_range)
 
         return spinctrl
 
-    def create_statictext(self, label):
+    def crt_statictext(self, label):
         return wx.StaticText(self, wx.ID_ANY, label)
 
 

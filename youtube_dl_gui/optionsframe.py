@@ -309,10 +309,22 @@ class GeneralTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        pass
+        self.language_combobox.SetValue(self.LOCALE_NAMES[self.opt_manager.options["locale_name"]])
+        #TODO Add filename_format_combobox
+        self.filename_custom_format.SetValue(self.opt_manager.options["output_template"])
+        self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])
+        #TODO Add confirm_exit_checkbox
+        self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
+        self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
 
     def save_options(self):
-        pass
+        self.opt_manager.options["locale_name"] = self.LOCALE_NAMES[self.language_combobox.GetValue()]
+        #TODO Add filename_format_combobox
+        self.opt_manager.options["output_template"] = self.filename_custom_format.GetValue()
+        self.opt_manager.options["restrict_filenames"] = self.filename_ascii_checkbox.GetValue()
+        #TODO Add confirm_exit_checkbox
+        self.opt_manager.options["shutdown"] = self.shutdown_checkbox.GetValue()
+        self.opt_manager.options["sudo_password"] = self.sudo_textctrl.GetValue()
 
 
 class FormatsTab(TabPanel):

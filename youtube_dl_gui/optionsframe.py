@@ -85,7 +85,7 @@ class OptionsFrame(wx.Frame):
         for tab, label in self.tabs:
             self.notebook.AddPage(tab, label)
 
-        # TODO Bind reset button
+        self.Bind(wx.EVT_BUTTON, self._on_reset, self.reset_button)
         self.Bind(wx.EVT_BUTTON, self._on_close, self.close_button)
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
@@ -114,6 +114,9 @@ class OptionsFrame(wx.Frame):
         """
         self.save_all_options()
         self.Hide()
+
+    def _on_reset(self, event):
+        self.reset()
 
     def reset(self):
         """Resets the default options. """

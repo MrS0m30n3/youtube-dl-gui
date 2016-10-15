@@ -374,14 +374,16 @@ class FormatsTab(TabPanel):
     def load_options(self):
         checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.opt_manager.options["selected_video_formats"]]
         self.video_formats_checklistbox.SetCheckedStrings(checked_video_formats)
-        #TODO Add audio_formats_checklistbox
+        checked_audio_formats = [AUDIO_FORMATS[aformat] for aformat in self.opt_manager.options["selected_audio_formats"]]
+        self.audio_formats_checklistbox.SetCheckedStrings(checked_audio_formats)
         self.keep_video_checkbox.SetValue(self.opt_manager.options["keep_video"])
         self.audio_quality_combobox.SetValue(self.AUDIO_QUALITY[self.opt_manager.options["audio_quality"]])
 
     def save_options(self):
         checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.video_formats_checklistbox.GetCheckedStrings()]
         self.opt_manager.options["selected_video_formats"] = checked_video_formats
-        #TODO Add audio_formats_checklistbox
+        checked_audio_formats = [AUDIO_FORMATS[aformat] for aformat in self.audio_formats_checklistbox.GetCheckedStrings()]
+        self.opt_manager.options["selected_audio_formats"] = checked_audio_formats
         self.opt_manager.options["keep_video"] = self.keep_video_checkbox.GetValue()
         self.opt_manager.options["audio_quality"] = self.AUDIO_QUALITY[self.audio_quality_combobox.GetValue()]
 

@@ -49,6 +49,8 @@ from .utils import (
     get_time
 )
 
+from .formats import VIDEO_FORMATS
+
 from .info import (
     __descriptionfull__,
     __licensefull__,
@@ -188,9 +190,6 @@ class MainFrame(wx.Frame):
         # Get the pixmaps directory
         self._pixmaps_path = get_pixmaps_dir()
 
-        # Get video formats
-        self._video_formats = read_formats()
-
         # Set the Timer
         self._app_timer = wx.Timer(self)
 
@@ -263,7 +262,7 @@ class MainFrame(wx.Frame):
         self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"])
 
         self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
-        self._videoformat_combobox = ExtComboBox(self._panel, choices=self._video_formats.values(), style=wx.CB_READONLY)
+        self._videoformat_combobox = ExtComboBox(self._panel, choices=VIDEO_FORMATS.values(), style=wx.CB_READONLY)
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
@@ -315,7 +314,7 @@ class MainFrame(wx.Frame):
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 
-        self._videoformat_combobox.SetValue(self._video_formats[self.opt_manager.options["video_format"]])
+        self._videoformat_combobox.SetValue(VIDEO_FORMATS[self.opt_manager.options["video_format"]])
         self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
@@ -429,7 +428,7 @@ class MainFrame(wx.Frame):
                 self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
 
     def _update_videoformat(self, event):
-        self.opt_manager.options["video_format"] = self._video_formats[self._videoformat_combobox.GetValue()]
+        self.opt_manager.options["video_format"] = VIDEO_FORMATS[self._videoformat_combobox.GetValue()]
 
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()

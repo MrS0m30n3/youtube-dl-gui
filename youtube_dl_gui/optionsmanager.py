@@ -16,6 +16,8 @@ from .utils import (
     check_path
 )
 
+from .formats import OUTPUT_FORMATS
+
 
 class OptionsManager(object):
 
@@ -291,8 +293,6 @@ class OptionsManager(object):
 
         VALID_AUDIO_QUALITY = ('0', '5', '9')
 
-        VALID_OUTPUT_FORMAT = ('title', 'id', 'custom')
-
         VALID_FILESIZE_UNIT = ('', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y')
 
         VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
@@ -316,7 +316,7 @@ class OptionsManager(object):
             'second_video_format': VALID_VIDEO_FORMAT,
             'audio_format': VALID_AUDIO_FORMAT,
             'audio_quality': VALID_AUDIO_QUALITY,
-            #'output_format': VALID_OUTPUT_FORMAT, #TODO validate
+            'output_format': OUTPUT_FORMATS.keys(),
             'min_filesize_unit': VALID_FILESIZE_UNIT,
             'max_filesize_unit': VALID_FILESIZE_UNIT,
             'subs_lang': VALID_SUB_LANGUAGE

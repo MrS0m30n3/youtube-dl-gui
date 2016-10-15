@@ -528,7 +528,15 @@ class DownloadsTab(TabPanel):
         return filesize_box_sizer
 
     def load_options(self):
-        #TODO Add subtitles_combobox
+        if self.opt_manager.options["write_subs"]:
+            self.subtitles_combobox.SetValue(self.SUBS_CHOICES[3])
+        elif self.opt_manager.options["write_all_subs"]:
+            self.subtitles_combobox.SetValue(self.SUBS_CHOICES[2])
+        elif self.opt_manager.options["write_auto_subs"]:
+            self.subtitles_combobox.SetValue(self.SUBS_CHOICES[1])
+        else:
+            self.subtitles_combobox.SetValue(self.SUBS_CHOICES[0])
+
         self.subtitles_lang_listbox.SetStringSelection(self.SUBS_LANG[self.opt_manager.options["subs_lang"]])
         self.embed_subs_checkbox.SetValue(self.opt_manager.options["embed_subs"])
         self.playlist_start_spinctrl.SetValue(self.opt_manager.options["playlist_start"])
@@ -540,7 +548,24 @@ class DownloadsTab(TabPanel):
         self.filesize_max_sizeunit_combobox.SetValue(self.FILESIZES[self.opt_manager.options["max_filesize_unit"]])
 
     def save_options(self):
-        #TODO Add subtitles_combobox
+        subs_choice = self.SUBS_CHOICES.index(self.subtitles_combobox.GetValue())
+        if subs_choice == 1:
+            self.opt_manager.options["write_subs"] = False
+            self.opt_manager.options["write_all_subs"] = False
+            self.opt_manager.options["write_auto_subs"] = True
+        elif subs_choice == 2:
+            self.opt_manager.options["write_subs"] = False
+            self.opt_manager.options["write_all_subs"] = True
+            self.opt_manager.options["write_auto_subs"] = False
+        elif subs_choice == 3:
+            self.opt_manager.options["write_subs"] = True
+            self.opt_manager.options["write_all_subs"] = False
+            self.opt_manager.options["write_auto_subs"] = False
+        else:
+            self.opt_manager.options["write_subs"] = False
+            self.opt_manager.options["write_all_subs"] = False
+            self.opt_manager.options["write_auto_subs"] = False
+
         self.opt_manager.options["subs_lang"] = self.SUBS_LANG[self.subtitles_lang_listbox.GetStringSelection()]
         self.opt_manager.options["embed_subs"] = self.embed_subs_checkbox.GetValue()
         self.opt_manager.options["playlist_start"] = self.playlist_start_spinctrl.GetValue()

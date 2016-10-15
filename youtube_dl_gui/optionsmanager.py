@@ -89,7 +89,7 @@ class OptionsManager(object):
             restrict_filenames (boolean): If True youtube-dl will restrict
                 the downloaded file filename to ASCII characters only.
 
-            output_format (string): This option sets the downloaded file
+            output_format (int): This option sets the downloaded file
                 output template. See formats.OUTPUT_FORMATS for more info.
 
             output_template (string): Can be any output template supported

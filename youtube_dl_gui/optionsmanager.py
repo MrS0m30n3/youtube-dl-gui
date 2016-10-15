@@ -16,7 +16,10 @@ from .utils import (
     check_path
 )
 
-from .formats import OUTPUT_FORMATS
+from .formats import (
+    OUTPUT_FORMATS,
+    VIDEO_FORMATS
+)
 
 
 class OptionsManager(object):
@@ -198,8 +201,11 @@ class OptionsManager(object):
 
             save_path_dirs (list): List that contains temporary save paths.
 
+            selected_video_formats (list): List that contains the selected
+                video formats to display on the main window.
+
         """
-        #TODO Remove old options
+        #TODO Remove old options & check options validation
         self.options = {
             'save_path': os_path_expanduser('~'),
             'save_path_dirs': [],
@@ -245,7 +251,8 @@ class OptionsManager(object):
             'workers_number': 3,
             'locale_name': 'en_US',
             'main_win_size': (710, 490),
-            'opts_win_size': (640, 270)
+            'opts_win_size': (640, 270),
+            'selected_video_formats': []
         }
 
     def load_from_file(self):
@@ -312,7 +319,7 @@ class OptionsManager(object):
 
         # Check if each key has a valid value
         rules_dict = {
-            'video_format': VALID_VIDEO_FORMAT,
+            'video_format': VIDEO_FORMATS.keys(),
             'second_video_format': VALID_VIDEO_FORMAT,
             'audio_format': VALID_AUDIO_FORMAT,
             'audio_quality': VALID_AUDIO_QUALITY,

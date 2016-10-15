@@ -49,7 +49,10 @@ from .utils import (
     get_time
 )
 
-from .formats import VIDEO_FORMATS
+from .formats import (
+    DEFAULT_VIDEO_FORMATS,
+    VIDEO_FORMATS
+)
 
 from .info import (
     __descriptionfull__,
@@ -314,7 +317,7 @@ class MainFrame(wx.Frame):
         self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 
-        self._videoformat_combobox.SetValue(VIDEO_FORMATS[self.opt_manager.options["video_format"]])
+        self._update_videoformat_combobox()
         self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
@@ -426,6 +429,27 @@ class MainFrame(wx.Frame):
             if self._buttons["pause"].GetLabel() == "Resume":
                 self._buttons["pause"].SetLabel("Pause")
                 self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
+
+    def _update_videoformat_combobox(self):
+        video_formats = []
+
+        for _, label in DEFAULT_VIDEO_FORMATS:
+            video_formats.append(label)
+
+        for vformat in self.opt_manager.options["selected_video_formats"]:
+            video_formats.append(VIDEO_FORMATS[vformat])
+
+        self._videoformat_combobox.Clear()
+        self._videoformat_combobox.AppendItems(video_formats)
+
+        current_index = self._videoformat_combobox.FindString(VIDEO_FORMATS[self.opt_manager.options["video_format"]])
+
+        if current_index == wx.NOT_FOUND:
+            self._videoformat_combobox.SetSelection(0)
+        else:
+            self._videoformat_combobox.SetSelection(current_index)
+
+        self._update_videoformat(None)
 
     def _update_videoformat(self, event):
         self.opt_manager.options["video_format"] = VIDEO_FORMATS[self._videoformat_combobox.GetValue()]

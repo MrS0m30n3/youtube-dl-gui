@@ -27,7 +27,11 @@ from .utils import (
     read_formats
 )
 
-from .formats import OUTPUT_FORMATS
+from .formats import (
+    NON_DEFAULT_VIDEO_FORMATS,
+    OUTPUT_FORMATS,
+    VIDEO_FORMATS
+)
 #TODO Bind events
 #TODO Adjust layout
 #TODO Set frame's min size
@@ -108,6 +112,7 @@ class OptionsFrame(wx.Frame):
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()
+        self.GetParent()._update_videoformat_combobox()
         self.Hide()
 
     def _on_reset(self, event):
@@ -325,15 +330,15 @@ class FormatsTab(TabPanel):
 
     AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
 
-    VIDEO_FORMATS = read_formats()
-
     AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
 
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
+        video_formats = [item[1] for item in NON_DEFAULT_VIDEO_FORMATS]
+
         self.video_formats_label = self.crt_statictext("Video formats")
-        self.video_formats_checklistbox = self.crt_checklistbox(self.VIDEO_FORMATS.values())
+        self.video_formats_checklistbox = self.crt_checklistbox(video_formats)
 
         self.audio_formats_label = self.crt_statictext("Audio formats")
         self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)
@@ -370,13 +375,15 @@ class FormatsTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        #TODO Add video_formats_checklistbox
+        checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.opt_manager.options["selected_video_formats"]]
+        self.video_formats_checklistbox.SetCheckedStrings(checked_video_formats)
         #TODO Add audio_formats_checklistbox
         self.keep_video_checkbox.SetValue(self.opt_manager.options["keep_video"])
         self.audio_quality_combobox.SetValue(self.AUDIO_QUALITY[self.opt_manager.options["audio_quality"]])
 
     def save_options(self):
-        #TODO Add video_formats_checklistbox
+        checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.video_formats_checklistbox.GetCheckedStrings()]
+        self.opt_manager.options["selected_video_formats"] = checked_video_formats
         #TODO Add audio_formats_checklistbox
         self.opt_manager.options["keep_video"] = self.keep_video_checkbox.GetValue()
         self.opt_manager.options["audio_quality"] = self.AUDIO_QUALITY[self.audio_quality_combobox.GetValue()]

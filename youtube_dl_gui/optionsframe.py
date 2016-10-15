@@ -30,6 +30,7 @@ from .utils import (
 from .formats import (
     OUTPUT_FORMATS,
     VIDEO_FORMATS,
+    AUDIO_FORMATS,
     FORMATS
 )
 #TODO Bind events
@@ -330,8 +331,6 @@ class FormatsTab(TabPanel):
 
     AUDIO_QUALITY = twodict([("0", _("high")), ("5", _("mid")), ("9", _("low"))])
 
-    AUDIO_FORMATS = ["mp3", "wav", "aac", "m4a", "vorbis", "opus"]
-
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
@@ -339,7 +338,7 @@ class FormatsTab(TabPanel):
         self.video_formats_checklistbox = self.crt_checklistbox(list(VIDEO_FORMATS.values()))
 
         self.audio_formats_label = self.crt_statictext("Audio formats")
-        self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)
+        self.audio_formats_checklistbox = self.crt_checklistbox(list(AUDIO_FORMATS.values()))
 
         self.post_proc_opts_label = self.crt_statictext("Post-Process options")
         self.keep_video_checkbox = self.crt_checkbox("Keep original video")

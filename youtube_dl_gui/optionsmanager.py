@@ -256,7 +256,7 @@ class OptionsManager(object):
             'workers_number': 3,
             'locale_name': 'en_US',
             'main_win_size': (710, 490),
-            'opts_win_size': (640, 270),
+            'opts_win_size': (640, 470),
             'selected_video_formats': [],
             'selected_audio_formats': [],
             'selected_format': '0'

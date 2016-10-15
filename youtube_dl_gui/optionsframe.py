@@ -279,6 +279,8 @@ class GeneralTab(TabPanel):
         self.shutdown_checkbox = self.crt_checkbox("Shutdown")
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
+        self.confirm_exit_checkbox.Disable()
+
         self._set_layout()
 
     def _set_layout(self):

@@ -302,12 +302,13 @@ class GeneralTab(TabPanel):
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
 
+    #TODO Implement load-save for confirm_exit_checkbox widget
+
     def load_options(self):
         self.language_combobox.SetValue(self.LOCALE_NAMES[self.opt_manager.options["locale_name"]])
         self.filename_format_combobox.SetValue(OUTPUT_FORMATS[self.opt_manager.options["output_format"]])
         self.filename_custom_format.SetValue(self.opt_manager.options["output_template"])
         self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])
-        #TODO Add confirm_exit_checkbox
         self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
         self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
 
@@ -316,7 +317,6 @@ class GeneralTab(TabPanel):
         self.opt_manager.options["output_format"] = OUTPUT_FORMATS[self.filename_format_combobox.GetValue()]
         self.opt_manager.options["output_template"] = self.filename_custom_format.GetValue()
         self.opt_manager.options["restrict_filenames"] = self.filename_ascii_checkbox.GetValue()
-        #TODO Add confirm_exit_checkbox
         self.opt_manager.options["shutdown"] = self.shutdown_checkbox.GetValue()
         self.opt_manager.options["sudo_password"] = self.sudo_textctrl.GetValue()
 

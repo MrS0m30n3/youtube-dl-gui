@@ -10,11 +10,13 @@ OUTPUT_FORMATS = tdict([
     (3, "Custom")
 ])
 
-DEFAULT_VIDEO_FORMATS = [
-    ("0", "default")
-]
 
-NON_DEFAULT_VIDEO_FORMATS = [
+DEFAULT_FORMATS = tdict([
+    ("0", "default")
+])
+
+
+VIDEO_FORMATS = tdict([
     ("17", "3gp [176x144]"),
     ("36", "3gp [320x240]"),
     ("5", "flv [400x240]"),
@@ -55,6 +57,19 @@ NON_DEFAULT_VIDEO_FORMATS = [
     ("141", "m4a 256k (DASH AUDIO)"),
     ("171", "webm 48k (DASH AUDIO)"),
     ("172", "webm 256k (DASH AUDIO)")
-]
+])
 
-VIDEO_FORMATS = tdict(DEFAULT_VIDEO_FORMATS + NON_DEFAULT_VIDEO_FORMATS)
+
+AUDIO_FORMATS = tdict([
+    ("mp3", "mp3"),
+    ("wav", "wav"),
+    ("aac", "aac"),
+    ("m4a", "m4a"),
+    ("vorbis", "vorbis"),
+    ("opus", "opus")
+])
+
+
+FORMATS = DEFAULT_FORMATS.copy()
+FORMATS.update(VIDEO_FORMATS)
+FORMATS.update(AUDIO_FORMATS)

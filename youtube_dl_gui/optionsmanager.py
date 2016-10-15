@@ -18,7 +18,7 @@ from .utils import (
 
 from .formats import (
     OUTPUT_FORMATS,
-    VIDEO_FORMATS
+    FORMATS
 )
 
 
@@ -323,7 +323,7 @@ class OptionsManager(object):
 
         # Check if each key has a valid value
         rules_dict = {
-            'video_format': VIDEO_FORMATS.keys(),
+            'video_format': FORMATS.keys(),
             'second_video_format': VALID_VIDEO_FORMAT,
             'audio_format': VALID_AUDIO_FORMAT,
             'audio_quality': VALID_AUDIO_QUALITY,

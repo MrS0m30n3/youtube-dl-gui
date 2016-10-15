@@ -28,9 +28,9 @@ from .utils import (
 )
 
 from .formats import (
-    NON_DEFAULT_VIDEO_FORMATS,
     OUTPUT_FORMATS,
-    VIDEO_FORMATS
+    VIDEO_FORMATS,
+    FORMATS
 )
 #TODO Bind events
 #TODO Adjust layout
@@ -335,10 +335,8 @@ class FormatsTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
-        video_formats = [item[1] for item in NON_DEFAULT_VIDEO_FORMATS]
-
         self.video_formats_label = self.crt_statictext("Video formats")
-        self.video_formats_checklistbox = self.crt_checklistbox(video_formats)
+        self.video_formats_checklistbox = self.crt_checklistbox(list(VIDEO_FORMATS.values()))
 
         self.audio_formats_label = self.crt_statictext("Audio formats")
         self.audio_formats_checklistbox = self.crt_checklistbox(self.AUDIO_FORMATS)

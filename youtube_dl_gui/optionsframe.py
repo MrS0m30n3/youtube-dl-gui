@@ -641,11 +641,15 @@ class AdvancedTab(TabPanel):
 
         self.logging_label = self.crt_statictext("Logging")
 
-        self.enable_log_checkbox = self.crt_checkbox("Enable log")
-        self.view_log_button = self.crt_button("View")
-        self.clear_log_button = self.crt_button("Clear")
+        self.enable_log_checkbox = self.crt_checkbox("Enable log", self._on_enable_log)
+        self.view_log_button = self.crt_button("View", self._on_view)
+        self.clear_log_button = self.crt_button("Clear", self._on_clear)
 
         self._set_layout()
+
+        if self.log_manager is None:
+            self.view_log_button.Disable()
+            self.clear_log_button.Disable()
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -732,6 +736,24 @@ class AdvancedTab(TabPanel):
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
+
+    def _on_enable_log(self, event):
+        """Event handler for the wx.EVT_CHECKBOX of the enable_log_checkbox."""
+        wx.MessageBox("In order for the changes to take effect please restart {0}.".format(__appname__),
+                      "Restart",
+                      wx.OK | wx.ICON_INFORMATION,
+                      self)
+
+    def _on_view(self, event):
+        """Event handler for the wx.EVT_BUTTON of the view_log_button."""
+        log_window = LogGUI(self)
+        log_window.load(self.log_manager.log_file)
+        log_window.Show()
+
+    def _on_clear(self, event):
+        """Event handler for the wx.EVT_BUTTON of the clear_log_button."""
+        if self.log_manager is not None:
+            self.log_manager.clear()
 
     def load_options(self):
         self.retries_spinctrl.SetValue(self.opt_manager.options["retries"])

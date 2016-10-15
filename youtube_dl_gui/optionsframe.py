@@ -263,10 +263,10 @@ class GeneralTab(TabPanel):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
         self.language_label = self.crt_statictext("Language")
-        self.language_combobox = self.crt_combobox(self.LOCALE_NAMES.values())
+        self.language_combobox = self.crt_combobox(list(self.LOCALE_NAMES.values()))
 
         self.filename_format_label = self.crt_statictext("Filename format")
-        self.filename_format_combobox = self.crt_combobox(OUTPUT_FORMATS.values())
+        self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()))
         self.filename_custom_format = self.crt_textctrl()
 
         self.filename_opts_label = self.crt_statictext("Filename options")
@@ -347,7 +347,7 @@ class FormatsTab(TabPanel):
         self.keep_video_checkbox = self.crt_checkbox("Keep original video")
 
         self.audio_quality_label = self.crt_statictext("Audio quality")
-        self.audio_quality_combobox = self.crt_combobox(self.AUDIO_QUALITY.values())
+        self.audio_quality_combobox = self.crt_combobox(list(self.AUDIO_QUALITY.values()))
 
         self._set_layout()
 
@@ -427,7 +427,7 @@ class DownloadsTab(TabPanel):
 
         self.subtitles_label = self.crt_statictext("Subtitles")
         self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES)
-        self.subtitles_lang_listbox = self.crt_listbox(self.SUBS_LANG.values())
+        self.subtitles_lang_listbox = self.crt_listbox(list(self.SUBS_LANG.values()))
 
         self.subtitles_opts_label = self.crt_statictext("Subtitles options")
         self.embed_subs_checkbox = self.crt_checkbox("Embed subtitles into video file (mp4 ONLY)")
@@ -445,10 +445,10 @@ class DownloadsTab(TabPanel):
 
         self.filesize_min_label = self.crt_statictext("Min")
         self.filesize_min_spinctrl = self.crt_spinctrl()
-        self.filesize_min_sizeunit_combobox = self.crt_combobox(self.FILESIZES.values())
+        self.filesize_min_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
         self.filesize_max_label = self.crt_statictext("Max")
         self.filesize_max_spinctrl = self.crt_spinctrl()
-        self.filesize_max_sizeunit_combobox = self.crt_combobox(self.FILESIZES.values())
+        self.filesize_max_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
 
         self._set_layout()
 

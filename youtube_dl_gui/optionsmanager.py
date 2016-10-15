@@ -88,11 +88,7 @@ class OptionsManager(object):
                 the downloaded file filename to ASCII characters only.
 
             output_format (string): This option sets the downloaded file
-                output template. Available values are 'id', 'title', 'custom'
-
-                'id' -> '%(id)s.%(ext)s'
-                'title' -> '%(title)s.%(ext)s'
-                'custom' -> Use 'output_template' as output template.
+                output template. See formats.OUTPUT_FORMATS for more info.
 
             output_template (string): Can be any output template supported
                 by youtube-dl.
@@ -201,6 +197,7 @@ class OptionsManager(object):
             save_path_dirs (list): List that contains temporary save paths.
 
         """
+        #TODO Remove old options
         self.options = {
             'save_path': os_path_expanduser('~'),
             'save_path_dirs': [],
@@ -211,8 +208,8 @@ class OptionsManager(object):
             'audio_format': 'mp3',
             'audio_quality': '5',
             'restrict_filenames': False,
-            'output_format': 'title',
-            'output_template': '%(uploader)s/%(title)s.%(ext)s',
+            'output_format': 1,
+            'output_template': '%(uploader)s/%(title)s.%(ext)s',  #TODO Fix path on Windows
             'playlist_start': 1,
             'playlist_end': 0,
             'max_downloads': 0,
@@ -319,7 +316,7 @@ class OptionsManager(object):
             'second_video_format': VALID_VIDEO_FORMAT,
             'audio_format': VALID_AUDIO_FORMAT,
             'audio_quality': VALID_AUDIO_QUALITY,
-            'output_format': VALID_OUTPUT_FORMAT,
+            #'output_format': VALID_OUTPUT_FORMAT, #TODO validate
             'min_filesize_unit': VALID_FILESIZE_UNIT,
             'max_filesize_unit': VALID_FILESIZE_UNIT,
             'subs_lang': VALID_SUB_LANGUAGE

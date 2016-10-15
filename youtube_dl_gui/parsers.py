@@ -155,14 +155,16 @@ class OptionsParser(object):
         """
         save_path = remove_shortcuts(options_dict['save_path'])
 
-        if options_dict['output_format'] == 'id':
-            save_path = os.path.join(save_path, '%(id)s.%(ext)s')
-        elif options_dict['output_format'] == 'title':
-            save_path = os.path.join(save_path, '%(title)s.%(ext)s')
+        if options_dict["output_format"] == 0:
+            template = "%(id)s.%(ext)s"
+        elif options_dict["output_format"] == 1:
+            template = "%(title)s.%(ext)s"
+        elif options_dict["output_format"] == 2:
+            template = "%(title)s-%(id)s.%(ext)s"
         else:
-            save_path = os.path.join(save_path, options_dict['output_template'])
+            template = options_dict["output_template"]
 
-        options_dict['save_path'] = save_path
+        options_dict["save_path"] = os.path.join(save_path, template)
 
     def _build_videoformat(self, options_dict):
         """Build the video format.

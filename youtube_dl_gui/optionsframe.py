@@ -26,6 +26,8 @@ from .utils import (
     get_icon_file,
     read_formats
 )
+
+from .formats import OUTPUT_FORMATS
 #TODO Bind events
 #TODO Adjust layout
 #TODO Set frame's min size
@@ -251,15 +253,6 @@ class GeneralTab(TabPanel):
         ('tr_TR', 'Turkish')
     ])
 
-    # TODO Add support on parsers.py
-    OUTPUT_FORMATS = [
-        "Title",
-        "Title + Quality",
-        "Title + ID",
-        "Title + ID + Quality",
-        "Custom"
-    ]
-
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
@@ -267,7 +260,7 @@ class GeneralTab(TabPanel):
         self.language_combobox = self.crt_combobox(self.LOCALE_NAMES.values())
 
         self.filename_format_label = self.crt_statictext("Filename format")
-        self.filename_format_combobox = self.crt_combobox(self.OUTPUT_FORMATS)
+        self.filename_format_combobox = self.crt_combobox(OUTPUT_FORMATS.values())
         self.filename_custom_format = self.crt_textctrl()
 
         self.filename_opts_label = self.crt_statictext("Filename options")
@@ -310,7 +303,7 @@ class GeneralTab(TabPanel):
 
     def load_options(self):
         self.language_combobox.SetValue(self.LOCALE_NAMES[self.opt_manager.options["locale_name"]])
-        #TODO Add filename_format_combobox
+        self.filename_format_combobox.SetValue(OUTPUT_FORMATS[self.opt_manager.options["output_format"]])
         self.filename_custom_format.SetValue(self.opt_manager.options["output_template"])
         self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])
         #TODO Add confirm_exit_checkbox
@@ -319,7 +312,7 @@ class GeneralTab(TabPanel):
 
     def save_options(self):
         self.opt_manager.options["locale_name"] = self.LOCALE_NAMES[self.language_combobox.GetValue()]
-        #TODO Add filename_format_combobox
+        self.opt_manager.options["output_format"] = OUTPUT_FORMATS[self.filename_format_combobox.GetValue()]
         self.opt_manager.options["output_template"] = self.filename_custom_format.GetValue()
         self.opt_manager.options["restrict_filenames"] = self.filename_ascii_checkbox.GetValue()
         #TODO Add confirm_exit_checkbox

@@ -431,15 +431,18 @@ class MainFrame(wx.Frame):
                 self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
 
     def _update_videoformat_combobox(self):
-        video_formats = list(DEFAULT_FORMATS.values())
+        formats = list(DEFAULT_FORMATS.values())
 
         for vformat in self.opt_manager.options["selected_video_formats"]:
-            video_formats.append(FORMATS[vformat])
+            formats.append(FORMATS[vformat])
+
+        for aformat in self.opt_manager.options["selected_audio_formats"]:
+            formats.append(FORMATS[aformat])
 
         self._videoformat_combobox.Clear()
-        self._videoformat_combobox.AppendItems(video_formats)
+        self._videoformat_combobox.AppendItems(formats)
 
-        current_index = self._videoformat_combobox.FindString(FORMATS[self.opt_manager.options["video_format"]])
+        current_index = self._videoformat_combobox.FindString(FORMATS[self.opt_manager.options["selected_format"]])
 
         if current_index == wx.NOT_FOUND:
             self._videoformat_combobox.SetSelection(0)
@@ -449,7 +452,7 @@ class MainFrame(wx.Frame):
         self._update_videoformat(None)
 
     def _update_videoformat(self, event):
-        self.opt_manager.options["video_format"] = FORMATS[self._videoformat_combobox.GetValue()]
+        self.opt_manager.options["selected_format"] = FORMATS[self._videoformat_combobox.GetValue()]
 
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()

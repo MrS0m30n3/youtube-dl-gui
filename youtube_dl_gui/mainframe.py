@@ -51,6 +51,8 @@ from .utils import (
 
 from .formats import (
     DEFAULT_FORMATS,
+    VIDEO_FORMATS,
+    AUDIO_FORMATS,
     FORMATS
 )
 
@@ -452,7 +454,18 @@ class MainFrame(wx.Frame):
         self._update_videoformat(None)
 
     def _update_videoformat(self, event):
-        self.opt_manager.options["selected_format"] = FORMATS[self._videoformat_combobox.GetValue()]
+        self.opt_manager.options["selected_format"] = selected_format = FORMATS[self._videoformat_combobox.GetValue()]
+
+        if selected_format in VIDEO_FORMATS:
+            self.opt_manager.options["video_format"] = selected_format
+            self.opt_manager.options["to_audio"] = False
+        elif selected_format in AUDIO_FORMATS:
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["audio_format"] = selected_format
+            self.opt_manager.options["to_audio"] = True
+        else:
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["to_audio"] = False
 
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()

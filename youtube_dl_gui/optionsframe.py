@@ -33,7 +33,7 @@ from .formats import (
     AUDIO_FORMATS,
     FORMATS
 )
-#TODO Bind events
+#TODO Review widgets values
 #TODO Adjust layout
 #TODO Set frame's min size
 #TODO Add labels to gettext

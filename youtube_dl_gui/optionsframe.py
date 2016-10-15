@@ -264,10 +264,10 @@ class GeneralTab(TabPanel):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
         self.language_label = self.crt_statictext("Language")
-        self.language_combobox = self.crt_combobox(list(self.LOCALE_NAMES.values()))
+        self.language_combobox = self.crt_combobox(list(self.LOCALE_NAMES.values()), event_handler=self._on_language)
 
         self.filename_format_label = self.crt_statictext("Filename format")
-        self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()))
+        self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()), event_handler=self._on_filename)
         self.filename_custom_format = self.crt_textctrl()
 
         self.filename_opts_label = self.crt_statictext("Filename options")
@@ -276,12 +276,14 @@ class GeneralTab(TabPanel):
         self.more_opts_label = self.crt_statictext("More options")
         self.confirm_exit_checkbox = self.crt_checkbox("Confirm on exit")
 
-        self.shutdown_checkbox = self.crt_checkbox("Shutdown")
+        self.shutdown_checkbox = self.crt_checkbox("Shutdown", event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
-        self.confirm_exit_checkbox.Disable()
-
         self._set_layout()
+
+        self.confirm_exit_checkbox.Disable()
+        if os.name == "nt":
+            self.sudo_textctrl.Hide()
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -310,6 +312,21 @@ class GeneralTab(TabPanel):
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
 
+    def _on_language(self, event):
+        """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""
+        wx.MessageBox("In order for the changes to take effect please restart {0}.".format(__appname__),
+                      "Restart",
+                      wx.OK | wx.ICON_INFORMATION,
+                      self)
+
+    def _on_filename(self, event):
+        """Event handler for the wx.EVT_COMBOBOX of the filename_format_combobox."""
+        self.filename_custom_format.Enable(self.filename_format_combobox.GetValue() == OUTPUT_FORMATS[3])
+
+    def _on_shutdown(self, event):
+        """Event handler for the wx.EVT_CHECKBOX of the shutdown_checkbox."""
+        self.sudo_textctrl.Enable(self.shutdown_checkbox.GetValue())
+
     #TODO Implement load-save for confirm_exit_checkbox widget
 
     def load_options(self):
@@ -319,6 +336,9 @@ class GeneralTab(TabPanel):
         self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])
         self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
         self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
+
+        self._on_filename(None)
+        self._on_shutdown(None)
 
     def save_options(self):
         self.opt_manager.options["locale_name"] = self.LOCALE_NAMES[self.language_combobox.GetValue()]

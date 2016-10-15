@@ -207,6 +207,8 @@ class OptionsManager(object):
             selected_audio_formats (list): List that contains the selected
                 audio formats to display on the main window.
 
+            selected_format (string): Current format selected on the main window.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -256,7 +258,8 @@ class OptionsManager(object):
             'main_win_size': (710, 490),
             'opts_win_size': (640, 270),
             'selected_video_formats': [],
-            'selected_audio_formats': []
+            'selected_audio_formats': [],
+            'selected_format': '0'
         }
 
     def load_from_file(self):

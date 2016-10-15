@@ -34,7 +34,7 @@ Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` 
 
 
 ## Requirements
-[Python](http://www.python.org) 2.7+, [wxPython](http://wxpython.org), [FFMPEG & FFPROBE](http://www.ffmpeg.org) (optional, to convert video files to audio-only files).
+[Python](http://www.python.org) 2.7+, [wxPython](http://wxpython.org), [twodict](https://pypi.python.org/pypi/twodict/1.2), [FFMPEG & FFPROBE](http://www.ffmpeg.org) (optional, to convert video files to audio-only files).
 
 ## Authors
 

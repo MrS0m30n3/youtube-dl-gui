@@ -447,7 +447,7 @@ class DownloadsTab(TabPanel):
         super(DownloadsTab, self).__init__(*args, **kwargs)
 
         self.subtitles_label = self.crt_statictext("Subtitles")
-        self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES)
+        self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES, event_handler=self._on_subtitles)
         self.subtitles_lang_listbox = self.crt_listbox(list(self.SUBS_LANG.values()))
 
         self.subtitles_opts_label = self.crt_statictext("Subtitles options")
@@ -555,6 +555,10 @@ class DownloadsTab(TabPanel):
 
         return filesize_box_sizer
 
+    def _on_subtitles(self, event):
+        """Event handler for the wx.EVT_COMBOBOX of the subtitles_combobox."""
+        self.subtitles_lang_listbox.Enable(self.subtitles_combobox.GetValue() == self.SUBS_CHOICES[-1])
+
     def load_options(self):
         if self.opt_manager.options["write_subs"]:
             self.subtitles_combobox.SetValue(self.SUBS_CHOICES[3])
@@ -574,6 +578,8 @@ class DownloadsTab(TabPanel):
         self.filesize_max_spinctrl.SetValue(self.opt_manager.options["max_filesize"])
         self.filesize_min_sizeunit_combobox.SetValue(self.FILESIZES[self.opt_manager.options["min_filesize_unit"]])
         self.filesize_max_sizeunit_combobox.SetValue(self.FILESIZES[self.opt_manager.options["max_filesize_unit"]])
+
+        self._on_subtitles(None)
 
     def save_options(self):
         subs_choice = self.SUBS_CHOICES.index(self.subtitles_combobox.GetValue())

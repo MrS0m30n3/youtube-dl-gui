@@ -707,9 +707,9 @@ class MainFrame(wx.Frame):
         else:
             textctrl = wx.TextCtrl(self._panel, style=style)
 
-        #if event_handler is not None:
-            #textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
-            #textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
+        if event_handler is not None:
+            textctrl.Bind(wx.EVT_TEXT_PASTE, event_handler)
+            textctrl.Bind(wx.EVT_MIDDLE_DOWN, event_handler)
 
         if os.name == 'nt':
             # Enable CTRL+A on Windows
@@ -957,7 +957,6 @@ class MainFrame(wx.Frame):
         click of the mouse.
 
         """
-        # REFACTOR Remove not used anymore
         if event.ClassName == self.wxEVT_TEXT_PASTE:
             self._paste_from_clipboard()
         else:
@@ -965,9 +964,10 @@ class MainFrame(wx.Frame):
             self._paste_from_clipboard()
             wx.TheClipboard.UsePrimarySelection(False)
 
+        # REFACTOR Remove not used anymore
         # Dynamically add urls after download process has started
-        if self.download_manager is not None:
-            self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
+        #if self.download_manager is not None:
+            #self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
 
     def _on_download(self, event):
         """Event handler of the self._download_btn widget.

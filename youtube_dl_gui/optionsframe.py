@@ -93,6 +93,7 @@ class OptionsFrame(wx.Frame):
         self.Bind(wx.EVT_CLOSE, self._on_close)
 
         self._set_layout()
+        self.load_all_options()
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.VERTICAL)

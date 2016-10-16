@@ -33,7 +33,6 @@ from .formats import (
     AUDIO_FORMATS,
     FORMATS
 )
-#TODO Review widgets values
 #TODO Adjust layout
 #TODO Set frame's min size
 #TODO Add labels to gettext
@@ -456,7 +455,7 @@ class DownloadsTab(TabPanel):
         self.playlist_box = self.crt_staticbox("Playlist")
 
         self.playlist_start_label = self.crt_statictext("Start")
-        self.playlist_start_spinctrl = self.crt_spinctrl()
+        self.playlist_start_spinctrl = self.crt_spinctrl((1, 9999))
         self.playlist_stop_label = self.crt_statictext("Stop")
         self.playlist_stop_spinctrl = self.crt_spinctrl()
         self.playlist_max_label = self.crt_statictext("Max")
@@ -465,10 +464,10 @@ class DownloadsTab(TabPanel):
         self.filesize_box = self.crt_staticbox("Filesize")
 
         self.filesize_min_label = self.crt_statictext("Min")
-        self.filesize_min_spinctrl = self.crt_spinctrl()
+        self.filesize_min_spinctrl = self.crt_spinctrl((0, 1024))
         self.filesize_min_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
         self.filesize_max_label = self.crt_statictext("Max")
-        self.filesize_max_spinctrl = self.crt_spinctrl()
+        self.filesize_max_spinctrl = self.crt_spinctrl((0, 1024))
         self.filesize_max_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
 
         self._set_layout()
@@ -619,7 +618,7 @@ class AdvancedTab(TabPanel):
         super(AdvancedTab, self).__init__(*args, **kwargs)
 
         self.retries_label = self.crt_statictext("Retries")
-        self.retries_spinctrl = self.crt_spinctrl()
+        self.retries_spinctrl = self.crt_spinctrl((1, 999))
 
         self.auth_label = self.crt_statictext("Authentication")
 

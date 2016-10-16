@@ -284,6 +284,8 @@ class GeneralTab(TabPanel):
         if os.name == "nt":
             self.sudo_textctrl.Hide()
 
+        self.sudo_textctrl.SetToolTip(wx.ToolTip("SUDO password"))
+
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
         vertical_sizer = wx.BoxSizer(wx.VERTICAL)

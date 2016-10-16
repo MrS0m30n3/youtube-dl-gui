@@ -222,7 +222,7 @@ class OptionsManager(object):
             'audio_quality': '5',
             'restrict_filenames': False,
             'output_format': 1,
-            'output_template': '%(uploader)s/%(title)s.%(ext)s',  #TODO Fix path on Windows
+            'output_template': os.path.join('%(uploader)s', '%(title)s.%(ext)s'),
             'playlist_start': 1,
             'playlist_end': 0,
             'max_downloads': 0,

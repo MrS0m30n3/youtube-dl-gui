@@ -1000,8 +1000,7 @@ class MainFrame(wx.Frame):
         the options window.
 
         """
-        print "Have to adjust the options window first!!"
-        #self._options_frame.load_all_options()
+        self._options_frame.load_all_options()
         self._options_frame.Show()
 
     def _on_close(self, event):
@@ -1025,7 +1024,7 @@ class MainFrame(wx.Frame):
 
         self.opt_manager.options["save_path_dirs"] = self._path_combobox.GetStrings()
 
-        #self._options_frame.save_all_options()
+        self._options_frame.save_all_options()
         self.opt_manager.save_to_file()
 
         self.Destroy()

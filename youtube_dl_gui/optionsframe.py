@@ -259,6 +259,34 @@ class GeneralTab(TabPanel):
         ('tr_TR', 'Turkish')
     ])
 
+    OUTPUT_TEMPLATES = [
+        "Id",
+        "Title",
+        #"Url",
+        "Ext",
+        "Uploader",
+        "Resolution",
+        "Autonumber",
+        "",
+        #"License",
+        #"Duration",
+        "View Count",
+        "Like Count",
+        "Dislike Count",
+        "Comment Count",
+        "Average Rating",
+        "Age Limit",
+        "Width",
+        "Height",
+        #"Protocol",
+        "Extractor",
+        "",
+        "Playlist",
+        "Playlist Index",
+        #"Playlist Id",
+        #"Playlist Title"
+    ]
+
     BUTTONS_SIZE = (30, -1)
 
     def __init__(self, *args, **kwargs):
@@ -280,6 +308,9 @@ class GeneralTab(TabPanel):
 
         self.shutdown_checkbox = self.crt_checkbox("Shutdown on download completion", event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
+
+        # Build the menu for the custom format button
+        self.custom_format_menu = self._build_custom_format_menu()
 
         self._set_layout()
 
@@ -321,9 +352,33 @@ class GeneralTab(TabPanel):
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
 
+    def _build_custom_format_menu(self):
+        menu = wx.Menu()
+
+        for template in self.OUTPUT_TEMPLATES:
+            if template:
+                menu_item = menu.Append(wx.ID_ANY, template)
+                menu.Bind(wx.EVT_MENU, self._on_template, menu_item)
+            else:
+                menu.AppendSeparator()
+
+        return menu
+
+    def _on_template(self, event):
+        """Event handler for the wx.EVT_MENU of the custom_format_menu menu items."""
+        label = self.custom_format_menu.GetLabelText(event.GetId())
+        template = "-%({0})s".format(label.lower().replace(' ', '_'))
+
+        custom_format = self.filename_custom_format.GetValue()
+        custom_format += template
+        self.filename_custom_format.SetValue(custom_format)
+
     def _on_format(self, event):
         """Event handler for the wx.EVT_BUTTON of the filename_custom_format_button."""
-        print event #TODO implement
+        event_object_pos = event.EventObject.GetPosition()
+        event_object_height = event.EventObject.GetSize()[1]
+        event_object_pos = (event_object_pos[0], event_object_pos[1] + event_object_height)
+        self.PopupMenu(self.custom_format_menu, event_object_pos)
 
     def _on_language(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""
@@ -334,7 +389,10 @@ class GeneralTab(TabPanel):
 
     def _on_filename(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the filename_format_combobox."""
-        self.filename_custom_format.Enable(self.filename_format_combobox.GetValue() == OUTPUT_FORMATS[3])
+        custom_selected = self.filename_format_combobox.GetValue() == OUTPUT_FORMATS[3]
+
+        self.filename_custom_format.Enable(custom_selected)
+        self.filename_custom_format_button.Enable(custom_selected)
 
     def _on_shutdown(self, event):
         """Event handler for the wx.EVT_CHECKBOX of the shutdown_checkbox."""

@@ -259,6 +259,8 @@ class GeneralTab(TabPanel):
         ('tr_TR', 'Turkish')
     ])
 
+    BUTTONS_SIZE = (30, -1)
+
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
@@ -268,6 +270,7 @@ class GeneralTab(TabPanel):
         self.filename_format_label = self.crt_statictext("Filename format")
         self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()), event_handler=self._on_filename)
         self.filename_custom_format = self.crt_textctrl()
+        self.filename_custom_format_button = self.crt_button("...", self._on_format)
 
         self.filename_opts_label = self.crt_statictext("Filename options")
         self.filename_ascii_checkbox = self.crt_checkbox("Restrict filenames to ASCII")
@@ -295,7 +298,12 @@ class GeneralTab(TabPanel):
 
         vertical_sizer.Add(self.filename_format_label)
         vertical_sizer.Add(self.filename_format_combobox, flag=wx.EXPAND | wx.ALL, border=5)
-        vertical_sizer.Add(self.filename_custom_format, flag=wx.EXPAND | wx.ALL, border=5)
+
+        custom_format_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        custom_format_sizer.Add(self.filename_custom_format, 1, wx.ALIGN_CENTER_VERTICAL)
+        custom_format_sizer.Add(self.filename_custom_format_button)
+
+        vertical_sizer.Add(custom_format_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         vertical_sizer.Add(self.filename_opts_label)
         vertical_sizer.Add(self.filename_ascii_checkbox, flag=wx.ALL, border=5)
@@ -312,6 +320,10 @@ class GeneralTab(TabPanel):
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
+
+    def _on_format(self, event):
+        """Event handler for the wx.EVT_BUTTON of the filename_custom_format_button."""
+        print event #TODO implement
 
     def _on_language(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""

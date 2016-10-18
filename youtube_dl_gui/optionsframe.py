@@ -275,7 +275,7 @@ class GeneralTab(TabPanel):
         self.more_opts_label = self.crt_statictext("More options")
         self.confirm_exit_checkbox = self.crt_checkbox("Confirm on exit")
 
-        self.shutdown_checkbox = self.crt_checkbox("Shutdown", event_handler=self._on_shutdown)
+        self.shutdown_checkbox = self.crt_checkbox("Shutdown on download completion", event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
         self._set_layout()

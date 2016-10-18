@@ -44,12 +44,16 @@ Options
 * Add Swedish on available subtitles
 * Add Hebrew on available subtitles
 * Localization option: add country flags
+* Add '-v' flag to extra options
+* Add '--ignore-config' flag to extra options
+* Add '--recode-video' to Formats tab
 
 Other
 =====
 * README.md add slackbuild
 * README.md add new images
 
+* About dialog show youtube-dl version
 * Extract filename info on 'Already Downloaded'
 * Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
 * Update setup.py

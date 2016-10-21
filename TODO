@@ -1,6 +1,7 @@
 NEW_LAYOUT
 ==========
 * Update & re-enable options window
+* Savepath combobox remove READONLY style?
 * Swap some of the Error messages with Info
 * REFACTOR tag downloadmanager.py:663
 * Adjust layout see #131

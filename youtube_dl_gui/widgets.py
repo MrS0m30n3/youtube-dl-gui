@@ -319,6 +319,24 @@ class CustomComboBox(wx.Panel):
     def _on_button(self, event):
         self.Popup()
 
+    def _calc_popup_position(self):
+        tc_x_axis, tc_y_axis = self.textctrl.ClientToScreen((0, 0))
+        _, tc_height = self.textctrl.GetSize()
+
+        return tc_x_axis, tc_y_axis + tc_height
+
+    def _calc_popup_size(self):
+        me_width, _ = self.GetSize()
+        _, tc_height = self.textctrl.GetSize()
+        _, screen_height = wx.DisplaySize()
+
+        _, me_y_axis = self.GetScreenPosition()
+
+        available_height = screen_height - (me_y_axis + tc_height)
+        sug_width, sug_height = self.listbox.GetAdjustedSize(me_width, tc_height, available_height)
+
+        return me_width, sug_height
+
     # wx.ComboBox methods
 
     def Dismiss(self):
@@ -356,17 +374,8 @@ class CustomComboBox(wx.Panel):
         return not self.textctrl.GetValue()
 
     def Popup(self):
-        # Calculate the position & size of the popup
-        tc_x_axis, tc_y_axis = self.textctrl.ClientToScreen((0, 0))
-        _, tc_height = self.textctrl.GetSize()
-        _, self_y_axis = self.GetScreenPosition()
-        self_width, _ = self.GetSize()
-        _, screen_height = wx.DisplaySize()
-
-        max_height = screen_height - (self_y_axis + tc_height)
-
-        self.listbox.SetPosition((tc_x_axis, tc_y_axis + tc_height))
-        self.listbox.SetSize(self.listbox.GetAdjustedSize(self_width, tc_height, max_height))
+        self.listbox.SetPosition(self._calc_popup_position())
+        self.listbox.SetSize(self._calc_popup_size())
 
         self.listbox.Popup()
 

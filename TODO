@@ -67,6 +67,7 @@ Other
 * Logging system using the Python 'logging' module
 * Use youtube-dl directly from python instead of using the subprocess module
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
+* Non-Windows shutdown using D-Bus instead of 'shutdown'
 
 Invalid
 =======

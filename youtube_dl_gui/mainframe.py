@@ -49,6 +49,8 @@ from .utils import (
     get_time
 )
 
+from .widgets import CustomComboBox
+
 from .formats import (
     DEFAULT_FORMATS,
     VIDEO_FORMATS,
@@ -267,7 +269,7 @@ class MainFrame(wx.Frame):
         self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"])
 
         self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
-        self._videoformat_combobox = ExtComboBox(self._panel, style=wx.CB_READONLY)
+        self._videoformat_combobox = CustomComboBox(self._panel, style=wx.CB_READONLY)
 
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
@@ -298,12 +300,13 @@ class MainFrame(wx.Frame):
 
         # Bind extra events
         self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self._on_statuslist_right_click, self._status_list)
-        self.Bind(wx.EVT_TEXT, self._update_videoformat, self._videoformat_combobox)
         self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
         self.Bind(wx.EVT_LIST_ITEM_SELECTED, self._update_pause_button, self._status_list)
         self.Bind(wx.EVT_LIST_ITEM_DESELECTED, self._update_pause_button, self._status_list)
         self.Bind(wx.EVT_CLOSE, self._on_close)
         self.Bind(wx.EVT_TIMER, self._on_timer, self._app_timer)
+
+        self._videoformat_combobox.Bind(wx.EVT_COMBOBOX, self._update_videoformat)
 
         # Set threads wxCallAfter handlers
         self._set_publisher(self._update_handler, UPDATE_PUB_TOPIC)
@@ -433,16 +436,25 @@ class MainFrame(wx.Frame):
                 self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
 
     def _update_videoformat_combobox(self):
-        formats = list(DEFAULT_FORMATS.values())
-
-        for vformat in self.opt_manager.options["selected_video_formats"]:
-            formats.append(FORMATS[vformat])
-
-        for aformat in self.opt_manager.options["selected_audio_formats"]:
-            formats.append(FORMATS[aformat])
-
         self._videoformat_combobox.Clear()
-        self._videoformat_combobox.AppendItems(formats)
+
+        self._videoformat_combobox.add_items(list(DEFAULT_FORMATS.values()), False)
+
+        vformats = []
+        for vformat in self.opt_manager.options["selected_video_formats"]:
+            vformats.append(FORMATS[vformat])
+
+        aformats = []
+        for aformat in self.opt_manager.options["selected_audio_formats"]:
+            aformats.append(FORMATS[aformat])
+
+        if vformats:
+            self._videoformat_combobox.add_header("Video")
+            self._videoformat_combobox.add_items(vformats)
+
+        if aformats:
+            self._videoformat_combobox.add_header("Audio")
+            self._videoformat_combobox.add_items(aformats)
 
         current_index = self._videoformat_combobox.FindString(FORMATS[self.opt_manager.options["selected_format"]])
 

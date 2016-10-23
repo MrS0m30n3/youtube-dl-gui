@@ -434,7 +434,7 @@ class FormatsTab(TabPanel):
         self.audio_formats_checklistbox = self.crt_checklistbox(list(AUDIO_FORMATS.values()))
 
         self.post_proc_opts_label = self.crt_statictext("Post-Process options")
-        self.keep_video_checkbox = self.crt_checkbox("Keep original video")
+        self.keep_video_checkbox = self.crt_checkbox("Keep original files")
         self.extract_audio_checkbox = self.crt_checkbox("Extract audio from video file")
 
         self.audio_quality_label = self.crt_statictext("Audio quality")

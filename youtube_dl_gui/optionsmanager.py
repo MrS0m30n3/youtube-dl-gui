@@ -218,7 +218,7 @@ class OptionsManager(object):
             'second_video_format': '0',
             'to_audio': False,
             'keep_video': False,
-            'audio_format': 'mp3',
+            'audio_format': '',
             'audio_quality': '5',
             'restrict_filenames': False,
             'output_format': 1,
@@ -303,7 +303,7 @@ class OptionsManager(object):
             '264', '138', '242', '243', '244', '247', '248', '271', '272', '82',
             '83', '84', '85', '100', '101', '102', '139', '140', '141', '171', '172')
 
-        VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis', 'opus')
+        VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis', 'opus', '')
 
         VALID_AUDIO_QUALITY = ('0', '5', '9')
 

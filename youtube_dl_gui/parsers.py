@@ -97,7 +97,7 @@ class OptionsParser(object):
             OptionHolder('save_path', '-o', ''),
             OptionHolder('embed_subs', '--embed-subs', False, ['write_auto_subs', 'write_subs']),
             OptionHolder('to_audio', '-x', False),
-            OptionHolder('audio_format', '--audio-format', '', ['to_audio']),
+            OptionHolder('audio_format', '--audio-format', ''),
             OptionHolder('video_format', '-f', '0'),
             OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
             OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio'])
@@ -128,7 +128,21 @@ class OptionsParser(object):
 
         # Parse basic youtube-dl command line options
         for option in self._ydl_options:
-            if option.check_requirements(options_dict):
+            #NOTE Special case should be removed
+            if option.name == "to_audio":
+                if options_dict["audio_format"] == "":
+                    value = options_dict[option.name]
+
+                    if value != option.default_value:
+                        options_list.append(option.flag)
+            elif option.name == "audio_format":
+                value = options_dict[option.name]
+
+                if value != option.default_value:
+                    options_list.append("-x")
+                    options_list.append(option.flag)
+                    options_list.append(to_string(value))
+            elif option.check_requirements(options_dict):
                 value = options_dict[option.name]
 
                 if value != option.default_value:

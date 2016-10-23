@@ -470,14 +470,16 @@ class MainFrame(wx.Frame):
 
         if selected_format in VIDEO_FORMATS:
             self.opt_manager.options["video_format"] = selected_format
-            self.opt_manager.options["to_audio"] = False
+            #self.opt_manager.options["to_audio"] = False
+            self.opt_manager.options["audio_format"] = ""  #NOTE Set to default value, check parsers.py
         elif selected_format in AUDIO_FORMATS:
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
             self.opt_manager.options["audio_format"] = selected_format
-            self.opt_manager.options["to_audio"] = True
+            #self.opt_manager.options["to_audio"] = True
         else:
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
-            self.opt_manager.options["to_audio"] = False
+            self.opt_manager.options["audio_format"] = ""
+            #self.opt_manager.options["to_audio"] = False
 
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()

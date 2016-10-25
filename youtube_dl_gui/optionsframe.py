@@ -103,6 +103,7 @@ class OptionsFrame(wx.Frame):
 
         buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
         buttons_sizer.Add(self.reset_button)
+        buttons_sizer.AddSpacer((5, -1))
         buttons_sizer.Add(self.close_button)
 
         main_sizer.Add(buttons_sizer, flag=wx.ALIGN_RIGHT | wx.ALL, border=5)
@@ -327,27 +328,27 @@ class GeneralTab(TabPanel):
         vertical_sizer.Add(self.language_label)
         vertical_sizer.Add(self.language_combobox, flag=wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(self.filename_format_label)
+        vertical_sizer.Add(self.filename_format_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.filename_format_combobox, flag=wx.EXPAND | wx.ALL, border=5)
 
         custom_format_sizer = wx.BoxSizer(wx.HORIZONTAL)
         custom_format_sizer.Add(self.filename_custom_format, 1, wx.ALIGN_CENTER_VERTICAL)
+        custom_format_sizer.AddSpacer((5, -1))
         custom_format_sizer.Add(self.filename_custom_format_button)
 
         vertical_sizer.Add(custom_format_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
-        vertical_sizer.Add(self.filename_opts_label)
+        vertical_sizer.Add(self.filename_opts_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.filename_ascii_checkbox, flag=wx.ALL, border=5)
 
-        vertical_sizer.Add(self.more_opts_label)
+        vertical_sizer.Add(self.more_opts_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.confirm_exit_checkbox, flag=wx.ALL, border=5)
 
         shutdown_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        shutdown_sizer.Add(self.shutdown_checkbox)
-        shutdown_sizer.AddSpacer((-1, -1), 1)
+        shutdown_sizer.Add(self.shutdown_checkbox, 2)
         shutdown_sizer.Add(self.sudo_textctrl, 1)
 
-        vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
+        vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
@@ -449,11 +450,11 @@ class FormatsTab(TabPanel):
         vertical_sizer.Add(self.video_formats_label)
         vertical_sizer.Add(self.video_formats_checklistbox, 1, wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(self.audio_formats_label)
+        vertical_sizer.Add(self.audio_formats_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.audio_formats_checklistbox, 1, wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(self.post_proc_opts_label)
-        vertical_sizer.Add(self.keep_video_checkbox, flag=wx.LEFT | wx.RIGHT | wx.TOP, border=5)
+        vertical_sizer.Add(self.post_proc_opts_label, flag=wx.TOP, border=5)
+        vertical_sizer.Add(self.keep_video_checkbox, flag=wx.ALL, border=5)
         vertical_sizer.Add(self.extract_audio_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         audio_quality_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -461,7 +462,7 @@ class FormatsTab(TabPanel):
         audio_quality_sizer.AddSpacer((20, -1))
         audio_quality_sizer.Add(self.audio_quality_combobox)
 
-        vertical_sizer.Add(audio_quality_sizer, flag=wx.LEFT | wx.RIGHT, border=10)
+        vertical_sizer.Add(audio_quality_sizer, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
@@ -554,14 +555,14 @@ class DownloadsTab(TabPanel):
 
         vertical_sizer.Add(self.subtitles_label)
         vertical_sizer.Add(self.subtitles_combobox, flag=wx.EXPAND | wx.ALL, border=5)
-        vertical_sizer.Add(self.subtitles_lang_listbox, 1, wx.EXPAND | wx.ALL, border=5)
+        vertical_sizer.Add(self.subtitles_lang_listbox, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
-        vertical_sizer.Add(self.subtitles_opts_label)
+        vertical_sizer.Add(self.subtitles_opts_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.embed_subs_checkbox, flag=wx.ALL, border=5)
 
         plist_and_fsize_sizer = wx.BoxSizer(wx.HORIZONTAL)
         plist_and_fsize_sizer.Add(self._build_playlist_sizer(), 1, wx.EXPAND)
-        plist_and_fsize_sizer.AddSpacer((10, -1))
+        plist_and_fsize_sizer.AddSpacer((5, -1))
         plist_and_fsize_sizer.Add(self._build_filesize_sizer(), 1, wx.EXPAND)
 
         vertical_sizer.Add(plist_and_fsize_sizer, 1, wx.EXPAND | wx.TOP, border=5)
@@ -570,63 +571,40 @@ class DownloadsTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def _build_playlist_sizer(self):
-        left_right_border = 80
-
         playlist_box_sizer = wx.StaticBoxSizer(self.playlist_box, wx.VERTICAL)
         playlist_box_sizer.AddSpacer((-1, 10))
 
-        start_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        start_plist_sizer.AddSpacer((left_right_border, -1))
-        start_plist_sizer.Add(self.playlist_start_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        start_plist_sizer.AddSpacer((-1, -1), 1)
-        start_plist_sizer.Add(self.playlist_start_spinctrl)
-        start_plist_sizer.AddSpacer((left_right_border, -1))
+        border = wx.GridBagSizer(5, 40)
 
-        stop_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        stop_plist_sizer.AddSpacer((left_right_border, -1))
-        stop_plist_sizer.Add(self.playlist_stop_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        stop_plist_sizer.AddSpacer((-1, -1), 1)
-        stop_plist_sizer.Add(self.playlist_stop_spinctrl)
-        stop_plist_sizer.AddSpacer((left_right_border, -1))
+        border.Add(self.playlist_start_label, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        border.Add(self.playlist_start_spinctrl, (0, 1))
 
-        max_plist_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        max_plist_sizer.AddSpacer((left_right_border, -1))
-        max_plist_sizer.Add(self.playlist_max_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        max_plist_sizer.AddSpacer((-1, -1), 1)
-        max_plist_sizer.Add(self.playlist_max_spinctrl)
-        max_plist_sizer.AddSpacer((left_right_border, -1))
+        border.Add(self.playlist_stop_label, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        border.Add(self.playlist_stop_spinctrl, (1, 1))
 
-        playlist_box_sizer.Add(start_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
-        playlist_box_sizer.Add(stop_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
-        playlist_box_sizer.Add(max_plist_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        border.Add(self.playlist_max_label, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        border.Add(self.playlist_max_spinctrl, (2, 1))
+
+        playlist_box_sizer.Add(border, flag=wx.ALIGN_CENTER)
 
         return playlist_box_sizer
 
     def _build_filesize_sizer(self):
-        left_right_border = 40
-
         filesize_box_sizer = wx.StaticBoxSizer(self.filesize_box, wx.VERTICAL)
-        filesize_box_sizer.AddSpacer((-1, 10))
 
-        max_filesize_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        max_filesize_sizer.AddSpacer((left_right_border, -1))
-        max_filesize_sizer.Add(self.filesize_max_spinctrl)
-        max_filesize_sizer.AddSpacer((-1, -1), 1)
-        max_filesize_sizer.Add(self.filesize_max_sizeunit_combobox)
-        max_filesize_sizer.AddSpacer((left_right_border, -1))
+        border = wx.GridBagSizer(5, 20)
 
-        min_filesize_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        min_filesize_sizer.AddSpacer((left_right_border, -1))
-        min_filesize_sizer.Add(self.filesize_min_spinctrl)
-        min_filesize_sizer.AddSpacer((-1, -1), 1)
-        min_filesize_sizer.Add(self.filesize_min_sizeunit_combobox)
-        min_filesize_sizer.AddSpacer((left_right_border, -1))
+        border.Add(self.filesize_max_label, (0, 0), (1, 2), wx.ALIGN_CENTER_HORIZONTAL)
 
-        filesize_box_sizer.Add(self.filesize_max_label, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        filesize_box_sizer.Add(max_filesize_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        border.Add(self.filesize_max_spinctrl, (1, 0))
+        border.Add(self.filesize_max_sizeunit_combobox, (1, 1))
 
-        filesize_box_sizer.Add(self.filesize_min_label, flag=wx.ALIGN_CENTER_HORIZONTAL)
-        filesize_box_sizer.Add(min_filesize_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        border.Add(self.filesize_min_label, (2, 0), (1, 2), wx.ALIGN_CENTER_HORIZONTAL)
+
+        border.Add(self.filesize_min_spinctrl, (3, 0))
+        border.Add(self.filesize_min_sizeunit_combobox, (3, 1))
+
+        filesize_box_sizer.Add(border, flag=wx.ALIGN_CENTER)
 
         return filesize_box_sizer
 
@@ -688,7 +666,7 @@ class DownloadsTab(TabPanel):
 
 class AdvancedTab(TabPanel):
 
-    TEXTCTRL_SIZE = (250, -1)
+    TEXTCTRL_SIZE = (300, -1)
 
     def __init__(self, *args, **kwargs):
         super(AdvancedTab, self).__init__(*args, **kwargs)
@@ -730,84 +708,55 @@ class AdvancedTab(TabPanel):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
         vertical_sizer = wx.BoxSizer(wx.VERTICAL)
 
+        # Set up retries box
         retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        retries_sizer.AddSpacer((10, -1))
         retries_sizer.Add(self.retries_label, flag=wx.ALIGN_CENTER_VERTICAL)
         retries_sizer.AddSpacer((20, -1))
         retries_sizer.Add(self.retries_spinctrl)
-        retries_sizer.AddSpacer((10, -1))
+        vertical_sizer.Add(retries_sizer, flag=wx.ALIGN_RIGHT | wx.TOP | wx.RIGHT, border=5)
 
-        vertical_sizer.Add(retries_sizer, flag=wx.ALIGN_RIGHT | wx.TOP, border=5)
+        # Set up authentication box
+        vertical_sizer.Add(self.auth_label, flag=wx.TOP, border=10)
+        auth_sizer = wx.GridBagSizer(5, -1)
 
-        vertical_sizer.Add(self.auth_label, flag=wx.TOP, border=5)
+        auth_sizer.Add(self.username_label, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        auth_sizer.Add(self.username_textctrl, (0, 2))
 
-        username_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        username_sizer.AddSpacer((10, -1))
-        username_sizer.Add(self.username_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        username_sizer.AddSpacer((-1, -1), 1)
-        username_sizer.Add(self.username_textctrl)
-        username_sizer.AddSpacer((10, -1))
+        auth_sizer.Add(self.password_label, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        auth_sizer.Add(self.password_textctrl, (1, 2))
 
-        vertical_sizer.Add(username_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        auth_sizer.Add(self.video_pass_label, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        auth_sizer.Add(self.video_pass_textctrl, (2, 2))
 
-        password_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        password_sizer.AddSpacer((10, -1))
-        password_sizer.Add(self.password_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        password_sizer.AddSpacer((-1, -1), 1)
-        password_sizer.Add(self.password_textctrl)
-        password_sizer.AddSpacer((10, -1))
+        auth_sizer.AddGrowableCol(1)
+        vertical_sizer.Add(auth_sizer, flag=wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(password_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        # Set up network box
+        vertical_sizer.Add(self.network_label, flag=wx.TOP, border=10)
+        network_sizer = wx.GridBagSizer(5, -1)
 
-        video_pass_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        video_pass_sizer.AddSpacer((10, -1))
-        video_pass_sizer.Add(self.video_pass_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        video_pass_sizer.AddSpacer((-1, -1), 1)
-        video_pass_sizer.Add(self.video_pass_textctrl)
-        video_pass_sizer.AddSpacer((10, -1))
+        network_sizer.Add(self.proxy_label, (0, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        network_sizer.Add(self.proxy_textctrl, (0, 2))
 
-        vertical_sizer.Add(video_pass_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        network_sizer.Add(self.useragent_label, (1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        network_sizer.Add(self.useragent_textctrl, (1, 2))
 
-        vertical_sizer.Add(self.network_label, flag=wx.TOP, border=15)
+        network_sizer.Add(self.referer_label, (2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        network_sizer.Add(self.referer_textctrl, (2, 2))
 
-        proxy_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        proxy_sizer.AddSpacer((10, -1))
-        proxy_sizer.Add(self.proxy_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        proxy_sizer.AddSpacer((-1, -1), 1)
-        proxy_sizer.Add(self.proxy_textctrl)
-        proxy_sizer.AddSpacer((10, -1))
+        network_sizer.AddGrowableCol(1)
+        vertical_sizer.Add(network_sizer, flag=wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(proxy_sizer, flag=wx.EXPAND | wx.TOP, border=5)
-
-        useragent_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        useragent_sizer.AddSpacer((10, -1))
-        useragent_sizer.Add(self.useragent_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        useragent_sizer.AddSpacer((-1, -1), 1)
-        useragent_sizer.Add(self.useragent_textctrl)
-        useragent_sizer.AddSpacer((10, -1))
-
-        vertical_sizer.Add(useragent_sizer, flag=wx.EXPAND | wx.TOP, border=5)
-
-        referer_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        referer_sizer.AddSpacer((10, -1))
-        referer_sizer.Add(self.referer_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        referer_sizer.AddSpacer((-1, -1), 1)
-        referer_sizer.Add(self.referer_textctrl)
-        referer_sizer.AddSpacer((10, -1))
-
-        vertical_sizer.Add(referer_sizer, flag=wx.EXPAND | wx.TOP, border=5)
-
-        vertical_sizer.Add(self.logging_label, flag=wx.TOP, border=15)
+        # Set up logging box
+        vertical_sizer.Add(self.logging_label, flag=wx.TOP, border=10)
 
         logging_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        logging_sizer.AddSpacer((10, -1))
-        logging_sizer.Add(self.enable_log_checkbox)
-        logging_sizer.AddSpacer((-1, -1), 1)
+        logging_sizer.Add(self.enable_log_checkbox, 1)
         logging_sizer.Add(self.view_log_button)
+        logging_sizer.AddSpacer((5, -1))
         logging_sizer.Add(self.clear_log_button)
-        logging_sizer.AddSpacer((10, -1))
 
-        vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.TOP, border=5)
+        vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.ALL, border=5)
 
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
@@ -871,7 +820,7 @@ class ExtraTab(TabPanel):
         vertical_sizer.Add(self.cmdline_args_label)
         vertical_sizer.Add(self.cmdline_args_textctrl, 1, wx.EXPAND | wx.ALL, border=5)
 
-        vertical_sizer.Add(self.extra_opts_label)
+        vertical_sizer.Add(self.extra_opts_label, flag=wx.TOP, border=5)
 
         extra_opts_sizer = wx.WrapSizer()
         extra_opts_sizer.Add(self.ignore_errors_checkbox)

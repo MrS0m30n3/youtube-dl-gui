@@ -168,8 +168,8 @@ class TabPanel(wx.Panel):
     TEXTCTRL_SIZE = (-1, -1)
     SPINCTRL_SIZE = (70, -1)
 
-    CHECKLISTBOX_SIZE = (-1, 100)
-    LISTBOX_SIZE = (-1, 100)
+    CHECKLISTBOX_SIZE = (-1, 80)
+    LISTBOX_SIZE = (-1, 80)
 
     def __init__(self, parent, notebook):
         wx.Panel.__init__(self, notebook)

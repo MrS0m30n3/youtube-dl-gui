@@ -638,10 +638,8 @@ class MainFrame(wx.Frame):
 
     def _on_settings(self, event):
         event_object_pos = event.EventObject.GetPosition()
-
-        # Update the object +30 on Y axis to make the menu look like it belongs to the button
-        event_object_pos = (event_object_pos[0], event_object_pos[1] + 30)
-
+        event_object_height = event.EventObject.GetSize()[1]
+        event_object_pos = (event_object_pos[0], event_object_pos[1] + event_object_height)
         self.PopupMenu(self._settings_menu, event_object_pos)
 
     def _on_viewlog(self, event):

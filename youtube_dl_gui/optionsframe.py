@@ -34,7 +34,6 @@ from .formats import (
     FORMATS
 )
 #TODO Adjust layout
-#TODO Set frame's min size
 #TODO Add labels to gettext
 #TODO Move all formats, etc to formats.py
 
@@ -49,6 +48,8 @@ class OptionsFrame(wx.Frame):
     """
 
     FRAME_TITLE = _("Options")
+
+    FRAMES_MIN_SIZE = (500, 440)
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options["opts_win_size"])
@@ -91,6 +92,8 @@ class OptionsFrame(wx.Frame):
         self.Bind(wx.EVT_BUTTON, self._on_reset, self.reset_button)
         self.Bind(wx.EVT_BUTTON, self._on_close, self.close_button)
         self.Bind(wx.EVT_CLOSE, self._on_close)
+
+        self.SetMinSize(self.FRAMES_MIN_SIZE)
 
         self._set_layout()
         self.load_all_options()

@@ -7,6 +7,7 @@ NEW_LAYOUT
 * Adjust layout see #131
     * Multiple items selection (ListCtrl)
     * Change default video formats
+* Labels back to gettext
 
 GUI
 ===
@@ -68,6 +69,7 @@ Other
 * Use youtube-dl directly from python instead of using the subprocess module
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
+* LogManager always write time
 
 Invalid
 =======

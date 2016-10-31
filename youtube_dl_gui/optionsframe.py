@@ -34,8 +34,7 @@ from .formats import (
     FORMATS
 )
 #TODO Adjust layout
-#TODO Add labels to gettext
-#TODO Move all formats, etc to formats.py
+#REFACTOR Move all formats, etc to formats.py
 
 
 class OptionsFrame(wx.Frame):

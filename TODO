@@ -1,12 +1,11 @@
 NEW_LAYOUT
 ==========
-* Update & re-enable options window
-* Savepath combobox remove READONLY style?
+* Savepath combobox remove READONLY style
 * Swap some of the Error messages with Info
 * REFACTOR tag downloadmanager.py:663
 * Adjust layout see #131
-    * Multiple items selection (ListCtrl)
-    * Change default video formats
+* Multiple items selection (ListCtrl)
+* Change default video formats
 * Labels back to gettext
 
 GUI
@@ -24,21 +23,18 @@ Structure
 * Create devscripts/ directory and move all the utility scripts there
 * Create docs/ directory and move all the guides there
 * Re-structure package
-* Give icons the same name and keep them on different directories
-    (see: https://github.com/deluge-torrent/deluge/tree/develop/deluge/ui/data/icons/hicolor)
 
 Localization
 ============
 * Update translation files
 * Add support for right to left languages (hebrew, arabic)
-* Fix paths on R2L layouts
+    * Fix paths on R2L layouts
 * Compile *.po files at build time
 * Script to automatically check translations (use google-translate library)
 * Write bot to automatically check the translations and merge them?
 
 Options
 =======
-* Option for basic - advanced video formats
 * Option to disable-enable the 'download finished' pop up message
 * Option to enable-disable items deletion from the filesystem
 * Option to validate item deletion 'Are you sure?'
@@ -69,7 +65,6 @@ Other
 * Use youtube-dl directly from python instead of using the subprocess module
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
-* LogManager always write time
 
 Invalid
 =======

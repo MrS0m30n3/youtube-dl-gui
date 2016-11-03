@@ -33,7 +33,6 @@ from .formats import (
     AUDIO_FORMATS,
     FORMATS
 )
-#TODO Adjust layout
 #REFACTOR Move all formats, etc to formats.py
 
 

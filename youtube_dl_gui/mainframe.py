@@ -341,9 +341,12 @@ class MainFrame(wx.Frame):
         return menu
 
     def _on_statuslist_right_click(self, event):
-        selected = self._status_list.get_selected()
+        selected = event.GetIndex()
 
         if selected != -1:
+            self._status_list.deselect_all()
+            self._status_list.Select(selected, on=1)
+
             self.PopupMenu(self._statuslist_menu)
 
     def _on_open_dest(self, event):
@@ -1193,6 +1196,10 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def get_selected(self):
         return self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+
+    def deselect_all(self):
+        for index in xrange(self._list_index):
+            self.Select(index, on=0)
 
     def get_items(self):
         """Returns a list of items inside the ListCtrl.

@@ -274,7 +274,7 @@ class MainFrame(wx.Frame):
         self._download_text = self._create_statictext(self.DOWNLOAD_LIST_LABEL)
         self._status_list = ListCtrl(self.STATUSLIST_COLUMNS,
                                      parent=self._panel,
-                                     style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.LC_SINGLE_SEL)
+                                     style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
 
         # Dictionary to store all the buttons
         self._buttons = {}

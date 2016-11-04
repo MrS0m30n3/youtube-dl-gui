@@ -613,21 +613,23 @@ class MainFrame(wx.Frame):
             self._update_pause_button(None)
 
     def _on_pause(self, event):
-        selected_row = self._status_list.get_selected()
+        selected_rows = self._status_list.get_all_selected()
 
-        if selected_row == -1:
+        if not selected_rows:
             self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
         else:
-            object_id = self._status_list.GetItemData(selected_row)
-            download_item = self._download_list.get_item(object_id)
+            for selected_row in selected_rows:
+                object_id = self._status_list.GetItemData(selected_row)
+                download_item = self._download_list.get_item(object_id)
 
-            if download_item.stage == "Queued":
-                self._download_list.change_stage(object_id, "Paused")
-            elif download_item.stage == "Paused":
-                self._download_list.change_stage(object_id, "Queued")
+                if download_item.stage == "Queued":
+                    self._download_list.change_stage(object_id, "Paused")
+                elif download_item.stage == "Paused":
+                    self._download_list.change_stage(object_id, "Queued")
+
+                self._status_list._update_from_item(selected_row, download_item)
 
             self._update_pause_button(None)
-            self._status_list._update_from_item(selected_row, download_item)
 
     def _on_start(self, event):
         if self.download_manager is None:

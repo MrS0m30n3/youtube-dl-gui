@@ -594,15 +594,23 @@ class MainFrame(wx.Frame):
             print self._download_list._items_list
 
     def _on_reload(self, event):
-        for index, item in enumerate(self._download_list.get_items()):
-            if item.stage == "Paused" or item.stage == "Completed":
-                item.reset()
-                self._status_list._update_from_item(index, item)
+        selected_rows = self._status_list.get_all_selected()
 
-                # Create deselect event to reset Pause button
-                selected_row = self._status_list.get_selected()
-                if selected_row != -1:
-                    self._status_list.Select(selected_row, 0)
+        if not selected_rows:
+            for index, item in enumerate(self._download_list.get_items()):
+                if item.stage == "Paused" or item.stage == "Completed":
+                    item.reset()
+                    self._status_list._update_from_item(index, item)
+        else:
+            for selected_row in selected_rows:
+                object_id = self._status_list.GetItemData(selected_row)
+                item = self._download_list.get_item(object_id)
+
+                if item.stage == "Paused" or item.stage == "Completed":
+                    item.reset()
+                    self._status_list._update_from_item(selected_row, item)
+
+            self._update_pause_button(None)
 
     def _on_pause(self, event):
         selected_row = self._status_list.get_selected()

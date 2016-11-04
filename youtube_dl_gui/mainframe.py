@@ -531,20 +531,21 @@ class MainFrame(wx.Frame):
                 index = self._status_list.GetNextSelected(index - 1)
 
     def _on_play(self, event):
-        selected_row = self._status_list.get_selected()
+        selected_rows = self._status_list.get_all_selected()
 
-        if selected_row == -1:
+        if not selected_rows:
             self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
         else:
-            object_id = self._status_list.GetItemData(selected_row)
-            selected_download_item = self._download_list.get_item(object_id)
+            for selected_row in selected_rows:
+                object_id = self._status_list.GetItemData(selected_row)
+                selected_download_item = self._download_list.get_item(object_id)
 
-            if selected_download_item.stage == "Completed":
-                if selected_download_item.filenames:
-                    filename = selected_download_item.get_files()[-1]
-                    open_file(filename)
-            else:
-                self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
+                if selected_download_item.stage == "Completed":
+                    if selected_download_item.filenames:
+                        filename = selected_download_item.get_files()[-1]
+                        open_file(filename)
+                else:
+                    self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
         selected_row = self._status_list.get_selected()
@@ -1199,6 +1200,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
     def get_selected(self):
         return self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
+
+    def get_all_selected(self):
+        return [index for index in xrange(self._list_index) if self.IsSelected(index)]
 
     def deselect_all(self):
         for index in xrange(self._list_index):

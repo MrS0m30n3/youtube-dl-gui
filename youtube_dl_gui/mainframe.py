@@ -486,9 +486,9 @@ class MainFrame(wx.Frame):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
 
     def _on_delete(self, event):
-        selected_row = self._status_list.get_selected()
+        index = self._status_list.GetFirstSelected()
 
-        if selected_row == -1:
+        if index == -1:
             #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
 
             dlg = ButtonsChoiceDialog(self, ["Remove all", "Remove completed"], "No items selected. Please pick an action.", "Delete")
@@ -508,24 +508,27 @@ class MainFrame(wx.Frame):
                         self._status_list.remove_row(self._download_list.index(ditem.object_id))
                         self._download_list.remove(ditem.object_id)
         else:
-            object_id = self._status_list.GetItemData(selected_row)
-            selected_download_item = self._download_list.get_item(object_id)
+            while index >= 0:
+                object_id = self._status_list.GetItemData(index)
+                selected_download_item = self._download_list.get_item(object_id)
 
-            if selected_download_item.stage == "Active":
-                self._create_popup("Selected item is active. Cannot remove", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-            else:
-                if selected_download_item.stage == "Completed":
-                    dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
+                if selected_download_item.stage == "Active":
+                    self._create_popup("Selected item is active. Cannot remove", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+                else:
+                    if selected_download_item.stage == "Completed":
+                        dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
 
-                    result = dlg.ShowModal() == wx.ID_YES
-                    dlg.Destroy()
+                        result = dlg.ShowModal() == wx.ID_YES
+                        dlg.Destroy()
 
-                    if result:
-                        for cur_file in selected_download_item.get_files():
-                            remove_file(cur_file)
+                        if result:
+                            for cur_file in selected_download_item.get_files():
+                                remove_file(cur_file)
 
-                self._status_list.remove_row(selected_row)
-                self._download_list.remove(object_id)
+                    self._status_list.remove_row(index)
+                    self._download_list.remove(object_id)
+
+                index = self._status_list.GetNextSelected(index - 1)
 
     def _on_play(self, event):
         selected_row = self._status_list.get_selected()

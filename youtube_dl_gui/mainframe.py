@@ -571,17 +571,25 @@ class MainFrame(wx.Frame):
             print self._download_list._items_list
 
     def _on_arrow_down(self, event):
-        selected_row = self._status_list.get_selected()
+        index = self._status_list.get_next_selected(reverse=True)
 
-        if selected_row == -1:
+        if index == -1:
             self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
         else:
-            object_id = self._status_list.GetItemData(selected_row)
-            download_item = self._download_list.get_item(object_id)
+            while index >= 0:
+                object_id = self._status_list.GetItemData(index)
+                download_item = self._download_list.get_item(object_id)
 
-            if self._download_list.move_down(object_id):
-                self._status_list.move_item_down(selected_row)
-                self._status_list._update_from_item(selected_row + 1, download_item)
+                new_index = index + 1
+                if new_index >= self._status_list.GetItemCount():
+                    new_index = self._status_list.GetItemCount() - 1
+
+                if not self._status_list.IsSelected(new_index):
+                    self._download_list.move_down(object_id)
+                    self._status_list.move_item_down(index)
+                    self._status_list._update_from_item(new_index, download_item)
+
+                index = self._status_list.get_next_selected(index, True)
 
             print self._download_list._items_list
 
@@ -1215,6 +1223,25 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     def deselect_all(self):
         for index in xrange(self._list_index):
             self.Select(index, on=0)
+
+    def get_next_selected(self, start=-1, reverse=False):
+        if start == -1:
+            start = self._list_index - 1 if reverse else 0
+        else:
+            # start from next item
+            if reverse:
+                start -= 1
+            else:
+                start += 1
+
+        end = -1 if reverse else self._list_index
+        step = -1 if reverse else 1
+
+        for index in xrange(start, end, step):
+            if self.IsSelected(index):
+                return index
+
+        return -1
 
     def get_items(self):
         """Returns a list of items inside the ListCtrl.

@@ -548,17 +548,25 @@ class MainFrame(wx.Frame):
                     self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
-        selected_row = self._status_list.get_selected()
+        index = self._status_list.GetFirstSelected()
 
-        if selected_row == -1:
+        if index == -1:
             self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
         else:
-            object_id = self._status_list.GetItemData(selected_row)
-            download_item = self._download_list.get_item(object_id)
+            while index >= 0:
+                object_id = self._status_list.GetItemData(index)
+                download_item = self._download_list.get_item(object_id)
 
-            if self._download_list.move_up(object_id):
-                self._status_list.move_item_up(selected_row)
-                self._status_list._update_from_item(selected_row - 1, download_item)
+                new_index = index - 1
+                if new_index < 0:
+                    new_index = 0
+
+                if not self._status_list.IsSelected(new_index):
+                    self._download_list.move_up(object_id)
+                    self._status_list.move_item_up(index)
+                    self._status_list._update_from_item(new_index, download_item)
+
+                index = self._status_list.GetNextSelected(index)
 
             print self._download_list._items_list
 

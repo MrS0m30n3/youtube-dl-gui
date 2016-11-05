@@ -230,13 +230,13 @@ class MainFrame(wx.Frame):
         # Set the data for all the wx.Button items
         # name, label, size, event_handler
         buttons_data = (
-            ("delete", self.DELETE_LABEL, (55, 55), self._on_delete, wx.Button),
-            ("play", self.PLAY_LABEL, (55, 55), self._on_play, wx.Button),
-            ("up", self.UP_LABEL, (55, 55), self._on_arrow_up, wx.Button),
-            ("down", self.DOWN_LABEL, (55, 55), self._on_arrow_down, wx.Button),
-            ("reload", self.RELOAD_LABEL, (55, 55), self._on_reload, wx.Button),
-            ("pause", self.PAUSE_LABEL, (55, 55), self._on_pause, wx.Button),
-            ("start", self.START_LABEL, (55, 55), self._on_start, wx.Button),
+            ("delete", self.DELETE_LABEL, (-1, -1), self._on_delete, wx.BitmapButton),
+            ("play", self.PLAY_LABEL, (-1, -1), self._on_play, wx.BitmapButton),
+            ("up", self.UP_LABEL, (-1, -1), self._on_arrow_up, wx.BitmapButton),
+            ("down", self.DOWN_LABEL, (-1, -1), self._on_arrow_down, wx.BitmapButton),
+            ("reload", self.RELOAD_LABEL, (-1, -1), self._on_reload, wx.BitmapButton),
+            ("pause", self.PAUSE_LABEL, (-1, -1), self._on_pause, wx.BitmapButton),
+            ("start", self.START_LABEL, (-1, -1), self._on_start, wx.BitmapButton),
             ("savepath", "...", (40, 27), self._on_savepath, wx.Button),
             ("add", self.ADD_LABEL, (-1, -1), self._on_add, wx.Button)
         )
@@ -263,6 +263,8 @@ class MainFrame(wx.Frame):
         self._panel = wx.Panel(self)
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
+
+        #REFACTOR Move to buttons_data
         self._settings_button = self._create_bitmap_button(self._bitmaps["settings"], (30, 30), self._on_settings)
 
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
@@ -283,7 +285,12 @@ class MainFrame(wx.Frame):
         for item in buttons_data:
             name, label, size, evt_handler, parent = item
 
-            button = parent(self._panel, label=label, size=size)
+            button = parent(self._panel, size=size)
+
+            if parent == wx.Button:
+                button.SetLabel(label)
+            elif parent == wx.BitmapButton:
+                button.SetToolTip(wx.ToolTip(label))
 
             if name in self._bitmaps:
                 button.SetBitmap(self._bitmaps[name], wx.TOP)
@@ -437,6 +444,7 @@ class MainFrame(wx.Frame):
                 break
 
         self._buttons["pause"].SetLabel(label)
+        self._buttons["pause"].SetToolTip(wx.ToolTip(label))
         self._buttons["pause"].SetBitmap(bitmap, wx.TOP)
 
     def _update_videoformat_combobox(self):
@@ -863,6 +871,7 @@ class MainFrame(wx.Frame):
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
         self._buttons["start"].SetLabel("Start")
+        self._buttons["start"].SetToolTip(wx.ToolTip("Start"))
         self._buttons["start"].SetBitmap(self._bitmaps["start"], wx.TOP)
 
     def _print_stats(self):
@@ -988,6 +997,7 @@ class MainFrame(wx.Frame):
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._buttons["start"].SetLabel(self.STOP_LABEL)
+            self._buttons["start"].SetToolTip(wx.ToolTip(self.STOP_LABEL))
             self._buttons["start"].SetBitmap(self._bitmaps["stop"], wx.TOP)
 
     def _paste_from_clipboard(self):

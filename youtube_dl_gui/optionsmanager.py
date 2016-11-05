@@ -257,8 +257,8 @@ class OptionsManager(object):
             'locale_name': 'en_US',
             'main_win_size': (710, 490),
             'opts_win_size': (640, 470),
-            'selected_video_formats': [],
-            'selected_audio_formats': [],
+            'selected_video_formats': ['webm', 'mp4'],
+            'selected_audio_formats': ['mp3', 'vorbis'],
             'selected_format': '0'
         }
 

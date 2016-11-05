@@ -654,10 +654,15 @@ class MainFrame(wx.Frame):
             self._update_pause_button(None)
 
     def _on_start(self, event):
-        if self.download_manager is None:
-            self._start_download()
+        if self.update_thread is not None and self.update_thread.is_alive():
+            self._create_popup("Update in progress. Please wait for the update to complete",
+                               self.WARNING_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
         else:
-            self.download_manager.stop_downloads()
+            if self.download_manager is None:
+                self._start_download()
+            else:
+                self.download_manager.stop_downloads()
 
     def _on_savepath(self, event):
         dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)

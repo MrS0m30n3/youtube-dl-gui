@@ -1,11 +1,7 @@
 NEW_LAYOUT
 ==========
-* Savepath combobox remove READONLY style
-* Swap some of the Error messages with Info
+* Fix playlist support
 * REFACTOR tag downloadmanager.py:663
-* Adjust layout see #131
-* Multiple items selection (ListCtrl)
-* Change default video formats
 * Labels back to gettext
 
 GUI
@@ -17,6 +13,7 @@ GUI
 * Remember list of urls after closing & re-opening
 * Settings menu add "Statistics"
 * ListCtrl double click to "Rename"
+* Savepath combobox remove READONLY style
 
 Structure
 =========

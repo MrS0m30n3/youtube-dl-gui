@@ -794,40 +794,46 @@ class MainFrame(wx.Frame):
 
     def _set_layout(self):
         """Sets the layout of the main window. """
-        main_sizer = wx.BoxSizer(wx.VERTICAL)
-
+        main_sizer = wx.BoxSizer()
         panel_sizer = wx.BoxSizer(wx.VERTICAL)
 
         top_sizer = wx.BoxSizer(wx.HORIZONTAL)
         top_sizer.Add(self._url_text, 0, wx.ALIGN_BOTTOM | wx.BOTTOM, 5)
-        top_sizer.AddSpacer((100, 20), 1)
-        top_sizer.Add(self._settings_button, flag=wx.ALIGN_RIGHT)
-        panel_sizer.Add(top_sizer, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 5)
+        top_sizer.AddSpacer((-1, -1), 1)
+        top_sizer.Add(self._settings_button)
+        panel_sizer.Add(top_sizer, 0, wx.EXPAND)
 
         panel_sizer.Add(self._url_list, 1, wx.EXPAND)
 
         mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
         mid_sizer.Add(self._folder_icon)
         mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.AddSpacer((5, -1))
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
-        mid_sizer.AddSpacer((10, 20), 1)
+        mid_sizer.AddSpacer((10, -1), 1)
         mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.AddSpacer((5, -1))
         mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
         panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
-        panel_sizer.Add(self._download_text, 0, wx.BOTTOM | wx.LEFT, 5)
+        panel_sizer.Add(self._download_text, 0, wx.BOTTOM, 5)
         panel_sizer.Add(self._status_list, 2, wx.EXPAND)
 
         bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         bottom_sizer.Add(self._buttons["delete"])
+        bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["play"])
+        bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["up"])
+        bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["down"])
+        bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["reload"])
+        bottom_sizer.AddSpacer((5, -1))
         bottom_sizer.Add(self._buttons["pause"])
-        bottom_sizer.AddSpacer((100, 20), 1)
+        bottom_sizer.AddSpacer((10, -1), 1)
         bottom_sizer.Add(self._buttons["start"])
-        panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.TOP, 10)
+        panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.TOP, 5)
 
         self._panel.SetSizer(panel_sizer)
 

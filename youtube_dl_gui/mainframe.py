@@ -488,7 +488,7 @@ class MainFrame(wx.Frame):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
 
     def _on_delete(self, event):
-        index = self._status_list.GetFirstSelected()
+        index = self._status_list.get_next_selected()
 
         if index == -1:
             #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
@@ -529,8 +529,9 @@ class MainFrame(wx.Frame):
 
                     self._status_list.remove_row(index)
                     self._download_list.remove(object_id)
+                    index -= 1
 
-                index = self._status_list.GetNextSelected(index - 1)
+                index = self._status_list.get_next_selected(index)
 
     def _on_play(self, event):
         selected_rows = self._status_list.get_all_selected()

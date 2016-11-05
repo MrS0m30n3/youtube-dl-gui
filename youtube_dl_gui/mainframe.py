@@ -539,9 +539,10 @@ class MainFrame(wx.Frame):
     def _on_play(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        if not selected_rows:
-            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        else:
+        #if not selected_rows:
+            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        #else:
+        if selected_rows:
             for selected_row in selected_rows:
                 object_id = self._status_list.GetItemData(selected_row)
                 selected_download_item = self._download_list.get_item(object_id)
@@ -556,9 +557,10 @@ class MainFrame(wx.Frame):
     def _on_arrow_up(self, event):
         index = self._status_list.get_next_selected()
 
-        if index == -1:
-            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        else:
+        #if index == -1:
+            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        #else:
+        if index != -1:
             while index >= 0:
                 object_id = self._status_list.GetItemData(index)
                 download_item = self._download_list.get_item(object_id)
@@ -579,9 +581,10 @@ class MainFrame(wx.Frame):
     def _on_arrow_down(self, event):
         index = self._status_list.get_next_selected(reverse=True)
 
-        if index == -1:
-            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        else:
+        #if index == -1:
+            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        #else:
+        if index != -1:
             while index >= 0:
                 object_id = self._status_list.GetItemData(index)
                 download_item = self._download_list.get_item(object_id)
@@ -621,9 +624,10 @@ class MainFrame(wx.Frame):
     def _on_pause(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        if not selected_rows:
-            self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        else:
+        #if not selected_rows:
+            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+        #else:
+        if selected_rows:
             #REFACTOR Use DoubleStageButton for this and check stage
             if self._buttons["pause"].GetLabel() == "Pause":
                 new_state = "Paused"

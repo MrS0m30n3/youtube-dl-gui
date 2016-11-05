@@ -419,22 +419,24 @@ class MainFrame(wx.Frame):
         self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
-        selected_row = self._status_list.get_selected()
+        selected_rows = self._status_list.get_all_selected()
 
-        if selected_row != -1:
-            object_id = self._status_list.GetItemData(selected_row)
+        label = "Pause"
+        bitmap = self._bitmaps["pause"]
+
+        for row in selected_rows:
+            object_id = self._status_list.GetItemData(row)
             download_item = self._download_list.get_item(object_id)
 
             if download_item.stage == "Paused":
-                self._buttons["pause"].SetLabel("Resume")
-                self._buttons["pause"].SetBitmap(self._bitmaps["resume"], wx.TOP)
-            elif download_item.stage == "Queued":
-                self._buttons["pause"].SetLabel("Pause")
-                self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
-        else:
-            if self._buttons["pause"].GetLabel() == "Resume":
-                self._buttons["pause"].SetLabel("Pause")
-                self._buttons["pause"].SetBitmap(self._bitmaps["pause"], wx.TOP)
+                # If we find one or more items in Paused
+                # state set the button functionality to resume
+                label = "Resume"
+                bitmap = self._bitmaps["resume"]
+                break
+
+        self._buttons["pause"].SetLabel(label)
+        self._buttons["pause"].SetBitmap(bitmap, wx.TOP)
 
     def _update_videoformat_combobox(self):
         self._videoformat_combobox.Clear()
@@ -618,14 +620,18 @@ class MainFrame(wx.Frame):
         if not selected_rows:
             self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
         else:
+            #REFACTOR Use DoubleStageButton for this and check stage
+            if self._buttons["pause"].GetLabel() == "Pause":
+                new_state = "Paused"
+            else:
+                new_state = "Queued"
+
             for selected_row in selected_rows:
                 object_id = self._status_list.GetItemData(selected_row)
                 download_item = self._download_list.get_item(object_id)
 
-                if download_item.stage == "Queued":
-                    self._download_list.change_stage(object_id, "Paused")
-                elif download_item.stage == "Paused":
-                    self._download_list.change_stage(object_id, "Queued")
+                if download_item.stage == "Queued" or download_item.stage == "Paused":
+                    self._download_list.change_stage(object_id, new_state)
 
                 self._status_list._update_from_item(selected_row, download_item)
 

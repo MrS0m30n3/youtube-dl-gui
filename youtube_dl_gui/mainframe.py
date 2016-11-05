@@ -230,15 +230,15 @@ class MainFrame(wx.Frame):
         # Set the data for all the wx.Button items
         # name, label, size, event_handler
         buttons_data = (
-            ("delete", self.DELETE_LABEL, (55, 55), self._on_delete),
-            ("play", self.PLAY_LABEL, (55, 55), self._on_play),
-            ("up", self.UP_LABEL, (55, 55), self._on_arrow_up),
-            ("down", self.DOWN_LABEL, (55, 55), self._on_arrow_down),
-            ("reload", self.RELOAD_LABEL, (55, 55), self._on_reload),
-            ("pause", self.PAUSE_LABEL, (55, 55), self._on_pause),
-            ("start", self.START_LABEL, (55, 55), self._on_start),
-            ("savepath", "...", (40, 27), self._on_savepath),
-            ("add", self.ADD_LABEL, (-1, -1), self._on_add)
+            ("delete", self.DELETE_LABEL, (55, 55), self._on_delete, wx.Button),
+            ("play", self.PLAY_LABEL, (55, 55), self._on_play, wx.Button),
+            ("up", self.UP_LABEL, (55, 55), self._on_arrow_up, wx.Button),
+            ("down", self.DOWN_LABEL, (55, 55), self._on_arrow_down, wx.Button),
+            ("reload", self.RELOAD_LABEL, (55, 55), self._on_reload, wx.Button),
+            ("pause", self.PAUSE_LABEL, (55, 55), self._on_pause, wx.Button),
+            ("start", self.START_LABEL, (55, 55), self._on_start, wx.Button),
+            ("savepath", "...", (40, 27), self._on_savepath, wx.Button),
+            ("add", self.ADD_LABEL, (-1, -1), self._on_add, wx.Button)
         )
 
         # Set the data for the settings menu item
@@ -281,9 +281,9 @@ class MainFrame(wx.Frame):
         self._buttons = {}
 
         for item in buttons_data:
-            name, label, size, evt_handler = item
+            name, label, size, evt_handler, parent = item
 
-            button = wx.Button(self._panel, label=label, size=size)
+            button = parent(self._panel, label=label, size=size)
 
             if name in self._bitmaps:
                 button.SetBitmap(self._bitmaps[name], wx.TOP)

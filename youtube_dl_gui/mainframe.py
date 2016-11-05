@@ -668,7 +668,7 @@ class MainFrame(wx.Frame):
 
         if not urls:
             self._create_popup(self.PROVIDE_URL_MSG,
-                               self.ERROR_LABEL,
+                               self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
             self._url_list.Clear()
@@ -841,7 +841,7 @@ class MainFrame(wx.Frame):
 
         if self.download_manager is not None and self.download_manager.is_alive():
             self._create_popup(self.DOWNLOAD_ACTIVE,
-                               self.ERROR_LABEL,
+                               self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         elif self.update_thread is not None and self.update_thread.is_alive():
             self._create_popup(self.UPDATE_ACTIVE,
@@ -974,7 +974,7 @@ class MainFrame(wx.Frame):
     def _start_download(self):
         if self._status_list.is_empty():
             self._create_popup("No items to download",
-                               self.ERROR_LABEL,
+                               self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
             self._app_timer.Start(100)

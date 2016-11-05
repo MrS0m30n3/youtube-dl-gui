@@ -334,6 +334,8 @@ class MainFrame(wx.Frame):
 
         self._set_layout()
 
+        self._url_list.SetFocus()
+
     def _create_menu_item(self, items):
         menu = wx.Menu()
 

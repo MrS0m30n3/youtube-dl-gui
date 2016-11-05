@@ -119,6 +119,7 @@ class MainFrame(wx.Frame):
     STOP_LABEL = _("Stop")
     INFO_LABEL = _("Info")
     WELCOME_MSG = _("Welcome")
+    WARNING_LABEL = _("Warning")
 
     ADD_LABEL = _("Add")
     DOWNLOAD_LIST_LABEL = _("Download list")
@@ -515,17 +516,17 @@ class MainFrame(wx.Frame):
                 selected_download_item = self._download_list.get_item(object_id)
 
                 if selected_download_item.stage == "Active":
-                    self._create_popup("Selected item is active. Cannot remove", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+                    self._create_popup("Item is active, cannot remove", self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
                 else:
-                    if selected_download_item.stage == "Completed":
-                        dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
+                    #if selected_download_item.stage == "Completed":
+                        #dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
 
-                        result = dlg.ShowModal() == wx.ID_YES
-                        dlg.Destroy()
+                        #result = dlg.ShowModal() == wx.ID_YES
+                        #dlg.Destroy()
 
-                        if result:
-                            for cur_file in selected_download_item.get_files():
-                                remove_file(cur_file)
+                        #if result:
+                            #for cur_file in selected_download_item.get_files():
+                                #remove_file(cur_file)
 
                     self._status_list.remove_row(index)
                     self._download_list.remove(object_id)

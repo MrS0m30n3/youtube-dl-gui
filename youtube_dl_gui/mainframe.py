@@ -533,6 +533,8 @@ class MainFrame(wx.Frame):
 
                 index = self._status_list.get_next_selected(index)
 
+        self._update_pause_button(None)
+
     def _on_play(self, event):
         selected_rows = self._status_list.get_all_selected()
 

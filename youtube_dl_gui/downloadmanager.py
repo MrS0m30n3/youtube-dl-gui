@@ -159,12 +159,10 @@ class DownloadItem(object):
 
             # Extract extra stuff
             if key == "filename":
-                if stats_dict[key] not in self.filenames:
-                    self.filenames.append(stats_dict[key])
+                self.filenames.append(stats_dict[key])
 
             if key == "extension":
-                if stats_dict[key] not in self.extensions:
-                    self.extensions.append(stats_dict[key])
+                self.extensions.append(stats_dict[key])
 
             if key == "path":
                 self.path = stats_dict[key]

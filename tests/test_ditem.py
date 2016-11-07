@@ -46,7 +46,9 @@ class TestItemInit(unittest.TestCase):
              "percent": "0%",
              "speed": "-",
              "eta": "-",
-             "status": "Queued"}
+             "status": "Queued",
+             "playlist_size": "",
+             "playlist_index": ""}
         )
 
 
@@ -144,7 +146,9 @@ class TestUpdateStats(unittest.TestCase):
                                  "speed": "200.00KiB/s",
                                  "eta": "00:38",
                                  "status": "Downloading",
-                                 "path": path})
+                                 "path": path,
+                                 "playlist_size": "10",
+                                 "playlist_index": "1"})
 
         self.assertEqual(self.ditem.path, path)
         self.assertEqual(self.ditem.filenames, ["somefilename"])
@@ -157,10 +161,14 @@ class TestUpdateStats(unittest.TestCase):
              "percent": "2.0%",
              "speed": "200.00KiB/s",
              "eta": "00:38",
-             "status": "Downloading"}
+             "status": "Downloading",
+             "playlist_size": "10",
+             "playlist_index": "1"}
         )
 
-        self.ditem.update_stats({"filename": "someotherfilename", "extension": ".m4a"})
+        self.ditem.update_stats({"filename": "someotherfilename",
+                                 "extension": ".m4a",
+                                 "playlist_index": "2"})
 
         self.assertEqual(self.ditem.filenames, ["somefilename", "someotherfilename"])
         self.assertEqual(self.ditem.extensions, [".mp4", ".m4a"])
@@ -172,7 +180,9 @@ class TestUpdateStats(unittest.TestCase):
              "percent": "2.0%",
              "speed": "200.00KiB/s",
              "eta": "00:38",
-             "status": "Downloading"}
+             "status": "Downloading",
+             "playlist_size": "10",
+             "playlist_index": "2"}
         )
 
     def test_update_stats_invalid_input(self):
@@ -185,7 +195,9 @@ class TestUpdateStats(unittest.TestCase):
                                  "percent": "",
                                  "speed": "",
                                  "eta": "",
-                                 "status": ""})
+                                 "status": "",
+                                 "playlist_size": "",
+                                 "playlist_index": ""})
 
         self.assertEqual(
             self.ditem.progress_stats,
@@ -195,7 +207,9 @@ class TestUpdateStats(unittest.TestCase):
              "percent": "0%",
              "speed": "-",
              "eta": "-",
-             "status": "Queued"}
+             "status": "Queued",
+             "playlist_size": "",
+             "playlist_index": ""}
         )
 
     def test_update_stats_not_string(self):
@@ -246,7 +260,9 @@ class TestReset(unittest.TestCase):
             "percent": "100%",
             "speed": "-",
             "eta": "00:00",
-            "status": "Error"
+            "status": "Error",
+            "playlist_size": "10",
+            "playlist_index": "8"
         }
 
         self.ditem.reset()
@@ -263,7 +279,9 @@ class TestReset(unittest.TestCase):
              "percent": "0%",
              "speed": "-",
              "eta": "-",
-             "status": "Queued"}
+             "status": "Queued",
+             "playlist_size": "",
+             "playlist_index": ""}
         )
 
     def test_reset_paused_stage(self):

@@ -129,7 +129,9 @@ class DownloadItem(object):
             "percent": "0%",
             "speed": "-",
             "eta": "-",
-            "status": self.stage
+            "status": self.stage,
+            "playlist_size": "",
+            "playlist_index": ""
         }
 
         self.progress_stats = dict(self.default_values)
@@ -659,13 +661,13 @@ class Worker(Thread):
 
         # Build the playlist status if there is an update
         # REFACTOR re-implement this on DownloadItem or ListCtrl level?
-        if self._data['playlist_index'] is not None:
-            if 'status' in temp_dict or 'playlist_index' in temp_dict:
-                temp_dict['status'] = '{status} {index}/{size}'.format(
-                        status=self._data['status'],
-                        index=self._data['playlist_index'],
-                        size=self._data['playlist_size']
-                    )
+        #if self._data['playlist_index'] is not None:
+            #if 'status' in temp_dict or 'playlist_index' in temp_dict:
+                #temp_dict['status'] = '{status} {index}/{size}'.format(
+                        #status=self._data['status'],
+                        #index=self._data['playlist_index'],
+                        #size=self._data['playlist_size']
+                    #)
 
         if len(temp_dict):
             self._talk_to_gui('send', temp_dict)

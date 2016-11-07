@@ -1234,10 +1234,20 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self._list_index += 1
 
     def _update_from_item(self, row, download_item):
-        for key in download_item.progress_stats:
+        progress_stats = download_item.progress_stats
+
+        for key in self.columns:
             column = self.columns[key][0]
 
-            self.SetStringItem(row, column, download_item.progress_stats[key])
+            if key == "status" and progress_stats["playlist_index"]:
+                # Not the best place but we build the playlist status here
+                status = "{0} {1}/{2}".format(progress_stats["status"],
+                                              progress_stats["playlist_index"],
+                                              progress_stats["playlist_size"])
+
+                self.SetStringItem(row, column, status)
+            else:
+                self.SetStringItem(row, column, progress_stats[key])
 
     def add_url(self, url):
         """Adds the given url in the ListCtrl.

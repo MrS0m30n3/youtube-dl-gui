@@ -650,27 +650,28 @@ class Worker(Thread):
                 extract_data() function under the downloaders.py module.
 
         """
-        # Temp dictionary which holds the updates
-        temp_dict = {}
+        ## Temp dictionary which holds the updates
+        #temp_dict = {}
 
-        # Update each key
-        for key in data:
-            if self._data[key] != data[key]:
-                self._data[key] = data[key]
-                temp_dict[key] = data[key]
+        ## Update each key
+        #for key in data:
+            #if self._data[key] != data[key]:
+                #self._data[key] = data[key]
+                #temp_dict[key] = data[key]
 
-        # Build the playlist status if there is an update
-        # REFACTOR re-implement this on DownloadItem or ListCtrl level?
-        #if self._data['playlist_index'] is not None:
-            #if 'status' in temp_dict or 'playlist_index' in temp_dict:
-                #temp_dict['status'] = '{status} {index}/{size}'.format(
-                        #status=self._data['status'],
-                        #index=self._data['playlist_index'],
-                        #size=self._data['playlist_size']
-                    #)
+        ## Build the playlist status if there is an update
+        ## REFACTOR re-implement this on DownloadItem or ListCtrl level?
+        ##if self._data['playlist_index'] is not None:
+            ##if 'status' in temp_dict or 'playlist_index' in temp_dict:
+                ##temp_dict['status'] = '{status} {index}/{size}'.format(
+                        ##status=self._data['status'],
+                        ##index=self._data['playlist_index'],
+                        ##size=self._data['playlist_size']
+                    ##)
 
-        if len(temp_dict):
-            self._talk_to_gui('send', temp_dict)
+        #if len(temp_dict):
+            #self._talk_to_gui('send', temp_dict)
+        self._talk_to_gui('send', data)
 
     def _talk_to_gui(self, signal, data):
         """Communicate with the GUI using wxCallAfter and wxPublisher.

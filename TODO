@@ -1,7 +1,5 @@
 NEW_LAYOUT
 ==========
-* Fix playlist support
-* REFACTOR tag downloadmanager.py:663
 * Labels back to gettext
 
 GUI

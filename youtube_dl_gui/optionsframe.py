@@ -868,7 +868,7 @@ class LogGUI(wx.Frame):
     # REFACTOR move it on widgets module
 
     TITLE = _("Log Viewer")
-    FRAME_SIZE = (650, 200)
+    FRAME_SIZE = (650, 300)
 
     def __init__(self, parent=None):
         wx.Frame.__init__(self, parent, title=self.TITLE, size=self.FRAME_SIZE)

@@ -7,6 +7,8 @@ OUTPUT_FORMATS = tdict([
     (0, "ID"),
     (1, "Title"),
     (2, "Title + ID"),
+    (4, "Title + Quality"),
+    (5, "Title + ID + Quality"),
     (3, "Custom")
 ])
 

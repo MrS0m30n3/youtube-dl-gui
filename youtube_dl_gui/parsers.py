@@ -175,6 +175,10 @@ class OptionsParser(object):
             template = "%(title)s.%(ext)s"
         elif options_dict["output_format"] == 2:
             template = "%(title)s-%(id)s.%(ext)s"
+        elif options_dict["output_format"] == 4:
+            template = "%(title)s-%(height)sp.%(ext)s"
+        elif options_dict["output_format"] == 5:
+            template = "%(title)s-%(id)s-%(height)sp.%(ext)s"
         else:
             template = options_dict["output_template"]
 

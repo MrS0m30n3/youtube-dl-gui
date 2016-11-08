@@ -269,7 +269,7 @@ class MainFrame(wx.Frame):
 
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
 
-        self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"])
+        self._folder_icon = self._create_static_bitmap(self._bitmaps["folder"], self._on_open_path)
 
         self._path_combobox = ExtComboBox(self._panel, 5, style=wx.CB_READONLY)
         self._videoformat_combobox = CustomComboBox(self._panel, style=wx.CB_READONLY)
@@ -368,6 +368,9 @@ class MainFrame(wx.Frame):
 
             if download_item.path:
                 open_file(download_item.path)
+
+    def _on_open_path(self, event):
+        open_file(self._path_combobox.GetValue())
 
     def _on_geturl(self, event):
         selected = self._status_list.get_selected()
@@ -770,8 +773,13 @@ class MainFrame(wx.Frame):
 
         return button
 
-    def _create_static_bitmap(self, icon):
-        return wx.StaticBitmap(self._panel, bitmap=icon)
+    def _create_static_bitmap(self, icon, event_handler=None):
+        static_bitmap = wx.StaticBitmap(self._panel, bitmap=icon)
+
+        if event_handler is not None:
+            static_bitmap.Bind(wx.EVT_LEFT_DCLICK, event_handler)
+
+        return static_bitmap
 
     def _create_textctrl(self, style=None, event_handler=None):
         if style is None:

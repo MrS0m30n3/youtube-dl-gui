@@ -99,6 +99,7 @@ def convert_on_bounds(func):
 
 # See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
 # Patch os functions to convert between 'str' and 'unicode' on app bounds
+os_sep = unicode(os.sep)
 os_getenv = convert_on_bounds(os.getenv)
 os_makedirs = convert_on_bounds(os.makedirs)
 os_path_isdir = convert_on_bounds(os.path.isdir)

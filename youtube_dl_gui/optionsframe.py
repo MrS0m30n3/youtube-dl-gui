@@ -24,7 +24,8 @@ from .utils import (
     TwoWayOrderedDict as twodict,
     os_path_exists,
     get_icon_file,
-    read_formats
+    read_formats,
+    os_sep
 )
 
 from .formats import (
@@ -369,11 +370,22 @@ class GeneralTab(TabPanel):
     def _on_template(self, event):
         """Event handler for the wx.EVT_MENU of the custom_format_menu menu items."""
         label = self.custom_format_menu.GetLabelText(event.GetId())
-        template = "-%({0})s".format(label.lower().replace(' ', '_'))
+        label = label.lower().replace(' ', '_')
 
         custom_format = self.filename_custom_format.GetValue()
-        custom_format += template
-        self.filename_custom_format.SetValue(custom_format)
+
+        if label == "ext":
+            prefix = '.'
+        else:
+            prefix = '-'
+
+        if not custom_format or custom_format[-1] == os_sep:
+            # If the custom format is empty or ends with path separator
+            # remove the prefix
+            prefix = ''
+
+        template = "{0}%({1})s".format(prefix, label)
+        self.filename_custom_format.SetValue(custom_format + template)
 
     def _on_format(self, event):
         """Event handler for the wx.EVT_BUTTON of the filename_custom_format_button."""

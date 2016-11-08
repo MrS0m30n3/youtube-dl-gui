@@ -371,7 +371,11 @@ def extract_data(stdout):
     if not stdout:
         return data_dictionary
 
-    stdout = [string for string in stdout.split(' ') if string != '']
+    # We want to keep the spaces in order to extract filenames with
+    # multiple whitespaces correctly. We also keep a copy of the old
+    # 'stdout' for backward compatibility with the old code
+    stdout_with_spaces = stdout.split(' ')
+    stdout = stdout.split()
 
     stdout[0] = stdout[0].lstrip('\r')
 
@@ -380,7 +384,7 @@ def extract_data(stdout):
 
         # Get path, filename & extension
         if stdout[1] == 'Destination:':
-            path, filename, extension = extract_filename(' '.join(stdout[2:]))
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
 
             data_dictionary['path'] = path
             data_dictionary['filename'] = filename
@@ -430,7 +434,7 @@ def extract_data(stdout):
 
         # Get final extension after merging process
         if stdout[1] == 'Merging':
-            path, filename, extension = extract_filename(' '.join(stdout[4:]))
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[4:]))
 
             data_dictionary['path'] = path
             data_dictionary['filename'] = filename

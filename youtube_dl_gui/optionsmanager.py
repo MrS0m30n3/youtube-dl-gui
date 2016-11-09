@@ -213,7 +213,13 @@ class OptionsManager(object):
         #TODO Remove old options & check options validation
         self.options = {
             'save_path': os_path_expanduser('~'),
-            'save_path_dirs': [],
+            'save_path_dirs': [
+                os_path_expanduser('~'),
+                os.path.join(os_path_expanduser('~'), "Downloads"),
+                os.path.join(os_path_expanduser('~'), "Desktop"),
+                os.path.join(os_path_expanduser('~'), "Videos"),
+                os.path.join(os_path_expanduser('~'), "Music"),
+            ],
             'video_format': '0',
             'second_video_format': '0',
             'to_audio': False,

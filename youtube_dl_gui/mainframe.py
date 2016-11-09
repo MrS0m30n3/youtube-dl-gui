@@ -133,13 +133,13 @@ class MainFrame(wx.Frame):
     ABOUT_LABEL = _("About")
     VIEWLOG_LABEL = _("View Log")
 
-    SUCC_REPORT_MSG = _("Successfully downloaded {0} url(s) in {1} "
+    SUCC_REPORT_MSG = _("Successfully downloaded {0} URL(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = _("Downloads completed")
     URL_REPORT_MSG = _("Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4})")
     CLOSING_MSG = _("Stopping downloads")
     CLOSED_MSG = _("Downloads stopped")
-    PROVIDE_URL_MSG = _("You need to provide at least one url")
+    PROVIDE_URL_MSG = _("You need to provide at least one URL")
     DOWNLOAD_STARTED = _("Downloads started")
     CHOOSE_DIRECTORY = _("Choose Directory")
 
@@ -251,7 +251,7 @@ class MainFrame(wx.Frame):
         )
 
         statuslist_menu_data = (
-            (_("Get url"), self._on_geturl),
+            (_("Get URL"), self._on_geturl),
             (_("Get command"), self._on_getcmd),
             (_("Open destination"), self._on_open_dest)
         )

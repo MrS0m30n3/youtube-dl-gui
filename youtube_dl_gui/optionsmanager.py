@@ -261,7 +261,7 @@ class OptionsManager(object):
             'log_time': True,
             'workers_number': 3,
             'locale_name': 'en_US',
-            'main_win_size': (710, 490),
+            'main_win_size': (740, 490),
             'opts_win_size': (640, 490),
             'selected_video_formats': ['webm', 'mp4'],
             'selected_audio_formats': ['mp3', 'm4a', 'vorbis'],

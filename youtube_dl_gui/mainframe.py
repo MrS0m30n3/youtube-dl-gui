@@ -103,7 +103,7 @@ class MainFrame(wx.Frame):
     """
     wxEVT_TEXT_PASTE = 'wxClipboardTextEvent'
 
-    FRAMES_MIN_SIZE = (440, 360)
+    FRAMES_MIN_SIZE = (560, 360)
     BUTTONS_SIZE = (-1, 30)     # REFACTOR remove not used anymore
     BUTTONS_SPACE = (80, -1)    # REFACTOR remove not used anymore
     SIZE_20 = 20                # REFACTOR write directly

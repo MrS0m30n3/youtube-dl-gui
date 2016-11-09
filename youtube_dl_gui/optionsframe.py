@@ -48,7 +48,7 @@ class OptionsFrame(wx.Frame):
 
     FRAME_TITLE = _("Options")
 
-    FRAMES_MIN_SIZE = (500, 440)
+    FRAMES_MIN_SIZE = (500, 470)
 
     def __init__(self, parent):
         wx.Frame.__init__(self, parent, title=self.FRAME_TITLE, size=parent.opt_manager.options["opts_win_size"])

@@ -237,7 +237,7 @@ class MainFrame(wx.Frame):
             ("reload", self.RELOAD_LABEL, (-1, -1), self._on_reload, wx.BitmapButton),
             ("pause", self.PAUSE_LABEL, (-1, -1), self._on_pause, wx.BitmapButton),
             ("start", self.START_LABEL, (-1, -1), self._on_start, wx.BitmapButton),
-            ("savepath", "...", (40, 27), self._on_savepath, wx.Button),
+            ("savepath", "...", (35, -1), self._on_savepath, wx.Button),
             ("add", self.ADD_LABEL, (-1, -1), self._on_add, wx.Button)
         )
 

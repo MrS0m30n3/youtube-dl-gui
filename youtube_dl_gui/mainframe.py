@@ -1496,6 +1496,8 @@ class ButtonsChoiceDialog(wx.Dialog):
         width, height = panel.GetBestSize()
         self.SetSize((width, height * 1.25))
 
+        self.Center()
+
     def _on_close(self, event):
         self.EndModal(event.GetEventObject().GetId())
 

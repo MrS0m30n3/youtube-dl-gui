@@ -1494,7 +1494,7 @@ class ButtonsChoiceDialog(wx.Dialog):
         panel.SetSizer(vertical_sizer)
 
         width, height = panel.GetBestSize()
-        self.SetSize((width, height * 1.25))
+        self.SetSize((width, height * 1.3))
 
         self.Center()
 

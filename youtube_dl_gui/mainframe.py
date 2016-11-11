@@ -306,6 +306,9 @@ class MainFrame(wx.Frame):
         self._settings_menu = self._create_menu_item(settings_menu_data)
         self._statuslist_menu = self._create_menu_item(statuslist_menu_data)
 
+        # Overwrite the menu hover event to avoid changing the statusbar
+        self.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
+
         # Bind extra events
         self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self._on_statuslist_right_click, self._status_list)
         self.Bind(wx.EVT_TEXT, self._update_savepath, self._path_combobox)
@@ -344,9 +347,6 @@ class MainFrame(wx.Frame):
             menu_item = menu.Append(-1, label)
 
             menu.Bind(wx.EVT_MENU, evt_handler, menu_item)
-
-        # Overwrite the hover event to avoid changing the statusbar
-        menu.Bind(wx.EVT_MENU_HIGHLIGHT, lambda event: None)
 
         return menu
 

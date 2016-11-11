@@ -1448,21 +1448,27 @@ class ButtonsChoiceDialog(wx.Dialog):
         for index, label in enumerate(choices):
             buttons.append(wx.Button(panel, index + 1, label))
 
-        # Get the maximum button width
-        max_width = -1
+        # Get the maximum button width & height
+        max_width = max_height = -1
 
         for button in buttons:
-            button_width = button.GetSize()[0]
+            button_width, button_height = button.GetSize()
+
             if button_width > max_width:
                 max_width = button_width
+
+            if button_height > max_height:
+                max_height = button_height
 
         max_width += 10
 
         # Set buttons width & bind events
         for button in buttons:
             if button != buttons[0]:
-                # Dont change the Close button width
-                button.SetMinSize((max_width, -1))
+                button.SetMinSize((max_width, max_height))
+            else:
+                # On Close button change only the height
+                button.SetMinSize((-1, max_height))
 
             button.Bind(wx.EVT_BUTTON, self._on_close)
 

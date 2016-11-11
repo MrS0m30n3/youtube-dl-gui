@@ -192,8 +192,8 @@ class ListBoxPopup(wx.PopupTransientWindow):
         "EVT_COMBOBOX_CLOSEUP": crt_command_event(wx.EVT_COMBOBOX_CLOSEUP)
     }
 
-    def __init__(self):
-        super(ListBoxPopup, self).__init__(None)
+    def __init__(self, parent=None, flags=wx.BORDER_NONE):
+        super(ListBoxPopup, self).__init__(parent, flags)
         self.__listbox = None
 
     def _on_motion(self, event):
@@ -290,7 +290,7 @@ class CustomComboBox(wx.Panel):
         self.button = wx.Button(self, wx.ID_ANY, "▾", size=(tc_height, tc_height))
 
         # Create the ListBoxPopup in two steps
-        self.listbox = ListBoxPopup()
+        self.listbox = ListBoxPopup(self)
         self.listbox.Init()
         self.listbox.Create(self.listbox)
 

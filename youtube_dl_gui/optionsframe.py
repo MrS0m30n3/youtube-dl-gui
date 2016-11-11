@@ -112,6 +112,8 @@ class OptionsFrame(wx.Frame):
 
         self.panel.SetSizer(main_sizer)
 
+        self.panel.Layout()
+
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()

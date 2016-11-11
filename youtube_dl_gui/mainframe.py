@@ -861,6 +861,8 @@ class MainFrame(wx.Frame):
         main_sizer.Add(panel_sizer, 1, wx.ALL | wx.EXPAND, 10)
         self._panel.SetSizer(main_sizer)
 
+        self._panel.Layout()
+
     def _update_youtubedl(self):
         """Update youtube-dl binary to the latest version. """
         #self._update_btn.Disable()

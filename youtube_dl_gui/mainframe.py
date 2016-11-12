@@ -1424,7 +1424,10 @@ class DoubleStageButton(wx.Button):
 
 class ButtonsChoiceDialog(wx.Dialog):
 
-    STYLE = wx.DEFAULT_DIALOG_STYLE | wx.MAXIMIZE_BOX
+    if os.name == "nt":
+        STYLE = wx.DEFAULT_DIALOG_STYLE
+    else:
+        STYLE = wx.DEFAULT_DIALOG_STYLE | wx.MAXIMIZE_BOX
 
     BORDER = 10
 

@@ -1437,13 +1437,11 @@ class ButtonsChoiceDialog(wx.Dialog):
         panel = wx.Panel(self)
 
         info_bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MESSAGE_BOX)
-        cancel_bmp = wx.ArtProvider.GetBitmap(wx.ART_CLOSE, wx.ART_BUTTON)
 
         info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
         msg_text = wx.StaticText(panel, wx.ID_ANY, message)
 
-        buttons.append(wx.Button(panel, wx.ID_CANCEL, "Close"))
-        buttons[0].SetBitmap(cancel_bmp)
+        buttons.append(wx.Button(panel, wx.ID_CANCEL, "Cancel"))
 
         for index, label in enumerate(choices):
             buttons.append(wx.Button(panel, index + 1, label))

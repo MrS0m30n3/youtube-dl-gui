@@ -1,5 +1,6 @@
 NEW_LAYOUT
 ==========
+* Remove old code mainframe.py, optionsframe.py
 * Labels back to gettext
 
 GUI

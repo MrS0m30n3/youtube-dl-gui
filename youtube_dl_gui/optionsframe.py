@@ -306,7 +306,6 @@ class GeneralTab(TabPanel):
 
         self._set_layout()
 
-        self.confirm_exit_checkbox.Disable()
         if os.name == "nt":
             self.sudo_textctrl.Hide()
 
@@ -401,8 +400,6 @@ class GeneralTab(TabPanel):
         """Event handler for the wx.EVT_CHECKBOX of the shutdown_checkbox."""
         self.sudo_textctrl.Enable(self.shutdown_checkbox.GetValue())
 
-    #TODO Implement load-save for confirm_exit_checkbox widget
-
     def load_options(self):
         self.language_combobox.SetValue(self.LOCALE_NAMES[self.opt_manager.options["locale_name"]])
         self.filename_format_combobox.SetValue(OUTPUT_FORMATS[self.opt_manager.options["output_format"]])
@@ -410,6 +407,7 @@ class GeneralTab(TabPanel):
         self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])
         self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
         self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
+        self.confirm_exit_checkbox.SetValue(self.opt_manager.options["confirm_exit"])
 
         #REFACTOR Automatically call on the new methods
         #save_options
@@ -425,6 +423,7 @@ class GeneralTab(TabPanel):
         self.opt_manager.options["restrict_filenames"] = self.filename_ascii_checkbox.GetValue()
         self.opt_manager.options["shutdown"] = self.shutdown_checkbox.GetValue()
         self.opt_manager.options["sudo_password"] = self.sudo_textctrl.GetValue()
+        self.opt_manager.options["confirm_exit"] = self.confirm_exit_checkbox.GetValue()
 
 
 class FormatsTab(TabPanel):

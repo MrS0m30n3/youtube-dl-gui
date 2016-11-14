@@ -999,6 +999,18 @@ class MainFrame(wx.Frame):
         processes are not running.
 
         """
+        if self.opt_manager.options["confirm_exit"]:
+            dlg = wx.MessageDialog(self, "Are you sure you want to exit?", "Exit", wx.YES_NO | wx.ICON_QUESTION)
+
+            result = dlg.ShowModal() == wx.ID_YES
+            dlg.Destroy()
+        else:
+            result = True
+
+        if result:
+            self.close()
+
+    def close(self):
         if self.download_manager is not None:
             self.download_manager.stop_downloads()
             self.download_manager.join()

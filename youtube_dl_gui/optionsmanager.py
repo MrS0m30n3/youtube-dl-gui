@@ -213,6 +213,8 @@ class OptionsManager(object):
 
             ignore_config (boolean): When True will ignore youtube-dl config file options.
 
+            confirm_exit (boolean): When True create popup to confirm exiting youtube-dl-gui.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -271,7 +273,8 @@ class OptionsManager(object):
             'selected_audio_formats': ['mp3', 'm4a', 'vorbis'],
             'selected_format': '0',
             'youtube_dl_debug': False,
-            'ignore_config': True
+            'ignore_config': True,
+            'confirm_exit': True
         }
 
     def load_from_file(self):

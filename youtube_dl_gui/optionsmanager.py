@@ -215,6 +215,8 @@ class OptionsManager(object):
 
             confirm_exit (boolean): When True create popup to confirm exiting youtube-dl-gui.
 
+            native_hls (boolean): When True youtube-dl will use the native HLS implementation.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -274,7 +276,8 @@ class OptionsManager(object):
             'selected_format': '0',
             'youtube_dl_debug': False,
             'ignore_config': True,
-            'confirm_exit': True
+            'confirm_exit': True,
+            'native_hls': True
         }
 
     def load_from_file(self):

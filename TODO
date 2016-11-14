@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Remove old code mainframe.py
 * Labels back to gettext
 
 GUI
@@ -13,6 +12,7 @@ GUI
 * Settings menu add "Statistics"
 * ListCtrl double click to "Rename"
 * Savepath combobox remove READONLY style
+* Show dialog on shutdown
 
 Structure
 =========

@@ -101,7 +101,8 @@ class OptionsParser(object):
             OptionHolder('video_format', '-f', '0'),
             OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
             OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio']),
-            OptionHolder('youtube_dl_debug', '-v', False)
+            OptionHolder('youtube_dl_debug', '-v', False),
+            OptionHolder('ignore_config', '--ignore-config', False)
         ]
 
     def parse(self, options_dictionary):

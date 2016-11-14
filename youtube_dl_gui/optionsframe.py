@@ -816,8 +816,10 @@ class ExtraTab(TabPanel):
         self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE | wx.TE_LINEWRAP)
 
         self.extra_opts_label = self.crt_statictext("Extra options")
+
         self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
         self.youtube_dl_debug_checkbox = self.crt_checkbox("Debug youtube-dl")
+        self.ignore_config_checkbox = self.crt_checkbox("Ignore youtube-dl config")
 
         self._set_layout()
 
@@ -833,6 +835,8 @@ class ExtraTab(TabPanel):
         extra_opts_sizer = wx.WrapSizer()
         extra_opts_sizer.Add(self.ignore_errors_checkbox)
         extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.Add(self.ignore_config_checkbox)
+        extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.youtube_dl_debug_checkbox)
 
         vertical_sizer.Add(extra_opts_sizer, flag=wx.ALL, border=5)
@@ -844,11 +848,13 @@ class ExtraTab(TabPanel):
         self.cmdline_args_textctrl.SetValue(self.opt_manager.options["cmd_args"])
         self.ignore_errors_checkbox.SetValue(self.opt_manager.options["ignore_errors"])
         self.youtube_dl_debug_checkbox.SetValue(self.opt_manager.options["youtube_dl_debug"])
+        self.ignore_config_checkbox.SetValue(self.opt_manager.options["ignore_config"])
 
     def save_options(self):
         self.opt_manager.options["cmd_args"] = self.cmdline_args_textctrl.GetValue()
         self.opt_manager.options["ignore_errors"] = self.ignore_errors_checkbox.GetValue()
         self.opt_manager.options["youtube_dl_debug"] = self.youtube_dl_debug_checkbox.GetValue()
+        self.opt_manager.options["ignore_config"] = self.ignore_config_checkbox.GetValue()
 
 
 class LogGUI(wx.Frame):

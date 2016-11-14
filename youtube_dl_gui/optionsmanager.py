@@ -211,6 +211,8 @@ class OptionsManager(object):
 
             youtube_dl_debug (boolean): When True will pass '-v' flag to youtube-dl.
 
+            ignore_config (boolean): When True will ignore youtube-dl config file options.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -268,7 +270,8 @@ class OptionsManager(object):
             'selected_video_formats': ['webm', 'mp4'],
             'selected_audio_formats': ['mp3', 'm4a', 'vorbis'],
             'selected_format': '0',
-            'youtube_dl_debug': False
+            'youtube_dl_debug': False,
+            'ignore_config': True
         }
 
     def load_from_file(self):

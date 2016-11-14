@@ -35,7 +35,6 @@ Options
 * Option to enable-disable items deletion from the filesystem
 * Option to validate item deletion 'Are you sure?'
 * Add 'native hls option' see issue #49
-* Add Swedish on available subtitles
 * Add Hebrew on available subtitles
 * Localization option: add country flags
 * Add '--recode-video' to Formats tab

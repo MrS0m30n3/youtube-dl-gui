@@ -10,29 +10,17 @@ import gettext
 
 import wx
 
-from .version import __version__
-
-from .info import (
-    __descriptionfull__,
-    __licensefull__,
-    __projecturl__,
-    __appname__,
-    __author__
-)
-
 from .utils import (
     TwoWayOrderedDict as twodict,
     os_path_exists,
     get_icon_file,
-    read_formats,
     os_sep
 )
 
 from .formats import (
     OUTPUT_FORMATS,
     VIDEO_FORMATS,
-    AUDIO_FORMATS,
-    FORMATS
+    AUDIO_FORMATS
 )
 #REFACTOR Move all formats, etc to formats.py
 
@@ -57,6 +45,7 @@ class OptionsFrame(wx.Frame):
         self.app_icon = None
 
         # Set the app icon
+        #REFACTOR Get icon from parent
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
             self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
@@ -117,6 +106,7 @@ class OptionsFrame(wx.Frame):
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()
+        #REFACTOR Parent create specific callback
         self.GetParent()._update_videoformat_combobox()
         self.Hide()
 
@@ -176,7 +166,10 @@ class TabPanel(wx.Panel):
     LISTBOX_SIZE = (-1, 80)
 
     def __init__(self, parent, notebook):
-        wx.Panel.__init__(self, notebook)
+        super(TabPanel, self).__init__(notebook)
+        #REFACTOR Maybe add methods to access those
+        #save_options(key, value)
+        #load_options(key)
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
         self.app_icon = parent.app_icon
@@ -267,14 +260,11 @@ class GeneralTab(TabPanel):
     OUTPUT_TEMPLATES = [
         "Id",
         "Title",
-        #"Url",
         "Ext",
         "Uploader",
         "Resolution",
         "Autonumber",
         "",
-        #"License",
-        #"Duration",
         "View Count",
         "Like Count",
         "Dislike Count",
@@ -283,13 +273,10 @@ class GeneralTab(TabPanel):
         "Age Limit",
         "Width",
         "Height",
-        #"Protocol",
         "Extractor",
         "",
         "Playlist",
         "Playlist Index",
-        #"Playlist Id",
-        #"Playlist Title"
     ]
 
     BUTTONS_SIZE = (30, -1)
@@ -424,6 +411,10 @@ class GeneralTab(TabPanel):
         self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
         self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
 
+        #REFACTOR Automatically call on the new methods
+        #save_options
+        #load_options
+        #NOTE Maybe on init add callback?
         self._on_filename(None)
         self._on_shutdown(None)
 
@@ -628,6 +619,7 @@ class DownloadsTab(TabPanel):
         self.subtitles_lang_listbox.Enable(self.subtitles_combobox.GetValue() == self.SUBS_CHOICES[-1])
 
     def load_options(self):
+        #NOTE Find a better way to do this
         if self.opt_manager.options["write_subs"]:
             self.subtitles_combobox.SetValue(self.SUBS_CHOICES[3])
         elif self.opt_manager.options["write_all_subs"]:

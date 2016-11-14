@@ -495,16 +495,16 @@ class DownloadsTab(TabPanel):
 
     SUBS_LANG = twodict([
         ("en", _("English")),
-        ("el", _("Greek")),
-        ("pt", _("Portuguese")),
         ("fr", _("French")),
+        ("de", _("German")),
+        ("el", _("Greek")),
+        ("he", _("Hebrew")),
         ("it", _("Italian")),
+        ("pt", _("Portuguese")),
         ("ru", _("Russian")),
         ("es", _("Spanish")),
-        ("tr", _("Turkish")),
-        ("de", _("German")),
         ("sv", _("Swedish")),
-        ("he", _("Hebrew"))
+        ("tr", _("Turkish"))
     ])
 
     FILESIZES = twodict([

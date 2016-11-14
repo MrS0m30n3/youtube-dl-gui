@@ -100,7 +100,8 @@ class OptionsParser(object):
             OptionHolder('audio_format', '--audio-format', ''),
             OptionHolder('video_format', '-f', '0'),
             OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
-            OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio'])
+            OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio']),
+            OptionHolder('youtube_dl_debug', '-v', False)
         ]
 
     def parse(self, options_dictionary):

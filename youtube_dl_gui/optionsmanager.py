@@ -209,6 +209,8 @@ class OptionsManager(object):
 
             selected_format (string): Current format selected on the main window.
 
+            youtube_dl_debug (boolean): When True will pass '-v' flag to youtube-dl.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -265,7 +267,8 @@ class OptionsManager(object):
             'opts_win_size': (640, 490),
             'selected_video_formats': ['webm', 'mp4'],
             'selected_audio_formats': ['mp3', 'm4a', 'vorbis'],
-            'selected_format': '0'
+            'selected_format': '0',
+            'youtube_dl_debug': False
         }
 
     def load_from_file(self):

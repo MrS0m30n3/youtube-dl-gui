@@ -38,7 +38,6 @@ Options
 * Add Swedish on available subtitles
 * Add Hebrew on available subtitles
 * Localization option: add country flags
-* Add '-v' flag to extra options
 * Add '--ignore-config' flag to extra options
 * Add '--recode-video' to Formats tab
 

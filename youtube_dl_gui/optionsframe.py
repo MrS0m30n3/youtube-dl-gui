@@ -835,11 +835,11 @@ class ExtraTab(TabPanel):
         vertical_sizer.Add(self.extra_opts_label, flag=wx.TOP, border=5)
 
         extra_opts_sizer = wx.WrapSizer()
+        extra_opts_sizer.Add(self.youtube_dl_debug_checkbox)
+        extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.ignore_errors_checkbox)
         extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.ignore_config_checkbox)
-        extra_opts_sizer.AddSpacer((5, -1))
-        extra_opts_sizer.Add(self.youtube_dl_debug_checkbox)
         extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.native_hls_checkbox)
 

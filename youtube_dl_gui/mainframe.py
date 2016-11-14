@@ -9,7 +9,7 @@ import os
 import gettext
 
 import wx
-from wx.lib.pubsub import setuparg1
+from wx.lib.pubsub import setuparg1 #NOTE Should remove deprecated
 from wx.lib.pubsub import pub as Publisher
 
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
@@ -37,14 +37,9 @@ from .downloadmanager import (
 from .utils import (
     YOUTUBEDL_BIN,
     get_pixmaps_dir,
-    get_config_path,
     get_icon_file,
     shutdown_sys,
-    read_formats,
     remove_file,
-    json_store,
-    json_load,
-    to_string,
     open_file,
     get_time
 )
@@ -77,13 +72,7 @@ class MainFrame(wx.Frame):
     and binding the events.
 
     Attributes:
-        wxEVT_TEXT_PASTE (int): Event type code for the wx.EVT_TEXT_PASTE
-
-        BUTTONS_SIZE (tuple): Buttons size (width, height).
-        BUTTONS_SPACE (tuple): Space between buttons (width, height).
-        SIZE_20 (int): Constant size number.
-        SIZE_10 (int): Constant size number.
-        SIZE_5 (int): Constant size number.
+        FRAMES_MIN_SIZE (tuple): Tuple that contains the minumum width, height of the frame.
 
         Labels area (strings): Strings for the widgets labels.
 
@@ -101,21 +90,13 @@ class MainFrame(wx.Frame):
         parent (wx.Window): Frame parent.
 
     """
-    wxEVT_TEXT_PASTE = 'wxClipboardTextEvent'
 
     FRAMES_MIN_SIZE = (560, 360)
-    BUTTONS_SIZE = (-1, 30)     # REFACTOR remove not used anymore
-    BUTTONS_SPACE = (80, -1)    # REFACTOR remove not used anymore
-    SIZE_20 = 20                # REFACTOR write directly
-    SIZE_10 = 10
-    SIZE_5 = 5
 
     # Labels area
     URLS_LABEL = _("Enter URLs below")
-    DOWNLOAD_LABEL = _("Download")  # REFACTOR remove not used anymore
     UPDATE_LABEL = _("Update")
     OPTIONS_LABEL = _("Options")
-    ERROR_LABEL = _("Error")
     STOP_LABEL = _("Stop")
     INFO_LABEL = _("Info")
     WELCOME_MSG = _("Welcome")
@@ -183,12 +164,12 @@ class MainFrame(wx.Frame):
     }
 
     def __init__(self, opt_manager, log_manager, parent=None):
-        wx.Frame.__init__(self, parent, title=__appname__, size=opt_manager.options['main_win_size'])
+        super(MainFrame, self).__init__(parent, wx.ID_ANY, __appname__, size=opt_manager.options["main_win_size"])
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        self.app_icon = None
+        self.app_icon = None  #REFACTOR Get and set on __init__.py
 
         self._download_list = DownloadList()
 
@@ -328,7 +309,6 @@ class MainFrame(wx.Frame):
         self.Center()
         self.SetMinSize(self.FRAMES_MIN_SIZE)
 
-        self._set_buttons_width()
         self._status_bar_write(self.WELCOME_MSG)
 
         self._update_videoformat_combobox()
@@ -487,16 +467,13 @@ class MainFrame(wx.Frame):
 
         if selected_format in VIDEO_FORMATS:
             self.opt_manager.options["video_format"] = selected_format
-            #self.opt_manager.options["to_audio"] = False
             self.opt_manager.options["audio_format"] = ""  #NOTE Set to default value, check parsers.py
         elif selected_format in AUDIO_FORMATS:
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
             self.opt_manager.options["audio_format"] = selected_format
-            #self.opt_manager.options["to_audio"] = True
         else:
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
             self.opt_manager.options["audio_format"] = ""
-            #self.opt_manager.options["to_audio"] = False
 
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
@@ -505,8 +482,6 @@ class MainFrame(wx.Frame):
         index = self._status_list.get_next_selected()
 
         if index == -1:
-            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-
             dlg = ButtonsChoiceDialog(self, ["Remove all", "Remove completed"], "No items selected. Please pick an action.", "Delete")
             ret_code = dlg.ShowModal()
             dlg.Destroy()
@@ -552,9 +527,6 @@ class MainFrame(wx.Frame):
     def _on_play(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        #if not selected_rows:
-            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        #else:
         if selected_rows:
             for selected_row in selected_rows:
                 object_id = self._status_list.GetItemData(selected_row)
@@ -570,9 +542,6 @@ class MainFrame(wx.Frame):
     def _on_arrow_up(self, event):
         index = self._status_list.get_next_selected()
 
-        #if index == -1:
-            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        #else:
         if index != -1:
             while index >= 0:
                 object_id = self._status_list.GetItemData(index)
@@ -589,14 +558,9 @@ class MainFrame(wx.Frame):
 
                 index = self._status_list.get_next_selected(index)
 
-            print self._download_list._items_list
-
     def _on_arrow_down(self, event):
         index = self._status_list.get_next_selected(reverse=True)
 
-        #if index == -1:
-            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        #else:
         if index != -1:
             while index >= 0:
                 object_id = self._status_list.GetItemData(index)
@@ -612,8 +576,6 @@ class MainFrame(wx.Frame):
                     self._status_list._update_from_item(new_index, download_item)
 
                 index = self._status_list.get_next_selected(index, True)
-
-            print self._download_list._items_list
 
     def _on_reload(self, event):
         selected_rows = self._status_list.get_all_selected()
@@ -637,9 +599,6 @@ class MainFrame(wx.Frame):
     def _on_pause(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        #if not selected_rows:
-            #self._create_popup("No row selected", self.ERROR_LABEL, wx.OK | wx.ICON_EXCLAMATION)
-        #else:
         if selected_rows:
             #REFACTOR Use DoubleStageButton for this and check stage
             if self._buttons["pause"].GetLabel() == "Pause":
@@ -741,27 +700,6 @@ class MainFrame(wx.Frame):
         """
         Publisher.subscribe(handler, topic)
 
-    def _set_buttons_width(self):
-        """Re-adjust buttons size on runtime so that all buttons
-        look the same. """
-        widths = [
-            #self._download_btn.GetSize()[0],
-            #self._update_btn.GetSize()[0],
-            #self._options_btn.GetSize()[0],
-        ]
-
-        max_width = -1
-
-        for item in widths:
-            if item > max_width:
-                max_width = item
-
-        #self._download_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
-        #self._update_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
-        #self._options_btn.SetMinSize((max_width, self.BUTTONS_SIZE[1]))
-
-        self._panel.Layout()
-
     def _create_statictext(self, label):
         return wx.StaticText(self._panel, label=label)
 
@@ -802,15 +740,6 @@ class MainFrame(wx.Frame):
             textctrl.Bind(wx.EVT_CHAR, win_ctrla_eventhandler)
 
         return textctrl
-
-    def _create_button(self, label, event_handler=None):
-        # REFACTOR remove not used anymore
-        btn = wx.Button(self._panel, label=label, size=self.BUTTONS_SIZE)
-
-        if event_handler is not None:
-            btn.Bind(wx.EVT_BUTTON, event_handler)
-
-        return btn
 
     def _create_popup(self, text, title, style):
         wx.MessageBox(text, title, style)
@@ -865,9 +794,6 @@ class MainFrame(wx.Frame):
 
     def _update_youtubedl(self):
         """Update youtube-dl binary to the latest version. """
-        #self._update_btn.Disable()
-        #self._download_btn.Disable()
-
         if self.download_manager is not None and self.download_manager.is_alive():
             self._create_popup(self.DOWNLOAD_ACTIVE,
                                self.WARNING_LABEL,
@@ -920,11 +846,6 @@ class MainFrame(wx.Frame):
                 self._status_bar_write(self.SHUTDOWN_ERR)
         else:
             self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
-            if self.opt_manager.options['open_dl_dir']:
-                success = open_file(self.opt_manager.options['save_path'])
-
-                if not success:
-                    self._status_bar_write(self.OPEN_DIR_ERR.format(dir=self.opt_manager.options['save_path']))
 
     def _download_worker_handler(self, msg):
         """downloadmanager.Worker thread handler.
@@ -942,12 +863,6 @@ class MainFrame(wx.Frame):
         row = self._download_list.index(data["index"])
 
         self._status_list._update_from_item(row, download_item)
-
-        #if signal == 'send':
-            #self._status_list.write(data)
-
-        #if signal == 'receive':
-            #self.download_manager.send_to_worker(self._status_list.get(data))
 
     def _download_manager_handler(self, msg):
         """downloadmanager.DownloadManager thread handler.
@@ -975,6 +890,8 @@ class MainFrame(wx.Frame):
             self._status_bar_write(self.CLOSING_MSG)
         elif data == 'report_active':
             pass
+            #NOTE Remove from here and downloadmanager
+            #since now we have the wx.Timer to check progress
 
     def _update_handler(self, msg):
         """updatemanager.UpdateThread thread handler.
@@ -1045,29 +962,12 @@ class MainFrame(wx.Frame):
         click of the mouse.
 
         """
-        if event.ClassName == self.wxEVT_TEXT_PASTE:
+        if event.GetEventType() == wx.EVT_TEXT_PASTE.typeId:
             self._paste_from_clipboard()
         else:
             wx.TheClipboard.UsePrimarySelection(True)
             self._paste_from_clipboard()
             wx.TheClipboard.UsePrimarySelection(False)
-
-        # REFACTOR Remove not used anymore
-        # Dynamically add urls after download process has started
-        #if self.download_manager is not None:
-            #self._status_list.load_urls(self._get_urls(), self.download_manager.add_url)
-
-    def _on_download(self, event):
-        """Event handler of the self._download_btn widget.
-
-        This method is used when the download-stop button is pressed to
-        start or stop the download process.
-
-        """
-        if self.download_manager is None:
-            self._start_download()
-        else:
-            self.download_manager.stop_downloads()
 
     def _on_update(self, event):
         """Event handler of the self._update_btn widget.
@@ -1128,44 +1028,12 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     """
 
     def __init__(self, columns, *args, **kwargs):
-        wx.ListCtrl.__init__(self, *args, **kwargs)
+        super(ListCtrl, self).__init__(*args, **kwargs)
         ListCtrlAutoWidthMixin.__init__(self)
         self.columns = columns
         self._list_index = 0
         self._url_list = set()
         self._set_columns()
-
-    def get(self, data):
-        """Return data from ListCtrl.
-
-        Args:
-            data (dict): Dictionary which contains three keys. The 'index'
-                that identifies the current row, the 'source' which identifies
-                a column in the wxListCtrl and the 'dest' which tells
-                wxListCtrl under which key to store the retrieved value. For
-                more informations see the _talk_to_gui() method under
-                downloadmanager.py Worker class.
-
-        Returns:
-            A dictionary which holds the 'index' (row) and the data from the
-            given row-column combination.
-
-        Example:
-            args: data = {'index': 0, 'source': 'filename', 'dest': 'new_filename'}
-
-            The wxListCtrl will store the value from the 'filename' column
-            into a new dictionary with a key value 'new_filename'.
-
-            return: {'index': 0, 'new_filename': 'The filename retrieved'}
-
-        """
-        value = None
-
-        # If the source column exists
-        if data['source'] in self.columns:
-            value = self.GetItemText(data['index'], self.columns[data['source']][0])
-
-        return {'index': data['index'], data['dest']: value}
 
     def remove_row(self, row_number):
         self.DeleteItem(row_number)
@@ -1187,41 +1055,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         self.Select(new_row)
         self.Thaw()
-
-    def write(self, data):
-        """Write data on ListCtrl row-column.
-
-        Args:
-            data (dict): Dictionary that contains the data to be
-                written on the ListCtrl. In order for this method to
-                write the given data there must be an 'index' key that
-                identifies the current row. For a valid data dictionary see
-                Worker class __init__() method under downloadmanager.py module.
-
-        """
-        for key in data:
-            if key in self.columns:
-                self._write_data(data['index'], self.columns[key][0], data[key])
-
-    def load_urls(self, url_list, func=None):
-        """Load URLs from the url_list on the ListCtrl widget.
-
-        Args:
-            url_list (list): List of strings that contains the URLs to add.
-            func (function): Callback function. It's used to add the URLs
-                on the download_manager.
-
-        """
-        for url in url_list:
-            url = url.replace(' ', '')
-
-            if url and not self.has_url(url):
-                self.add_url(url)
-
-                if func is not None:
-                    # Custom hack to add url into download_manager
-                    item = self._get_item(self._list_index - 1)
-                    func(item)
 
     def has_url(self, url):
         """Returns True if the url is aleady in the ListCtrl else False.
@@ -1256,17 +1089,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
                 self.SetStringItem(row, column, status)
             else:
                 self.SetStringItem(row, column, progress_stats[key])
-
-    def add_url(self, url):
-        """Adds the given url in the ListCtrl.
-
-        Args:
-            url (string): URL string.
-
-        """
-        self.InsertStringItem(self._list_index, url)
-        self._url_list.add(url)
-        self._list_index += 1
 
     def clear(self):
         """Clear the ListCtrl widget & reset self._list_index and
@@ -1307,43 +1129,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
                 return index
 
         return -1
-
-    def get_items(self):
-        """Returns a list of items inside the ListCtrl.
-
-        Returns:
-            List of dictionaries that contains the 'url' and the
-            'index'(row) for each item of the ListCtrl.
-
-        """
-        items = []
-
-        for row in xrange(self._list_index):
-            item = self._get_item(row)
-            items.append(item)
-
-        return items
-
-    def _write_data(self, row, column, data):
-        """Write data on row-column. """
-        if isinstance(data, basestring):
-            self.SetStringItem(row, column, data)
-
-    def _get_item(self, index):
-        """Returns the corresponding ListCtrl item for the given index.
-
-        Args:
-            index (int): Index that identifies the row of the item.
-                Index must be smaller than the self._list_index.
-
-        Returns:
-            Dictionary that contains the URL string of the row and the
-            row number(index).
-
-        """
-        item = self.GetItem(itemId=index, col=0)
-        data = dict(url=item.GetText(), index=index)
-        return data
 
     def _set_columns(self):
         """Initializes ListCtrl columns.

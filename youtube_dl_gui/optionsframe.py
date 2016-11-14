@@ -495,7 +495,7 @@ class DownloadsTab(TabPanel):
 
     SUBS_LANG = twodict([
         ("en", _("English")),
-        ("gr", _("Greek")),
+        ("el", _("Greek")),
         ("pt", _("Portuguese")),
         ("fr", _("French")),
         ("it", _("Italian")),

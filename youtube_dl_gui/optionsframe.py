@@ -552,12 +552,12 @@ class DownloadsTab(TabPanel):
 
         self.filesize_box = self.crt_staticbox("Filesize")
 
-        self.filesize_min_label = self.crt_statictext("Min")
-        self.filesize_min_spinctrl = self.crt_spinctrl((0, 1024))
-        self.filesize_min_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
         self.filesize_max_label = self.crt_statictext("Max")
         self.filesize_max_spinctrl = self.crt_spinctrl((0, 1024))
         self.filesize_max_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
+        self.filesize_min_label = self.crt_statictext("Min")
+        self.filesize_min_spinctrl = self.crt_spinctrl((0, 1024))
+        self.filesize_min_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
 
         self._set_layout()
 
@@ -824,8 +824,8 @@ class ExtraTab(TabPanel):
 
         self.extra_opts_label = self.crt_statictext("Extra options")
 
-        self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
         self.youtube_dl_debug_checkbox = self.crt_checkbox("Debug youtube-dl")
+        self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
         self.ignore_config_checkbox = self.crt_checkbox("Ignore youtube-dl config")
         self.native_hls_checkbox = self.crt_checkbox("Prefer native HLS")
 

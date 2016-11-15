@@ -217,6 +217,9 @@ class OptionsManager(object):
 
             native_hls (boolean): When True youtube-dl will use the native HLS implementation.
 
+            show_completion_popup (boolean): When True youtube-dl-gui will create a popup
+                to inform the user for the download completion.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -277,7 +280,8 @@ class OptionsManager(object):
             'youtube_dl_debug': False,
             'ignore_config': True,
             'confirm_exit': True,
-            'native_hls': True
+            'native_hls': True,
+            'show_completion_popup': True
         }
 
     def load_from_file(self):

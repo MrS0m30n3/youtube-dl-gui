@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Option to disable-enable the 'download finished' pop up message
 * Option to enable-disable items deletion from the filesystem
 * Option to validate item deletion 'Are you sure?'
 * Add '--recode-video' to Formats tab

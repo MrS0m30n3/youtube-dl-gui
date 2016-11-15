@@ -297,6 +297,7 @@ class GeneralTab(TabPanel):
 
         self.more_opts_label = self.crt_statictext("More options")
         self.confirm_exit_checkbox = self.crt_checkbox("Confirm on exit")
+        self.show_completion_popup_checkbox = self.crt_checkbox("Inform me on download completion")
 
         self.shutdown_checkbox = self.crt_checkbox("Shutdown on download completion", event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
@@ -333,6 +334,7 @@ class GeneralTab(TabPanel):
 
         vertical_sizer.Add(self.more_opts_label, flag=wx.TOP, border=5)
         vertical_sizer.Add(self.confirm_exit_checkbox, flag=wx.ALL, border=5)
+        vertical_sizer.Add(self.show_completion_popup_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         shutdown_sizer = wx.BoxSizer(wx.HORIZONTAL)
         shutdown_sizer.Add(self.shutdown_checkbox, 2)
@@ -408,6 +410,7 @@ class GeneralTab(TabPanel):
         self.shutdown_checkbox.SetValue(self.opt_manager.options["shutdown"])
         self.sudo_textctrl.SetValue(self.opt_manager.options["sudo_password"])
         self.confirm_exit_checkbox.SetValue(self.opt_manager.options["confirm_exit"])
+        self.show_completion_popup_checkbox.SetValue(self.opt_manager.options["show_completion_popup"])
 
         #REFACTOR Automatically call on the new methods
         #save_options
@@ -424,6 +427,7 @@ class GeneralTab(TabPanel):
         self.opt_manager.options["shutdown"] = self.shutdown_checkbox.GetValue()
         self.opt_manager.options["sudo_password"] = self.sudo_textctrl.GetValue()
         self.opt_manager.options["confirm_exit"] = self.confirm_exit_checkbox.GetValue()
+        self.opt_manager.options["show_completion_popup"] = self.show_completion_popup_checkbox.GetValue()
 
 
 class FormatsTab(TabPanel):

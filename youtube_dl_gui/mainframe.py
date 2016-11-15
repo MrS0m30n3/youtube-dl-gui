@@ -845,7 +845,8 @@ class MainFrame(wx.Frame):
             else:
                 self._status_bar_write(self.SHUTDOWN_ERR)
         else:
-            self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
+            if self.opt_manager.options["show_completion_popup"]:
+                self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _download_worker_handler(self, msg):
         """downloadmanager.Worker thread handler.

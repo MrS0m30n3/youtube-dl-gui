@@ -337,7 +337,8 @@ class GeneralTab(TabPanel):
         vertical_sizer.Add(self.show_completion_popup_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         shutdown_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        shutdown_sizer.Add(self.shutdown_checkbox, 2)
+        shutdown_sizer.Add(self.shutdown_checkbox)
+        shutdown_sizer.AddSpacer((-1, -1), 1)
         shutdown_sizer.Add(self.sudo_textctrl, 1)
 
         vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
@@ -763,7 +764,8 @@ class AdvancedTab(TabPanel):
         vertical_sizer.Add(self.logging_label, flag=wx.TOP, border=10)
 
         logging_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        logging_sizer.Add(self.enable_log_checkbox, 1)
+        logging_sizer.Add(self.enable_log_checkbox)
+        logging_sizer.AddSpacer((-1, -1), 1)
         logging_sizer.Add(self.view_log_button)
         logging_sizer.AddSpacer((5, -1))
         logging_sizer.Add(self.clear_log_button)

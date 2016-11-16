@@ -1,9 +1,9 @@
 NEW_LAYOUT
 ==========
-* Option to enable-disable items deletion from the filesystem
 * Option to validate item deletion 'Are you sure?'
 * Add '--recode-video' to Formats tab
 * Show dialog with timer on shutdown
+* Localization option: add country flags
 
 * Labels back to gettext
 
@@ -16,7 +16,9 @@ GUI
 * Auto video format detection
 * Remember list of urls after closing & re-opening
 * Settings menu add "Statistics"
+
 * ListCtrl double click to "Rename"
+* Option to enable-disable items deletion from the filesystem
 
 Structure
 =========
@@ -32,10 +34,6 @@ Localization
 * Compile *.po files at build time
 * Script to automatically check translations (use google-translate library)
 * Write bot to automatically check the translations and merge them?
-
-Options
-=======
-* Localization option: add country flags
 
 Other
 =====

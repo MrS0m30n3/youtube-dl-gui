@@ -220,6 +220,8 @@ class OptionsManager(object):
             show_completion_popup (boolean): When True youtube-dl-gui will create a popup
                 to inform the user for the download completion.
 
+            confirm_deletion (boolean): When True ask user before item removal.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -281,7 +283,8 @@ class OptionsManager(object):
             'ignore_config': True,
             'confirm_exit': True,
             'native_hls': True,
-            'show_completion_popup': True
+            'show_completion_popup': True,
+            'confirm_deletion': True
         }
 
     def load_from_file(self):

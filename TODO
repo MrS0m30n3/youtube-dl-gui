@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Option to validate item deletion 'Are you sure?'
 * Add '--recode-video' to Formats tab
 * Show dialog with timer on shutdown
 * Localization option: add country flags

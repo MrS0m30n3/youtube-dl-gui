@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Add '--recode-video' to Formats tab
 * Show dialog with timer on shutdown
 * Localization option: add country flags
 
@@ -18,6 +17,7 @@ GUI
 
 * ListCtrl double click to "Rename"
 * Option to enable-disable items deletion from the filesystem
+* Add '--recode-video' to Formats tab
 
 Structure
 =========

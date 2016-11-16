@@ -19,6 +19,8 @@ from .utils import (
     os_sep
 )
 
+from .info import __appname__
+
 from .formats import (
     OUTPUT_FORMATS,
     VIDEO_FORMATS,

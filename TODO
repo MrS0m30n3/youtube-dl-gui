@@ -1,6 +1,6 @@
 NEW_LAYOUT
 ==========
-* Localization option: add country flags
+* About dialog show youtube-dl version
 
 * Labels back to gettext
 
@@ -13,10 +13,6 @@ GUI
 * Auto video format detection
 * Remember list of urls after closing & re-opening
 * Settings menu add "Statistics"
-
-* ListCtrl double click to "Rename"
-* Option to enable-disable items deletion from the filesystem
-* Add '--recode-video' to Formats tab
 
 Structure
 =========
@@ -38,7 +34,6 @@ Other
 * README.md add slackbuild
 * README.md add new images
 
-* About dialog show youtube-dl version
 * Extract filename info on 'Already Downloaded'
 * Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
 * Update setup.py
@@ -52,6 +47,12 @@ Other
 * Use youtube-dl directly from python instead of using the subprocess module
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
+
+Probably wont add
+=================
+* ListCtrl double click to "Rename"
+* Option to enable-disable items deletion from the filesystem
+* Add '--recode-video' to Formats tab
 
 Invalid
 =======

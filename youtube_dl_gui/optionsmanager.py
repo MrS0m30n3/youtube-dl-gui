@@ -334,7 +334,7 @@ class OptionsManager(object):
 
         VALID_FILESIZE_UNIT = ('', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y')
 
-        VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
+        VALID_SUB_LANGUAGE = ('en', 'el', 'pt', 'fr', 'it', 'ru', 'es', 'de', 'he', 'sv', 'tr')
 
         MIN_FRAME_SIZE = 100
 

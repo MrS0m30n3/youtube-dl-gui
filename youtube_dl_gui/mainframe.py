@@ -845,13 +845,18 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options['shutdown']:
-            self.opt_manager.save_to_file()
-            success = shutdown_sys(self.opt_manager.options['sudo_password'])
+            dlg = ShutdownDialog(self, 60, "Shutting down in {0} second(s)", "Shutdown")
+            result = dlg.ShowModal() == wx.ID_OK
+            dlg.Destroy()
 
-            if success:
-                self._status_bar_write(self.SHUTDOWN_MSG)
-            else:
-                self._status_bar_write(self.SHUTDOWN_ERR)
+            if result:
+                self.opt_manager.save_to_file()
+                success = shutdown_sys(self.opt_manager.options['sudo_password'])
+
+                if success:
+                    self._status_bar_write(self.SHUTDOWN_MSG)
+                else:
+                    self._status_bar_write(self.SHUTDOWN_ERR)
         else:
             if self.opt_manager.options["show_completion_popup"]:
                 self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
@@ -1372,3 +1377,75 @@ class ButtonsGroup(object):
 
     def add(self, button):
         self._buttons_list.append(button)
+
+
+class ShutdownDialog(wx.Dialog):
+
+    if os.name == "nt":
+        STYLE = wx.DEFAULT_DIALOG_STYLE
+    else:
+        STYLE = wx.DEFAULT_DIALOG_STYLE | wx.MAXIMIZE_BOX
+
+    TIMER_INTERVAL = 1000  # milliseconds
+
+    BORDER = 10
+
+    def __init__(self, parent, timeout, message, *args, **kwargs):
+        super(ShutdownDialog, self).__init__(parent, wx.ID_ANY, *args, style=self.STYLE, **kwargs)
+        assert timeout > 0
+
+        self.timeout = timeout
+        self.message = message
+
+        # Create components
+        panel = wx.Panel(self)
+
+        info_bmp = wx.ArtProvider.GetBitmap(wx.ART_INFORMATION, wx.ART_MESSAGE_BOX)
+        info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
+
+        self.msg_text = msg_text = wx.StaticText(panel, wx.ID_ANY, self._get_message())
+        ok_button = wx.Button(panel, wx.ID_OK, "OK")
+        cancel_button = wx.Button(panel, wx.ID_CANCEL, "Cancel")
+
+        # Set layout
+        vertical_sizer = wx.BoxSizer(wx.VERTICAL)
+
+        message_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        message_sizer.Add(info_icon)
+        message_sizer.AddSpacer((10, 10))
+        message_sizer.Add(msg_text, flag=wx.EXPAND)
+
+        vertical_sizer.Add(message_sizer, 1, wx.ALL, border=self.BORDER)
+
+        buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        buttons_sizer.Add(ok_button)
+        buttons_sizer.AddSpacer((5, -1))
+        buttons_sizer.Add(cancel_button)
+
+        vertical_sizer.Add(buttons_sizer, flag=wx.ALIGN_RIGHT | wx.ALL, border=self.BORDER)
+
+        panel.SetSizer(vertical_sizer)
+
+        width, height = panel.GetBestSize()
+        self.SetSize((width * 1.3, height * 1.3))
+
+        self.Center()
+
+        # Set up timer
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self._on_timer, self.timer)
+        self.timer.Start(self.TIMER_INTERVAL)
+
+    def _get_message(self):
+        return self.message.format(self.timeout)
+
+    def _on_timer(self, event):
+        self.timeout -= 1
+        self.msg_text.SetLabel(self._get_message())
+
+        if self.timeout <= 0:
+            self.EndModal(wx.ID_OK)
+
+    def Destroy(self):
+        self.timer.Stop()
+        return super(ShutdownDialog, self).Destroy()

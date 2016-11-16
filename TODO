@@ -1,6 +1,5 @@
 NEW_LAYOUT
 ==========
-* Show dialog with timer on shutdown
 * Localization option: add country flags
 
 * Labels back to gettext

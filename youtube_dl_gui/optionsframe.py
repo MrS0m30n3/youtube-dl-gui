@@ -265,13 +265,14 @@ class TabPanel(wx.Panel):
 
 class GeneralTab(TabPanel):
 
+    # Lang code = <ISO 639-1>_<ISO 3166-1 alpha-2>
     LOCALE_NAMES = twodict([
-        ('ar_AR', 'Arabic'),
+        ('ar_SA', 'Arabic'),
         ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),
         ('de_DE', 'German'),
-        ('he_IS', 'Hebrew'),
+        ('he_IL', 'Hebrew'),
         ('hu_HU', 'Hungarian'),
         ('it_IT', 'Italian'),
         ('es_MX', 'Mexican Spanish'),
@@ -526,6 +527,7 @@ class FormatsTab(TabPanel):
 
 class DownloadsTab(TabPanel):
 
+    # Lang code = ISO 639-1
     SUBS_LANG = twodict([
         ("en", _("English")),
         ("fr", _("French")),

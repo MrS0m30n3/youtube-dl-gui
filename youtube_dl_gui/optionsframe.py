@@ -9,6 +9,8 @@ import os
 import gettext
 
 import wx
+import wx.combo
+from wx.lib.art import flagart
 
 from .utils import (
     TwoWayOrderedDict as twodict,
@@ -210,6 +212,26 @@ class TabPanel(wx.Panel):
 
         return combobox
 
+    def crt_bitmap_combobox(self, choices, size=(-1, -1), event_handler=None):
+        combobox = wx.combo.BitmapComboBox(self, size=size, style=wx.CB_READONLY)
+
+        for item in choices:
+            lang_code, lang_name = item
+
+            _, country = lang_code.split('_')
+
+            if country in flagart.catalog:
+                flag_bmp = flagart.catalog[country].getBitmap()
+            else:
+                flag_bmp = flagart.catalog["BLANK"].getBitmap()
+
+            combobox.Append(lang_name, flag_bmp)
+
+        if event_handler is not None:
+            combobox.Bind(wx.EVT_COMBOBOX, event_handler)
+
+        return combobox
+
     def crt_spinctrl(self, spin_range=(0, 9999)):
         spinctrl = wx.SpinCtrl(self, size=self.SPINCTRL_SIZE)
         spinctrl.SetRange(*spin_range)
@@ -285,7 +307,7 @@ class GeneralTab(TabPanel):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
         self.language_label = self.crt_statictext("Language")
-        self.language_combobox = self.crt_combobox(list(self.LOCALE_NAMES.values()), event_handler=self._on_language)
+        self.language_combobox = self.crt_bitmap_combobox(list(self.LOCALE_NAMES.items()), event_handler=self._on_language)
 
         self.filename_format_label = self.crt_statictext("Filename format")
         self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()), event_handler=self._on_filename)

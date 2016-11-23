@@ -105,7 +105,8 @@ class OptionsParser(object):
             OptionHolder('ignore_config', '--ignore-config', False),
             OptionHolder('native_hls', '--hls-prefer-native', False),
             OptionHolder('nomtime', '--no-mtime', False),
-            OptionHolder('embed_thumbnail', '--embed-thumbnail', False)
+            OptionHolder('embed_thumbnail', '--embed-thumbnail', False),
+            OptionHolder('add_metadata', '--add-metadata', False)
         ]
 
     def parse(self, options_dictionary):

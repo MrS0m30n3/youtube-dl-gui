@@ -228,6 +228,8 @@ class OptionsManager(object):
             embed_thumbnail (boolean): When True will embed the thumbnail in
                 the audio file as cover art.
 
+            add_metadata (boolean): When True will write metadata to file.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -292,7 +294,8 @@ class OptionsManager(object):
             'show_completion_popup': True,
             'confirm_deletion': True,
             'nomtime': False,
-            'embed_thumbnail': False
+            'embed_thumbnail': False,
+            'add_metadata': False
         }
 
     def load_from_file(self):

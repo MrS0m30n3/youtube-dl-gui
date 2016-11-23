@@ -477,6 +477,7 @@ class FormatsTab(TabPanel):
         self.keep_video_checkbox = self.crt_checkbox("Keep original files")
         self.extract_audio_checkbox = self.crt_checkbox("Extract audio from video file")
         self.embed_thumbnail_checkbox = self.crt_checkbox("Embed thumbnail in audio file")
+        self.add_metadata_checkbox = self.crt_checkbox("Add metadata to file")
 
         self.audio_quality_label = self.crt_statictext("Audio quality")
         self.audio_quality_combobox = self.crt_combobox(list(self.AUDIO_QUALITY.values()))
@@ -497,6 +498,7 @@ class FormatsTab(TabPanel):
         vertical_sizer.Add(self.keep_video_checkbox, flag=wx.ALL, border=5)
         vertical_sizer.Add(self.extract_audio_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
         vertical_sizer.Add(self.embed_thumbnail_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
+        vertical_sizer.Add(self.add_metadata_checkbox, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
 
         audio_quality_sizer = wx.BoxSizer(wx.HORIZONTAL)
         audio_quality_sizer.Add(self.audio_quality_label, flag=wx.ALIGN_CENTER_VERTICAL)
@@ -517,6 +519,7 @@ class FormatsTab(TabPanel):
         self.audio_quality_combobox.SetValue(self.AUDIO_QUALITY[self.opt_manager.options["audio_quality"]])
         self.extract_audio_checkbox.SetValue(self.opt_manager.options["to_audio"])
         self.embed_thumbnail_checkbox.SetValue(self.opt_manager.options["embed_thumbnail"])
+        self.add_metadata_checkbox.SetValue(self.opt_manager.options["add_metadata"])
 
     def save_options(self):
         checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.video_formats_checklistbox.GetCheckedStrings()]
@@ -527,6 +530,7 @@ class FormatsTab(TabPanel):
         self.opt_manager.options["audio_quality"] = self.AUDIO_QUALITY[self.audio_quality_combobox.GetValue()]
         self.opt_manager.options["to_audio"] = self.extract_audio_checkbox.GetValue()
         self.opt_manager.options["embed_thumbnail"] = self.embed_thumbnail_checkbox.GetValue()
+        self.opt_manager.options["add_metadata"] = self.add_metadata_checkbox.GetValue()
 
 
 class DownloadsTab(TabPanel):

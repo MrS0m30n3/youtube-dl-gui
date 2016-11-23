@@ -1,6 +1,8 @@
 NEW_LAYOUT
 ==========
 * About dialog show youtube-dl version
+* Icons theme selection (vote on github) (or at least make it easy to change between them)
+* Settings menu add "Statistics"
 
 * Labels back to gettext
 
@@ -9,10 +11,8 @@ GUI
 * Change MainFrame layout (Remove on issue #131 completion)
     (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
 
-* Icons theme selection (vote on github) (or at least make it easy to change between them)
 * Auto video format detection
 * Remember list of urls after closing & re-opening
-* Settings menu add "Statistics"
 
 Structure
 =========

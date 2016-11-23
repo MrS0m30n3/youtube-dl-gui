@@ -225,6 +225,9 @@ class OptionsManager(object):
             nomtime (boolean): When True will not use the Last-modified header to
                 set the file modification time.
 
+            embed_thumbnail (boolean): When True will embed the thumbnail in
+                the audio file as cover art.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -288,7 +291,8 @@ class OptionsManager(object):
             'native_hls': True,
             'show_completion_popup': True,
             'confirm_deletion': True,
-            'nomtime': False
+            'nomtime': False,
+            'embed_thumbnail': False
         }
 
     def load_from_file(self):

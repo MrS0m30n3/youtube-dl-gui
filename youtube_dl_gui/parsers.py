@@ -104,7 +104,8 @@ class OptionsParser(object):
             OptionHolder('youtube_dl_debug', '-v', False),
             OptionHolder('ignore_config', '--ignore-config', False),
             OptionHolder('native_hls', '--hls-prefer-native', False),
-            OptionHolder('nomtime', '--no-mtime', False)
+            OptionHolder('nomtime', '--no-mtime', False),
+            OptionHolder('embed_thumbnail', '--embed-thumbnail', False)
         ]
 
     def parse(self, options_dictionary):

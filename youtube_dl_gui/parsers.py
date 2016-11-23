@@ -103,7 +103,8 @@ class OptionsParser(object):
             OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio']),
             OptionHolder('youtube_dl_debug', '-v', False),
             OptionHolder('ignore_config', '--ignore-config', False),
-            OptionHolder('native_hls', '--hls-prefer-native', False)
+            OptionHolder('native_hls', '--hls-prefer-native', False),
+            OptionHolder('nomtime', '--no-mtime', False)
         ]
 
     def parse(self, options_dictionary):

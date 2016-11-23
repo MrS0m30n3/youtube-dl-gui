@@ -857,6 +857,7 @@ class ExtraTab(TabPanel):
         self.youtube_dl_debug_checkbox = self.crt_checkbox("Debug youtube-dl")
         self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
         self.ignore_config_checkbox = self.crt_checkbox("Ignore youtube-dl config")
+        self.no_mtime_checkbox = self.crt_checkbox("No mtime")
         self.native_hls_checkbox = self.crt_checkbox("Prefer native HLS")
 
         self._set_layout()
@@ -877,6 +878,8 @@ class ExtraTab(TabPanel):
         extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.ignore_config_checkbox)
         extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.Add(self.no_mtime_checkbox)
+        extra_opts_sizer.AddSpacer((5, -1))
         extra_opts_sizer.Add(self.native_hls_checkbox)
 
         vertical_sizer.Add(extra_opts_sizer, flag=wx.ALL, border=5)
@@ -890,6 +893,7 @@ class ExtraTab(TabPanel):
         self.youtube_dl_debug_checkbox.SetValue(self.opt_manager.options["youtube_dl_debug"])
         self.ignore_config_checkbox.SetValue(self.opt_manager.options["ignore_config"])
         self.native_hls_checkbox.SetValue(self.opt_manager.options["native_hls"])
+        self.no_mtime_checkbox.SetValue(self.opt_manager.options["nomtime"])
 
     def save_options(self):
         self.opt_manager.options["cmd_args"] = self.cmdline_args_textctrl.GetValue()
@@ -897,6 +901,7 @@ class ExtraTab(TabPanel):
         self.opt_manager.options["youtube_dl_debug"] = self.youtube_dl_debug_checkbox.GetValue()
         self.opt_manager.options["ignore_config"] = self.ignore_config_checkbox.GetValue()
         self.opt_manager.options["native_hls"] = self.native_hls_checkbox.GetValue()
+        self.opt_manager.options["nomtime"] = self.no_mtime_checkbox.GetValue()
 
 
 class LogGUI(wx.Frame):

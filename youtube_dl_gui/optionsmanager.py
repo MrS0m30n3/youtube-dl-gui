@@ -222,6 +222,9 @@ class OptionsManager(object):
 
             confirm_deletion (boolean): When True ask user before item removal.
 
+            nomtime (boolean): When True will not use the Last-modified header to
+                set the file modification time.
+
         """
         #TODO Remove old options & check options validation
         self.options = {
@@ -284,7 +287,8 @@ class OptionsManager(object):
             'confirm_exit': True,
             'native_hls': True,
             'show_completion_popup': True,
-            'confirm_deletion': True
+            'confirm_deletion': True,
+            'nomtime': False
         }
 
     def load_from_file(self):

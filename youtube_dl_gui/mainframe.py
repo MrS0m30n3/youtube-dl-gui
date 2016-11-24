@@ -117,7 +117,7 @@ class MainFrame(wx.Frame):
     SUCC_REPORT_MSG = _("Successfully downloaded {0} URL(s) in {1} "
                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = _("Downloads completed")
-    URL_REPORT_MSG = _("Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4})")
+    URL_REPORT_MSG = _("Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})")
     CLOSING_MSG = _("Stopping downloads")
     CLOSED_MSG = _("Downloads stopped")
     PROVIDE_URL_MSG = _("You need to provide at least one URL")
@@ -387,7 +387,7 @@ class MainFrame(wx.Frame):
 
     def _on_timer(self, event):
         total_percentage = 0.0
-        queued = paused = active = completed = 0
+        queued = paused = active = completed = error = 0
 
         for item in self._download_list.get_items():
             if item.stage == "Queued":
@@ -399,16 +399,18 @@ class MainFrame(wx.Frame):
                 total_percentage += float(item.progress_stats["percent"].split('%')[0])
             if item.stage == "Completed":
                 completed += 1
+            if item.stage == "Error":
+                error += 1
 
         # TODO Store percentage as float in the DownloadItem?
         # TODO DownloadList keep track for each item stage?
         # TODO Should i count the paused items?
 
-        # total_percentage += queued * 0.0% + paused * 0.0% + completed * 100.0%
-        total_percentage += completed * 100.0
+        # total_percentage += queued * 0.0% + paused * 0.0% + completed * 100.0% + error * 100.0%
+        total_percentage += completed * 100.0 + error * 100.0
         total_percentage /= len(self._download_list)
 
-        msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed)
+        msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
         self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
@@ -590,7 +592,7 @@ class MainFrame(wx.Frame):
 
         if not selected_rows:
             for index, item in enumerate(self._download_list.get_items()):
-                if item.stage == "Paused" or item.stage == "Completed":
+                if item.stage in ("Paused", "Completed", "Error"):
                     item.reset()
                     self._status_list._update_from_item(index, item)
         else:
@@ -598,7 +600,7 @@ class MainFrame(wx.Frame):
                 object_id = self._status_list.GetItemData(selected_row)
                 item = self._download_list.get_item(object_id)
 
-                if item.stage == "Paused" or item.stage == "Completed":
+                if item.stage in ("Paused", "Completed", "Error"):
                     item.reset()
                     self._status_list._update_from_item(selected_row, item)
 

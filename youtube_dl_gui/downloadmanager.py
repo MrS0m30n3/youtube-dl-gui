@@ -73,6 +73,8 @@ class DownloadItem(object):
 
         COMPLETED_STAGES (tuple): Sub stages of the 'Completed' stage.
 
+        ERROR_STAGES (tuple): Sub stages of the 'Error' stage.
+
     Args:
         url (string): URL that corresponds to the download item.
 
@@ -80,11 +82,13 @@ class DownloadItem(object):
 
     """
 
-    STAGES = ("Queued", "Active", "Paused", "Completed")
+    STAGES = ("Queued", "Active", "Paused", "Completed", "Error")
 
     ACTIVE_STAGES = ("Pre Processing", "Downloading", "Post Processing")
 
-    COMPLETED_STAGES = ("Finished", "Error", "Warning", "Stopped", "Already Downloaded", "Filesize Abort")
+    COMPLETED_STAGES = ("Finished", "Warning", "Already Downloaded")
+
+    ERROR_STAGES = ("Error", "Stopped", "Filesize Abort")
 
     def __init__(self, url, options):
         self.url = url
@@ -110,6 +114,8 @@ class DownloadItem(object):
             self.progress_stats["status"] = self.COMPLETED_STAGES[0]
         if value == "Paused":
             self.progress_stats["status"] = value
+        if value == "Error":
+            self.progress_stats["status"] = self.ERROR_STAGES[0]
 
         self._stage = value
 
@@ -178,6 +184,9 @@ class DownloadItem(object):
 
         if status in self.COMPLETED_STAGES:
             self._stage = self.STAGES[3]
+
+        if status in self.ERROR_STAGES:
+            self._stage = self.STAGES[4]
 
     def __eq__(self, other):
         return self.object_id == other.object_id

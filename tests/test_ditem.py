@@ -118,6 +118,10 @@ class TestSetItemStage(unittest.TestCase):
         self.assertEqual(self.ditem.stage, "Paused")
         self.assertEqual(self.ditem.progress_stats["status"], "Paused")
 
+        self.ditem.stage = "Error"
+        self.assertEqual(self.ditem.stage, "Error")
+        self.assertEqual(self.ditem.progress_stats["status"], "Error")
+
     def test_set_stage_invalid(self):
         raised = False
 
@@ -228,17 +232,20 @@ class TestDownloadItemPrivate(unittest.TestCase):
         ditem = DownloadItem("url", ["-f", "flv"])
 
         active_status = ["Pre Processing", "Downloading", "Post Processing"]
-        complete_status = ["Finished", "Error", "Warning", "Stopped", "Already Downloaded", "Filesize Abort"]
+        complete_status = ["Finished", "Warning", "Already Downloaded"]
+        error_status = ["Error", "Stopped", "Filesize Abort"]
 
         for status in active_status:
-            ditem._stage = "Queued"
             ditem._set_stage(status)
             self.assertEqual(ditem.stage, "Active")
 
         for status in complete_status:
-            ditem._stage = "Active"
             ditem._set_stage(status)
             self.assertEqual(ditem.stage, "Completed")
+
+        for status in error_status:
+            ditem._set_stage(status)
+            self.assertEqual(ditem.stage, "Error")
 
 
 class TestReset(unittest.TestCase):
@@ -248,8 +255,44 @@ class TestReset(unittest.TestCase):
     def setUp(self):
         self.ditem = DownloadItem("url", ["-f", "flv"])
 
-    def test_reset_error_status(self):
+    def test_reset_completed_stage(self):
         self.ditem._stage = "Completed"
+        self.ditem.path = os.path.join("/home", "user")
+        self.ditem.filenames = ["file"]
+        self.ditem.extensions = [".mp4"]
+        self.ditem.progress_stats = {
+            "filename": "file",
+            "extension": ".mp4",
+            "filsize": "6.66MiB",
+            "percent": "100%",
+            "speed": "-",
+            "eta": "00:00",
+            "status": "Finished",
+            "playlist_size": "",
+            "playlist_index": ""
+        }
+
+        self.ditem.reset()
+
+        self.assertEqual(self.ditem._stage, "Queued")
+        self.assertEqual(self.ditem.path, "")
+        self.assertEqual(self.ditem.filenames, [])
+        self.assertEqual(self.ditem.extensions, [])
+        self.assertEqual(
+            self.ditem.progress_stats,
+            {"filename": "url",
+             "extension": "-",
+             "filesize": "-",
+             "percent": "0%",
+             "speed": "-",
+             "eta": "-",
+             "status": "Queued",
+             "playlist_size": "",
+             "playlist_index": ""}
+        )
+
+    def test_reset_error_stage(self):
+        self.ditem._stage = "Error"
         self.ditem.path = os.path.join("/home", "user")
         self.ditem.filenames = ["file1", "file2", "file"]
         self.ditem.extensions = [".mp4", ".m4a", ".mp4"]

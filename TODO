@@ -1,18 +1,17 @@
 NEW_LAYOUT
 ==========
-* About dialog show youtube-dl version
-* Icons theme selection (vote on github) (or at least make it easy to change between them)
-* Settings menu add "Statistics"
-
 * Labels back to gettext
+* Update translation files
 
 GUI
 ===
 * Change MainFrame layout (Remove on issue #131 completion)
     (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
 
-* Auto video format detection
 * Remember list of urls after closing & re-opening
+* About dialog show youtube-dl version
+* Icons theme selection (vote on github) (or at least make it easy to change between them)
+* Settings menu add "Statistics"
 
 Structure
 =========
@@ -22,7 +21,6 @@ Structure
 
 Localization
 ============
-* Update translation files
 * Add support for right to left languages (hebrew, arabic)
     * Fix paths on R2L layouts
 * Compile *.po files at build time
@@ -53,6 +51,7 @@ Probably wont add
 * ListCtrl double click to "Rename"
 * Option to enable-disable items deletion from the filesystem
 * Add '--recode-video' to Formats tab
+* Auto video format detection
 
 Invalid
 =======

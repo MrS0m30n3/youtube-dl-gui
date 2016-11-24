@@ -234,7 +234,8 @@ class MainFrame(wx.Frame):
         statuslist_menu_data = (
             (_("Get URL"), self._on_geturl),
             (_("Get command"), self._on_getcmd),
-            (_("Open destination"), self._on_open_dest)
+            (_("Open destination"), self._on_open_dest),
+            (_("Re-enter"), self._on_reneter)
         )
 
         # Create options frame
@@ -338,6 +339,26 @@ class MainFrame(wx.Frame):
             self._status_list.Select(selected, on=1)
 
             self.PopupMenu(self._statuslist_menu)
+
+    def _on_reneter(self, event):
+        selected = self._status_list.get_selected()
+
+        if selected != -1:
+            object_id = self._status_list.GetItemData(selected)
+            download_item = self._download_list.get_item(object_id)
+
+            if download_item.stage != "Active":
+                self._status_list.remove_row(selected)
+                self._download_list.remove(object_id)
+
+                options = self._options_parser.parse(self.opt_manager.options)
+
+                download_item = DownloadItem(download_item.url, options)
+                download_item.path = self.opt_manager.options["save_path"]
+
+                if not self._download_list.has_item(download_item.object_id):
+                    self._status_list.bind_item(download_item)
+                    self._download_list.insert(download_item)
 
     def _on_open_dest(self, event):
         selected = self._status_list.get_selected()

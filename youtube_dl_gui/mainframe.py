@@ -614,7 +614,10 @@ class MainFrame(wx.Frame):
         if not selected_rows:
             for index, item in enumerate(self._download_list.get_items()):
                 if item.stage in ("Paused", "Completed", "Error"):
+                    # Store the old savepath because reset is going to remove it
+                    savepath = item.path
                     item.reset()
+                    item.path = savepath
                     self._status_list._update_from_item(index, item)
         else:
             for selected_row in selected_rows:
@@ -622,7 +625,10 @@ class MainFrame(wx.Frame):
                 item = self._download_list.get_item(object_id)
 
                 if item.stage in ("Paused", "Completed", "Error"):
+                    # Store the old savepath because reset is going to remove it
+                    savepath = item.path
                     item.reset()
+                    item.path = savepath
                     self._status_list._update_from_item(selected_row, item)
 
             self._update_pause_button(None)

@@ -235,7 +235,7 @@ class MainFrame(wx.Frame):
             (_("Get URL"), self._on_geturl),
             (_("Get command"), self._on_getcmd),
             (_("Open destination"), self._on_open_dest),
-            (_("Re-enter"), self._on_reneter)
+            (_("Re-enter"), self._on_reenter)
         )
 
         # Create options frame
@@ -340,7 +340,7 @@ class MainFrame(wx.Frame):
 
             self.PopupMenu(self._statuslist_menu)
 
-    def _on_reneter(self, event):
+    def _on_reenter(self, event):
         selected = self._status_list.get_selected()
 
         if selected != -1:

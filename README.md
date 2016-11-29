@@ -47,3 +47,11 @@ The [Public Domain License](LICENSE)
 ## Thanks
 
 Thanks to youtube-dl authors for creating such an amazing tool.
+
+## Frequently Asked Questions
+
+ * **Post processing takes a long time**: There should be no post-processing if you leave the video format to default (which defaults to the best format) and did not check convert to audio or embed subtitles, otherwise the file will be re-encoded to the format you selected (which takes time/CPU resources).
+ 
+ * **The website I'm trying to download from is not supported**: youtube-dl-gui uses [youtube-dl](https://github.com/rg3/youtube-dl) in the backend to download files. youtube-dl provides a list of [extractors](https://github.com/rg3/youtube-dl/tree/master/youtube_dl/extractor) to work with each particular site. If you'd like to request support for a new website, please submit it to youtube-dl's [issue tracker](https://github.com/rg3/youtube-dl/issues).
+ 
+ **How do I change the naming pattern for downloaded files?**: See [this comment](https://github.com/MrS0m30n3/youtube-dl-gui/issues/144#issuecomment-263195019)

@@ -1,20 +1,22 @@
 # -*- coding: UTF-8 -*-
 
+import gettext
+
 from .utils import TwoWayOrderedDict as tdict
 
 
 OUTPUT_FORMATS = tdict([
-    (0, "ID"),
-    (1, "Title"),
-    (2, "Title + ID"),
-    (4, "Title + Quality"),
-    (5, "Title + ID + Quality"),
-    (3, "Custom")
+    (0, _("ID")),
+    (1, _("Title")),
+    (2, _("Title + ID")),
+    (4, _("Title + Quality")),
+    (5, _("Title + ID + Quality")),
+    (3, _("Custom"))
 ])
 
 
 DEFAULT_FORMATS = tdict([
-    ("0", "default")
+    ("0", _("default"))
 ])
 
 

@@ -492,10 +492,10 @@ class MainFrame(wx.Frame):
             self.opt_manager.options["video_format"] = selected_format
             self.opt_manager.options["audio_format"] = ""  #NOTE Set to default value, check parsers.py
         elif selected_format in AUDIO_FORMATS:
-            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = selected_format
         else:
-            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = ""
 
     def _update_savepath(self, event):
@@ -963,7 +963,7 @@ class MainFrame(wx.Frame):
 
     def _start_download(self):
         if self._status_list.is_empty():
-            self._create_popup(_("No items to download)",
+            self._create_popup(_("No items to download"),
                                self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:

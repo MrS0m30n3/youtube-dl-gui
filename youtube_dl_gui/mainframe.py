@@ -437,7 +437,7 @@ class MainFrame(wx.Frame):
     def _update_pause_button(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        label = "Pause"
+        label = _("Pause")
         bitmap = self._bitmaps["pause"]
 
         for row in selected_rows:
@@ -447,7 +447,7 @@ class MainFrame(wx.Frame):
             if download_item.stage == "Paused":
                 # If we find one or more items in Paused
                 # state set the button functionality to resume
-                label = "Resume"
+                label = _("Resume")
                 bitmap = self._bitmaps["resume"]
                 break
 
@@ -469,11 +469,11 @@ class MainFrame(wx.Frame):
             aformats.append(FORMATS[aformat])
 
         if vformats:
-            self._videoformat_combobox.add_header("Video")
+            self._videoformat_combobox.add_header(_("Video"))
             self._videoformat_combobox.add_items(vformats)
 
         if aformats:
-            self._videoformat_combobox.add_header("Audio")
+            self._videoformat_combobox.add_header(_("Audio"))
             self._videoformat_combobox.add_items(aformats)
 
         current_index = self._videoformat_combobox.FindString(FORMATS[self.opt_manager.options["selected_format"]])
@@ -505,7 +505,7 @@ class MainFrame(wx.Frame):
         index = self._status_list.get_next_selected()
 
         if index == -1:
-            dlg = ButtonsChoiceDialog(self, ["Remove all", "Remove completed"], "No items selected. Please pick an action.", "Delete")
+            dlg = ButtonsChoiceDialog(self, [_("Remove all"), _("Remove completed")], _("No items selected. Please pick an action."), _("Delete"))
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 
@@ -523,7 +523,7 @@ class MainFrame(wx.Frame):
                         self._download_list.remove(ditem.object_id)
         else:
             if self.opt_manager.options["confirm_deletion"]:
-                dlg = wx.MessageDialog(self, "Are you sure you want to remove selected items?", "Delete", wx.YES_NO | wx.ICON_QUESTION)
+                dlg = wx.MessageDialog(self, _("Are you sure you want to remove selected items?"), _("Delete"), wx.YES_NO | wx.ICON_QUESTION)
                 result = dlg.ShowModal() == wx.ID_YES
                 dlg.Destroy()
             else:
@@ -535,7 +535,7 @@ class MainFrame(wx.Frame):
                     selected_download_item = self._download_list.get_item(object_id)
 
                     if selected_download_item.stage == "Active":
-                        self._create_popup("Item is active, cannot remove", self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+                        self._create_popup(_("Item is active, cannot remove"), self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
                     else:
                         #if selected_download_item.stage == "Completed":
                             #dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
@@ -568,7 +568,7 @@ class MainFrame(wx.Frame):
                         filename = selected_download_item.get_files()[-1]
                         open_file(filename)
                 else:
-                    self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
+                    self._create_popup(_("Item is not completed"), self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
         index = self._status_list.get_next_selected()
@@ -638,7 +638,7 @@ class MainFrame(wx.Frame):
 
         if selected_rows:
             #REFACTOR Use DoubleStageButton for this and check stage
-            if self._buttons["pause"].GetLabel() == "Pause":
+            if self._buttons["pause"].GetLabel() == _("Pause"):
                 new_state = "Paused"
             else:
                 new_state = "Queued"
@@ -656,7 +656,7 @@ class MainFrame(wx.Frame):
 
     def _on_start(self, event):
         if self.update_thread is not None and self.update_thread.is_alive():
-            self._create_popup("Update in progress. Please wait for the update to complete",
+            self._create_popup(_("Update in progress. Please wait for the update to complete"),
                                self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
@@ -848,8 +848,8 @@ class MainFrame(wx.Frame):
 
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
-        self._buttons["start"].SetLabel("Start")
-        self._buttons["start"].SetToolTip(wx.ToolTip("Start"))
+        self._buttons["start"].SetLabel(_("Start"))
+        self._buttons["start"].SetToolTip(wx.ToolTip(_("Start")))
         self._buttons["start"].SetBitmap(self._bitmaps["start"], wx.TOP)
 
     def _print_stats(self):
@@ -874,7 +874,7 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options['shutdown']:
-            dlg = ShutdownDialog(self, 60, "Shutting down in {0} second(s)", "Shutdown")
+            dlg = ShutdownDialog(self, 60, _("Shutting down in {0} second(s)"), _("Shutdown"))
             result = dlg.ShowModal() == wx.ID_OK
             dlg.Destroy()
 
@@ -963,7 +963,7 @@ class MainFrame(wx.Frame):
 
     def _start_download(self):
         if self._status_list.is_empty():
-            self._create_popup("No items to download",
+            self._create_popup(_("No items to download)",
                                self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
@@ -1043,7 +1043,7 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options["confirm_exit"]:
-            dlg = wx.MessageDialog(self, "Are you sure you want to exit?", "Exit", wx.YES_NO | wx.ICON_QUESTION)
+            dlg = wx.MessageDialog(self, _("Are you sure you want to exit?"), _("Exit"), wx.YES_NO | wx.ICON_QUESTION)
 
             result = dlg.ShowModal() == wx.ID_YES
             dlg.Destroy()
@@ -1284,7 +1284,7 @@ class ButtonsChoiceDialog(wx.Dialog):
         info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
         msg_text = wx.StaticText(panel, wx.ID_ANY, message)
 
-        buttons.append(wx.Button(panel, wx.ID_CANCEL, "Cancel"))
+        buttons.append(wx.Button(panel, wx.ID_CANCEL, _("Cancel")))
 
         for index, label in enumerate(choices):
             buttons.append(wx.Button(panel, index + 1, label))
@@ -1433,8 +1433,8 @@ class ShutdownDialog(wx.Dialog):
         info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
 
         self.msg_text = msg_text = wx.StaticText(panel, wx.ID_ANY, self._get_message())
-        ok_button = wx.Button(panel, wx.ID_OK, "OK")
-        cancel_button = wx.Button(panel, wx.ID_CANCEL, "Cancel")
+        ok_button = wx.Button(panel, wx.ID_OK, _("OK"))
+        cancel_button = wx.Button(panel, wx.ID_CANCEL, _("Cancel"))
 
         # Set layout
         vertical_sizer = wx.BoxSizer(wx.VERTICAL)

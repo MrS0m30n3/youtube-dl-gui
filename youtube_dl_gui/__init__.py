@@ -38,6 +38,9 @@ from .info import (
     __descriptionfull__,
 )
 
+gettext.install('youtube_dl_gui')
+from .formats import reload_strings
+
 from .logmanager import LogManager
 from .optionsmanager import OptionsManager
 
@@ -66,6 +69,7 @@ except IOError:
     opt_manager.options['locale_name'] = 'en_US'
     gettext.install('youtube_dl_gui')
 
+reload_strings()
 
 from .mainframe import MainFrame
 

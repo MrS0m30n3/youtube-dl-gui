@@ -1,12 +1,5 @@
-NEW_LAYOUT
-==========
-* Update translation files
-
 GUI
 ===
-* Change MainFrame layout (Remove on issue #131 completion)
-    (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
-
 * Remember list of urls after closing & re-opening
 * About dialog show youtube-dl version
 * Icons theme selection (vote on github) (or at least make it easy to change between them)

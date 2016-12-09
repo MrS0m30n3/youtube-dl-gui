@@ -124,12 +124,12 @@ class MainFrame(wx.Frame):
     DOWNLOAD_STARTED = _("Downloads started")
     CHOOSE_DIRECTORY = _("Choose Directory")
 
-    DOWNLOAD_ACTIVE = _("Download in progress. Please wait for all the downloads to complete")
-    UPDATE_ACTIVE = _("Update already in progress.")
+    DOWNLOAD_ACTIVE = _("Download in progress. Please wait for all downloads to complete")
+    UPDATE_ACTIVE = _("Update already in progress")
 
     UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
-    UPDATE_SUCC_MSG = _("Youtube-dl downloaded correctly")
+    UPDATE_SUCC_MSG = _("Successfully downloaded youtube-dl")
 
     OPEN_DIR_ERR = _("Unable to open directory: '{dir}'. "
                     "The specified path does not exist")
@@ -505,7 +505,7 @@ class MainFrame(wx.Frame):
         index = self._status_list.get_next_selected()
 
         if index == -1:
-            dlg = ButtonsChoiceDialog(self, [_("Remove all"), _("Remove completed")], _("No items selected. Please pick an action."), _("Delete"))
+            dlg = ButtonsChoiceDialog(self, [_("Remove all"), _("Remove completed")], _("No items selected. Please pick an action"), _("Delete"))
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 

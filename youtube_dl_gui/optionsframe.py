@@ -857,7 +857,7 @@ class ExtraTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(ExtraTab, self).__init__(*args, **kwargs)
 
-        self.cmdline_args_label = self.crt_statictext(_("Command line arguments (e.g. --help)"))
+        self.cmdline_args_label = self.crt_statictext(_("Youtube-dl command line options (e.g. --help)"))
         self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE | wx.TE_LINEWRAP)
 
         self.extra_opts_label = self.crt_statictext(_("Extra options"))

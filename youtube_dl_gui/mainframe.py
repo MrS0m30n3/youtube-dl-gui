@@ -423,8 +423,8 @@ class MainFrame(wx.Frame):
             if item.stage == "Error":
                 error += 1
 
-        # TODO Store percentage as float in the DownloadItem?
-        # TODO DownloadList keep track for each item stage?
+        # REFACTOR Store percentage as float in the DownloadItem?
+        # REFACTOR DownloadList keep track for each item stage?
 
         total_percentage += completed * 100.0 + error * 100.0
         total_percentage /= active + completed + error
@@ -507,7 +507,7 @@ class MainFrame(wx.Frame):
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 
-            #TODO Maybe add this functionality directly to DownloadList?
+            #REFACTOR Maybe add this functionality directly to DownloadList?
             if ret_code == 1:
                 for ditem in self._download_list.get_items():
                     if ditem.stage != "Active":

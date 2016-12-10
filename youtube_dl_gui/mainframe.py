@@ -425,11 +425,9 @@ class MainFrame(wx.Frame):
 
         # TODO Store percentage as float in the DownloadItem?
         # TODO DownloadList keep track for each item stage?
-        # TODO Should i count the paused items?
 
-        # total_percentage += queued * 0.0% + paused * 0.0% + completed * 100.0% + error * 100.0%
         total_percentage += completed * 100.0 + error * 100.0
-        total_percentage /= len(self._download_list)
+        total_percentage /= active + completed + error
 
         msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
         self._status_bar_write(msg)

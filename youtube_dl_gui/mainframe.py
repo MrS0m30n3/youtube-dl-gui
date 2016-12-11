@@ -427,7 +427,7 @@ class MainFrame(wx.Frame):
         # REFACTOR DownloadList keep track for each item stage?
 
         total_percentage += completed * 100.0 + error * 100.0
-        total_percentage /= active + completed + error
+        total_percentage /= active + completed + error + queued
 
         msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
         self._status_bar_write(msg)

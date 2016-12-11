@@ -1,6 +1,5 @@
 New layout branch
 =================
-* [INVALID] Options reset delete - clear 'youtubedlg/spaths'
 * setup.py handle new UI changes
     * Take care of issue #73
 * TODO tags utils.py

@@ -360,6 +360,11 @@ class MainFrame(wx.Frame):
                     self._status_list.bind_item(download_item)
                     self._download_list.insert(download_item)
 
+    def reset(self):
+        self._update_videoformat_combobox()
+        self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
+        self._path_combobox.SetValue(self.opt_manager.options["save_path"])
+
     def _on_open_dest(self, event):
         selected = self._status_list.get_selected()
 

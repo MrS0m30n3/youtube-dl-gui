@@ -117,6 +117,7 @@ class OptionsFrame(wx.Frame):
     def _on_reset(self, event):
         """Event handler for the reset button wx.EVT_BUTTON event."""
         self.reset()
+        self.GetParent().reset()
 
     def reset(self):
         """Reset the default options."""

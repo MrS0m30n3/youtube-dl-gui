@@ -799,6 +799,7 @@ class MainFrame(wx.Frame):
 
         mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
         mid_sizer.Add(self._folder_icon)
+        mid_sizer.AddSpacer((3, -1))
         mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.AddSpacer((5, -1))
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)

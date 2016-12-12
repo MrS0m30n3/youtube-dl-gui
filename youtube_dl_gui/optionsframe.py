@@ -415,7 +415,7 @@ class GeneralTab(TabPanel):
 
     def _on_language(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""
-        wx.MessageBox(_("In order for the changes to take effect please restart {0}.").format(__appname__),
+        wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
                       _("Restart"),
                       wx.OK | wx.ICON_INFORMATION,
                       self)
@@ -816,7 +816,7 @@ class AdvancedTab(TabPanel):
 
     def _on_enable_log(self, event):
         """Event handler for the wx.EVT_CHECKBOX of the enable_log_checkbox."""
-        wx.MessageBox(_("In order for the changes to take effect please restart {0}.").format(__appname__),
+        wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
                       _("Restart"),
                       wx.OK | wx.ICON_INFORMATION,
                       self)

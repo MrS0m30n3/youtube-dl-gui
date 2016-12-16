@@ -1,8 +1,4 @@
-New layout branch
-=================
-* setup.py handle new UI changes
-    * Take care of issue #73
-* TODO tags utils.py
+* Take care of issue #73
 
 
 Next release

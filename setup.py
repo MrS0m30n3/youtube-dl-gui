@@ -24,15 +24,6 @@ if PY2EXE:
         print error
         sys.exit(1)
 
-PY2APP = len(sys.argv) >= 2 and sys.argv[1] == 'py2app'
-
-if PY2APP:
-    try:
-        import py2app
-    except ImportError as error:
-        print error
-        sys.exit(1)
-
 from distutils.core import setup
 from distutils.sysconfig import get_python_lib
 
@@ -68,9 +59,6 @@ LOCALE_PATH = os.path.join('youtube_dl_gui', 'locale')
 PY2EXE_LOCALE_DIR = 'locale'
 WIN_LOCALE_DIR = os.path.join(get_python_lib(), 'youtube_dl_gui', 'locale')
 LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.lower())
-OSX_PREFIX = '/usr/local/Cellar/youtube-dl-gui/{version}'.format(version=__version__)
-OSX_LOCALE_DIR = '{prefix}/share/locale'.format(prefix=OSX_PREFIX)
-OSX_APP = '{prefix}/YoutubeDlGui.app'.format(prefix=OSX_PREFIX)
 
 
 def create_scripts():
@@ -95,8 +83,6 @@ def set_locale_files(data_files):
             dst = os.path.join(PY2EXE_LOCALE_DIR, locale_lang)
         elif os.name == 'nt':
             dst = os.path.join(WIN_LOCALE_DIR, locale_lang)
-        elif sys.platform == 'darwin':
-            dst = os.path.join(OSX_LOCALE_DIR, locale_lang)
         else:
             dst = os.path.join(LINUX_LOCALE_DIR, locale_lang)
 
@@ -138,19 +124,6 @@ def py2exe_setup():
 
     return params
 
-def py2app_setup():
-    data_files = []
-    create_scripts()
-    set_locale_files(data_files)
-    params = {
-        'data_files': data_files,
-        'app': ['build/_scripts/youtube-dl-gui'],
-        'setup_requires': ['py2app'],
-        'options': {'py2app': {'argv_emulation': True, 'iconfile': 'youtube_dl_gui/icons/osx/YoutubeDlGui.icns'}},
-    }
-
-    return params
-
 def normal_setup():
     data_files = list()
 
@@ -184,10 +157,7 @@ def normal_setup():
 if PY2EXE:
     params = py2exe_setup()
 else:
-    if PY2APP:
-        params = py2app_setup()
-    else:
-        params = normal_setup()
+    params = normal_setup()
 
 
 setup(

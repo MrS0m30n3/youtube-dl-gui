@@ -25,6 +25,8 @@ except ImportError as error:
     print error
     sys.exit(1)
 
+__packagename__ = "youtube_dl_gui"
+
 # For package use
 from .version import __version__
 from .info import (
@@ -38,7 +40,7 @@ from .info import (
     __descriptionfull__,
 )
 
-gettext.install('youtube_dl_gui')
+gettext.install(__packagename__)
 from .formats import reload_strings
 
 from .logmanager import LogManager
@@ -64,10 +66,10 @@ if opt_manager.options['enable_log']:
 locale_dir = get_locale_file()
 
 try:
-    gettext.translation('youtube_dl_gui', locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
+    gettext.translation(__packagename__, locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
 except IOError:
     opt_manager.options['locale_name'] = 'en_US'
-    gettext.install('youtube_dl_gui')
+    gettext.install(__packagename__)
 
 reload_strings()
 

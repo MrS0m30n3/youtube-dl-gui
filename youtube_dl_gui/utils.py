@@ -273,9 +273,6 @@ def get_locale_file():
         os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
 
-    if sys.platform == 'darwin':
-      SEARCH_DIRS.append('/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__))
-
     for directory in SEARCH_DIRS:
         if os_path_isdir(directory):
             return directory

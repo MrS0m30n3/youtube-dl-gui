@@ -81,7 +81,7 @@ def convert_on_bounds(func):
 
             for sub_item in item:
                 if isinstance(item, dict):
-                    temp_list.append((sub_item, covert_item(item[sub_item])))
+                    temp_list.append((sub_item, convert_item(item[sub_item])))
                 else:
                     temp_list.append(convert_item(sub_item))
 

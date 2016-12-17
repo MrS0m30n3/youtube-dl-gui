@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
-"POT-Creation-Date: 2016-12-12 00:35+-02\n"
+"POT-Creation-Date: 2016-12-17 17:07+EET\n"
 "PO-Revision-Date: 2015-07-02 15:38+EEST\n"
 "Last-Translator: Thierry Roussel <thierry.roussel@gmx.com>\n"
 "Language-Team: fr\n"
@@ -105,7 +105,7 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
-#: mainframe.py:113 mainframe.py:855 mainframe.py:856 optionsframe.py:585
+#: mainframe.py:113 mainframe.py:860 mainframe.py:861 optionsframe.py:585
 #, fuzzy
 msgid "Start"
 msgstr "Redémarrer"
@@ -270,32 +270,36 @@ msgstr "Téléchargement terminé"
 msgid "Update in progress. Please wait for the update to complete"
 msgstr ""
 
-#: mainframe.py:881
+#: mainframe.py:711
+msgid "Logging is disabled"
+msgstr ""
+
+#: mainframe.py:886
 msgid "Shutdown"
 msgstr "Arrêt"
 
-#: mainframe.py:881
+#: mainframe.py:886
 #, fuzzy
 msgid "Shutting down in {0} second(s)"
 msgstr "Arrêt du système"
 
-#: mainframe.py:970
+#: mainframe.py:975
 msgid "No items to download"
 msgstr ""
 
-#: mainframe.py:1050
+#: mainframe.py:1055
 msgid "Are you sure you want to exit?"
 msgstr ""
 
-#: mainframe.py:1050
+#: mainframe.py:1055
 msgid "Exit"
 msgstr ""
 
-#: mainframe.py:1291 mainframe.py:1441
+#: mainframe.py:1296 mainframe.py:1446
 msgid "Cancel"
 msgstr ""
 
-#: mainframe.py:1440
+#: mainframe.py:1445
 msgid "OK"
 msgstr ""
 

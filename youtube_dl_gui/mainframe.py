@@ -707,9 +707,14 @@ class MainFrame(wx.Frame):
         self.PopupMenu(self._settings_menu, event_object_pos)
 
     def _on_viewlog(self, event):
-        log_window = LogGUI(self)
-        log_window.load(self.log_manager.log_file)
-        log_window.Show()
+        if self.log_manager is None:
+            self._create_popup(_("Logging is disabled"),
+                               self.WARNING_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            log_window = LogGUI(self)
+            log_window.load(self.log_manager.log_file)
+            log_window.Show()
 
     def _on_about(self, event):
         info = wx.AboutDialogInfo()

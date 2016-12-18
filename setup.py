@@ -67,6 +67,9 @@ from youtube_dl_gui import (
     __descriptionfull__
 )
 
+# Setup can not handle unicode
+__packagename__ = str(__packagename__)
+
 
 # Helper functions
 def create_scripts():
@@ -206,7 +209,7 @@ setup(
     url                 = __projecturl__,
     description         = __description__,
     long_description    = __descriptionfull__,
-    packages            = [str(__packagename__)],
+    packages            = [__packagename__],
 
     **params
 )

@@ -97,8 +97,12 @@ ul a:hover {
   margin-top: 2%;
 }
 
-.header {
+.header_box {
   height: 100vh;
+}
+
+.header {
+  margin-top: 5%;
 }
 
 .header h1 {
@@ -143,8 +147,8 @@ ul a:hover {
   font-weight: bold;
 }
 
-.right {
-  margin-right: 2%;
+.top_right {
+  margin: 2% 2% 0 auto;
 }
 
 /* Resources */

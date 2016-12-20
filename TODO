@@ -37,8 +37,6 @@ Other
 * Add FAQs into docs/
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
 
-* Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui
-
 * Refactor
 * Review - rewrite threads communications
 * Add support for Python 3.*

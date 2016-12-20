@@ -568,7 +568,8 @@ class Worker(Thread):
                 ret_code = self._downloader.download(self._data['url'], self._options)
 
                 if (ret_code == YoutubeDLDownloader.OK or
-                        ret_code == YoutubeDLDownloader.ALREADY):
+                        ret_code == YoutubeDLDownloader.ALREADY or
+                        ret_code == YoutubeDLDownloader.WARNING):
                     self._successful += 1
 
                 # Ask GUI for name updates

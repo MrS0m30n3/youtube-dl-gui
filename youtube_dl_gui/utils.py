@@ -15,6 +15,7 @@ from __future__ import unicode_literals
 import os
 import sys
 import json
+import math
 import locale
 import subprocess
 
@@ -34,6 +35,11 @@ _RANDOM_OBJECT = object()
 YOUTUBEDL_BIN = 'youtube-dl'
 if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
+
+
+FILESIZE_METRICS = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+
+KILO_SIZE = 1024.0
 
 
 def get_encoding():
@@ -318,3 +324,30 @@ def get_pixmaps_dir():
             return pixmaps_dir
 
     return None
+
+
+def to_bytes(string):
+    """Convert given youtube-dl size string to bytes."""
+    value = 0.0
+
+    for index, metric in enumerate(reversed(FILESIZE_METRICS)):
+        if metric in string:
+            value = float(string.split(metric)[0])
+            break
+
+    exponent = index * (-1) + (len(FILESIZE_METRICS) - 1)
+
+    return round(value * (KILO_SIZE ** exponent), 2)
+
+
+def format_bytes(bytes):
+    """Format bytes to youtube-dl size output strings."""
+    if bytes == 0.0:
+        exponent = 0
+    else:
+        exponent = int(math.log(bytes, KILO_SIZE))
+
+    suffix = FILESIZE_METRICS[exponent]
+    output_value = bytes / (KILO_SIZE ** exponent)
+
+    return "%.2f%s" % (output_value, suffix)

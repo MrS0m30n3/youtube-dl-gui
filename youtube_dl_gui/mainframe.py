@@ -435,7 +435,10 @@ class MainFrame(wx.Frame):
         total_percentage /= active + completed + error + queued
 
         msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
-        self._status_bar_write(msg)
+
+        if self.update_thread is None:
+            # Dont overwrite the update messages
+            self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
         selected_rows = self._status_list.get_all_selected()
@@ -658,15 +661,15 @@ class MainFrame(wx.Frame):
             self._update_pause_button(None)
 
     def _on_start(self, event):
-        if self.update_thread is not None and self.update_thread.is_alive():
-            self._create_popup(_("Update in progress. Please wait for the update to complete"),
-                               self.WARNING_LABEL,
-                               wx.OK | wx.ICON_EXCLAMATION)
-        else:
-            if self.download_manager is None:
-                self._start_download()
+        if self.download_manager is None:
+            if self.update_thread is not None and self.update_thread.is_alive():
+                self._create_popup(_("Update in progress. Please wait for the update to complete"),
+                                   self.WARNING_LABEL,
+                                   wx.OK | wx.ICON_EXCLAMATION)
             else:
-                self.download_manager.stop_downloads()
+                self._start_download()
+        else:
+            self.download_manager.stop_downloads()
 
     def _on_savepath(self, event):
         dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)
@@ -977,7 +980,7 @@ class MainFrame(wx.Frame):
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
             self._app_timer.Start(100)
-            self.download_manager = DownloadManager(self._download_list, self.opt_manager, self.log_manager)
+            self.download_manager = DownloadManager(self, self._download_list, self.opt_manager, self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._buttons["start"].SetLabel(self.STOP_LABEL)

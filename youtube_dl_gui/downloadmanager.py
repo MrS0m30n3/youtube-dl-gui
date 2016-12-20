@@ -335,8 +335,9 @@ class DownloadManager(Thread):
 
     WAIT_TIME = 0.1
 
-    def __init__(self, download_list, opt_manager, log_manager=None):
+    def __init__(self, parent, download_list, opt_manager, log_manager=None):
         super(DownloadManager, self).__init__()
+        self.parent = parent
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         self.download_list = download_list
@@ -473,8 +474,10 @@ class DownloadManager(Thread):
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
-        if not os_path_exists(self._youtubedl_path()):
-            UpdateThread(self.opt_manager.options['youtubedl_path'], True).join()
+        if not os_path_exists(self._youtubedl_path()) and self.parent.update_thread is None:
+            self.parent.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'], True)
+            self.parent.update_thread.join()
+            self.parent.update_thread = None
 
     def _get_worker(self):
         for worker in self._workers:

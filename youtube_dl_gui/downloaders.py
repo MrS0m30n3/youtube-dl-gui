@@ -440,6 +440,14 @@ def extract_data(stdout):
             data_dictionary['filename'] = filename
             data_dictionary['extension'] = extension
 
+        # Get final extension ffmpeg post process simple (not file merge)
+        if stdout[1] == 'Destination:':
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
     else:
         data_dictionary['status'] = 'Pre Processing'
 

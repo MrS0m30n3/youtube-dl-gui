@@ -29,7 +29,6 @@ Fixes
 * Extract filename info on 'Already Downloaded'
 * Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
-* Post process file extension
 
 
 Other

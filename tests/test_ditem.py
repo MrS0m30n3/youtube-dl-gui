@@ -37,6 +37,7 @@ class TestItemInit(unittest.TestCase):
         self.assertEqual(ditem.path, "")
         self.assertEqual(ditem.filenames, [])
         self.assertEqual(ditem.extensions, [])
+        self.assertEqual(ditem.filesizes, [])
 
         self.assertEqual(
             ditem.progress_stats,
@@ -157,6 +158,7 @@ class TestUpdateStats(unittest.TestCase):
         self.assertEqual(self.ditem.path, path)
         self.assertEqual(self.ditem.filenames, ["somefilename"])
         self.assertEqual(self.ditem.extensions, [".mp4"])
+        self.assertEqual(self.ditem.filesizes, [9909043.20])
         self.assertEqual(
             self.ditem.progress_stats,
             {"filename": "somefilename",
@@ -172,16 +174,24 @@ class TestUpdateStats(unittest.TestCase):
 
         self.ditem.update_stats({"filename": "someotherfilename",
                                  "extension": ".m4a",
+                                 "percent": "50.0%",
+                                 "filesize": "2.00MiB",
+                                 "playlist_index": "2"})
+
+        # This update should not affect the filesizes
+        self.ditem.update_stats({ "percent": "65.0%",
+                                 "filesize": "2.00MiB",
                                  "playlist_index": "2"})
 
         self.assertEqual(self.ditem.filenames, ["somefilename", "someotherfilename"])
         self.assertEqual(self.ditem.extensions, [".mp4", ".m4a"])
+        self.assertEqual(self.ditem.filesizes, [9909043.20, 2097152.00])
         self.assertEqual(
             self.ditem.progress_stats,
             {"filename": "someotherfilename",
              "extension": ".m4a",
-             "filesize": "9.45MiB",
-             "percent": "2.0%",
+             "filesize": "2.00MiB",
+             "percent": "65.0%",
              "speed": "200.00KiB/s",
              "eta": "00:38",
              "status": "Downloading",
@@ -247,6 +257,52 @@ class TestDownloadItemPrivate(unittest.TestCase):
             ditem._set_stage(status)
             self.assertEqual(ditem.stage, "Error")
 
+    def test_calc_post_proc_size(self):
+        # REFACTOR Not an actual method
+        # should transfer to TestUpdateStats
+        ditem = DownloadItem("url", ["-f", "flv"])
+
+        ditem.update_stats({"filename": "file.f123",
+                            "extension": ".webm",
+                            "filesize": "10.00MiB",
+                            "percent": "75.0%",
+                            "speed": "123.45KiB/s",
+                            "eta": "N/A",
+                            "status": "Downloading",
+                            "path": "/home/user"})
+
+        ditem.update_stats({"filename": "file.f456",
+                            "extension": ".m4a",
+                            "filesize": "3.45MiB",
+                            "percent": "96.0%",
+                            "speed": "222.22KiB/s",
+                            "eta": "N/A",
+                            "status": "Downloading",
+                            "path": "/home/user"})
+
+        # Mimic youtube-dl post process behaviour
+        ditem.update_stats({"filename": "file",
+                            "extension": ".webm",
+                            "percent": "100%",
+                            "speed": "",
+                            "eta": "",
+                            "status": "Post Processing"})
+
+        self.assertEqual(ditem.filesizes, [10485760.00, 3617587.20, 14103347.20])
+
+        self.assertEqual(
+            ditem.progress_stats,
+            {"filename": "file",
+             "extension": ".webm",
+             "filesize": "13.45MiB",
+             "percent": "100%",
+             "speed": "-",
+             "eta": "-",
+             "status": "Post Processing",
+             "playlist_size": "",
+             "playlist_index": ""}
+        )
+
 
 class TestReset(unittest.TestCase):
 
@@ -260,6 +316,7 @@ class TestReset(unittest.TestCase):
         self.ditem.path = os.path.join("/home", "user")
         self.ditem.filenames = ["file"]
         self.ditem.extensions = [".mp4"]
+        self.ditem.filesizes = [123456.00]
         self.ditem.progress_stats = {
             "filename": "file",
             "extension": ".mp4",
@@ -278,6 +335,7 @@ class TestReset(unittest.TestCase):
         self.assertEqual(self.ditem.path, "")
         self.assertEqual(self.ditem.filenames, [])
         self.assertEqual(self.ditem.extensions, [])
+        self.assertEqual(self.ditem.filesizes, [])
         self.assertEqual(
             self.ditem.progress_stats,
             {"filename": "url",
@@ -296,6 +354,7 @@ class TestReset(unittest.TestCase):
         self.ditem.path = os.path.join("/home", "user")
         self.ditem.filenames = ["file1", "file2", "file"]
         self.ditem.extensions = [".mp4", ".m4a", ".mp4"]
+        self.ditem.filesizes = [1234.00, 3421.00, 4655.00]
         self.ditem.progress_stats = {
             "filename": "file",
             "extension": ".mp4",
@@ -314,6 +373,7 @@ class TestReset(unittest.TestCase):
         self.assertEqual(self.ditem.path, "")
         self.assertEqual(self.ditem.filenames, [])
         self.assertEqual(self.ditem.extensions, [])
+        self.assertEqual(self.ditem.filesizes, [])
         self.assertEqual(
             self.ditem.progress_stats,
             {"filename": "url",
@@ -340,6 +400,7 @@ class TestReset(unittest.TestCase):
         self.ditem.path = os.path.join("/home", "user")
         self.ditem.filenames = ["file1"]
         self.ditem.extensions = [".mp4"]
+        self.ditem.filesizes = [1234.00]
         self.ditem.progress_stats = {
             "filename": "file1",
             "extension": ".mp4",

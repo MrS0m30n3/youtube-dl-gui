@@ -41,7 +41,9 @@ from .downloaders import YoutubeDLDownloader
 from .utils import (
     YOUTUBEDL_BIN,
     os_path_exists,
-    to_string
+    format_bytes,
+    to_string,
+    to_bytes
 )
 
 
@@ -127,6 +129,7 @@ class DownloadItem(object):
         self.path = ""
         self.filenames = []
         self.extensions = []
+        self.filesizes = []
 
         self.default_values = {
             "filename": self.url,
@@ -177,6 +180,20 @@ class DownloadItem(object):
 
             if key == "status":
                 self._set_stage(stats_dict[key])
+
+        if "filesize" in stats_dict:
+            if len(self.filesizes) < len(self.filenames):
+                filesize = stats_dict["filesize"].lstrip("~")  # HLS downloader etc
+                self.filesizes.append(to_bytes(filesize))
+
+        if "status" in stats_dict:
+            # If we are post processing try to calculate the size of
+            # the output file since youtube-dl does not
+            if stats_dict["status"] == self.ACTIVE_STAGES[2] and not len(self.filenames) % 3:
+                post_proc_filesize = self.filesizes[-2] + self.filesizes[-1]
+
+                self.filesizes.append(post_proc_filesize)
+                self.progress_stats["filesize"] = format_bytes(post_proc_filesize)
 
     def _set_stage(self, status):
         if status in self.ACTIVE_STAGES:

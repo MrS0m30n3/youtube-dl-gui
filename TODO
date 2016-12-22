@@ -33,6 +33,7 @@ Fixes
 
 Other
 =====
+* ISSUE_TEMPLATE.md add TODO file
 * README.md update (pull-request #145)
 * Add FAQs into docs/
 * Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..

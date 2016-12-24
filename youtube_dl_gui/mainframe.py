@@ -431,8 +431,11 @@ class MainFrame(wx.Frame):
         # REFACTOR Store percentage as float in the DownloadItem?
         # REFACTOR DownloadList keep track for each item stage?
 
+        items_count = active + completed + error + queued
         total_percentage += completed * 100.0 + error * 100.0
-        total_percentage /= active + completed + error + queued
+
+        if items_count:
+            total_percentage /= items_count
 
         msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
 

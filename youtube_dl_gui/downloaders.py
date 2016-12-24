@@ -411,6 +411,11 @@ def extract_data(stdout):
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[1:-4]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
 
         # Get filesize abort status
         if stdout[-1] == 'Aborting.':

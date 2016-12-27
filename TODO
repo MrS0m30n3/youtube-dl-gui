@@ -6,6 +6,7 @@ Next release
 * Icons theme selection (vote on github) (or at least make it easy to change between them)
 * Settings menu add "Statistics"
 * Mix formats option
+* Non-Windows shutdown using D-Bus instead of 'shutdown'
 
 
 Structure
@@ -24,18 +25,14 @@ Localization
 * Send emails to update translations
 
 
-Fixes
-=====
-* Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
-* Non-Windows shutdown using D-Bus instead of 'shutdown'
-
-
 Other
 =====
 * ISSUE_TEMPLATE.md add TODO file
 * README.md update (pull-request #145)
 * Add FAQs into docs/
-* Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
+* Script to automatically update file contents:
+    version         : ISSUE_TEMPLATE.md, version.py
+    contributors    : AUTHORS
 
 * Refactor
 * Review - rewrite threads communications
@@ -50,3 +47,4 @@ Probably wont add
 * Option to enable-disable items deletion from the filesystem
 * Add '--recode-video' to Formats tab
 * Auto video format detection
+* Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)

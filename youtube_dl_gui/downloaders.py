@@ -408,6 +408,13 @@ def extract_data(stdout):
             data_dictionary['playlist_index'] = stdout[3]
             data_dictionary['playlist_size'] = stdout[5]
 
+        # Remove the 'and merged' part from stdout when using ffmpeg to merge the formats
+        if stdout[-3] == 'downloaded' and stdout [-1] == 'merged':
+            stdout = stdout[:-2]
+            stdout_with_spaces = stdout_with_spaces[:-2]
+
+            data_dictionary['percent'] = '100%'
+
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'

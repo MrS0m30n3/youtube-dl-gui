@@ -1,3 +1,18 @@
+Before new_layout branch merge
+==============================
+* README.md update (pull-request #145)
+* ISSUE_TEMPLATE.md add TODO file
+* Update translation HOWTO, scripts
+* Script to automatically update file contents:
+    version         : ISSUE_TEMPLATE.md, version.py
+    contributors    : AUTHORS
+
+
+After new_layout merge
+======================
+* Send emails to update translations
+
+
 Next release
 ============
 * Improve playlist downloads
@@ -21,18 +36,11 @@ Localization
 * Add support for right to left languages (hebrew, arabic)
     * Fix paths on R2L layouts
 * Script to automatically check translations (use google-translate library)
-* Send emails to update translations
-* Update translation HOWTO, etc
 
 
 Other
 =====
-* ISSUE_TEMPLATE.md add TODO file
-* README.md update (pull-request #145)
-* Add FAQs into docs/
-* Script to automatically update file contents:
-    version         : ISSUE_TEMPLATE.md, version.py
-    contributors    : AUTHORS
+* Add FAQs into docs/ (after package re-structure)
 
 * Refactor
 * Review - rewrite threads communications

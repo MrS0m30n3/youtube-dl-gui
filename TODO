@@ -20,7 +20,6 @@ Localization
 ============
 * Add support for right to left languages (hebrew, arabic)
     * Fix paths on R2L layouts
-* Compile *.po files at build time
 * Script to automatically check translations (use google-translate library)
 * Send emails to update translations
 * Update translation HOWTO, etc

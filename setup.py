@@ -20,6 +20,14 @@ Examples:
 
         python setup.py bdist
 
+    Build the translations::
+
+        python setup.py build
+
+Requirements:
+
+    * GNU gettext utilities
+
 Notes:
     If you get 'TypeError: decoding Unicode is not supported' when you run
     py2exe then apply the following patch::
@@ -45,6 +53,7 @@ import os
 import sys
 import glob
 from shutil import copyfile
+from subprocess import call
 
 PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == "py2exe"
 
@@ -81,6 +90,22 @@ def create_scripts():
 
     copyfile(os.path.join(__packagename__, "__main__.py"),
              os.path.join(dest_dir, "youtube-dl-gui"))
+
+def build_translations():
+    """Build the MO files."""
+    exec_name = "msgfmt.exe" if os.name == "nt" else "msgfmt"
+
+    search_pattern = os.path.join("youtube_dl_gui", "locale", "*", "LC_MESSAGES", "*.po")
+
+    for po_file in glob.glob(search_pattern):
+        mo_file = po_file.replace(".po", ".mo")
+
+        try:
+            print "Building MO file for '%s'" % po_file
+            call([exec_name, "-o", mo_file, po_file])
+        except OSError:
+            print "Could not locate file '%s', exiting..." % exec_name
+            sys.exit(1)
 
 ##################################
 
@@ -193,6 +218,7 @@ def windows_setup():
 
 # Execute pre-build stuff
 create_scripts()
+build_translations()
 
 if os.name == "nt":
     params = windows_setup()

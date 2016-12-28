@@ -9,4 +9,4 @@ include locale_build/*
 include youtube_dl_gui/data/pixmaps/icons-license
 
 recursive-include youtube_dl_gui/data *.png *.ico
-recursive-include youtube_dl_gui/locale *.mo *.po
+recursive-include youtube_dl_gui/locale *.po

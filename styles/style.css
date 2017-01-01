@@ -43,9 +43,9 @@ ul a:hover {
 .button {
   border: 0.1em solid white;
   border-radius: 0.4em;
-  margin-bottom: 1%;
-  margin-top: 2%;
-  padding: 1.2%;
+  margin-bottom: 1vw;
+  margin-top: 2vw;
+  padding: 1.2vw;
 }
 
 .button:hover {
@@ -99,15 +99,19 @@ ul a:hover {
 
 .header_box {
   height: 100vh;
+  position: relative;
 }
 
 .header {
-  margin-top: 5%;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%,-50%);
 }
 
 .header h1 {
   font-size: 280%;
-  margin-bottom: 2%;
+  margin-bottom: 2vw;
 }
 
 .header h2 {
@@ -148,6 +152,9 @@ ul a:hover {
 }
 
 .top_right {
+  position: absolute;
+  right: 0;
+  top: 0;
   margin: 2% 2% 0 auto;
 }
 

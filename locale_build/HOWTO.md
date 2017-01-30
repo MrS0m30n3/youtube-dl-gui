@@ -1,75 +1,61 @@
 ## ADD SUPPORT FOR NEW LANGUAGE
 
-**Requires**: [GNU GetText](https://www.gnu.org/software/gettext/) (If you want to build the MO files on your own)
+### Requirements
+- [GNU gettext](https://www.gnu.org/software/gettext) (To build the MO files)
 
-###You have two options in order to add a new translation on youtube-dlg.
+### Notes
+- Do **NOT** send me the PO files via email since i'm not looking at them anymore
+- See the **Help** & **Helpful links** sections below for help
+- The instructions below assume basic knowledge of the command line (OS independent)
 
-1. Translate the files and send them to me via email.
-2. Fork youtube-dlg and push changes on your own.
+---
 
-####1st Way
-
-1. Download the source code
- 1. Either download & extract the source from [here](https://github.com/MrS0m30n3/youtube-dl-gui/archive/master.zip)
- 2. Or run `git clone https://github.com/MrS0m30n3/youtube-dl-gui youtube-dl-gui-master`
-2. Change directory into **youtube-dl-gui-master**
-3. Copy **youtube_dl_gui/locale/en_US/LC_MESSAGES/youtube_dl_gui.po** -> **locale_build/**
-4. Change directory into **locale_build**
-5. Edit the PO file with your favorite text editor (See *EDIT* section)
-6. Send me the translated PO file via email to: ytubedlg@gmail.com
-
-####2nd Way
-
-1. Fork youtube-dlg project (See [Fork A Repo](https://help.github.com/articles/fork-a-repo/))
-2. Clone your repository `git clone https://github.com/<your-username>/youtube-dl-gui`
+### Getting started
+1. Fork the project
+2. Create a local clone of your fork repo
 3. Change directory into **youtube-dl-gui**
-4. Copy **youtube_dl_gui/locale/en_US/LC_MESSAGES/youtube_dl_gui.po** -> **locale_build/**
-5. Change directory into **locale_build**
-6. Edit the PO file with your favorite text editor (See *EDIT* section)
-7. Build the binary translation file (MO) using the build scripts (See *BUILD* section)
-8. Push changes: 
-`git add -A; git commit -m "Your commit message here"; git push origin master`
-9. Now you can open a new pull request
+4. Run the **new-locale.\<sh-bat\>** script under the **locale_build** directory
+5. Edit the created **PO** file with your favorite editor
+6. Add the new language in the **optionsframe.py** file
+7. Build the binary translation files (MO) using the **setup.py** script:
+`python setup.py build`
+8. Test the translations by running youtube-dl-gui:
+`python -m youtube_dl_gui`
+9. Push your changes:
+`git add -A;git commit -m "Your commit message here"; git push origin master`
+10. Open a new pull request
 
-### EDIT
-PO file headers informations:
-https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html
-  
-To translate the PO file just edit the **msgstr** fields
-  
-**Example**
-``` pot
-#: mainframe.py:78
-msgid "Download"
-msgstr "Add the translation here"
-```
+---
 
-### BUILD
-1. To build the MO file you need to run the corresponding build script for your OS
-   
-   **Windows**: build_locale.bat
-   
-   **Linux**: build_locale.sh
+### Help
+- The language code being used should be in the format `<ISO 639-1>_<ISO 3166-1 alpha-2>` (e.g. en_US)
 
-   **Usage**
-   
-   `build_locale.<sh-bat> <language code> <translated PO file>`
+- To translate the PO file just edit the **msgstr** fields as shown below:
 
-   **Example**
-   
-   `./build_locale.sh gr_GR gr.po`
-   
-2. Now you also need to add the corresponding language option under the options frame localization tab
- 1. Open optionsframe.py
- 2. Locate the LocalizationTab class
- 3. Find the LOCALE_NAMES attribute
- 4. Add your language to the LOCALE_NAMES 
-  
-  **Example**
+ ``` pot
+ msgid "Download"
+ msgstr "ダウンロード"
+ ```
+
+- In order for youtube-dl-gui to display the new language you must add it to the **optionsframe.py** file:
+
+ 1. Open **optionsframe.py** with your favorite editor
+ 2. Locate the **LOCALE_NAMES** attribute
+ 3. Add your language to it (make sure to sort alphabetically based on the language name)
+
   ``` python
   LOCALE_NAMES = twodict([
     ('en_US', 'English'),
-   + ('gr_GR', 'Greek')
+  + ('ja_JP', 'Japanese')
   ])
   ```
- 
+
+---
+
+### Helpful links
+
+- [Creating a pull request](https://help.github.com/articles/creating-a-pull-request)
+- [Fork A Repo](https://help.github.com/articles/fork-a-repo)
+- [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+- [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+- [PO file headers](https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html)

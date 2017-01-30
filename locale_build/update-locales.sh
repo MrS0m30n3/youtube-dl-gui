@@ -1,48 +1,54 @@
 #!/bin/bash
 
 # Author: Sotiris Papadopoulos <ytubedlg@gmail.com>
-# Last-Updated: 2015-07-02
-# Script to update all locale files and rebuild the mo files.
-
+# Last-Revision: 2017-01-30
+# Script to update all locale files and rebuild the MO files
+#
 # Usage: ./update_locales.sh
 
+PACKAGE="youtube_dl_gui"
 
-cd ../youtube_dl_gui/
+PO_FILE="$PACKAGE.po"
+
+
+cd ..
+
+VERSION=$(grep version "$PACKAGE/version.py" | cut -d"'" -f2)
+
+DIRS=$(find "$PACKAGE/locale" -mindepth 2 -maxdepth 2)
+
 
 echo "[*]Creating new .PO file"
-pygettext.py -v -o new.po *.py
+
+pygettext.py -v -o new.po "$PACKAGE/*.py"
 
 #vim new.po
 
-version=$(grep version version.py | cut -d"'" -f2)
-dirs=$(find locale -mindepth 2 -maxdepth 2)
-
 echo "[*]Updating old .PO files"
 
-for dir in $dirs; do
-    msgmerge --update --no-wrap -v "$dir/youtube_dl_gui.po" new.po
+for dir in $DIRS; do
+    msgmerge --update --no-wrap -v "$dir/$PO_FILE" new.po
 
     # Strip empty headers
-    sed -i '/: \\n/d' "$dir/youtube_dl_gui.po"
+    sed -i "/: \\n/d" "$dir/$PO_FILE"
 
     # Upate version
-    sed -i "s/Project-Id-Version:.*\\\n/Project-Id-Version: youtube-dlg $version\\\n/g" "$dir/youtube_dl_gui.po"
+    sed -i "s/Project-Id-Version:.*\\\n/Project-Id-Version: youtube-dlg $VERSION\\\n/g" "$dir/$PO_FILE"
 done
 
-echo ""
+echo
 read -p "Open files for revision?(y/n) " ch
 
 if [ $ch = 'y' ]; then
-    for dir in $dirs; do
-        vim "$dir/youtube_dl_gui.po"
+    for dir in $DIRS; do
+        vim "$dir/$PO_FILE"
     done
 fi
 
 echo "[*]Building .MO files"
 
-for dir in $dirs; do
-    msgfmt --use-fuzzy --output-file "$dir/youtube_dl_gui.mo" "$dir/youtube_dl_gui.po"
+for dir in $DIRS; do
+    msgfmt --use-fuzzy --output-file "$dir/$PO_FILE" "$dir/$PO_FILE"
 done
 
 echo "[*]Done"
-

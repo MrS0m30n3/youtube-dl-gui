@@ -14,7 +14,7 @@
 1. Fork the project
 2. Create a local clone of your fork repo
 3. Change directory into **youtube-dl-gui**
-4. Run the **new-locale.\<sh-bat\>** script under the **locale_build** directory
+4. Run the **new-locale.py** script under the **locale_build** directory
 5. Edit the created **PO** file with your favorite editor
 6. Add the new language in the **optionsframe.py** file
 7. Build the binary translation files (MO) using the **setup.py** script:

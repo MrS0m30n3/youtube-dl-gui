@@ -460,6 +460,9 @@ def extract_data(stdout):
             data_dictionary['filename'] = filename
             data_dictionary['extension'] = extension
 
+    elif stdout[0][0] != '[' or stdout[0] == '[debug]':
+        pass  # Just ignore this output
+
     else:
         data_dictionary['status'] = 'Pre Processing'
 

@@ -276,6 +276,7 @@ class GeneralTab(TabPanel):
         ('he_IL', 'Hebrew'),
         ('hu_HU', 'Hungarian'),
         ('it_IT', 'Italian'),
+        ('ko_KR', 'Korean'),
         ('es_MX', 'Mexican Spanish'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),

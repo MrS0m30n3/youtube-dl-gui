@@ -148,6 +148,29 @@ class OptionsParser(object):
                     options_list.append("-x")
                     options_list.append(option.flag)
                     options_list.append(to_string(value))
+
+                    #NOTE Temp fix
+                    # If current 'audio_quality' is not the default one ('5')
+                    # then append the audio quality flag and value to the
+                    # options list
+                    if options_dict["audio_quality"] != "5":
+                        options_list.append("--audio-quality")
+                        options_list.append(to_string(options_dict["audio_quality"]))
+
+            elif option.name == "audio_quality":
+                # If the '--audio-quality' is not already in the options list
+                # from the above branch then follow the standard procedure.
+                # We don't have to worry for the sequence in which the code
+                # will be executed since the 'audio_quality' option is placed
+                # after the 'audio_format' option in the self._ydl_options list
+                if option.flag not in options_list:
+                    if option.check_requirements(options_dict):
+                        value = options_dict[option.name]
+
+                        if value != option.default_value:
+                            options_list.append(option.flag)
+                            options_list.append(to_string(value))
+
             elif option.check_requirements(options_dict):
                 value = options_dict[option.name]
 

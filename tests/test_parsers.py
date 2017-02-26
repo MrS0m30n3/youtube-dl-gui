@@ -100,6 +100,12 @@ class TestParse(unittest.TestCase):
 
         self.assertItemsEqual(options_parser.parse(options_dict), expected_cmd_list)
 
+        # Setting 'to_audio' to True should return the same results
+        # since the '-x' flag is already set on audio extraction
+        options_dict["to_audio"] = True
+
+        self.assertItemsEqual(options_parser.parse(options_dict), expected_cmd_list)
+
 
 def main():
     unittest.main()

@@ -16,7 +16,7 @@ A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/
 
 **Linux (from source):** `sudo python setup.py install`
 
-**Linux (Ubuntu PPA):** http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/ (TODO: update)
+**Linux (Ubuntu PPA):** https://launchpad.net/~flexiondotorg/+archive/ubuntu/youtube-dl-gui
 
 **Linux (Arch AUR):** https://aur.archlinux.org/packages/youtube-dl-gui-git/ (TODO: update)
 

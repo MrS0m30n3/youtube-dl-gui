@@ -675,7 +675,7 @@ class MainFrame(wx.Frame):
             self.download_manager.stop_downloads()
 
     def _on_savepath(self, event):
-        dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)
+        dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection())
 
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()

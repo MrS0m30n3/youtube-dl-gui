@@ -68,6 +68,7 @@ class DownloadManager(Thread):
     """
 
     WAIT_TIME = 0.1
+    GLOBAL_YOUTUBE_DL_NS = 'youtube-dl'
 
     def __init__(self, urls_list, opt_manager, log_manager=None):
         super(DownloadManager, self).__init__()
@@ -202,7 +203,18 @@ class DownloadManager(Thread):
         """
         CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, data)
 
+    def _check_youtubedl_global(self):
+        """ Returns true if youtube-dl is globally available
+            you might have installed via pip. We shouldn't force download
+            if available already.
+            get_version returns version, can be checked if latest
+        """
+        downloader = YoutubeDLDownloader(self.GLOBAL_YOUTUBE_DL_NS)
+        return True if downloader.get_version() else False
+
     def _check_youtubedl(self):
+        """Check if youtube-dl is already installed globally"""
+        if self._check_youtubedl_global(): return
         """Check if youtube-dl binary exists. If not try to download it. """
         if not os_path_exists(self._youtubedl_path()):
             UpdateThread(self.opt_manager.options['youtubedl_path'], True).join()
@@ -217,6 +229,8 @@ class DownloadManager(Thread):
 
     def _youtubedl_path(self):
         """Returns the path to youtube-dl binary. """
+        #Good to use globally available binary if exist
+        if self._check_youtubedl_global(): path = self.GLOBAL_YOUTUBE_DL_NS
         path = self.opt_manager.options['youtubedl_path']
         path = os.path.join(path, YOUTUBEDL_BIN)
         return path

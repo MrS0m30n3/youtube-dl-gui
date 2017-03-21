@@ -136,6 +136,16 @@ class YoutubeDLDownloader(object):
         self._stderr_queue = Queue()
         self._stderr_reader = PipeReader(self._stderr_queue)
 
+    def get_version(self):
+        cmd = [self.youtubedl_path,'--version']
+        try:
+            self._create_process(cmd)
+            while self._proc_is_alive():
+                stdout = self._proc.stdout.readline().rstrip()
+                if stdout:return stdout
+        except:
+            return None
+
     def download(self, url, options):
         """Download url using given options.
 
@@ -318,8 +328,10 @@ class YoutubeDLDownloader(object):
 
         if os.name == 'nt':
             # Hide subprocess window
+            ## refer http://bugs.python.org/issue9861 
+            import _subprocess
             info = subprocess.STARTUPINFO()
-            info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            info.dwFlags |= _subprocess.STARTF_USESHOWWINDOW
         else:
             # Make subprocess the process group leader
             # in order to kill the whole process group with os.killpg

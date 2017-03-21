@@ -149,22 +149,6 @@ def check_path(path):
         os_makedirs(path)
 
 
-def get_config_path():
-    """Return user config path.
-
-    Note:
-        Windows = %AppData% + app_name
-        Linux   = ~/.config + app_name
-
-    """
-    if os.name == 'nt':
-        path = os_getenv('APPDATA')
-    else:
-        path = os.path.join(os_path_expanduser('~'), '.config')
-
-    return os.path.join(path, __appname__.lower())
-
-
 def shutdown_sys(password=None):
     """Shuts down the system.
     Returns True if no errors occur else False.

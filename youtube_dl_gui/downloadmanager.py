@@ -182,7 +182,7 @@ class DownloadItem(object):
                 self._set_stage(stats_dict[key])
 
         if "filesize" in stats_dict:
-            if len(self.filesizes) < len(self.filenames):
+            if stats_dict["percent"] == "100%" and len(self.filesizes) < len(self.filenames):
                 filesize = stats_dict["filesize"].lstrip("~")  # HLS downloader etc
                 self.filesizes.append(to_bytes(filesize))
 

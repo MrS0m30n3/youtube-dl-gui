@@ -145,6 +145,9 @@ class DownloadItem(object):
 
         self.progress_stats = dict(self.default_values)
 
+        # Keep track when the 'playlist_index' changes
+        self.playlist_index_changed = False
+
     def get_files(self):
         """Returns a list that contains all the system files bind to this object."""
         files = []
@@ -169,7 +172,19 @@ class DownloadItem(object):
                     self.progress_stats[key] = value
 
         # Extract extra stuff
+        if "playlist_index" in stats_dict:
+            self.playlist_index_changed = True
+
         if "filename" in stats_dict:
+
+            # Reset filenames, extensions & filesizes lists when changing playlist item
+            if self.playlist_index_changed:
+                self.filenames = []
+                self.extensions = []
+                self.filesizes = []
+
+                self.playlist_index_changed = False
+
             self.filenames.append(stats_dict["filename"])
 
         if "extension" in stats_dict:

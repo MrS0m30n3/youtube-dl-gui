@@ -168,18 +168,15 @@ class DownloadItem(object):
                 else:
                     self.progress_stats[key] = value
 
-            # Extract extra stuff
-            if key == "filename":
-                self.filenames.append(stats_dict[key])
+        # Extract extra stuff
+        if "filename" in stats_dict:
+            self.filenames.append(stats_dict["filename"])
 
-            if key == "extension":
-                self.extensions.append(stats_dict[key])
+        if "extension" in stats_dict:
+            self.extensions.append(stats_dict["extension"])
 
-            if key == "path":
-                self.path = stats_dict[key]
-
-            if key == "status":
-                self._set_stage(stats_dict[key])
+        if "path" in stats_dict:
+            self.path = stats_dict["path"]
 
         if "filesize" in stats_dict:
             if stats_dict["percent"] == "100%" and len(self.filesizes) < len(self.filenames):
@@ -194,6 +191,8 @@ class DownloadItem(object):
 
                 self.filesizes.append(post_proc_filesize)
                 self.progress_stats["filesize"] = format_bytes(post_proc_filesize)
+
+            self._set_stage(stats_dict["status"])
 
     def _set_stage(self, status):
         if status in self.ACTIVE_STAGES:

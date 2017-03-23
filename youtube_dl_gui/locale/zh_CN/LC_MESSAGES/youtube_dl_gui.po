@@ -1,0 +1,582 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2016-12-17 17:07+EET\n"
+"PO-Revision-Date: 2016-12-17 17:08+EET\n"
+"Last-Translator: Sofronio <xbox2xbox@gmail.com>\n"
+"Language-Team: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: formats.py:9 formats.py:108
+msgid "ID"
+msgstr "用户名"
+
+#: formats.py:10 formats.py:109 mainframe.py:140
+msgid "Title"
+msgstr "标题"
+
+#: formats.py:11 formats.py:110
+msgid "Title + ID"
+msgstr "标题 + 用户名"
+
+#: formats.py:12 formats.py:111
+msgid "Title + Quality"
+msgstr "标题 + 视频质量"
+
+#: formats.py:13 formats.py:112
+msgid "Title + ID + Quality"
+msgstr "标题 + 用户名 + 视频质量"
+
+#: formats.py:14 formats.py:113
+msgid "Custom"
+msgstr "自定义"
+
+#: formats.py:19 formats.py:118 mainframe.py:498 mainframe.py:501
+msgid "default"
+msgstr "默认"
+
+#: mainframe.py:97
+msgid "Enter URLs below"
+msgstr "在下方输入地址"
+
+#: mainframe.py:98
+msgid "Update"
+msgstr "更新"
+
+#: mainframe.py:99 optionsframe.py:41
+msgid "Options"
+msgstr "选项"
+
+#: mainframe.py:100 optionsframe.py:587
+msgid "Stop"
+msgstr "停止"
+
+#: mainframe.py:101
+msgid "Info"
+msgstr "信息"
+
+#: mainframe.py:102
+msgid "Welcome"
+msgstr "欢迎"
+
+#: mainframe.py:103
+msgid "Warning"
+msgstr "警告"
+
+#: mainframe.py:105
+msgid "Add"
+msgstr "添加"
+
+#: mainframe.py:106
+msgid "Download list"
+msgstr "下载队列"
+
+#: mainframe.py:107 mainframe.py:511 mainframe.py:529
+msgid "Delete"
+msgstr "删除"
+
+#: mainframe.py:108
+msgid "Play"
+msgstr "播放"
+
+#: mainframe.py:109
+msgid "Up"
+msgstr "提前"
+
+#: mainframe.py:110
+msgid "Down"
+msgstr "下降"
+
+#: mainframe.py:111
+msgid "Reload"
+msgstr "重新加载"
+
+#: mainframe.py:112 mainframe.py:443 mainframe.py:644
+msgid "Pause"
+msgstr "暂停"
+
+#: mainframe.py:113 mainframe.py:860 mainframe.py:861 optionsframe.py:585
+msgid "Start"
+msgstr "开始"
+
+#: mainframe.py:114
+msgid "About"
+msgstr "关于"
+
+#: mainframe.py:115
+msgid "View Log"
+msgstr "查看日志"
+
+#: mainframe.py:117
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "成功下载{0}个链接 用时{1}天{2}小时{3}分钟{4}秒"
+
+#: mainframe.py:119
+msgid "Downloads completed"
+msgstr "下载完成"
+
+#: mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "总进度：{0:.1f}% | 队列 ({1}) 暂停 ({2}) 活动 ({3}) 完成 ({4}) 错误 ({5})"
+
+#: mainframe.py:121
+msgid "Stopping downloads"
+msgstr "正在停止下载"
+
+#: mainframe.py:122
+msgid "Downloads stopped"
+msgstr "下载已经停止"
+
+#: mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "请至少提供一个链接"
+
+#: mainframe.py:124
+msgid "Downloads started"
+msgstr "下载已经开始"
+
+#: mainframe.py:125
+msgid "Choose Directory"
+msgstr "选择目录"
+
+#: mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "正在下载中 请等待所有下载完毕"
+
+#: mainframe.py:128
+msgid "Update already in progress"
+msgstr "更新进行中"
+
+#: mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "正在下载最新版本的youtube-dl 请稍候"
+
+#: mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "YouTube-DL下载失败 [{0}]"
+
+#: mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "YouTube-DL下载成功"
+
+#: mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "无法打开目录 '{dir}' 此路经不存在"
+
+#: mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "关闭系统时发生错误 请确保密码正确"
+
+#: mainframe.py:138
+msgid "Shutting down system"
+msgstr "正在关闭系统"
+
+#: mainframe.py:141
+msgid "Extension"
+msgstr "扩展名"
+
+#: mainframe.py:142
+msgid "Size"
+msgstr "大小"
+
+#: mainframe.py:143
+msgid "Percent"
+msgstr "百分比"
+
+#: mainframe.py:144
+msgid "ETA"
+msgstr "剩余时间"
+
+#: mainframe.py:145
+msgid "Speed"
+msgstr "速度"
+
+#: mainframe.py:146
+msgid "Status"
+msgstr "状态"
+
+#: mainframe.py:235
+msgid "Get URL"
+msgstr "获取地址"
+
+#: mainframe.py:236
+msgid "Get command"
+msgstr "获取命令"
+
+#: mainframe.py:237
+msgid "Open destination"
+msgstr "打开输出目录"
+
+#: mainframe.py:238
+msgid "Re-enter"
+msgstr "重新输入"
+
+#: mainframe.py:453
+msgid "Resume"
+msgstr "继续"
+
+#: mainframe.py:475
+msgid "Video"
+msgstr "视频"
+
+#: mainframe.py:479
+msgid "Audio"
+msgstr "音频"
+
+#: mainframe.py:511
+msgid "No items selected. Please pick an action"
+msgstr "没有选择项目 请选择一个操作"
+
+#: mainframe.py:511
+msgid "Remove all"
+msgstr "移除全部"
+
+#: mainframe.py:511
+msgid "Remove completed"
+msgstr "移除已完成"
+
+#: mainframe.py:529
+msgid "Are you sure you want to remove selected items?"
+msgstr "你确定要移除选定项吗"
+
+#: mainframe.py:541
+msgid "Item is active, cannot remove"
+msgstr "选定项正在活动中 不能移除"
+
+#: mainframe.py:574
+msgid "Item is not completed"
+msgstr "选定项未完成"
+
+#: mainframe.py:662
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "正在进行升级 请等待完成"
+
+#: mainframe.py:711
+msgid "Logging is disabled"
+msgstr "日志已被禁用"
+
+#: mainframe.py:886
+msgid "Shutdown"
+msgstr "关闭系统"
+
+#: mainframe.py:886
+msgid "Shutting down in {0} second(s)"
+msgstr "{0}秒后关闭系统"
+
+#: mainframe.py:975
+msgid "No items to download"
+msgstr "没有要下载的项目"
+
+#: mainframe.py:1055
+msgid "Are you sure you want to exit?"
+msgstr "你确定要退出吗"
+
+#: mainframe.py:1055
+msgid "Exit"
+msgstr "退出"
+
+#: mainframe.py:1296 mainframe.py:1446
+msgid "Cancel"
+msgstr "取消"
+
+#: mainframe.py:1445
+msgid "OK"
+msgstr "确定"
+
+#: optionsframe.py:65
+msgid "Reset"
+msgstr "重置"
+
+#: optionsframe.py:66
+msgid "Close"
+msgstr "关闭"
+
+#: optionsframe.py:72
+msgid "General"
+msgstr "通用"
+
+#: optionsframe.py:73
+msgid "Formats"
+msgstr "格式"
+
+#: optionsframe.py:74
+msgid "Downloads"
+msgstr "下载"
+
+#: optionsframe.py:75
+msgid "Advanced"
+msgstr "高级"
+
+#: optionsframe.py:76
+msgid "Extra"
+msgstr "额外选项"
+
+#: optionsframe.py:313
+msgid "Language"
+msgstr "语言"
+
+#: optionsframe.py:316
+msgid "Filename format"
+msgstr "文件名格式"
+
+#: optionsframe.py:321
+msgid "Filename options"
+msgstr "文件名选项"
+
+#: optionsframe.py:322
+msgid "Restrict filenames to ASCII"
+msgstr "限定文件名为ASCII"
+
+#: optionsframe.py:324
+msgid "More options"
+msgstr "更多选项"
+
+#: optionsframe.py:325
+msgid "Confirm on exit"
+msgstr "确认退出"
+
+#: optionsframe.py:326
+msgid "Confirm item deletion"
+msgstr "确认删除选项"
+
+#: optionsframe.py:327
+msgid "Inform me on download completion"
+msgstr "下载完成后提醒我"
+
+#: optionsframe.py:329
+msgid "Shutdown on download completion"
+msgstr "下载完成后关闭系统"
+
+#: optionsframe.py:340
+msgid "SUDO password"
+msgstr "SUDO密码"
+
+#: optionsframe.py:418 optionsframe.py:819
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "为使更改生效 请重新启动 {0}"
+
+#: optionsframe.py:419 optionsframe.py:820
+msgid "Restart"
+msgstr "重启"
+
+#: optionsframe.py:466
+msgid "high"
+msgstr "高"
+
+#: optionsframe.py:466
+msgid "low"
+msgstr "低"
+
+#: optionsframe.py:466
+msgid "mid"
+msgstr "中"
+
+#: optionsframe.py:471
+msgid "Video formats"
+msgstr "视频格式"
+
+#: optionsframe.py:474
+msgid "Audio formats"
+msgstr "音频格式"
+
+#: optionsframe.py:477
+msgid "Post-Process options"
+msgstr "后处理选项"
+
+#: optionsframe.py:478
+msgid "Keep original files"
+msgstr "保留原始文件"
+
+#: optionsframe.py:479
+msgid "Extract audio from video file"
+msgstr "从视频中解压出音频"
+
+#: optionsframe.py:480
+msgid "Embed thumbnail in audio file"
+msgstr "在音频中封入封面"
+
+#: optionsframe.py:481
+msgid "Add metadata to file"
+msgstr "将metadata写入文件"
+
+#: optionsframe.py:483
+msgid "Audio quality"
+msgstr "音频质量"
+
+#: optionsframe.py:541
+msgid "English"
+msgstr "英语"
+
+#: optionsframe.py:542
+msgid "French"
+msgstr "法语"
+
+#: optionsframe.py:543
+msgid "German"
+msgstr "德语"
+
+#: optionsframe.py:544
+msgid "Greek"
+msgstr "希腊语"
+
+#: optionsframe.py:545
+msgid "Hebrew"
+msgstr "希伯来语"
+
+#: optionsframe.py:546
+msgid "Italian"
+msgstr "意大利语"
+
+#: optionsframe.py:547
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+#: optionsframe.py:548
+msgid "Russian"
+msgstr "俄语"
+
+#: optionsframe.py:549
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: optionsframe.py:550
+msgid "Swedish"
+msgstr "瑞典语"
+
+#: optionsframe.py:551
+msgid "Turkish"
+msgstr "土耳其语"
+
+#: optionsframe.py:567
+msgid "None"
+msgstr "无"
+
+#: optionsframe.py:568
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "自动生成字幕(仅限YOUTUBE)"
+
+#: optionsframe.py:569
+msgid "All available subtitles"
+msgstr "所有可用字幕"
+
+#: optionsframe.py:570
+msgid "Subtitles by language"
+msgstr "根据语言选择字幕"
+
+#: optionsframe.py:576
+msgid "Subtitles"
+msgstr "字幕"
+
+#: optionsframe.py:580
+msgid "Subtitles options"
+msgstr "字幕选项"
+
+#: optionsframe.py:581
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "将字幕封入视频(仅限mp4视频)"
+
+#: optionsframe.py:583
+msgid "Playlist"
+msgstr "播放列表"
+
+#: optionsframe.py:589 optionsframe.py:594
+msgid "Max"
+msgstr "最大"
+
+#: optionsframe.py:592
+msgid "Filesize"
+msgstr "文件大小"
+
+#: optionsframe.py:597
+msgid "Min"
+msgstr "最小"
+
+#: optionsframe.py:726
+msgid "Retries"
+msgstr "重试次数"
+
+#: optionsframe.py:729
+msgid "Authentication"
+msgstr "授权"
+
+#: optionsframe.py:731
+msgid "Username"
+msgstr "用户名"
+
+#: optionsframe.py:733
+msgid "Password"
+msgstr "密码"
+
+#: optionsframe.py:735
+msgid "Video password"
+msgstr "视频密码"
+
+#: optionsframe.py:738
+msgid "Network"
+msgstr "网络"
+
+#: optionsframe.py:740
+msgid "Proxy"
+msgstr "代理"
+
+#: optionsframe.py:742
+msgid "User agent"
+msgstr "用户代理"
+
+#: optionsframe.py:744
+msgid "Referer"
+msgstr "引用"
+
+#: optionsframe.py:747
+msgid "Logging"
+msgstr "登录中"
+
+#: optionsframe.py:749
+msgid "Enable log"
+msgstr "启用日志"
+
+#: optionsframe.py:750
+msgid "View"
+msgstr "查看"
+
+#: optionsframe.py:751
+msgid "Clear"
+msgstr "清空"
+
+#: optionsframe.py:861
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "Youtube-dl命令行参数(例如 --help)"
+
+#: optionsframe.py:864
+msgid "Extra options"
+msgstr "解压选项"
+
+#: optionsframe.py:866
+msgid "Debug youtube-dl"
+msgstr "Debug youtube-dl"
+
+#: optionsframe.py:867
+msgid "Ignore errors"
+msgstr "忽略错误"
+
+#: optionsframe.py:868
+msgid "Ignore youtube-dl config"
+msgstr "忽略youtube-dl配置"
+
+#: optionsframe.py:869
+msgid "No mtime"
+msgstr "无mtime"
+
+#: optionsframe.py:870
+msgid "Prefer native HLS"
+msgstr "选择原生HLS"
+
+#: optionsframe.py:931
+msgid "Log Viewer"
+msgstr "日志查看器"

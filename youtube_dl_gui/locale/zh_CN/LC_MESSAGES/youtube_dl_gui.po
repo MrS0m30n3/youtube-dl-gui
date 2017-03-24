@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.3.8\n"
-"POT-Creation-Date: 2016-12-17 17:07+EET\n"
-"PO-Revision-Date: 2016-12-17 17:08+EET\n"
+"POT-Creation-Date: 2017-03-23 09:06+EET\n"
+"PO-Revision-Date: 2017-03-24 09:00+EET\n"
 "Last-Translator: Sofronio <xbox2xbox@gmail.com>\n"
 "Language-Team: en\n"
 "MIME-Version: 1.0\n"
@@ -155,7 +155,7 @@ msgstr "更新进行中"
 
 #: mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "正在下载最新版本的youtube-dl 请稍候"
+msgstr "正在下载最新版本的YouTube-DL 请稍候"
 
 #: mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
@@ -239,7 +239,7 @@ msgstr "移除全部"
 
 #: mainframe.py:511
 msgid "Remove completed"
-msgstr "移除已完成"
+msgstr "移除已完成项目"
 
 #: mainframe.py:529
 msgid "Are you sure you want to remove selected items?"
@@ -535,7 +535,7 @@ msgstr "引用"
 
 #: optionsframe.py:747
 msgid "Logging"
-msgstr "登录中"
+msgstr "记录日志中"
 
 #: optionsframe.py:749
 msgid "Enable log"
@@ -551,15 +551,15 @@ msgstr "清空"
 
 #: optionsframe.py:861
 msgid "Youtube-dl command line options (e.g. --help)"
-msgstr "Youtube-dl命令行参数(例如 --help)"
+msgstr "YouTube-DL命令行参数(例如 --help)"
 
 #: optionsframe.py:864
 msgid "Extra options"
-msgstr "解压选项"
+msgstr "额外选项"
 
 #: optionsframe.py:866
 msgid "Debug youtube-dl"
-msgstr "Debug youtube-dl"
+msgstr ""
 
 #: optionsframe.py:867
 msgid "Ignore errors"
@@ -567,7 +567,7 @@ msgstr "忽略错误"
 
 #: optionsframe.py:868
 msgid "Ignore youtube-dl config"
-msgstr "忽略youtube-dl配置"
+msgstr "忽略YouTube-DL配置"
 
 #: optionsframe.py:869
 msgid "No mtime"

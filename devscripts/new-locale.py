@@ -33,8 +33,8 @@ def output(msg):
 
 
 def manage_directory():
-    """Allow script calls outside the 'locale_build' dir."""
-    if os.path.basename(os.getcwd()) == "locale_build":
+    """Allow script calls from the 'devscripts' dir and the package dir."""
+    if os.path.basename(os.getcwd()) == "devscripts":
         os.chdir("..")
 
 

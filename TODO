@@ -24,8 +24,6 @@ Next release
 
 Structure
 =========
-* Create devscripts/ directory and move all the utility scripts there
-* Create docs/ directory and move all the guides there
 * Re-structure package
 
 

@@ -1,6 +1,7 @@
 Before new_layout branch merge
 ==============================
 * README.md update (pull-request #145)
+* Script to automatically check translations (use google-translate library)
 
 
 After new_layout merge
@@ -19,20 +20,15 @@ Next release
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
 
 
-Structure
-=========
-* Re-structure package
-
-
 Localization
 ============
 * Add support for right to left languages (hebrew, arabic)
-    * Fix paths on R2L layouts
-* Script to automatically check translations (use google-translate library)
+* Fix paths on R2L layouts
 
 
 Other
 =====
+* Re-structure package
 * Add FAQs into docs/ (after package re-structure)
 
 * Refactor

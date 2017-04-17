@@ -1,8 +1,6 @@
 Before new_layout branch merge
 ==============================
 * README.md update (pull-request #145)
-* Script to automatically update file contents:
-    contributors    : AUTHORS
 
 
 After new_layout merge

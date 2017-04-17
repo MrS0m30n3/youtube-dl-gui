@@ -2,7 +2,6 @@ Before new_layout branch merge
 ==============================
 * README.md update (pull-request #145)
 * Script to automatically update file contents:
-    version         : ISSUE_TEMPLATE.md, version.py
     contributors    : AUTHORS
 
 

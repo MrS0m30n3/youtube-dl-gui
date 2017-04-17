@@ -4,7 +4,8 @@ include LICENSE
 include README.md
 
 include tests/*.py
-include locale_build/*
+include devscripts/*
+include docs/*
 
 include youtube_dl_gui/data/pixmaps/icons-license
 

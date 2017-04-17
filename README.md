@@ -28,7 +28,7 @@ Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` 
 
 ## Contributing
 
-**Support for new language:** See [Localization HOWTO](locale_build/HOWTO.md).
+**Support for new language:** See [Localization HOWTO](docs/localization_howto.md).
 
 **Reporting bugs:** See [Issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues).
 

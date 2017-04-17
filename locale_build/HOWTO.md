@@ -22,7 +22,11 @@
 8. Test the translations by running youtube-dl-gui:
 `python -m youtube_dl_gui`
 9. Push your changes:
-`git add -A;git commit -m "Your commit message here"; git push origin master`
+```
+git add -A
+git commit -m "Your commit message here"
+git push origin master
+```
 10. Open a new pull request
 
 ---

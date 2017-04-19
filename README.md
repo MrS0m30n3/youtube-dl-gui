@@ -16,7 +16,17 @@ A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/
 * [windows installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-setup.zip)
 * [windows portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-portable.zip)
       
-**Linux (from source):** `sudo python setup.py install`
+### Install From Source
+1. Download & extract source
+2. Change directory into **youtube-dl-gui-0.3.8**
+3. Run `python setup.py install`
+
+### Install PyPi
+1. Run `pip install youtube-dlg`
+
+### Install Windows Installer
+1. Download & extract the windows installer
+2. Run the `setup.exe` file
 
 ## Contributing
 

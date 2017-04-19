@@ -7,20 +7,16 @@ A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/
 ![youtube-dl-gui main window](https://i.imgur.com/tMTtgPt.png)
 
 ## Installation
-
+* [source (.zip)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.3.8.zip)
+* [source (.tar.gz)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.3.8.tar.gz)
+* [pypi](https://pypi.python.org/pypi/youtube-dlg/0.3.8)
+* [ubuntu ppa](http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/)
+* [arch aur](https://aur.archlinux.org/packages/youtube-dl-gui-git/)
+* [slackware slackbuild](https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/)
+* [windows installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-setup.zip)
+* [windows portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-portable.zip)
+      
 **Linux (from source):** `sudo python setup.py install`
-
-**Linux (Ubuntu PPA):** http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/ (TODO: update)
-
-**Linux (Arch AUR):** https://aur.archlinux.org/packages/youtube-dl-gui-git/ (TODO: update)
-
-**Linux (Slackware SlackBuild):** https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/
-
-**Windows:** TODO Package MSI/portable ZIP
-
-**Mac:** TODO Package app
-
-Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` command, or by creating a desktop launcher (TODO)
 
 ## Contributing
 

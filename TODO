@@ -1,8 +1,3 @@
-Before new_layout branch merge
-==============================
-* README.md update (pull-request #145)
-
-
 After new_layout merge
 ======================
 * Send emails to update translations
@@ -28,7 +23,6 @@ Localization
 Other
 =====
 * Re-structure package
-* Add FAQs into docs/ (after package re-structure)
 
 * Refactor
 * Review - rewrite threads communications

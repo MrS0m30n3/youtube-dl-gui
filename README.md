@@ -35,7 +35,7 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 2. Run the `setup.exe` file
 
 ## Contributing
-* **Add support for new language:** See [localization howto](docs/localiation_howto.md)
+* **Add support for new language:** See [localization howto](docs/localization_howto.md)
 * **Report a bug:** See [issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues)
 
 ## Authors
@@ -77,6 +77,6 @@ Thanks to everyone who contributed to this project and to [@philipzae](https://g
  
  * **Can i download only the subtitles file**: If the video file is presented youtube-dl-gui will go ahead and download only the subtitles file else you will have to use youtube-dl or a different tool since youtube-dl-gui can't download only subtitles.
  
- * **I'm using the HLS downloader and i don't see any progress report**: That's a known issue you should use the native HLS implementation by enabling the **Prefer Native HLS** option under the Options>Extra tab. Note that the native HLS implementation might not work on every site. For more info you can read issue #49.
+ * **I'm using the HLS downloader and i don't see any progress report**: That's a known issue you should use the native HLS implementation by enabling the **Prefer Native HLS** option under the Options>Extra tab. Note that the native HLS implementation might not work on every site. For more info you can read issue [#49](https://github.com/MrS0m30n3/youtube-dl-gui/issues/49).
  
- * **I'm using the HLS downloader and the Stop button won't work**: That's also a known issue with the HLS downloader on Windows. You should use the native HLS implementation or wait for the download to complete normally. For more info you can read issue #49.
+ * **I'm using the HLS downloader and the Stop button won't work**: That's also a known issue with the HLS downloader on Windows. You should use the native HLS implementation or wait for the download to complete normally. For more info you can read issue [#49](https://github.com/MrS0m30n3/youtube-dl-gui/issues/49).

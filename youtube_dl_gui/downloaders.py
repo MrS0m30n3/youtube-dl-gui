@@ -408,9 +408,21 @@ def extract_data(stdout):
             data_dictionary['playlist_index'] = stdout[3]
             data_dictionary['playlist_size'] = stdout[5]
 
+        # Remove the 'and merged' part from stdout when using ffmpeg to merge the formats
+        if stdout[-3] == 'downloaded' and stdout [-1] == 'merged':
+            stdout = stdout[:-2]
+            stdout_with_spaces = stdout_with_spaces[:-2]
+
+            data_dictionary['percent'] = '100%'
+
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[1:-4]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
 
         # Get filesize abort status
         if stdout[-1] == 'Aborting.':
@@ -439,6 +451,17 @@ def extract_data(stdout):
             data_dictionary['path'] = path
             data_dictionary['filename'] = filename
             data_dictionary['extension'] = extension
+
+        # Get final extension ffmpeg post process simple (not file merge)
+        if stdout[1] == 'Destination:':
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
+    elif stdout[0][0] != '[' or stdout[0] == '[debug]':
+        pass  # Just ignore this output
 
     else:
         data_dictionary['status'] = 'Pre Processing'

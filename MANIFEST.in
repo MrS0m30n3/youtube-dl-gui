@@ -1,12 +1,15 @@
-include youtube_dl_gui/data/pixmaps/icons-license
-include youtube_dl_gui/data/formats
-include README.md
+include TODO
 include AUTHORS
 include LICENSE
-include TODO
+include README.md
 
 include tests/*.py
-include locale_build/*
+include devscripts/*
+include docs/*
 
-recursive-include youtube_dl_gui/data *.png *.ico *.icns
-recursive-include youtube_dl_gui/locale *.mo *.po
+include youtube_dl_gui/data/pixmaps/icons-license
+
+recursive-include youtube_dl_gui/data *.png *.ico
+recursive-include youtube_dl_gui/locale *.po
+
+recursive-exclude youtube_dl_gui/locale *.mo

@@ -124,12 +124,12 @@ class MainFrame(wx.Frame):
     DOWNLOAD_STARTED = _("Downloads started")
     CHOOSE_DIRECTORY = _("Choose Directory")
 
-    DOWNLOAD_ACTIVE = _("Download in progress. Please wait for all the downloads to complete")
-    UPDATE_ACTIVE = _("Update already in progress.")
+    DOWNLOAD_ACTIVE = _("Download in progress. Please wait for all downloads to complete")
+    UPDATE_ACTIVE = _("Update already in progress")
 
     UPDATING_MSG = _("Downloading latest youtube-dl. Please wait...")
     UPDATE_ERR_MSG = _("Youtube-dl download failed [{0}]")
-    UPDATE_SUCC_MSG = _("Youtube-dl downloaded correctly")
+    UPDATE_SUCC_MSG = _("Successfully downloaded youtube-dl")
 
     OPEN_DIR_ERR = _("Unable to open directory: '{dir}'. "
                     "The specified path does not exist")
@@ -360,6 +360,11 @@ class MainFrame(wx.Frame):
                     self._status_list.bind_item(download_item)
                     self._download_list.insert(download_item)
 
+    def reset(self):
+        self._update_videoformat_combobox()
+        self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
+        self._path_combobox.SetValue(self.opt_manager.options["save_path"])
+
     def _on_open_dest(self, event):
         selected = self._status_list.get_selected()
 
@@ -423,21 +428,25 @@ class MainFrame(wx.Frame):
             if item.stage == "Error":
                 error += 1
 
-        # TODO Store percentage as float in the DownloadItem?
-        # TODO DownloadList keep track for each item stage?
-        # TODO Should i count the paused items?
+        # REFACTOR Store percentage as float in the DownloadItem?
+        # REFACTOR DownloadList keep track for each item stage?
 
-        # total_percentage += queued * 0.0% + paused * 0.0% + completed * 100.0% + error * 100.0%
+        items_count = active + completed + error + queued
         total_percentage += completed * 100.0 + error * 100.0
-        total_percentage /= len(self._download_list)
+
+        if items_count:
+            total_percentage /= items_count
 
         msg = self.URL_REPORT_MSG.format(total_percentage, queued, paused, active, completed, error)
-        self._status_bar_write(msg)
+
+        if self.update_thread is None:
+            # Dont overwrite the update messages
+            self._status_bar_write(msg)
 
     def _update_pause_button(self, event):
         selected_rows = self._status_list.get_all_selected()
 
-        label = "Pause"
+        label = _("Pause")
         bitmap = self._bitmaps["pause"]
 
         for row in selected_rows:
@@ -447,7 +456,7 @@ class MainFrame(wx.Frame):
             if download_item.stage == "Paused":
                 # If we find one or more items in Paused
                 # state set the button functionality to resume
-                label = "Resume"
+                label = _("Resume")
                 bitmap = self._bitmaps["resume"]
                 break
 
@@ -469,11 +478,11 @@ class MainFrame(wx.Frame):
             aformats.append(FORMATS[aformat])
 
         if vformats:
-            self._videoformat_combobox.add_header("Video")
+            self._videoformat_combobox.add_header(_("Video"))
             self._videoformat_combobox.add_items(vformats)
 
         if aformats:
-            self._videoformat_combobox.add_header("Audio")
+            self._videoformat_combobox.add_header(_("Audio"))
             self._videoformat_combobox.add_items(aformats)
 
         current_index = self._videoformat_combobox.FindString(FORMATS[self.opt_manager.options["selected_format"]])
@@ -492,10 +501,10 @@ class MainFrame(wx.Frame):
             self.opt_manager.options["video_format"] = selected_format
             self.opt_manager.options["audio_format"] = ""  #NOTE Set to default value, check parsers.py
         elif selected_format in AUDIO_FORMATS:
-            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = selected_format
         else:
-            self.opt_manager.options["video_format"] = DEFAULT_FORMATS["default"]
+            self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = ""
 
     def _update_savepath(self, event):
@@ -505,11 +514,11 @@ class MainFrame(wx.Frame):
         index = self._status_list.get_next_selected()
 
         if index == -1:
-            dlg = ButtonsChoiceDialog(self, ["Remove all", "Remove completed"], "No items selected. Please pick an action.", "Delete")
+            dlg = ButtonsChoiceDialog(self, [_("Remove all"), _("Remove completed")], _("No items selected. Please pick an action"), _("Delete"))
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 
-            #TODO Maybe add this functionality directly to DownloadList?
+            #REFACTOR Maybe add this functionality directly to DownloadList?
             if ret_code == 1:
                 for ditem in self._download_list.get_items():
                     if ditem.stage != "Active":
@@ -523,7 +532,7 @@ class MainFrame(wx.Frame):
                         self._download_list.remove(ditem.object_id)
         else:
             if self.opt_manager.options["confirm_deletion"]:
-                dlg = wx.MessageDialog(self, "Are you sure you want to remove selected items?", "Delete", wx.YES_NO | wx.ICON_QUESTION)
+                dlg = wx.MessageDialog(self, _("Are you sure you want to remove selected items?"), _("Delete"), wx.YES_NO | wx.ICON_QUESTION)
                 result = dlg.ShowModal() == wx.ID_YES
                 dlg.Destroy()
             else:
@@ -535,7 +544,7 @@ class MainFrame(wx.Frame):
                     selected_download_item = self._download_list.get_item(object_id)
 
                     if selected_download_item.stage == "Active":
-                        self._create_popup("Item is active, cannot remove", self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+                        self._create_popup(_("Item is active, cannot remove"), self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
                     else:
                         #if selected_download_item.stage == "Completed":
                             #dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
@@ -568,7 +577,7 @@ class MainFrame(wx.Frame):
                         filename = selected_download_item.get_files()[-1]
                         open_file(filename)
                 else:
-                    self._create_popup("Item is not completed", self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
+                    self._create_popup(_("Item is not completed"), self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
     def _on_arrow_up(self, event):
         index = self._status_list.get_next_selected()
@@ -638,7 +647,7 @@ class MainFrame(wx.Frame):
 
         if selected_rows:
             #REFACTOR Use DoubleStageButton for this and check stage
-            if self._buttons["pause"].GetLabel() == "Pause":
+            if self._buttons["pause"].GetLabel() == _("Pause"):
                 new_state = "Paused"
             else:
                 new_state = "Queued"
@@ -655,18 +664,18 @@ class MainFrame(wx.Frame):
             self._update_pause_button(None)
 
     def _on_start(self, event):
-        if self.update_thread is not None and self.update_thread.is_alive():
-            self._create_popup("Update in progress. Please wait for the update to complete",
-                               self.WARNING_LABEL,
-                               wx.OK | wx.ICON_EXCLAMATION)
-        else:
-            if self.download_manager is None:
-                self._start_download()
+        if self.download_manager is None:
+            if self.update_thread is not None and self.update_thread.is_alive():
+                self._create_popup(_("Update in progress. Please wait for the update to complete"),
+                                   self.WARNING_LABEL,
+                                   wx.OK | wx.ICON_EXCLAMATION)
             else:
-                self.download_manager.stop_downloads()
+                self._start_download()
+        else:
+            self.download_manager.stop_downloads()
 
     def _on_savepath(self, event):
-        dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection(), wx.DD_CHANGE_DIR)
+        dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection())
 
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
@@ -704,9 +713,14 @@ class MainFrame(wx.Frame):
         self.PopupMenu(self._settings_menu, event_object_pos)
 
     def _on_viewlog(self, event):
-        log_window = LogGUI(self)
-        log_window.load(self.log_manager.log_file)
-        log_window.Show()
+        if self.log_manager is None:
+            self._create_popup(_("Logging is disabled"),
+                               self.WARNING_LABEL,
+                               wx.OK | wx.ICON_EXCLAMATION)
+        else:
+            log_window = LogGUI(self)
+            log_window.load(self.log_manager.log_file)
+            log_window.Show()
 
     def _on_about(self, event):
         info = wx.AboutDialogInfo()
@@ -796,6 +810,7 @@ class MainFrame(wx.Frame):
 
         mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
         mid_sizer.Add(self._folder_icon)
+        mid_sizer.AddSpacer((3, -1))
         mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.AddSpacer((5, -1))
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
@@ -848,8 +863,8 @@ class MainFrame(wx.Frame):
 
     def _reset_widgets(self):
         """Resets GUI widgets after update or download process. """
-        self._buttons["start"].SetLabel("Start")
-        self._buttons["start"].SetToolTip(wx.ToolTip("Start"))
+        self._buttons["start"].SetLabel(_("Start"))
+        self._buttons["start"].SetToolTip(wx.ToolTip(_("Start")))
         self._buttons["start"].SetBitmap(self._bitmaps["start"], wx.TOP)
 
     def _print_stats(self):
@@ -874,7 +889,7 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options['shutdown']:
-            dlg = ShutdownDialog(self, 60, "Shutting down in {0} second(s)", "Shutdown")
+            dlg = ShutdownDialog(self, 60, _("Shutting down in {0} second(s)"), _("Shutdown"))
             result = dlg.ShowModal() == wx.ID_OK
             dlg.Destroy()
 
@@ -963,12 +978,12 @@ class MainFrame(wx.Frame):
 
     def _start_download(self):
         if self._status_list.is_empty():
-            self._create_popup("No items to download",
+            self._create_popup(_("No items to download"),
                                self.WARNING_LABEL,
                                wx.OK | wx.ICON_EXCLAMATION)
         else:
             self._app_timer.Start(100)
-            self.download_manager = DownloadManager(self._download_list, self.opt_manager, self.log_manager)
+            self.download_manager = DownloadManager(self, self._download_list, self.opt_manager, self.log_manager)
 
             self._status_bar_write(self.DOWNLOAD_STARTED)
             self._buttons["start"].SetLabel(self.STOP_LABEL)
@@ -1043,7 +1058,7 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options["confirm_exit"]:
-            dlg = wx.MessageDialog(self, "Are you sure you want to exit?", "Exit", wx.YES_NO | wx.ICON_QUESTION)
+            dlg = wx.MessageDialog(self, _("Are you sure you want to exit?"), _("Exit"), wx.YES_NO | wx.ICON_QUESTION)
 
             result = dlg.ShowModal() == wx.ID_YES
             dlg.Destroy()
@@ -1284,7 +1299,7 @@ class ButtonsChoiceDialog(wx.Dialog):
         info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
         msg_text = wx.StaticText(panel, wx.ID_ANY, message)
 
-        buttons.append(wx.Button(panel, wx.ID_CANCEL, "Cancel"))
+        buttons.append(wx.Button(panel, wx.ID_CANCEL, _("Cancel")))
 
         for index, label in enumerate(choices):
             buttons.append(wx.Button(panel, index + 1, label))
@@ -1433,8 +1448,8 @@ class ShutdownDialog(wx.Dialog):
         info_icon = wx.StaticBitmap(panel, wx.ID_ANY, info_bmp)
 
         self.msg_text = msg_text = wx.StaticText(panel, wx.ID_ANY, self._get_message())
-        ok_button = wx.Button(panel, wx.ID_OK, "OK")
-        cancel_button = wx.Button(panel, wx.ID_CANCEL, "Cancel")
+        ok_button = wx.Button(panel, wx.ID_OK, _("OK"))
+        cancel_button = wx.Button(panel, wx.ID_CANCEL, _("Cancel"))
 
         # Set layout
         vertical_sizer = wx.BoxSizer(wx.VERTICAL)

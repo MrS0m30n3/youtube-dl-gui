@@ -62,18 +62,18 @@ class OptionsFrame(wx.Frame):
 
         self.notebook = wx.Notebook(self.panel)
         self.separator_line = wx.StaticLine(self.panel)
-        self.reset_button = wx.Button(self.panel, label="Reset")
-        self.close_button = wx.Button(self.panel, label="Close")
+        self.reset_button = wx.Button(self.panel, label=_("Reset"))
+        self.close_button = wx.Button(self.panel, label=_("Close"))
 
         # Create tabs
         tab_args = (self, self.notebook)
 
         self.tabs = (
-            (GeneralTab(*tab_args), "General"),
-            (FormatsTab(*tab_args), "Formats"),
-            (DownloadsTab(*tab_args), "Downloads"),
-            (AdvancedTab(*tab_args), "Advanced"),
-            (ExtraTab(*tab_args), "Extra")
+            (GeneralTab(*tab_args), _("General")),
+            (FormatsTab(*tab_args), _("Formats")),
+            (DownloadsTab(*tab_args), _("Downloads")),
+            (AdvancedTab(*tab_args), _("Advanced")),
+            (ExtraTab(*tab_args), _("Extra"))
         )
 
         # Add tabs on notebook
@@ -117,6 +117,7 @@ class OptionsFrame(wx.Frame):
     def _on_reset(self, event):
         """Event handler for the reset button wx.EVT_BUTTON event."""
         self.reset()
+        self.GetParent().reset()
 
     def reset(self):
         """Reset the default options."""
@@ -275,6 +276,7 @@ class GeneralTab(TabPanel):
         ('he_IL', 'Hebrew'),
         ('hu_HU', 'Hungarian'),
         ('it_IT', 'Italian'),
+        ('ko_KR', 'Korean'),
         ('es_MX', 'Mexican Spanish'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
@@ -309,23 +311,23 @@ class GeneralTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
-        self.language_label = self.crt_statictext("Language")
+        self.language_label = self.crt_statictext(_("Language"))
         self.language_combobox = self.crt_bitmap_combobox(list(self.LOCALE_NAMES.items()), event_handler=self._on_language)
 
-        self.filename_format_label = self.crt_statictext("Filename format")
+        self.filename_format_label = self.crt_statictext(_("Filename format"))
         self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()), event_handler=self._on_filename)
         self.filename_custom_format = self.crt_textctrl()
         self.filename_custom_format_button = self.crt_button("...", self._on_format)
 
-        self.filename_opts_label = self.crt_statictext("Filename options")
-        self.filename_ascii_checkbox = self.crt_checkbox("Restrict filenames to ASCII")
+        self.filename_opts_label = self.crt_statictext(_("Filename options"))
+        self.filename_ascii_checkbox = self.crt_checkbox(_("Restrict filenames to ASCII"))
 
-        self.more_opts_label = self.crt_statictext("More options")
-        self.confirm_exit_checkbox = self.crt_checkbox("Confirm on exit")
-        self.confirm_deletion_checkbox = self.crt_checkbox("Confirm item deletion")
-        self.show_completion_popup_checkbox = self.crt_checkbox("Inform me on download completion")
+        self.more_opts_label = self.crt_statictext(_("More options"))
+        self.confirm_exit_checkbox = self.crt_checkbox(_("Confirm on exit"))
+        self.confirm_deletion_checkbox = self.crt_checkbox(_("Confirm item deletion"))
+        self.show_completion_popup_checkbox = self.crt_checkbox(_("Inform me on download completion"))
 
-        self.shutdown_checkbox = self.crt_checkbox("Shutdown on download completion", event_handler=self._on_shutdown)
+        self.shutdown_checkbox = self.crt_checkbox(_("Shutdown on download completion"), event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
         # Build the menu for the custom format button
@@ -336,7 +338,7 @@ class GeneralTab(TabPanel):
         if os.name == "nt":
             self.sudo_textctrl.Hide()
 
-        self.sudo_textctrl.SetToolTip(wx.ToolTip("SUDO password"))
+        self.sudo_textctrl.SetToolTip(wx.ToolTip(_("SUDO password")))
 
     def _set_layout(self):
         main_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -414,8 +416,8 @@ class GeneralTab(TabPanel):
 
     def _on_language(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""
-        wx.MessageBox("In order for the changes to take effect please restart {0}.".format(__appname__),
-                      "Restart",
+        wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
+                      _("Restart"),
                       wx.OK | wx.ICON_INFORMATION,
                       self)
 
@@ -467,19 +469,19 @@ class FormatsTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(FormatsTab, self).__init__(*args, **kwargs)
 
-        self.video_formats_label = self.crt_statictext("Video formats")
+        self.video_formats_label = self.crt_statictext(_("Video formats"))
         self.video_formats_checklistbox = self.crt_checklistbox(list(VIDEO_FORMATS.values()))
 
-        self.audio_formats_label = self.crt_statictext("Audio formats")
+        self.audio_formats_label = self.crt_statictext(_("Audio formats"))
         self.audio_formats_checklistbox = self.crt_checklistbox(list(AUDIO_FORMATS.values()))
 
-        self.post_proc_opts_label = self.crt_statictext("Post-Process options")
-        self.keep_video_checkbox = self.crt_checkbox("Keep original files")
-        self.extract_audio_checkbox = self.crt_checkbox("Extract audio from video file")
-        self.embed_thumbnail_checkbox = self.crt_checkbox("Embed thumbnail in audio file")
-        self.add_metadata_checkbox = self.crt_checkbox("Add metadata to file")
+        self.post_proc_opts_label = self.crt_statictext(_("Post-Process options"))
+        self.keep_video_checkbox = self.crt_checkbox(_("Keep original files"))
+        self.extract_audio_checkbox = self.crt_checkbox(_("Extract audio from video file"))
+        self.embed_thumbnail_checkbox = self.crt_checkbox(_("Embed thumbnail in audio file"))
+        self.add_metadata_checkbox = self.crt_checkbox(_("Add metadata to file"))
 
-        self.audio_quality_label = self.crt_statictext("Audio quality")
+        self.audio_quality_label = self.crt_statictext(_("Audio quality"))
         self.audio_quality_combobox = self.crt_combobox(list(self.AUDIO_QUALITY.values()))
 
         self._set_layout()
@@ -563,37 +565,37 @@ class DownloadsTab(TabPanel):
     ])
 
     SUBS_CHOICES = [
-        "None",
-        "Automatic subtitles (YOUTUBE ONLY)",
-        "All available subtitles",
-        "Subtitles by language"
+        _("None"),
+        _("Automatic subtitles (YOUTUBE ONLY)"),
+        _("All available subtitles"),
+        _("Subtitles by language")
     ]
 
     def __init__(self, *args, **kwargs):
         super(DownloadsTab, self).__init__(*args, **kwargs)
 
-        self.subtitles_label = self.crt_statictext("Subtitles")
+        self.subtitles_label = self.crt_statictext(_("Subtitles"))
         self.subtitles_combobox = self.crt_combobox(self.SUBS_CHOICES, event_handler=self._on_subtitles)
         self.subtitles_lang_listbox = self.crt_listbox(list(self.SUBS_LANG.values()))
 
-        self.subtitles_opts_label = self.crt_statictext("Subtitles options")
-        self.embed_subs_checkbox = self.crt_checkbox("Embed subtitles into video file (mp4 ONLY)")
+        self.subtitles_opts_label = self.crt_statictext(_("Subtitles options"))
+        self.embed_subs_checkbox = self.crt_checkbox(_("Embed subtitles into video file (mp4 ONLY)"))
 
-        self.playlist_box = self.crt_staticbox("Playlist")
+        self.playlist_box = self.crt_staticbox(_("Playlist"))
 
-        self.playlist_start_label = self.crt_statictext("Start")
+        self.playlist_start_label = self.crt_statictext(_("Start"))
         self.playlist_start_spinctrl = self.crt_spinctrl((1, 9999))
-        self.playlist_stop_label = self.crt_statictext("Stop")
+        self.playlist_stop_label = self.crt_statictext(_("Stop"))
         self.playlist_stop_spinctrl = self.crt_spinctrl()
-        self.playlist_max_label = self.crt_statictext("Max")
+        self.playlist_max_label = self.crt_statictext(_("Max"))
         self.playlist_max_spinctrl = self.crt_spinctrl()
 
-        self.filesize_box = self.crt_staticbox("Filesize")
+        self.filesize_box = self.crt_staticbox(_("Filesize"))
 
-        self.filesize_max_label = self.crt_statictext("Max")
+        self.filesize_max_label = self.crt_statictext(_("Max"))
         self.filesize_max_spinctrl = self.crt_spinctrl((0, 1024))
         self.filesize_max_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
-        self.filesize_min_label = self.crt_statictext("Min")
+        self.filesize_min_label = self.crt_statictext(_("Min"))
         self.filesize_min_spinctrl = self.crt_spinctrl((0, 1024))
         self.filesize_min_sizeunit_combobox = self.crt_combobox(list(self.FILESIZES.values()))
 
@@ -722,32 +724,32 @@ class AdvancedTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(AdvancedTab, self).__init__(*args, **kwargs)
 
-        self.retries_label = self.crt_statictext("Retries")
+        self.retries_label = self.crt_statictext(_("Retries"))
         self.retries_spinctrl = self.crt_spinctrl((1, 999))
 
-        self.auth_label = self.crt_statictext("Authentication")
+        self.auth_label = self.crt_statictext(_("Authentication"))
 
-        self.username_label = self.crt_statictext("Username")
+        self.username_label = self.crt_statictext(_("Username"))
         self.username_textctrl = self.crt_textctrl()
-        self.password_label = self.crt_statictext("Password")
+        self.password_label = self.crt_statictext(_("Password"))
         self.password_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
-        self.video_pass_label = self.crt_statictext("Video password")
+        self.video_pass_label = self.crt_statictext(_("Video password"))
         self.video_pass_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
-        self.network_label = self.crt_statictext("Network")
+        self.network_label = self.crt_statictext(_("Network"))
 
-        self.proxy_label = self.crt_statictext("Proxy")
+        self.proxy_label = self.crt_statictext(_("Proxy"))
         self.proxy_textctrl = self.crt_textctrl()
-        self.useragent_label = self.crt_statictext("User agent")
+        self.useragent_label = self.crt_statictext(_("User agent"))
         self.useragent_textctrl = self.crt_textctrl()
-        self.referer_label = self.crt_statictext("Referer")
+        self.referer_label = self.crt_statictext(_("Referer"))
         self.referer_textctrl = self.crt_textctrl()
 
-        self.logging_label = self.crt_statictext("Logging")
+        self.logging_label = self.crt_statictext(_("Logging"))
 
-        self.enable_log_checkbox = self.crt_checkbox("Enable log", self._on_enable_log)
-        self.view_log_button = self.crt_button("View", self._on_view)
-        self.clear_log_button = self.crt_button("Clear", self._on_clear)
+        self.enable_log_checkbox = self.crt_checkbox(_("Enable log"), self._on_enable_log)
+        self.view_log_button = self.crt_button(_("View"), self._on_view)
+        self.clear_log_button = self.crt_button(_("Clear"), self._on_clear)
 
         self._set_layout()
 
@@ -815,8 +817,8 @@ class AdvancedTab(TabPanel):
 
     def _on_enable_log(self, event):
         """Event handler for the wx.EVT_CHECKBOX of the enable_log_checkbox."""
-        wx.MessageBox("In order for the changes to take effect please restart {0}.".format(__appname__),
-                      "Restart",
+        wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
+                      _("Restart"),
                       wx.OK | wx.ICON_INFORMATION,
                       self)
 
@@ -857,16 +859,16 @@ class ExtraTab(TabPanel):
     def __init__(self, *args, **kwargs):
         super(ExtraTab, self).__init__(*args, **kwargs)
 
-        self.cmdline_args_label = self.crt_statictext("Command line arguments (e.g. --help)")
+        self.cmdline_args_label = self.crt_statictext(_("Youtube-dl command line options (e.g. --help)"))
         self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE | wx.TE_LINEWRAP)
 
-        self.extra_opts_label = self.crt_statictext("Extra options")
+        self.extra_opts_label = self.crt_statictext(_("Extra options"))
 
-        self.youtube_dl_debug_checkbox = self.crt_checkbox("Debug youtube-dl")
-        self.ignore_errors_checkbox = self.crt_checkbox("Ignore errors")
-        self.ignore_config_checkbox = self.crt_checkbox("Ignore youtube-dl config")
-        self.no_mtime_checkbox = self.crt_checkbox("No mtime")
-        self.native_hls_checkbox = self.crt_checkbox("Prefer native HLS")
+        self.youtube_dl_debug_checkbox = self.crt_checkbox(_("Debug youtube-dl"))
+        self.ignore_errors_checkbox = self.crt_checkbox(_("Ignore errors"))
+        self.ignore_config_checkbox = self.crt_checkbox(_("Ignore youtube-dl config"))
+        self.no_mtime_checkbox = self.crt_checkbox(_("No mtime"))
+        self.native_hls_checkbox = self.crt_checkbox(_("Prefer native HLS"))
 
         self._set_layout()
 

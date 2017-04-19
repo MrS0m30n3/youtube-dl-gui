@@ -41,7 +41,9 @@ from .downloaders import YoutubeDLDownloader
 from .utils import (
     YOUTUBEDL_BIN,
     os_path_exists,
-    to_string
+    format_bytes,
+    to_string,
+    to_bytes
 )
 
 
@@ -127,6 +129,7 @@ class DownloadItem(object):
         self.path = ""
         self.filenames = []
         self.extensions = []
+        self.filesizes = []
 
         self.default_values = {
             "filename": self.url,
@@ -141,6 +144,9 @@ class DownloadItem(object):
         }
 
         self.progress_stats = dict(self.default_values)
+
+        # Keep track when the 'playlist_index' changes
+        self.playlist_index_changed = False
 
     def get_files(self):
         """Returns a list that contains all the system files bind to this object."""
@@ -165,18 +171,43 @@ class DownloadItem(object):
                 else:
                     self.progress_stats[key] = value
 
-            # Extract extra stuff
-            if key == "filename":
-                self.filenames.append(stats_dict[key])
+        # Extract extra stuff
+        if "playlist_index" in stats_dict:
+            self.playlist_index_changed = True
 
-            if key == "extension":
-                self.extensions.append(stats_dict[key])
+        if "filename" in stats_dict:
 
-            if key == "path":
-                self.path = stats_dict[key]
+            # Reset filenames, extensions & filesizes lists when changing playlist item
+            if self.playlist_index_changed:
+                self.filenames = []
+                self.extensions = []
+                self.filesizes = []
 
-            if key == "status":
-                self._set_stage(stats_dict[key])
+                self.playlist_index_changed = False
+
+            self.filenames.append(stats_dict["filename"])
+
+        if "extension" in stats_dict:
+            self.extensions.append(stats_dict["extension"])
+
+        if "path" in stats_dict:
+            self.path = stats_dict["path"]
+
+        if "filesize" in stats_dict:
+            if stats_dict["percent"] == "100%" and len(self.filesizes) < len(self.filenames):
+                filesize = stats_dict["filesize"].lstrip("~")  # HLS downloader etc
+                self.filesizes.append(to_bytes(filesize))
+
+        if "status" in stats_dict:
+            # If we are post processing try to calculate the size of
+            # the output file since youtube-dl does not
+            if stats_dict["status"] == self.ACTIVE_STAGES[2] and len(self.filesizes) == 2:
+                post_proc_filesize = self.filesizes[0] + self.filesizes[1]
+
+                self.filesizes.append(post_proc_filesize)
+                self.progress_stats["filesize"] = format_bytes(post_proc_filesize)
+
+            self._set_stage(stats_dict["status"])
 
     def _set_stage(self, status):
         if status in self.ACTIVE_STAGES:
@@ -335,8 +366,9 @@ class DownloadManager(Thread):
 
     WAIT_TIME = 0.1
 
-    def __init__(self, download_list, opt_manager, log_manager=None):
+    def __init__(self, parent, download_list, opt_manager, log_manager=None):
         super(DownloadManager, self).__init__()
+        self.parent = parent
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         self.download_list = download_list
@@ -473,8 +505,10 @@ class DownloadManager(Thread):
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
-        if not os_path_exists(self._youtubedl_path()):
-            UpdateThread(self.opt_manager.options['youtubedl_path'], True).join()
+        if not os_path_exists(self._youtubedl_path()) and self.parent.update_thread is None:
+            self.parent.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'], True)
+            self.parent.update_thread.join()
+            self.parent.update_thread = None
 
     def _get_worker(self):
         for worker in self._workers:
@@ -565,7 +599,8 @@ class Worker(Thread):
                 ret_code = self._downloader.download(self._data['url'], self._options)
 
                 if (ret_code == YoutubeDLDownloader.OK or
-                        ret_code == YoutubeDLDownloader.ALREADY):
+                        ret_code == YoutubeDLDownloader.ALREADY or
+                        ret_code == YoutubeDLDownloader.WARNING):
                     self._successful += 1
 
                 # Ask GUI for name updates

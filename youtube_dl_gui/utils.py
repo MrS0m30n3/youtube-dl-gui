@@ -15,6 +15,7 @@ from __future__ import unicode_literals
 import os
 import sys
 import json
+import math
 import locale
 import subprocess
 
@@ -34,6 +35,11 @@ _RANDOM_OBJECT = object()
 YOUTUBEDL_BIN = 'youtube-dl'
 if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
+
+
+FILESIZE_METRICS = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+
+KILO_SIZE = 1024.0
 
 
 def get_encoding():
@@ -81,7 +87,7 @@ def convert_on_bounds(func):
 
             for sub_item in item:
                 if isinstance(item, dict):
-                    temp_list.append((sub_item, covert_item(item[sub_item])))
+                    temp_list.append((sub_item, convert_item(item[sub_item])))
                 else:
                     temp_list.append(convert_item(sub_item))
 
@@ -262,19 +268,15 @@ def get_locale_file():
     Note:
         Paths that get_locale_file() func searches.
 
-        __main__ dir, library dir, /usr/share/youtube-dlg/locale
+        __main__ dir, library dir
 
     """
-    DIR_NAME = 'locale'
+    DIR_NAME = "locale"
 
     SEARCH_DIRS = [
         os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
         os.path.join(os_path_dirname(__file__), DIR_NAME),
-        os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
-
-    if sys.platform == 'darwin':
-      SEARCH_DIRS.append('/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__))
 
     for directory in SEARCH_DIRS:
         if os_path_isdir(directory):
@@ -289,76 +291,63 @@ def get_icon_file():
     Returns:
         The path to youtube-dlg icon file if exists, else returns None.
 
-    Note:
-        Paths that get_icon_file() function searches.
-
-        __main__ dir, library dir, $XDG_DATA_DIRS
-
     """
     ICON_NAME = "youtube-dl-gui.png"
-    SIZES = ("256", "128", "64", "48", "32", "16")
 
-    DIR_TEMPLATE = os.path.join("icons", "hicolor", "{size}x{size}", "apps", ICON_NAME)
+    pixmaps_dir = get_pixmaps_dir()
 
-    ICONS = [DIR_TEMPLATE.format(size=size) for size in SIZES]
+    if pixmaps_dir is not None:
+        icon_file = os.path.join(pixmaps_dir, ICON_NAME)
 
-    search_dirs = [
-        os.path.join(absolute_path(sys.argv[0]), "data"),
-        os.path.join(os_path_dirname(__file__), "data"),
-    ]
-
-    # Append $XDG_DATA_DIRS on search_dirs
-    path = os_getenv("XDG_DATA_DIRS")
-
-    if path is not None:
-        for xdg_path in path.split(':'):
-            search_dirs.append(xdg_path)
-
-    # Also append /usr/share/pixmaps on search_dirs
-    #search_dirs.append("/usr/share/pixmaps")
-
-    for directory in search_dirs:
-        for icon in ICONS:
-            icon_file = os.path.join(directory, icon)
-
-            if os_path_exists(icon_file):
-                return icon_file
+        if os_path_exists(icon_file):
+            return icon_file
 
     return None
 
 
 def get_pixmaps_dir():
-    """Return absolute path to the pixmaps icons folder."""
-    # TODO probably will need support for other directories py2exe etc
-    return os.path.join(absolute_path(__file__), "data", "pixmaps")
+    """Return absolute path to the pixmaps icons folder.
 
+    Note:
+        Paths we search: __main__ dir, library dir
 
-def json_load(filename):
-    if os_path_exists(filename):
-        with open(filename) as input_json_file:
-            return json.load(input_json_file)
+    """
+    search_dirs = [
+        os.path.join(absolute_path(sys.argv[0]), "data"),
+        os.path.join(os_path_dirname(__file__), "data")
+    ]
 
-    return []
+    for directory in search_dirs:
+        pixmaps_dir = os.path.join(directory, "pixmaps")
 
-
-def json_store(filename, item):
-    with open(filename, 'w') as output_json_file:
-        json.dump(item, output_json_file)
-
-def read_formats():
-    """Returns a twodict containing all the formats from 'data/formats'."""
-    # TODO Support for other directories? Test with py2exe
-    formats_file = os.path.join(absolute_path(__file__), "data", "formats")
-
-    if os_path_exists(formats_file):
-        formats_dict = TwoWayOrderedDict()
-
-        with open(formats_file) as input_file:
-            for line in input_file:
-                format_id, format_label = line.split('-')
-
-                formats_dict[format_id.strip()] = format_label.strip()
-
-        return formats_dict
+        if os_path_exists(pixmaps_dir):
+            return pixmaps_dir
 
     return None
+
+
+def to_bytes(string):
+    """Convert given youtube-dl size string to bytes."""
+    value = 0.0
+
+    for index, metric in enumerate(reversed(FILESIZE_METRICS)):
+        if metric in string:
+            value = float(string.split(metric)[0])
+            break
+
+    exponent = index * (-1) + (len(FILESIZE_METRICS) - 1)
+
+    return round(value * (KILO_SIZE ** exponent), 2)
+
+
+def format_bytes(bytes):
+    """Format bytes to youtube-dl size output strings."""
+    if bytes == 0.0:
+        exponent = 0
+    else:
+        exponent = int(math.log(bytes, KILO_SIZE))
+
+    suffix = FILESIZE_METRICS[exponent]
+    output_value = bytes / (KILO_SIZE ** exponent)
+
+    return "%.2f%s" % (output_value, suffix)

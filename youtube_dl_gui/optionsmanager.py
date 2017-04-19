@@ -231,7 +231,7 @@ class OptionsManager(object):
             add_metadata (boolean): When True will write metadata to file.
 
         """
-        #TODO Remove old options & check options validation
+        #REFACTOR Remove old options & check options validation
         self.options = {
             'save_path': os_path_expanduser('~'),
             'save_path_dirs': [

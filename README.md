@@ -4,13 +4,7 @@ A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/
 
 ## Screenshots
 
-**Main window**
-
-![Youtube-dl-gui main window](http://i.imgur.com/I4oXPWs.png)
-
-**Options window**
-
-![Options window](http://i.imgur.com/eShdoLD.png)
+![youtube-dl-gui main window](https://i.imgur.com/tMTtgPt.png)
 
 ## Installation
 

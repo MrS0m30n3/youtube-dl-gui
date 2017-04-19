@@ -42,7 +42,7 @@ The [Public Domain License](LICENSE)
 
 ## Thanks
 
-Thanks to youtube-dl authors for creating such an amazing tool.
+Thanks to everyone who contributed to this project and to [@philipzae](https://github.com/philipzae) for designing the new UI layout.
 
 ## Frequently Asked Questions
 

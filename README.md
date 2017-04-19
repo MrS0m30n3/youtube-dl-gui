@@ -20,6 +20,8 @@ A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/
 
 **Linux (Arch AUR):** https://aur.archlinux.org/packages/youtube-dl-gui-git/ (TODO: update)
 
+**Linux (Slackware SlackBuild):** https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/
+
 **Windows:** TODO Package MSI/portable ZIP
 
 **Mac:** TODO Package app

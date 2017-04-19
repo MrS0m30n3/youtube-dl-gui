@@ -68,7 +68,7 @@ Thanks to everyone who contributed to this project and to [@philipzae](https://g
  * **Is there an option to change the maximum parallel downloads?**: You can change the number of max parallel downloads by editing the "workers_number" option in your settings.json file. Note that you need to restart youtube-dl-gui for the changes to take place.
  
       settings.json file location:
-      * Windows:* [ ] Update [ISSUE_TEMPLATE.md](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/.github/ISSUE_TEMPLATE.md) file to include FAQs section (see: [youtube-dl ISSUE_TEMPLATE.md](https://github.com/rg3/youtube-dl/blob/master/.github/ISSUE_TEMPLATE.md)) `%appdata%\youtube-dlg\settings.json`
+      * Windows: `%appdata%\youtube-dlg\settings.json`
       * Linux: `~/.config/youtube-dlg/settings.json`
  
  * **Not all formats reported by youtube-dl '-F' are available in youtube-dl-gui**: Unfortunately it is not possible to support all the video formats that youtube-dl provides. If you want to use a "custom" format you can follow this steps:

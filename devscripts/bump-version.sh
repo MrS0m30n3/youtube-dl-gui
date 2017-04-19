@@ -11,6 +11,7 @@ PACKAGE="youtube_dl_gui"
 FILES=`cat <<EOF
 $PACKAGE/version.py
 .github/ISSUE_TEMPLATE.md
+README.md
 EOF`
 
 # Update version string on given file

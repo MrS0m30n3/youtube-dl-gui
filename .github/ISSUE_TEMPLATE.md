@@ -19,10 +19,13 @@ All invalid issues will be rejected!!
 
 - Make sure you searched the bugtracker for similar issues including closed ones
 
+- Make sure to read the [FAQs section](../README.md#frequently-asked-questions) in the README.md file
+
   - [ ] **I assure** that my problem is **NOT** with **youtube-dl**
   - [ ] I've **verified** and **i assure** that I'm running youtube-dl-gui **0.3.8**
   - [ ] **I assure** that i am using the latest version of **youtube-dl**
   - [ ] [Searched](https://github.com/MrS0m30n3/youtube-dl-gui/issues) bugtracker
+  - [ ] I've read the FAQs section in the README.md file
 
 ---
 

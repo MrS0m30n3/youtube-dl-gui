@@ -48,3 +48,6 @@ That's a known issue you should use the native HLS implementation by enabling th
 
 * **I'm using the HLS downloader and the 'stop' button won't work**:
 That's also a known issue with the HLS downloader on Windows. You should use the native HLS implementation or wait for the download to complete normally. For more info you can read issue [#49](https://github.com/MrS0m30n3/youtube-dl-gui/issues/49).
+
+* **Is it possible to use a youtube-dl version other than the official one?**:
+You can use your own version of youtube-dl by editing the "youtubedl_path" option in your settings.json file and make it point to your own binary (e.g. /usr/local/bin). Note that if youtube-dl-gui does not have write permissions to this new directory the "update" option in the GUI will fail. Also, note that changing the "youtubedl_path" won't change the update source which is hardcoded for now to "https://yt-dl.org/latest/".

@@ -269,6 +269,7 @@ class GeneralTab(TabPanel):
     # Lang code = <ISO 639-1>_<ISO 3166-1 alpha-2>
     LOCALE_NAMES = twodict([
         ('ar_SA', 'Arabic'),
+        ('zh_CN', 'Chinese Simplified'),
         ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),

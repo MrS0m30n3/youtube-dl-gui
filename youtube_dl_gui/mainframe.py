@@ -35,8 +35,8 @@ from .downloadmanager import (
 )
 
 from .utils import (
-    YOUTUBEDL_BIN,
     get_pixmaps_dir,
+    build_command,
     get_icon_file,
     shutdown_sys,
     remove_file,
@@ -401,8 +401,7 @@ class MainFrame(wx.Frame):
             object_id = self._status_list.GetItemData(selected)
             download_item = self._download_list.get_item(object_id)
 
-            cmd = [YOUTUBEDL_BIN] + download_item.options + [download_item.url]
-            cmd = " ".join(cmd)
+            cmd = build_command(download_item.options, download_item.url)
 
             if not wx.TheClipboard.IsOpened():
                 clipdata = wx.TextDataObject()

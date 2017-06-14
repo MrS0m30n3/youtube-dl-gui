@@ -63,6 +63,49 @@ class TestFormatBytes(unittest.TestCase):
         self.assertEqual(utils.format_bytes(1099511627776.00), "1.00TiB")
 
 
+class TestBuildCommand(unittest.TestCase):
+
+    """Test case for the build_command method."""
+
+    def test_build_command_linux(self):
+        result = "youtube-dl -o \"/home/user/downloads/%(upload_date)s/%(id)" \
+        "s_%(playlist_id)s - %(format)s.%(ext)s\" -f mp4 --ignore-config " \
+        "\"https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA\""
+
+        options = [
+            "-o",
+            "/home/user/downloads/%(upload_date)s/%(id)s_%(playlist_id)s - %(format)s.%(ext)s",
+            "-f",
+            "mp4",
+            "--ignore-config"
+        ]
+
+        url = "https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA"
+
+        utils.YOUTUBEDL_BIN = "youtube-dl"
+
+        self.assertEqual(utils.build_command(options, url), result)
+
+    def test_build_command_windows(self):
+        result = "youtube-dl.exe -o \"C:\\downloads\\%(upload_date)s\\%(id)" \
+        "s_%(playlist_id)s - %(format)s.%(ext)s\" -f mp4 --ignore-config " \
+        "\"https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA\""
+
+        options = [
+            "-o",
+            "C:\\downloads\\%(upload_date)s\\%(id)s_%(playlist_id)s - %(format)s.%(ext)s",
+            "-f",
+            "mp4",
+            "--ignore-config"
+        ]
+
+        url = "https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA"
+
+        utils.YOUTUBEDL_BIN = "youtube-dl.exe"
+
+        self.assertEqual(utils.build_command(options, url), result)
+
+
 def main():
     unittest.main()
 

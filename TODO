@@ -1,46 +1,40 @@
-GUI
-===
-* Change MainFrame layout
-    (see: https://docs.google.com/document/d/1UJ55sYepfk5Dl0nCJNz9fXRBgpG32v-4RwIqSdkXXVg/edit)
-* Create new button widget (groups, auto width, General tab)
-* Add more statistics (Average download speed)
-* Auto video format detection
-* GUI command line builder like zenmap
+After new_layout merge
+======================
+* Send emails to update translations
 
-Structure
-=========
-* Create devscripts/ directory and move all the utility scripts there
-* Create docs/ directory and move all the guides there
-* Remove twodict from utils and use it directly from the library
-* Give icons the same name and keep them on different directories
-    (see: https://github.com/deluge-torrent/deluge/tree/develop/deluge/ui/data/icons/hicolor)
+
+Next release
+============
+* Improve playlist downloads
+* Remember list of urls after closing & re-opening
+* About dialog show youtube-dl version
+* Icons theme selection (vote on github) (or at least make it easy to change between them)
+* Settings menu add "Statistics"
+* Mix formats option
+* Non-Windows shutdown using D-Bus instead of 'shutdown'
+
 
 Localization
 ============
-* Update translation files
 * Add support for right to left languages (hebrew, arabic)
 * Fix paths on R2L layouts
-* Compile *.po files at build time
-* Script to automatically check translations (use google-translate library)
-* Write bot to automatically check the translations and merge them?
 
-Options
-=======
-* Option to disable-enable the 'download finished' pop up message
-* Option to close the program after download process
-* Add 'native hls option' see issue #49
-* Add Swedish on available subtitles
-* Add Hebrew on available subtitles
 
 Other
 =====
-* README.md add slackbuild
-* README.md add new images
+* Re-structure package
 
-* Add FAQs into docs/
-* Add tests
+* Refactor
+* Review - rewrite threads communications
 * Add support for Python 3.*
 * Logging system using the Python 'logging' module
 * Use youtube-dl directly from python instead of using the subprocess module
-* Upload new website for http://mrs0m30n3.github.io/youtube-dl-gui
-* Script to automatically update file contents like version from .github/ISSUE_TEMPLATE.md file, AUTHORS file, etc..
+
+
+Probably wont add
+=================
+* ListCtrl double click to "Rename"
+* Option to enable-disable items deletion from the filesystem
+* Add '--recode-video' to Formats tab
+* Auto video format detection
+* Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)

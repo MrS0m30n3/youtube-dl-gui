@@ -1,0 +1,623 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+# Snosi <fixall.dz@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.3.8\n"
+"POT-Creation-Date: 2016-12-17 17:07+EET\n"
+"PO-Revision-Date: 2015-07-02 15:39+EEST\n"
+"Last-Translator: Snosi <fixall.dz@gmail.com>\n"
+"Language-Team: العربية <>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Virtaal 0.7.1\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: formats.py:9 formats.py:108
+msgid "ID"
+msgstr ""
+
+#: formats.py:10 formats.py:109 mainframe.py:140
+msgid "Title"
+msgstr "العنوان"
+
+#: formats.py:11 formats.py:110
+msgid "Title + ID"
+msgstr ""
+
+#: formats.py:12 formats.py:111
+#, fuzzy
+msgid "Title + Quality"
+msgstr "جودة الصوت"
+
+#: formats.py:13 formats.py:112
+msgid "Title + ID + Quality"
+msgstr ""
+
+#: formats.py:14 formats.py:113
+msgid "Custom"
+msgstr ""
+
+#: formats.py:19 formats.py:118 mainframe.py:498 mainframe.py:501
+msgid "default"
+msgstr "مبدئي"
+
+#: mainframe.py:97
+msgid "Enter URLs below"
+msgstr ""
+
+#: mainframe.py:98
+msgid "Update"
+msgstr "تحديث"
+
+#: mainframe.py:99 optionsframe.py:41
+msgid "Options"
+msgstr "الخيارات"
+
+#: mainframe.py:100 optionsframe.py:587
+msgid "Stop"
+msgstr "إيقاف"
+
+#: mainframe.py:101
+msgid "Info"
+msgstr "معلومات"
+
+#: mainframe.py:102
+msgid "Welcome"
+msgstr "مرحباً"
+
+#: mainframe.py:103
+msgid "Warning"
+msgstr ""
+
+#: mainframe.py:105
+msgid "Add"
+msgstr ""
+
+#: mainframe.py:106
+#, fuzzy
+msgid "Download list"
+msgstr "بدأ التحميل"
+
+#: mainframe.py:107 mainframe.py:511 mainframe.py:529
+msgid "Delete"
+msgstr ""
+
+#: mainframe.py:108
+#, fuzzy
+msgid "Play"
+msgstr "قائمة التشغيل"
+
+#: mainframe.py:109
+msgid "Up"
+msgstr ""
+
+#: mainframe.py:110
+#, fuzzy
+msgid "Down"
+msgstr "بدأ التحميل"
+
+#: mainframe.py:111
+msgid "Reload"
+msgstr ""
+
+#: mainframe.py:112 mainframe.py:443 mainframe.py:644
+msgid "Pause"
+msgstr ""
+
+#: mainframe.py:113 mainframe.py:860 mainframe.py:861 optionsframe.py:585
+#, fuzzy
+msgid "Start"
+msgstr "إعادة التشغيل"
+
+#: mainframe.py:114
+msgid "About"
+msgstr "عن"
+
+#: mainframe.py:115
+msgid "View Log"
+msgstr "شاهد السِجِل"
+
+#: mainframe.py:117
+#, fuzzy
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "إنتهاء التحميلات {0} رابط {1} يوم {2} ساعة {3} دقيقة {4} ثانية"
+
+#: mainframe.py:119
+#, fuzzy
+msgid "Downloads completed"
+msgstr "إكتمال التحميل"
+
+#: mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr ""
+
+#: mainframe.py:121
+msgid "Stopping downloads"
+msgstr "إيقاف التحميل"
+
+#: mainframe.py:122
+msgid "Downloads stopped"
+msgstr "تم إيقاف التحميل"
+
+#: mainframe.py:123
+#, fuzzy
+msgid "You need to provide at least one URL"
+msgstr "أدخل رابطا على الأقل"
+
+#: mainframe.py:124
+#, fuzzy
+msgid "Downloads started"
+msgstr "بدأ التحميل"
+
+#: mainframe.py:125
+msgid "Choose Directory"
+msgstr "اختيار الوجهة"
+
+#: mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr ""
+
+#: mainframe.py:128
+msgid "Update already in progress"
+msgstr ""
+
+#: mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "تحديث محمل فيديوهات يوتيوب. يرجى الإنتظار..."
+
+#: mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "فشل تحديث محمل فيديوهات يوتيوب [{0}]"
+
+#: mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr ""
+
+#: mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "فعل لفتح الدليل : '{dir}'. المسار خاطئ"
+
+#: mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "تعذر إيقاف الجهاز . تأكد من كلمة المرور"
+
+#: mainframe.py:138
+msgid "Shutting down system"
+msgstr "إيقاف تشغيل النظام"
+
+#: mainframe.py:141
+msgid "Extension"
+msgstr ""
+
+#: mainframe.py:142
+msgid "Size"
+msgstr "الحجم"
+
+#: mainframe.py:143
+msgid "Percent"
+msgstr "النِسبة"
+
+#: mainframe.py:144
+msgid "ETA"
+msgstr "الوقت المتبقي"
+
+#: mainframe.py:145
+msgid "Speed"
+msgstr "السرعة"
+
+#: mainframe.py:146
+msgid "Status"
+msgstr "الحالة"
+
+#: mainframe.py:235
+msgid "Get URL"
+msgstr ""
+
+#: mainframe.py:236
+#, fuzzy
+msgid "Get command"
+msgstr "أوامر"
+
+#: mainframe.py:237
+#, fuzzy
+msgid "Open destination"
+msgstr "افتح وجهة المجلد"
+
+#: mainframe.py:238
+msgid "Re-enter"
+msgstr ""
+
+#: mainframe.py:453
+msgid "Resume"
+msgstr ""
+
+#: mainframe.py:475
+msgid "Video"
+msgstr "الفيديو"
+
+#: mainframe.py:479
+msgid "Audio"
+msgstr "الصوت"
+
+#: mainframe.py:511
+msgid "No items selected. Please pick an action"
+msgstr ""
+
+#: mainframe.py:511
+msgid "Remove all"
+msgstr ""
+
+#: mainframe.py:511
+#, fuzzy
+msgid "Remove completed"
+msgstr "إكتمال التحميل"
+
+#: mainframe.py:529
+msgid "Are you sure you want to remove selected items?"
+msgstr ""
+
+#: mainframe.py:541
+msgid "Item is active, cannot remove"
+msgstr ""
+
+#: mainframe.py:574
+#, fuzzy
+msgid "Item is not completed"
+msgstr "إكتمال التحميل"
+
+#: mainframe.py:662
+msgid "Update in progress. Please wait for the update to complete"
+msgstr ""
+
+#: mainframe.py:711
+msgid "Logging is disabled"
+msgstr ""
+
+#: mainframe.py:886
+msgid "Shutdown"
+msgstr "إيقاف التشغيل"
+
+#: mainframe.py:886
+#, fuzzy
+msgid "Shutting down in {0} second(s)"
+msgstr "إيقاف تشغيل النظام"
+
+#: mainframe.py:975
+msgid "No items to download"
+msgstr ""
+
+#: mainframe.py:1055
+msgid "Are you sure you want to exit?"
+msgstr ""
+
+#: mainframe.py:1055
+msgid "Exit"
+msgstr ""
+
+#: mainframe.py:1296 mainframe.py:1446
+msgid "Cancel"
+msgstr ""
+
+#: mainframe.py:1445
+msgid "OK"
+msgstr ""
+
+#: optionsframe.py:65
+msgid "Reset"
+msgstr ""
+
+#: optionsframe.py:66
+msgid "Close"
+msgstr ""
+
+#: optionsframe.py:72
+msgid "General"
+msgstr "عام"
+
+#: optionsframe.py:73
+#, fuzzy
+msgid "Formats"
+msgstr "خلط الصيغة"
+
+#: optionsframe.py:74
+#, fuzzy
+msgid "Downloads"
+msgstr "بدأ التحميل"
+
+#: optionsframe.py:75
+msgid "Advanced"
+msgstr ""
+
+#: optionsframe.py:76
+msgid "Extra"
+msgstr ""
+
+#: optionsframe.py:313
+#, fuzzy
+msgid "Language"
+msgstr "لغة الترجمة"
+
+#: optionsframe.py:316
+msgid "Filename format"
+msgstr ""
+
+#: optionsframe.py:321
+#, fuzzy
+msgid "Filename options"
+msgstr "إعادة تعين"
+
+#: optionsframe.py:322
+#, fuzzy
+msgid "Restrict filenames to ASCII"
+msgstr "حول الاسماء الى (ASCII)"
+
+#: optionsframe.py:324
+#, fuzzy
+msgid "More options"
+msgstr "إعادة تعين"
+
+#: optionsframe.py:325
+msgid "Confirm on exit"
+msgstr ""
+
+#: optionsframe.py:326
+msgid "Confirm item deletion"
+msgstr ""
+
+#: optionsframe.py:327
+msgid "Inform me on download completion"
+msgstr ""
+
+#: optionsframe.py:329
+#, fuzzy
+msgid "Shutdown on download completion"
+msgstr "إكتمال التحميل"
+
+#: optionsframe.py:340
+msgid "SUDO password"
+msgstr "كلمة مرور المسؤول"
+
+#: optionsframe.py:418 optionsframe.py:819
+#, fuzzy
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "لتصبح التغييرات سارية المفعول أعد تشغيل {0}"
+
+#: optionsframe.py:419 optionsframe.py:820
+msgid "Restart"
+msgstr "إعادة التشغيل"
+
+#: optionsframe.py:466
+msgid "high"
+msgstr "عالي"
+
+#: optionsframe.py:466
+msgid "low"
+msgstr "منخفض"
+
+#: optionsframe.py:466
+msgid "mid"
+msgstr "متوسط"
+
+#: optionsframe.py:471
+#, fuzzy
+msgid "Video formats"
+msgstr "صيغة الفيديو"
+
+#: optionsframe.py:474
+#, fuzzy
+msgid "Audio formats"
+msgstr "صيغة الصوت"
+
+#: optionsframe.py:477
+msgid "Post-Process options"
+msgstr ""
+
+#: optionsframe.py:478
+msgid "Keep original files"
+msgstr ""
+
+#: optionsframe.py:479
+msgid "Extract audio from video file"
+msgstr ""
+
+#: optionsframe.py:480
+msgid "Embed thumbnail in audio file"
+msgstr ""
+
+#: optionsframe.py:481
+msgid "Add metadata to file"
+msgstr ""
+
+#: optionsframe.py:483
+#, fuzzy
+msgid "Audio quality"
+msgstr "جودة الصوت"
+
+#: optionsframe.py:541
+msgid "English"
+msgstr "الانجليزية"
+
+#: optionsframe.py:542
+msgid "French"
+msgstr "الفرنسية"
+
+#: optionsframe.py:543
+msgid "German"
+msgstr "الالمانية"
+
+#: optionsframe.py:544
+msgid "Greek"
+msgstr "اليونانية"
+
+#: optionsframe.py:545
+msgid "Hebrew"
+msgstr ""
+
+#: optionsframe.py:546
+msgid "Italian"
+msgstr "الايطالية"
+
+#: optionsframe.py:547
+msgid "Portuguese"
+msgstr "البرتغالية"
+
+#: optionsframe.py:548
+msgid "Russian"
+msgstr "الروسية"
+
+#: optionsframe.py:549
+msgid "Spanish"
+msgstr "الاسبانية"
+
+#: optionsframe.py:550
+msgid "Swedish"
+msgstr ""
+
+#: optionsframe.py:551
+msgid "Turkish"
+msgstr ""
+
+#: optionsframe.py:567
+msgid "None"
+msgstr ""
+
+#: optionsframe.py:568
+#, fuzzy
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "تحميل تلقائي للترجمة (يوتيوب فقط)"
+
+#: optionsframe.py:569
+#, fuzzy
+msgid "All available subtitles"
+msgstr "تحميل كل الترجمات المتوفرة"
+
+#: optionsframe.py:570
+#, fuzzy
+msgid "Subtitles by language"
+msgstr "لغة الترجمة"
+
+#: optionsframe.py:576
+msgid "Subtitles"
+msgstr "الترجمة"
+
+#: optionsframe.py:580
+#, fuzzy
+msgid "Subtitles options"
+msgstr "الترجمة"
+
+#: optionsframe.py:581
+#, fuzzy
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "اضف الترجمة للفيديو (mp4 فقط)"
+
+#: optionsframe.py:583
+msgid "Playlist"
+msgstr "قائمة التشغيل"
+
+#: optionsframe.py:589 optionsframe.py:594
+msgid "Max"
+msgstr "اقصى"
+
+#: optionsframe.py:592
+msgid "Filesize"
+msgstr "حجم الملف"
+
+#: optionsframe.py:597
+msgid "Min"
+msgstr "اقل"
+
+#: optionsframe.py:726
+msgid "Retries"
+msgstr "فحص"
+
+#: optionsframe.py:729
+msgid "Authentication"
+msgstr "إستيثاق"
+
+#: optionsframe.py:731
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: optionsframe.py:733
+msgid "Password"
+msgstr "كلمة المرور"
+
+#: optionsframe.py:735
+#, fuzzy
+msgid "Video password"
+msgstr "كلمة مرور المسؤول"
+
+#: optionsframe.py:738
+msgid "Network"
+msgstr ""
+
+#: optionsframe.py:740
+msgid "Proxy"
+msgstr "الخادم الوكيل"
+
+#: optionsframe.py:742
+#, fuzzy
+msgid "User agent"
+msgstr "اسم العميل"
+
+#: optionsframe.py:744
+msgid "Referer"
+msgstr "يدل"
+
+#: optionsframe.py:747
+msgid "Logging"
+msgstr ""
+
+#: optionsframe.py:749
+#, fuzzy
+msgid "Enable log"
+msgstr "فعّل السِجِل"
+
+#: optionsframe.py:750
+#, fuzzy
+msgid "View"
+msgstr "شاهد السِجِل"
+
+#: optionsframe.py:751
+#, fuzzy
+msgid "Clear"
+msgstr "إمسح السِجِل"
+
+#: optionsframe.py:861
+#, fuzzy
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "معطيات سطر الاوامر (e.g. --help)"
+
+#: optionsframe.py:864
+#, fuzzy
+msgid "Extra options"
+msgstr "إعادة تعين"
+
+#: optionsframe.py:866
+msgid "Debug youtube-dl"
+msgstr ""
+
+#: optionsframe.py:867
+#, fuzzy
+msgid "Ignore errors"
+msgstr "تجاهل الأخطاء"
+
+#: optionsframe.py:868
+msgid "Ignore youtube-dl config"
+msgstr ""
+
+#: optionsframe.py:869
+msgid "No mtime"
+msgstr ""
+
+#: optionsframe.py:870
+msgid "Prefer native HLS"
+msgstr ""
+
+#: optionsframe.py:931
+msgid "Log Viewer"
+msgstr "عارض السجل"

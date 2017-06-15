@@ -16,6 +16,11 @@ from .utils import (
     check_path
 )
 
+from .formats import (
+    OUTPUT_FORMATS,
+    FORMATS
+)
+
 
 class OptionsManager(object):
 
@@ -87,12 +92,8 @@ class OptionsManager(object):
             restrict_filenames (boolean): If True youtube-dl will restrict
                 the downloaded file filename to ASCII characters only.
 
-            output_format (string): This option sets the downloaded file
-                output template. Available values are 'id', 'title', 'custom'
-
-                'id' -> '%(id)s.%(ext)s'
-                'title' -> '%(title)s.%(ext)s'
-                'custom' -> Use 'output_template' as output template.
+            output_format (int): This option sets the downloaded file
+                output template. See formats.OUTPUT_FORMATS for more info.
 
             output_template (string): Can be any output template supported
                 by youtube-dl.
@@ -198,18 +199,57 @@ class OptionsManager(object):
                 If window becomes to small the program will reset its size.
                 See _settings_are_valid method MIN_FRAME_SIZE.
 
+            save_path_dirs (list): List that contains temporary save paths.
+
+            selected_video_formats (list): List that contains the selected
+                video formats to display on the main window.
+
+            selected_audio_formats (list): List that contains the selected
+                audio formats to display on the main window.
+
+            selected_format (string): Current format selected on the main window.
+
+            youtube_dl_debug (boolean): When True will pass '-v' flag to youtube-dl.
+
+            ignore_config (boolean): When True will ignore youtube-dl config file options.
+
+            confirm_exit (boolean): When True create popup to confirm exiting youtube-dl-gui.
+
+            native_hls (boolean): When True youtube-dl will use the native HLS implementation.
+
+            show_completion_popup (boolean): When True youtube-dl-gui will create a popup
+                to inform the user for the download completion.
+
+            confirm_deletion (boolean): When True ask user before item removal.
+
+            nomtime (boolean): When True will not use the Last-modified header to
+                set the file modification time.
+
+            embed_thumbnail (boolean): When True will embed the thumbnail in
+                the audio file as cover art.
+
+            add_metadata (boolean): When True will write metadata to file.
+
         """
+        #REFACTOR Remove old options & check options validation
         self.options = {
             'save_path': os_path_expanduser('~'),
+            'save_path_dirs': [
+                os_path_expanduser('~'),
+                os.path.join(os_path_expanduser('~'), "Downloads"),
+                os.path.join(os_path_expanduser('~'), "Desktop"),
+                os.path.join(os_path_expanduser('~'), "Videos"),
+                os.path.join(os_path_expanduser('~'), "Music"),
+            ],
             'video_format': '0',
             'second_video_format': '0',
             'to_audio': False,
             'keep_video': False,
-            'audio_format': 'mp3',
+            'audio_format': '',
             'audio_quality': '5',
             'restrict_filenames': False,
-            'output_format': 'title',
-            'output_template': '%(uploader)s/%(title)s.%(ext)s',
+            'output_format': 1,
+            'output_template': os.path.join('%(uploader)s', '%(title)s.%(ext)s'),
             'playlist_start': 1,
             'playlist_end': 0,
             'max_downloads': 0,
@@ -223,7 +263,7 @@ class OptionsManager(object):
             'embed_subs': False,
             'subs_lang': 'en',
             'ignore_errors': True,
-            'open_dl_dir': True,
+            'open_dl_dir': False,
             'write_description': False,
             'write_info': False,
             'write_thumbnail': False,
@@ -239,11 +279,23 @@ class OptionsManager(object):
             'youtubedl_path': self.config_path,
             'cmd_args': '',
             'enable_log': True,
-            'log_time': False,
+            'log_time': True,
             'workers_number': 3,
             'locale_name': 'en_US',
-            'main_win_size': (700, 490),
-            'opts_win_size': (640, 270)
+            'main_win_size': (740, 490),
+            'opts_win_size': (640, 490),
+            'selected_video_formats': ['webm', 'mp4'],
+            'selected_audio_formats': ['mp3', 'm4a', 'vorbis'],
+            'selected_format': '0',
+            'youtube_dl_debug': False,
+            'ignore_config': True,
+            'confirm_exit': True,
+            'native_hls': True,
+            'show_completion_popup': True,
+            'confirm_deletion': True,
+            'nomtime': False,
+            'embed_thumbnail': False,
+            'add_metadata': False
         }
 
     def load_from_file(self):
@@ -287,15 +339,13 @@ class OptionsManager(object):
             '264', '138', '242', '243', '244', '247', '248', '271', '272', '82',
             '83', '84', '85', '100', '101', '102', '139', '140', '141', '171', '172')
 
-        VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis', 'opus')
+        VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis', 'opus', '')
 
         VALID_AUDIO_QUALITY = ('0', '5', '9')
 
-        VALID_OUTPUT_FORMAT = ('title', 'id', 'custom')
-
         VALID_FILESIZE_UNIT = ('', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y')
 
-        VALID_SUB_LANGUAGE = ('en', 'gr', 'pt', 'fr', 'it', 'ru', 'es', 'de')
+        VALID_SUB_LANGUAGE = ('en', 'el', 'pt', 'fr', 'it', 'ru', 'es', 'de', 'he', 'sv', 'tr')
 
         MIN_FRAME_SIZE = 100
 
@@ -312,11 +362,11 @@ class OptionsManager(object):
 
         # Check if each key has a valid value
         rules_dict = {
-            'video_format': VALID_VIDEO_FORMAT,
+            'video_format': FORMATS.keys(),
             'second_video_format': VALID_VIDEO_FORMAT,
             'audio_format': VALID_AUDIO_FORMAT,
             'audio_quality': VALID_AUDIO_QUALITY,
-            'output_format': VALID_OUTPUT_FORMAT,
+            'output_format': OUTPUT_FORMATS.keys(),
             'min_filesize_unit': VALID_FILESIZE_UNIT,
             'max_filesize_unit': VALID_FILESIZE_UNIT,
             'subs_lang': VALID_SUB_LANGUAGE

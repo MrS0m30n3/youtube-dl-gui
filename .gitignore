@@ -1,4 +1,6 @@
+MANIFEST
 *.pyc
+*.mo
 
 dist/
 build/

@@ -281,7 +281,7 @@ class GeneralTab(TabPanel):
         # ('nl_NL', 'Nederlands'),
         # ('pt_BR', 'Portuguese'),
         # ('ru_RU', 'Russian'),
-        # ('es_ES', 'Spanish'),
+        ('es_ES', 'Spanish'),
         # ('tr_TR', 'Turkish')
     ])
 

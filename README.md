@@ -11,20 +11,20 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 * [FFmpeg](https://ffmpeg.org/download.html) (optional, to post process video files)
 
 ## Downloads
-* [Source (.zip)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.3.8.zip)
-* [Source (.tar.gz)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.3.8.tar.gz)
-* [PyPi](https://pypi.python.org/pypi/youtube-dlg/0.3.8)
+* [Source (.zip)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.zip)
+* [Source (.tar.gz)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.tar.gz)
+* [PyPi](https://pypi.python.org/pypi/youtube-dlg/0.4)
 * [Ubuntu PPA](http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/)
 * [Arch AUR](https://aur.archlinux.org/packages/youtube-dl-gui-git/)
 * [Slackware SlackBuild](https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/)
-* [Windows Installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-setup.zip)
-* [Windows Portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.3.8/youtube-dl-gui-0.3.8-win-portable.zip)
+* [Windows Installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-setup.zip)
+* [Windows Portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-portable.zip)
 
 ## Installation
 
 ### Install From Source
 1. Download & extract the source
-2. Change directory into *youtube-dl-gui-0.3.8*
+2. Change directory into *youtube-dl-gui-0.4*
 3. Run `python setup.py install`
 
 ### Install PyPi

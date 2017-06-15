@@ -22,7 +22,7 @@ All invalid issues will be rejected!!
 - Make sure to read the [FAQs](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/docs/faqs.md) file
 
   - [ ] **I think** my problem is **NOT** with **youtube-dl**
-  - [ ] I've **verified** and **i assure** that I'm running youtube-dl-gui **0.3.8**
+  - [ ] I've **verified** and **i assure** that I'm running youtube-dl-gui **0.4**
   - [ ] **I assure** that i am using the latest version of **youtube-dl**
   - [ ] [Searched](https://github.com/MrS0m30n3/youtube-dl-gui/issues) bugtracker
   - [ ] I've read the FAQs file

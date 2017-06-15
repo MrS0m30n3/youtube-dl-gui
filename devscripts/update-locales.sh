@@ -10,6 +10,8 @@ PACKAGE="youtube_dl_gui"
 
 PO_FILE="$PACKAGE.po"
 
+MO_FILE="$PACKAGE.mo"
+
 
 cd ..
 
@@ -48,7 +50,7 @@ fi
 echo "[*]Building .MO files"
 
 for dir in $DIRS; do
-    msgfmt --use-fuzzy --output-file "$dir/$PO_FILE" "$dir/$PO_FILE"
+    msgfmt --use-fuzzy --output-file "$dir/$MO_FILE" "$dir/$PO_FILE"
 done
 
 echo "[*]Done"

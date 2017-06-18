@@ -149,7 +149,7 @@ msgstr "Началось скачивание"
 
 #: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
-msgstr "Выбрать Директорию"
+msgstr "Выбрать директорию"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
@@ -385,11 +385,11 @@ msgstr "среднее"
 
 #: youtube_dl_gui/optionsframe.py:473
 msgid "Video formats"
-msgstr "Формат Видео"
+msgstr "Формат видео"
 
 #: youtube_dl_gui/optionsframe.py:476
 msgid "Audio formats"
-msgstr "Формат Аудио"
+msgstr "Формат аудио"
 
 #: youtube_dl_gui/optionsframe.py:479
 msgid "Post-Process options"
@@ -413,7 +413,7 @@ msgstr "Добавить метаданные в файл"
 
 #: youtube_dl_gui/optionsframe.py:485
 msgid "Audio quality"
-msgstr "Качество Аудио"
+msgstr "Качество аудио"
 
 #: youtube_dl_gui/optionsframe.py:543
 msgid "English"
@@ -473,7 +473,7 @@ msgstr "Скачать все имеющиеся субтитры"
 
 #: youtube_dl_gui/optionsframe.py:572
 msgid "Subtitles by language"
-msgstr "Язык Субтитров"
+msgstr "Язык субтитров"
 
 #: youtube_dl_gui/optionsframe.py:578
 msgid "Subtitles"

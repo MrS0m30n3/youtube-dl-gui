@@ -356,10 +356,20 @@ def format_bytes(bytes):
 def build_command(options_list, url):
     """Build the youtube-dl command line string."""
 
-    # If option has spaces wrap it with double quotes
+    def escape(option):
+        """Wrap option with double quotes if it contains special symbols."""
+        special_symbols = [" ", "(", ")"]
+
+        for symbol in special_symbols:
+            if symbol in option:
+                return "\"{}\"".format(option)
+
+        return option
+
+    # If option has special symbols wrap it with double quotes
     # Probably not the best solution since if the option already contains
     # double quotes it will be a mess, see issue #173
-    options = ["\"{}\"".format(option) if " " in option else option for option in options_list]
+    options = [escape(option) for option in options_list]
 
     # Always wrap the url with double quotes
     url = "\"{}\"".format(url)

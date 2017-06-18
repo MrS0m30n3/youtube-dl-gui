@@ -67,43 +67,47 @@ class TestBuildCommand(unittest.TestCase):
 
     """Test case for the build_command method."""
 
-    def test_build_command_linux(self):
-        result = "youtube-dl -o \"/home/user/downloads/%(upload_date)s/%(id)" \
-        "s_%(playlist_id)s - %(format)s.%(ext)s\" -f mp4 --ignore-config " \
-        "\"https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA\""
+    def setUp(self):
+        self.url = "https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA"
 
-        options = [
-            "-o",
-            "/home/user/downloads/%(upload_date)s/%(id)s_%(playlist_id)s - %(format)s.%(ext)s",
-            "-f",
-            "mp4",
-            "--ignore-config"
-        ]
+        self.options = ["-o", None, "-f", "mp4", "--ignore-config"]
 
-        url = "https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA"
+        self.result = "{{ydl_bin}} -o \"{{tmpl}}\" -f mp4 --ignore-config \"{url}\"".format(url=self.url)
 
-        utils.YOUTUBEDL_BIN = "youtube-dl"
+    def run_tests(self, ydl_bin, tmpl):
+        """Run the main test.
 
-        self.assertEqual(utils.build_command(options, url), result)
+        Args:
+            ydl_bin (str): Name of the youtube-dl binary
+            tmpl (str): Youtube-dl output template
 
-    def test_build_command_windows(self):
-        result = "youtube-dl.exe -o \"C:\\downloads\\%(upload_date)s\\%(id)" \
-        "s_%(playlist_id)s - %(format)s.%(ext)s\" -f mp4 --ignore-config " \
-        "\"https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA\""
+        """
+        utils.YOUTUBEDL_BIN = ydl_bin
+        self.options[1] = tmpl  # Plug the template in our options
 
-        options = [
-            "-o",
-            "C:\\downloads\\%(upload_date)s\\%(id)s_%(playlist_id)s - %(format)s.%(ext)s",
-            "-f",
-            "mp4",
-            "--ignore-config"
-        ]
+        result = self.result.format(ydl_bin=ydl_bin, tmpl=tmpl)
 
-        url = "https://www.youtube.com/watch?v=aaaaaaaaaaa&list=AAAAAAAAAAA"
+        self.assertEqual(utils.build_command(self.options, self.url), result)
 
-        utils.YOUTUBEDL_BIN = "youtube-dl.exe"
+    def test_build_command_with_spaces_linux(self):
+        tmpl = "/home/user/downloads/%(upload_date)s/%(id)s_%(playlist_id)s - %(format)s.%(ext)s"
 
-        self.assertEqual(utils.build_command(options, url), result)
+        self.run_tests("youtube-dl", tmpl)
+
+    def test_build_command_without_spaces_linux(self):
+        tmpl = "/home/user/downloads/%(id)s.%(ext)s"
+
+        self.run_tests("youtube-dl", tmpl)
+
+    def test_build_command_with_spaces_windows(self):
+        tmpl = "C:\\downloads\\%(upload_date)s\\%(id)s_%(playlist_id)s - %(format)s.%(ext)s"
+
+        self.run_tests("youtube-dl.exe", tmpl)
+
+    def test_build_command_without_spaces_windows(self):
+        tmpl = "C:\\downloads\\%(id)s.%(ext)s"
+
+        self.run_tests("youtube-dl.exe", tmpl)
 
 
 def main():

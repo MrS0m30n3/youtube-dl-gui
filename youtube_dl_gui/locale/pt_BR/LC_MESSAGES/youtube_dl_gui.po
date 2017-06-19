@@ -123,7 +123,7 @@ msgstr "Ver Log"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "Baixado com sucesso {0} url(s) em {1} dia(s) {2} hora (s) {3} minuto(s) {4} segundo(s)"
+msgstr "Baixado com sucesso {0} url(s) em {1} dia(s) {2} hora(s) {3} minuto(s) {4} segundo(s)"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
@@ -275,7 +275,7 @@ msgstr "Desligar"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutting down in {0} second(s)"
-msgstr "Desligando em {0} segundo (s)"
+msgstr "Desligando em {0} segundo(s)"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
@@ -539,11 +539,11 @@ msgstr "User Agent"
 
 #: youtube_dl_gui/optionsframe.py:746
 msgid "Referer"
-msgstr "Refererente"
+msgstr "Referente"
 
 #: youtube_dl_gui/optionsframe.py:749
 msgid "Logging"
-msgstr "Gerar Log"
+msgstr "Log"
 
 #: youtube_dl_gui/optionsframe.py:751
 msgid "Enable log"
@@ -575,7 +575,7 @@ msgstr "Ignorar erros"
 
 #: youtube_dl_gui/optionsframe.py:870
 msgid "Ignore youtube-dl config"
-msgstr "Ignorar configurações do Youtube-dl"
+msgstr "Ignorar configurações do youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"

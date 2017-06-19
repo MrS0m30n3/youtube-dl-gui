@@ -1,5 +1,6 @@
 Next release
 ============
+* Custom youtube-dl format selection filters (e.g. -f best[height<=360])
 * Improve playlist downloads
 * Remember list of urls after closing & re-opening
 * About dialog show youtube-dl version

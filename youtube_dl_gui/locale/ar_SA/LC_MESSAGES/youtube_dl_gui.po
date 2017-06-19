@@ -1,12 +1,11 @@
 # Youtube-dlG localization file.
 # FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
-# Snosi <fixall.dz@gmail.com>, 2015.
 # snosi <fixall.dz@gmail.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
-"PO-Revision-Date: 2017-06-16 03:45+0100\n"
+"PO-Revision-Date: 2017-06-19 17:41+0100\n"
 "Last-Translator: snosi <fixall.dz@gmail.com>\n"
 "Language-Team: snosi\n"
 "Language: ar\n"
@@ -20,7 +19,7 @@ msgstr ""
 
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:108
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:109
 #: youtube_dl_gui/mainframe.py:140
@@ -29,15 +28,15 @@ msgstr "العنوان"
 
 #: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:110
 msgid "Title + ID"
-msgstr ""
+msgstr "العنوان + ID"
 
 #: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:111
 msgid "Title + Quality"
-msgstr "العنوان و الجودة"
+msgstr "العنوان + الجودة"
 
 #: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:112
 msgid "Title + ID + Quality"
-msgstr ""
+msgstr "العنوان + ID + الجودة"
 
 #: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:113
 msgid "Custom"
@@ -46,7 +45,7 @@ msgstr "مخصص"
 #: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:118
 #: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
 msgid "default"
-msgstr "افتراضي"
+msgstr "افتراضي (دون تعديل)"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
@@ -81,9 +80,8 @@ msgid "Add"
 msgstr "إضافة"
 
 #: youtube_dl_gui/mainframe.py:106
-#, fuzzy
 msgid "Download list"
-msgstr "بدأ التنزيل"
+msgstr "قائمة التنزيلات"
 
 #: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
 #: youtube_dl_gui/mainframe.py:534
@@ -91,9 +89,8 @@ msgid "Delete"
 msgstr "حذف"
 
 #: youtube_dl_gui/mainframe.py:108
-#, fuzzy
 msgid "Play"
-msgstr "شغل"
+msgstr "تشغيل"
 
 #: youtube_dl_gui/mainframe.py:109
 msgid "Up"
@@ -105,7 +102,7 @@ msgstr "اسفل"
 
 #: youtube_dl_gui/mainframe.py:111
 msgid "Reload"
-msgstr "تحديث"
+msgstr "أعد التحميل"
 
 #: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
 #: youtube_dl_gui/mainframe.py:649
@@ -114,9 +111,8 @@ msgstr "توقيف مؤقت"
 
 #: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
 #: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:587
-#, fuzzy
 msgid "Start"
-msgstr "بدأ"
+msgstr "إبدأ"
 
 #: youtube_dl_gui/mainframe.py:114
 msgid "About"
@@ -127,18 +123,19 @@ msgid "View Log"
 msgstr "شاهد السِجِل"
 
 #: youtube_dl_gui/mainframe.py:117
-#, fuzzy
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "إنتهاء التحميلات {0} رابط {1} يوم {2} ساعة {3} دقيقة {4} ثانية"
+msgstr ""
+"انتهاء التنزيلات {0} URL(s) في {1} يوم(s) {2} ساعة(s) {3} دقيقة(s) {4} ثانية"
 
 #: youtube_dl_gui/mainframe.py:119
-#, fuzzy
 msgid "Downloads completed"
-msgstr "إكتمال التنزيل"
+msgstr "اكتمال التنزيلات"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
 msgstr ""
+"مجموع العمليات : {0:.1f}% | في الانتظار ({1}) متوقفة مؤقتا ({2}) نشطة ({3}) "
+"اكتملت ({4}) أخطاء ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -149,42 +146,40 @@ msgid "Downloads stopped"
 msgstr "تم إيقاف التنزيل"
 
 #: youtube_dl_gui/mainframe.py:123
-#, fuzzy
 msgid "You need to provide at least one URL"
-msgstr "أدخل رابطا على الأقل"
+msgstr "يجب ان تضع رابطا واحدا على الاقل"
 
 #: youtube_dl_gui/mainframe.py:124
-#, fuzzy
 msgid "Downloads started"
-msgstr "بدأ التحميل"
+msgstr "تم إيقاف التنزيل"
 
 #: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
-msgstr "اختيار الوجهة"
+msgstr "اختر مكان الحفظ"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
-msgstr ""
+msgstr "جاري التنزيل . انتظر حتى تكتمل التنزيلات"
 
 #: youtube_dl_gui/mainframe.py:128
 msgid "Update already in progress"
-msgstr "قيد التحديث"
+msgstr "جاري التحديث"
 
 #: youtube_dl_gui/mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "تحديث محمل فيديوهات يوتيوب. يرجى الإنتظار..."
+msgstr "تحديث youtube-dl. يرجى الإنتظار..."
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr "فشل تحديث محمل فيديوهات يوتيوب [{0}]"
+msgstr "فشل تحديث youtube-dl [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "اكتمل التنزيل"
+msgstr "اكتمل تحديث youtube-dl"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr "فعل لفتح الدليل : '{dir}'. المسار خاطئ"
+msgstr "فعل لفتح الدليل : '{dir}'. المسار غير موجود"
 
 #: youtube_dl_gui/mainframe.py:136
 msgid "Error while shutting down. Make sure you typed the correct password"
@@ -196,7 +191,7 @@ msgstr "إيقاف تشغيل النظام"
 
 #: youtube_dl_gui/mainframe.py:141
 msgid "Extension"
-msgstr "نوع الملف"
+msgstr "نوع الملف (الصيغة)"
 
 #: youtube_dl_gui/mainframe.py:142
 msgid "Size"
@@ -220,17 +215,15 @@ msgstr "الحالة"
 
 #: youtube_dl_gui/mainframe.py:235
 msgid "Get URL"
-msgstr "الرابط"
+msgstr "جد الرابط"
 
 #: youtube_dl_gui/mainframe.py:236
-#, fuzzy
 msgid "Get command"
-msgstr "أوامر"
+msgstr "جد أمر"
 
 #: youtube_dl_gui/mainframe.py:237
-#, fuzzy
 msgid "Open destination"
-msgstr "افتح وجهة المجلد"
+msgstr "افتح وجهة"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
@@ -257,9 +250,8 @@ msgid "Remove all"
 msgstr "حذف الكل "
 
 #: youtube_dl_gui/mainframe.py:516
-#, fuzzy
 msgid "Remove completed"
-msgstr "إكتمال الحذف"
+msgstr "حذف المكتمل"
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"
@@ -270,9 +262,8 @@ msgid "Item is active, cannot remove"
 msgstr "لا يمكن الحذف الآن"
 
 #: youtube_dl_gui/mainframe.py:579
-#, fuzzy
 msgid "Item is not completed"
-msgstr "لم يكتمل العنصر"
+msgstr "لم يكتمل العنصر بعد"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"
@@ -280,20 +271,19 @@ msgstr "قيد التحديث .يرجى الانتظار"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr ""
+msgstr "تعطل تسجيل الدخول"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"
 msgstr "إيقاف التشغيل"
 
 #: youtube_dl_gui/mainframe.py:891
-#, fuzzy
 msgid "Shutting down in {0} second(s)"
-msgstr "إيقاف تشغيل النظام"
+msgstr "إيقاف التشغيل في {0} ثانية(s)"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
-msgstr ""
+msgstr "لا توجد عناصر للتنزيل"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Are you sure you want to exit?"
@@ -313,7 +303,7 @@ msgstr "موافق"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
-msgstr "إسترجاع الإعدادات"
+msgstr "إسترجاع الإعدادات الافتراضية"
 
 #: youtube_dl_gui/optionsframe.py:66
 msgid "Close"
@@ -324,12 +314,10 @@ msgid "General"
 msgstr "عام"
 
 #: youtube_dl_gui/optionsframe.py:73
-#, fuzzy
 msgid "Formats"
-msgstr "الصيغة"
+msgstr "الصيغ"
 
 #: youtube_dl_gui/optionsframe.py:74
-#, fuzzy
 msgid "Downloads"
 msgstr "التنزيلات"
 
@@ -339,57 +327,51 @@ msgstr "متقدم"
 
 #: youtube_dl_gui/optionsframe.py:76
 msgid "Extra"
-msgstr ""
+msgstr "إضافي"
 
 #: youtube_dl_gui/optionsframe.py:315
-#, fuzzy
 msgid "Language"
 msgstr "اللغة"
 
 #: youtube_dl_gui/optionsframe.py:318
 msgid "Filename format"
-msgstr ""
+msgstr "اسم الملف الصيغة"
 
 #: youtube_dl_gui/optionsframe.py:323
-#, fuzzy
 msgid "Filename options"
-msgstr "إعدادات إسم الملف"
+msgstr "اسم الملف خيارات"
 
 #: youtube_dl_gui/optionsframe.py:324
-#, fuzzy
 msgid "Restrict filenames to ASCII"
-msgstr "حول الاسماء الى (ASCII)"
+msgstr "قيّد اسم الملف الى ASCII"
 
 #: youtube_dl_gui/optionsframe.py:326
-#, fuzzy
 msgid "More options"
-msgstr "إعادة تعين"
+msgstr "مزيد من الخيارات"
 
 #: youtube_dl_gui/optionsframe.py:327
 msgid "Confirm on exit"
-msgstr ""
+msgstr "التأكيد عند الإنهاء"
 
 #: youtube_dl_gui/optionsframe.py:328
 msgid "Confirm item deletion"
-msgstr ""
+msgstr "التأكيد عند حذف عنصر"
 
 #: youtube_dl_gui/optionsframe.py:329
 msgid "Inform me on download completion"
-msgstr ""
+msgstr "نبهني عند انتهاء التنزيلات"
 
 #: youtube_dl_gui/optionsframe.py:331
-#, fuzzy
 msgid "Shutdown on download completion"
-msgstr "إكتمال التحميل"
+msgstr "اوقف التشغيل عند انتهاء التنزيلات"
 
 #: youtube_dl_gui/optionsframe.py:342
 msgid "SUDO password"
 msgstr "كلمة مرور المسؤول"
 
 #: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
-#, fuzzy
 msgid "In order for the changes to take effect please restart {0}"
-msgstr "لتصبح التغييرات سارية المفعول أعد تشغيل {0}"
+msgstr "تطبق التغييرات بعد اعادة التشغيل {0}"
 
 #: youtube_dl_gui/optionsframe.py:421 youtube_dl_gui/optionsframe.py:822
 msgid "Restart"
@@ -408,37 +390,34 @@ msgid "mid"
 msgstr "متوسط"
 
 #: youtube_dl_gui/optionsframe.py:473
-#, fuzzy
 msgid "Video formats"
-msgstr "صيغة الفيديو"
+msgstr "صيغ الفيديو"
 
 #: youtube_dl_gui/optionsframe.py:476
-#, fuzzy
 msgid "Audio formats"
-msgstr "صيغة الصوت"
+msgstr "صيغ الصوت"
 
 #: youtube_dl_gui/optionsframe.py:479
 msgid "Post-Process options"
-msgstr ""
+msgstr "خيارات مابعد العملية"
 
 #: youtube_dl_gui/optionsframe.py:480
 msgid "Keep original files"
-msgstr ""
+msgstr "احتفظ بالملفات الأصلية"
 
 #: youtube_dl_gui/optionsframe.py:481
 msgid "Extract audio from video file"
-msgstr ""
+msgstr "استخرج ملف صوتي من ملف الفيديو"
 
 #: youtube_dl_gui/optionsframe.py:482
 msgid "Embed thumbnail in audio file"
-msgstr ""
+msgstr "تضمين الصورة المصغرة في الملف الصوتي"
 
 #: youtube_dl_gui/optionsframe.py:483
 msgid "Add metadata to file"
-msgstr ""
+msgstr "أضف بيانات وصفية للملف"
 
 #: youtube_dl_gui/optionsframe.py:485
-#, fuzzy
 msgid "Audio quality"
 msgstr "جودة الصوت"
 
@@ -460,7 +439,7 @@ msgstr "اليونانية"
 
 #: youtube_dl_gui/optionsframe.py:547
 msgid "Hebrew"
-msgstr ""
+msgstr "العبرية"
 
 #: youtube_dl_gui/optionsframe.py:548
 msgid "Italian"
@@ -491,33 +470,28 @@ msgid "None"
 msgstr "لاشيء"
 
 #: youtube_dl_gui/optionsframe.py:570
-#, fuzzy
 msgid "Automatic subtitles (YOUTUBE ONLY)"
-msgstr "تحميل تلقائي للترجمة (يوتيوب فقط)"
+msgstr "الترجمة التلقائية (YOUTUBE ONLY)"
 
 #: youtube_dl_gui/optionsframe.py:571
-#, fuzzy
 msgid "All available subtitles"
-msgstr "تحميل كل الترجمات المتوفرة"
+msgstr "كل الترجمات المتوفرة"
 
 #: youtube_dl_gui/optionsframe.py:572
-#, fuzzy
 msgid "Subtitles by language"
-msgstr "لغة الترجمة"
+msgstr "الترجمات حسب اللغة"
 
 #: youtube_dl_gui/optionsframe.py:578
 msgid "Subtitles"
 msgstr "الترجمات"
 
 #: youtube_dl_gui/optionsframe.py:582
-#, fuzzy
 msgid "Subtitles options"
-msgstr "خيارات الترجمات"
+msgstr "خيارات الترجمة"
 
 #: youtube_dl_gui/optionsframe.py:583
-#, fuzzy
 msgid "Embed subtitles into video file (mp4 ONLY)"
-msgstr "اضف الترجمة للفيديو (mp4 فقط)"
+msgstr "تضمين ترجمات مصاحبة مع ملف الفيديو (mp4 فقط)"
 
 #: youtube_dl_gui/optionsframe.py:585
 msgid "Playlist"
@@ -552,9 +526,8 @@ msgid "Password"
 msgstr "كلمة المرور"
 
 #: youtube_dl_gui/optionsframe.py:737
-#, fuzzy
 msgid "Video password"
-msgstr "كلمة مرور المسؤول"
+msgstr "كلمة المرور الخاصة بالفيديو"
 
 #: youtube_dl_gui/optionsframe.py:740
 msgid "Network"
@@ -562,12 +535,11 @@ msgstr "الشبكة"
 
 #: youtube_dl_gui/optionsframe.py:742
 msgid "Proxy"
-msgstr "الخادم الوكيل"
+msgstr "الخادم الوكيل (البروكسي)"
 
 #: youtube_dl_gui/optionsframe.py:744
-#, fuzzy
 msgid "User agent"
-msgstr "اسم العميل"
+msgstr "مستخدم وكيل"
 
 #: youtube_dl_gui/optionsframe.py:746
 msgid "Referer"
@@ -575,53 +547,47 @@ msgstr "يدل"
 
 #: youtube_dl_gui/optionsframe.py:749
 msgid "Logging"
-msgstr ""
+msgstr "تسجيل"
 
 #: youtube_dl_gui/optionsframe.py:751
-#, fuzzy
 msgid "Enable log"
-msgstr "فعّل السِجِل"
+msgstr "تفعيل السجّل"
 
 #: youtube_dl_gui/optionsframe.py:752
-#, fuzzy
 msgid "View"
-msgstr "شاهد السِجِل"
+msgstr "عرض"
 
 #: youtube_dl_gui/optionsframe.py:753
-#, fuzzy
 msgid "Clear"
-msgstr "إمسح السِجِل"
+msgstr "مسح"
 
 #: youtube_dl_gui/optionsframe.py:863
-#, fuzzy
 msgid "Youtube-dl command line options (e.g. --help)"
-msgstr "معطيات سطر الاوامر (e.g. --help)"
+msgstr "Youtube-dl خيارات موجه الاوامر (e.g. --help)"
 
 #: youtube_dl_gui/optionsframe.py:866
-#, fuzzy
 msgid "Extra options"
-msgstr "إعادة تعين"
+msgstr "خيارات إضافية"
 
 #: youtube_dl_gui/optionsframe.py:868
 msgid "Debug youtube-dl"
-msgstr ""
+msgstr "تصحيح أخطاء youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:869
-#, fuzzy
 msgid "Ignore errors"
 msgstr "تجاهل الأخطاء"
 
 #: youtube_dl_gui/optionsframe.py:870
 msgid "Ignore youtube-dl config"
-msgstr "تجاهل الإعدادات "
+msgstr "تجاهل إعدادات youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"
-msgstr ""
+msgstr "No mtime"
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"
-msgstr ""
+msgstr "تفضيل HLS الأصلي"
 
 #: youtube_dl_gui/optionsframe.py:933
 msgid "Log Viewer"

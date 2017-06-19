@@ -17,7 +17,7 @@ import logging
 import argparse
 
 from time import sleep
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, tzinfo
 
 try:
     import polib
@@ -52,9 +52,61 @@ def parse():
     return parser.parse_args()
 
 
+class UTC_Offset_Timezone(tzinfo):
+
+    """Class that represents a UTC offset in the format +/-0000."""
+
+    def __init__(self, offset_string):
+        self.offset = timedelta(seconds=UTC_Offset_Timezone.parse_offset(offset_string))
+
+    def utcoffset(self, dt):
+        return self.offset + self.dst(dt)
+
+    def dst(self, dt):
+        return timedelta(0)
+
+    @staticmethod
+    def parse_offset(offset_string):
+        """Parse the offset string into seconds."""
+
+        if len(offset_string) != 5:
+            raise ValueError("Invalid length for offset string ({})".format(offset_string))
+
+        hours = offset_string[1:3]
+        minutes = offset_string[3:5]
+
+        offset = int(hours) * 3600 + int(minutes) * 60
+
+        if offset_string[0] == "-":
+            return -1 * offset
+
+        return offset
+
+
 def parse_date(date_string):
-    """Parse date string into a datetime object."""
-    return datetime.strptime(date_string, "%Y-%m-%d %H:%M+%Z")
+    """Parse date string into an aware datetime object."""
+
+    # Just a small list with the most common timezones
+    offset_list = [
+        ("EEST", "0300"),
+        ("EET", "0200"),
+        ("GMT", "0000"),
+        ("UTC", "0000")
+    ]
+
+    # Replace all the timezones with the offset
+    for item in offset_list:
+        timezone, offset = item
+
+        date_string = date_string.replace(timezone, offset)
+
+    datetime_string = date_string[:16]
+    offset_string = date_string[16:]
+
+    naive_date = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M")
+
+    # Create & return an aware datetime object based on the offset
+    return naive_date.replace(tzinfo=UTC_Offset_Timezone(offset_string))
 
 # Print helpers
 
@@ -111,9 +163,8 @@ def main(args):
     po_creation_date = parse_date(po_headers["POT-Creation-Date"])
     po_revision_date = parse_date(po_headers["PO-Revision-Date"])
 
-    timediff = po_revision_date - po_creation_date
-
-    if timediff.days <= 0:
+    # Aware datetimes convert to UTC automatically when comparing
+    if po_revision_date <= po_creation_date:
         pwarn("PO file seems outdated", exit=args.werror)
 
     if "Language" in po_headers and po_headers["Language"] != args.language:

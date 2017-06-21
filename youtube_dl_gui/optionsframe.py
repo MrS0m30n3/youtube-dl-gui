@@ -279,7 +279,7 @@ class GeneralTab(TabPanel):
         ('ko_KR', 'Korean'),
         # ('es_MX', 'Mexican Spanish'),
         # ('nl_NL', 'Nederlands'),
-        # ('pt_BR', 'Portuguese'),
+        ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
         ('es_ES', 'Spanish'),
         # ('tr_TR', 'Turkish')

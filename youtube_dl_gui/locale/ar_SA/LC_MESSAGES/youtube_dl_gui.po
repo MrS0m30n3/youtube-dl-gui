@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
-"PO-Revision-Date: 2017-06-19 17:41+0100\n"
+"PO-Revision-Date: 2017-06-22 17:52+0100\n"
 "Last-Translator: snosi <fixall.dz@gmail.com>\n"
 "Language-Team: snosi\n"
 "Language: ar\n"
@@ -124,8 +124,7 @@ msgstr "شاهد السِجِل"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr ""
-"انتهاء التنزيلات {0} URL(s) في {1} يوم(s) {2} ساعة(s) {3} دقيقة(s) {4} ثانية"
+msgstr "انتهاء التنزيلات {0} URL(s) في {1} يوم {2} ساعة {3} دقيقة {4} ثانية"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
@@ -133,9 +132,7 @@ msgstr "اكتمال التنزيلات"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
-msgstr ""
-"مجموع العمليات : {0:.1f}% | في الانتظار ({1}) متوقفة مؤقتا ({2}) نشطة ({3}) "
-"اكتملت ({4}) أخطاء ({5})"
+msgstr "مجموع العمليات : {0:.1f}% | في الانتظار ({1}) موقف مؤقتا ({2}) نشط ({3}) اكتملت ({4}) أخطاء ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -151,7 +148,7 @@ msgstr "يجب ان تضع رابطا واحدا على الاقل"
 
 #: youtube_dl_gui/mainframe.py:124
 msgid "Downloads started"
-msgstr "تم إيقاف التنزيل"
+msgstr "بدأ التنزيل"
 
 #: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
@@ -167,7 +164,7 @@ msgstr "جاري التحديث"
 
 #: youtube_dl_gui/mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "تحديث youtube-dl. يرجى الإنتظار..."
+msgstr "...يرجى الإنتظار youtube-dl تحديث . "
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
@@ -175,7 +172,7 @@ msgstr "فشل تحديث youtube-dl [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "اكتمل تحديث youtube-dl"
+msgstr "youtube-dl اكتمل تحديث"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
@@ -219,7 +216,7 @@ msgstr "جد الرابط"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr "جد أمر"
+msgstr "الحصول على أمر"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"
@@ -239,11 +236,11 @@ msgstr "الفيديو"
 
 #: youtube_dl_gui/mainframe.py:484
 msgid "Audio"
-msgstr "ملف صوتي"
+msgstr "الصوتي"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "No items selected. Please pick an action"
-msgstr "لم يتم تحديد اي عنصر"
+msgstr "لم يتم تحديد أي عنصر. يرجى اختيار إجراء"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove all"
@@ -271,7 +268,7 @@ msgstr "قيد التحديث .يرجى الانتظار"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr "تعطل تسجيل الدخول"
+msgstr "تم تعطيل التسجيل"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"
@@ -571,7 +568,7 @@ msgstr "خيارات إضافية"
 
 #: youtube_dl_gui/optionsframe.py:868
 msgid "Debug youtube-dl"
-msgstr "تصحيح أخطاء youtube-dl"
+msgstr "youtube-dl تصحيح أخطاء"
 
 #: youtube_dl_gui/optionsframe.py:869
 msgid "Ignore errors"
@@ -579,7 +576,7 @@ msgstr "تجاهل الأخطاء"
 
 #: youtube_dl_gui/optionsframe.py:870
 msgid "Ignore youtube-dl config"
-msgstr "تجاهل إعدادات youtube-dl"
+msgstr "youtube-dl تجاهل إعدادات"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"
@@ -587,7 +584,7 @@ msgstr "No mtime"
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"
-msgstr "تفضيل HLS الأصلي"
+msgstr "الأصلي HLS تفضيل"
 
 #: youtube_dl_gui/optionsframe.py:933
 msgid "Log Viewer"

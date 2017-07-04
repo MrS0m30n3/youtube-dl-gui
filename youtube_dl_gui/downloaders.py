@@ -360,6 +360,7 @@ def extract_data(stdout):
         'playlist_size'  : The number of videos in the playlist.
 
     """
+    # REFACTOR
     def extract_filename(input_data):
         path, fullname = os.path.split(input_data.strip("\""))
         filename, extension = os.path.splitext(fullname)
@@ -455,6 +456,14 @@ def extract_data(stdout):
         # Get final extension ffmpeg post process simple (not file merge)
         if stdout[1] == 'Destination:':
             path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
+        # Get final extension after recoding process
+        if stdout[1] == 'Converting':
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[8:]))
 
             data_dictionary['path'] = path
             data_dictionary['filename'] = filename

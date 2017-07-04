@@ -121,6 +121,7 @@ class OptionsParser(object):
             List of strings with all the youtube-dl command line options.
 
         """
+        # REFACTOR
         options_list = ['--newline']
 
         # Create a copy of options_dictionary
@@ -181,8 +182,33 @@ class OptionsParser(object):
                         options_list.append(to_string(value))
 
         # Parse cmd_args
-        for option in options_dict['cmd_args'].split():
-            options_list.append(option)
+
+        # Indicates whether an item needs special handling
+        special_case = False
+
+        # Temp list to hold special items
+        special_items = []
+
+        for item in options_dict["cmd_args"].split():
+
+            # Its a special case if its already a special case
+            # or an item starts with double quotes
+            special_case = (special_case or item[0] == "\"")
+
+            if special_case:
+                special_items.append(item)
+            else:
+                options_list.append(item)
+
+            # If its a special case and we meet a double quote
+            # at the end of the item, special case is over and
+            # we need to join, filter and append our special items
+            # to the options list
+            if special_case and item[-1] == "\"":
+                options_list.append(" ".join(special_items)[1:-1])
+
+                special_case = False
+                special_items = []
 
         return options_list
 

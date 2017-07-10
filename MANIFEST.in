@@ -2,6 +2,7 @@ include TODO
 include AUTHORS
 include LICENSE
 include README.md
+include MANIFEST.in
 
 include tests/*.py
 include devscripts/*

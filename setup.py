@@ -55,6 +55,9 @@ import glob
 from shutil import copyfile
 from subprocess import call
 
+# Commands that run the pre-build tasks
+EXEC_PRE_COMMANDS = ["py2exe", "install", "bdist", "build"]
+
 PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == "py2exe"
 
 if PY2EXE:
@@ -216,9 +219,10 @@ def windows_setup():
     return normal_setup()
 
 
-# Execute pre-build stuff
-create_scripts()
-build_translations()
+# Execute pre-build tasks
+if any(command in sys.argv for command in EXEC_PRE_COMMANDS):
+    create_scripts()
+    build_translations()
 
 if os.name == "nt":
     params = windows_setup()

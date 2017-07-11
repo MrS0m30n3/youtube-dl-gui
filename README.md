@@ -1,5 +1,5 @@
 # youtube-dlG
-A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io/youtube-dl/) media downloader written in wxPython. [Supported sites](https://rg3.github.io/youtube-dl/supportedsites.html)
+A cross platform front-end GUI for the popular [youtube-dl](https://rg3.github.io/youtube-dl/) media downloader written in wxPython. [Supported sites](https://rg3.github.io/youtube-dl/supportedsites.html)
 
 ## Screenshots
 ![youtube-dl-gui main window](https://raw.githubusercontent.com/MrS0m30n3/youtube-dl-gui/gh-pages/images/ydlg_ui.gif)
@@ -29,12 +29,19 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 2. Change directory into *youtube-dl-gui-0.4*
 3. Run `python setup.py install`
 
-### Install PyPi
+### Install from PyPi
 1. Run `pip install youtube-dlg`
 
-### Install Windows Installer
+### Windows Installer
 1. Download & extract the Windows installer
 2. Run the `setup.exe` file
+
+### Building the Debian package
+
+1. Download & extract the source
+2. Open a shell in the source directory
+3. Run `cd .. && tar -cJvf youtube-dl-gui_0.4.0.orig.tar.xz youtube-dl-gui && cd youtube-dl-gui && dpkg-buildpackage -rfakeroot`
+4. The debian package will be available in the parent directory, install it using `gdebi` or `dpkg -i`
 
 ## Contributing
 * **Add support for new language:** See [localization howto](docs/localization_howto.md)

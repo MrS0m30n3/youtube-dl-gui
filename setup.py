@@ -40,7 +40,7 @@ Notes:
         * Call setup handler based on OS & options
             * Set up hicolor icons (if supported by platform)
             * Set up fallback pixmaps icon (if supported by platform)
-            * Set up package level pixmaps icons (*.png, *.ico)
+            * Set up package level pixmaps icons (*.png)
             * Set up package level i18n files (*.mo)
             * Set up scripts (executables) (if supported by platform)
         * Run setup
@@ -63,7 +63,7 @@ if PY2EXE:
     try:
         import py2exe
     except ImportError as error:
-        print error
+        print(error)
         sys.exit(1)
 
 from youtube_dl_gui import (
@@ -80,6 +80,11 @@ from youtube_dl_gui import (
 
 # Setup can not handle unicode
 __packagename__ = str(__packagename__)
+
+
+def on_windows():
+    """Returns True if OS is Windows."""
+    return os.name == "nt"
 
 
 class BuildBin(cmd.Command):
@@ -111,7 +116,7 @@ class BuildTranslations(cmd.Command):
         self.search_pattern = None
 
     def finalize_options(self):
-        if os.name == "nt":
+        if on_windows():
             self.exec_name = "msgfmt.exe"
         else:
             self.exec_name = "msgfmt"
@@ -170,10 +175,9 @@ def linux_setup():
         ("share/pixmaps", ["youtube_dl_gui/data/pixmaps/youtube-dl-gui.png"])
     )
 
-    # Add other package data
+    # Add pixmaps icons (*.png) & i18n files
     package_data[__packagename__] = [
         "data/pixmaps/*.png",
-        "data/pixmaps/*.ico",
         "locale/*/LC_MESSAGES/*.mo"
     ]
 
@@ -193,10 +197,9 @@ def windows_setup():
     def normal_setup():
         package_data = {}
 
-        # On Windows we dont use the icons under hicolor
+        # Add pixmaps icons (*.png) & i18n files
         package_data[__packagename__] = [
             "data\\pixmaps\\*.png",
-            "data\\pixmaps\\*.ico",
             "locale\\*\\LC_MESSAGES\\*.mo"
         ]
 
@@ -210,7 +213,8 @@ def windows_setup():
         windows = []
         data_files = []
 
-        # Py2exe dependencies & options
+        # py2exe dependencies & options
+        # TODO change directory for ffmpeg.exe & ffprobe.exe
         dependencies = [
             "C:\\Windows\\System32\\ffmpeg.exe",
             "C:\\Windows\\System32\\ffprobe.exe",
@@ -224,10 +228,10 @@ def windows_setup():
         }
         #############################################
 
-        # Add package data
+        # Add py2exe deps & pixmaps icons (*.png)
         data_files.extend([
             ("", dependencies),
-            ("data\\pixmaps", glob.glob("youtube_dl_gui\\data\\pixmaps\\*.*")),
+            ("data\\pixmaps", glob.glob("youtube_dl_gui\\data\\pixmaps\\*.png")),
         ])
 
         # We have to manually add the translation files since py2exe cant do it
@@ -257,11 +261,10 @@ def windows_setup():
     return normal_setup()
 
 
-if os.name == "nt":
+if on_windows():
     params = windows_setup()
 else:
     params = linux_setup()
-
 
 setup(
     author              = __author__,

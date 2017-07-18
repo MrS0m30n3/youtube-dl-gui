@@ -22,7 +22,7 @@ Examples:
 
     Build the translations::
 
-        python setup.py build
+        python setup.py build_trans
 
 Requirements:
 
@@ -47,16 +47,15 @@ Notes:
 
 """
 
+from distutils import cmd
 from distutils.core import setup
+from distutils.command.build import build
 
 import os
 import sys
 import glob
 from shutil import copyfile
 from subprocess import call
-
-# Commands that run the pre-build tasks
-EXEC_PRE_COMMANDS = ["py2exe", "install", "bdist", "build"]
 
 PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == "py2exe"
 
@@ -83,34 +82,73 @@ from youtube_dl_gui import (
 __packagename__ = str(__packagename__)
 
 
-# Helper functions
-def create_scripts():
-    """Create the binary scripts."""
-    dest_dir = os.path.join("build", "_scripts")
+class BuildBin(cmd.Command):
 
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
+    description = "build the youtube-dl-gui binary file"
+    user_options = []
 
-    copyfile(os.path.join(__packagename__, "__main__.py"),
-             os.path.join(dest_dir, "youtube-dl-gui"))
+    def initialize_options(self):
+        self.scripts_dir = None
 
-def build_translations():
-    """Build the MO files."""
-    exec_name = "msgfmt.exe" if os.name == "nt" else "msgfmt"
+    def finalize_options(self):
+        self.scripts_dir = os.path.join("build", "_scripts")
 
-    search_pattern = os.path.join("youtube_dl_gui", "locale", "*", "LC_MESSAGES", "*.po")
+    def run(self):
+        if not os.path.exists(self.scripts_dir):
+            os.makedirs(self.scripts_dir)
 
-    for po_file in glob.glob(search_pattern):
-        mo_file = po_file.replace(".po", ".mo")
+        copyfile(os.path.join(__packagename__, "__main__.py"),
+                 os.path.join(self.scripts_dir, "youtube-dl-gui"))
 
-        try:
-            print "Building MO file for '%s'" % po_file
-            call([exec_name, "-o", mo_file, po_file])
-        except OSError:
-            print "Could not locate file '%s', exiting..." % exec_name
-            sys.exit(1)
 
-##################################
+class BuildTranslations(cmd.Command):
+
+    description = "build the translation files"
+    user_options = []
+
+    def initialize_options(self):
+        self.exec_name = None
+        self.search_pattern = None
+
+    def finalize_options(self):
+        if os.name == "nt":
+            self.exec_name = "msgfmt.exe"
+        else:
+            self.exec_name = "msgfmt"
+
+        self.search_pattern = os.path.join(__packagename__, "locale", "*", "LC_MESSAGES", "youtube_dl_gui.po")
+
+    def run(self):
+        for po_file in glob.glob(self.search_pattern):
+            mo_file = po_file.replace(".po", ".mo")
+
+            try:
+                print("building MO file for '{}'").format(po_file)
+                call([self.exec_name, "-o", mo_file, po_file])
+            except OSError:
+                print("could not locate file '{}', exiting...".format(self.exec_name))
+                sys.exit(1)
+
+
+class Build(build):
+
+    """Overwrite the default 'build' behaviour."""
+
+    sub_commands = [
+        ("build_bin", None),
+        ("build_trans", None)
+    ] + build.sub_commands
+
+    def run(self):
+        build.run(self)
+
+
+# Overwrite cmds
+cmdclass = {
+    "build": Build,
+    "build_bin": BuildBin,
+    "build_trans": BuildTranslations
+}
 
 
 def linux_setup():
@@ -219,11 +257,6 @@ def windows_setup():
     return normal_setup()
 
 
-# Execute pre-build tasks
-if any(command in sys.argv for command in EXEC_PRE_COMMANDS):
-    create_scripts()
-    build_translations()
-
 if os.name == "nt":
     params = windows_setup()
 else:
@@ -240,6 +273,7 @@ setup(
     description         = __description__,
     long_description    = __descriptionfull__,
     packages            = [__packagename__],
+    cmdclass            = cmdclass,
 
     **params
 )

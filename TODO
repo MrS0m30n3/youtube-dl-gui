@@ -1,13 +1,21 @@
-Next release
-============
-* Custom youtube-dl format selection filters (e.g. -f best[height<=360])
-* Improve playlist downloads
-* Remember list of urls after closing & re-opening
-* About dialog show youtube-dl version
-* Icons theme selection (vote on github) (or at least make it easy to change between them)
-* Settings menu add "Statistics"
-* Mix formats option
+Release 0.4.1
+=============
+* Add ChangeLog
+* Intergrity check youtube-dl bin
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
+* Custom youtube-dl format selection filters (e.g. -f best[height<=360])
+* Remember list of urls after closing & re-opening
+* Context menu add new option "Go to file" or change the behaviour of "Open destination"
+* Context menu "Report Failed URL to Github" (see: #16)
+* Icons theme selection
+
+
+Features
+========
+* Improve playlist downloads
+* Mix formats option
+* About dialog show youtube-dl version (probably will have to create new frame)
+* Settings menu add "Statistics"
 
 
 Localization

@@ -39,6 +39,8 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 4. Run `pip install twodict`
 5. Run `pip install youtube-dlg`
 
+6. Run the program with `youtube-dl-gui`
+
 ### Install Windows Installer
 1. Download & extract the Windows installer
 2. Run the `setup.exe` file

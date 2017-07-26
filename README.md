@@ -32,6 +32,15 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 ### Install PyPi
 1. Run `pip install youtube-dlg`
 
+### Install PyPi with dependencies in Ubuntu 16.04
+1. Run `sudo apt-get install youtuble-dl`
+2. Run `sudo apt-get install libav-tools`
+3. Run `sudo apt-get install python-wxgtk3.0`
+4. Run `pip install twodict`
+5. Run `pip install youtube-dlg`
+
+6. Run the program with `youtube-dl-gui`
+
 ### Install Windows Installer
 1. Download & extract the Windows installer
 2. Run the `setup.exe` file

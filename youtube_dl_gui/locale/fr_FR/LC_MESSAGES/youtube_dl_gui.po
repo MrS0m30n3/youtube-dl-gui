@@ -116,7 +116,7 @@ msgstr "À propos"
 
 #: youtube_dl_gui/mainframe.py:115
 msgid "View Log"
-msgstr "Lire le log"
+msgstr "Lire le journal"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
-"PO-Revision-Date: 2017-07-29 14:30+0200\n"
+"PO-Revision-Date: 2017-08-22 08:44+0200\n"
 "Last-Translator: fat115 <fat115@framasoft.org>\n"
 "Language-Team: fr\n"
 "Language: fr\n"
@@ -46,7 +46,7 @@ msgstr "par défaut"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
-msgstr "Entrer les liens ci-dessous"
+msgstr "Entrer les URLs ci-dessous"
 
 #: youtube_dl_gui/mainframe.py:98
 msgid "Update"
@@ -121,7 +121,7 @@ msgstr "Afficher le journal"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "Téléchargements réussis {0} lien(s) en {1} jour(s) {2} heure(s) {3} minute(s) {4} seconde(s)"
+msgstr "Téléchargements réussis {0} URL(s) en {1} jour(s) {2} heure(s) {3} minute(s) {4} seconde(s)"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
@@ -141,7 +141,7 @@ msgstr "Téléchargements arrêtés"
 
 #: youtube_dl_gui/mainframe.py:123
 msgid "You need to provide at least one URL"
-msgstr "Vous devez fournir au moins un lien"
+msgstr "Vous devez fournir au moins une URL"
 
 #: youtube_dl_gui/mainframe.py:124
 msgid "Downloads started"
@@ -153,7 +153,7 @@ msgstr "Sélectionner le répertoire"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
-msgstr "Téléchargement en cours. Merci d'attendre que tous les téléchargements soient complets"
+msgstr "Téléchargement en cours. Merci d'attendre qu'ils soient tous terminés"
 
 #: youtube_dl_gui/mainframe.py:128
 msgid "Update already in progress"
@@ -161,15 +161,15 @@ msgstr "Mise à jour déjà en cours"
 
 #: youtube_dl_gui/mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "Mise à jour de youtube-dl. Merci de patienter"
+msgstr "Mise à jour de youtube-dl. Merci de patienter..."
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Echec de la mise à jour de Youtube-dl [{0}]"
+msgstr "Echec de la mise à jour de youtube-dl [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "Mise à jour réussie de youtube-dl."
+msgstr "Mise à jour de youtube-dl réussie."
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
@@ -193,7 +193,7 @@ msgstr "Taille"
 
 #: youtube_dl_gui/mainframe.py:143
 msgid "Percent"
-msgstr "%"
+msgstr "Pourcents"
 
 #: youtube_dl_gui/mainframe.py:144
 msgid "ETA"
@@ -209,7 +209,7 @@ msgstr "État"
 
 #: youtube_dl_gui/mainframe.py:235
 msgid "Get URL"
-msgstr "Récupérer le lien"
+msgstr "Récupérer l'URL"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
@@ -261,7 +261,7 @@ msgstr "Élément incomplet"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"
-msgstr "Mise à jour en cours. Veuillez attendre que la mise à jour soit complète"
+msgstr "Mise à jour en cours. Veuillez attendre qu'elle soit terminée"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
@@ -393,7 +393,7 @@ msgstr "Formats Audio"
 
 #: youtube_dl_gui/optionsframe.py:479
 msgid "Post-Process options"
-msgstr "Optons post-traitement"
+msgstr "Options post-traitement"
 
 #: youtube_dl_gui/optionsframe.py:480
 msgid "Keep original files"
@@ -465,7 +465,7 @@ msgstr "Aucun"
 
 #: youtube_dl_gui/optionsframe.py:570
 msgid "Automatic subtitles (YOUTUBE ONLY)"
-msgstr "Sous-titre automatique (YOUTUBE ONLY)"
+msgstr "Sous-titre automatique (YOUTUBE uniquement)"
 
 #: youtube_dl_gui/optionsframe.py:571
 msgid "All available subtitles"
@@ -557,7 +557,7 @@ msgstr "Effacer le journal"
 
 #: youtube_dl_gui/optionsframe.py:863
 msgid "Youtube-dl command line options (e.g. --help)"
-msgstr "Options de ligne de commande Youtube-dl (ex : --help)"
+msgstr "Options de ligne de commande youtube-dl (ex : --help)"
 
 #: youtube_dl_gui/optionsframe.py:866
 msgid "Extra options"
@@ -565,7 +565,7 @@ msgstr "Options supplémentaires"
 
 #: youtube_dl_gui/optionsframe.py:868
 msgid "Debug youtube-dl"
-msgstr ""
+msgstr "Déboguer youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:869
 msgid "Ignore errors"
@@ -577,7 +577,7 @@ msgstr "Ignorer config youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"
-msgstr ""
+msgstr "Pas de mtime"
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"

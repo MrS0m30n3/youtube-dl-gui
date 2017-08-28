@@ -83,7 +83,7 @@ msgstr "Liste herunterladen"
 #: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
 #: youtube_dl_gui/mainframe.py:534
 msgid "Delete"
-msgstr "Lösachen"
+msgstr "Löschen"
 
 #: youtube_dl_gui/mainframe.py:108
 msgid "Play"
@@ -121,247 +121,247 @@ msgstr "Log anzeigen"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "{0}개의 URL을 받는데 총 {1}일 {2}시간 {3}분 {4}초가 걸렸습니다."
+msgstr "Erfolgreich heruntergeladen {0} URL(s) in {1} Tag(en) {2} Stunde(n) {3} Minute(n) {4} Sekunde(n)"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
-msgstr "다운로드 완료"
+msgstr "Download abgeschlossen"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
-msgstr "진행 상태: {0:.1f}% | 대기 ({1}) 일시정지 ({2}) 진행중 ({3}) 완료 ({4}) 오류 ({5})"
+msgstr "Fortschritt: {0:.1f}% | Queued ({1}) Pausiert ({2}) Aktiv ({3}) Abgeschlossen ({4}) Fehler ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
-msgstr "다운로드 정지중"
+msgstr "Downloads anhalten"
 
 #: youtube_dl_gui/mainframe.py:122
 msgid "Downloads stopped"
-msgstr "다운로드 정지"
+msgstr "Downloads angehalten"
 
 #: youtube_dl_gui/mainframe.py:123
 msgid "You need to provide at least one URL"
-msgstr "최소 한 개 이상의 URL을 입력해야 합니다."
+msgstr "Bitte mindestens eine URL eingeben"
 
 #: youtube_dl_gui/mainframe.py:124
 msgid "Downloads started"
-msgstr "다운로드 시작됨"
+msgstr "Downloads gestartet"
 
 #: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
-msgstr "저장 경로"
+msgstr "Wähle Verzeichnis"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
-msgstr "다운로드가 완료될 때까지 기다려주세요."
+msgstr "Laufender Download. Bitte warten bis alle Downloads abgesachlossen wurden"
 
 #: youtube_dl_gui/mainframe.py:128
 msgid "Update already in progress"
-msgstr "업데이트 진행중입니다."
+msgstr "Update bereits in Verarbeitung"
 
 #: youtube_dl_gui/mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "최신 youtube-dl을 다운로드하고 있습니다. 잠시만 기다려주세요."
+msgstr "Download des aktuellen youtube-dl. Bitte warten"
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Youtube-dl 다운로드 실패 [{0}]"
+msgstr "Youtube-dl Download fehlgeschlagen [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "Youtube-dl 다운로드가 완료되었습니다."
+msgstr "Youtube-dl erfolgreich heruntergeladen"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr "'{dir}'을 열 수 없습니다. 올바른 경로가 아닙니다."
+msgstr "Verzeichnis '{dir}' kann nicht geöffnet werden. Der angegebene Pfad existiert nicht"
 
 #: youtube_dl_gui/mainframe.py:136
 msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr "시스템을 종료할 수 없습니다. 패스워드가 올바른지 확인하세요."
+msgstr "Fehler beim herunterfahren. Bitte überprüfen Sie das eingegebene Passwort"
 
 #: youtube_dl_gui/mainframe.py:138
 msgid "Shutting down system"
-msgstr "시스템 종료 중.."
+msgstr "System wird heruntergefahren"
 
 #: youtube_dl_gui/mainframe.py:141
 msgid "Extension"
-msgstr "확장자"
+msgstr "Extension"
 
 #: youtube_dl_gui/mainframe.py:142
 msgid "Size"
-msgstr "크기"
+msgstr "Größe"
 
 #: youtube_dl_gui/mainframe.py:143
 msgid "Percent"
-msgstr "퍼센트"
+msgstr "Prozent"
 
 #: youtube_dl_gui/mainframe.py:144
 msgid "ETA"
-msgstr "기타"
+msgstr "ETA"
 
 #: youtube_dl_gui/mainframe.py:145
 msgid "Speed"
-msgstr "속도"
+msgstr "Geschwindigkeit"
 
 #: youtube_dl_gui/mainframe.py:146
 msgid "Status"
-msgstr "상태"
+msgstr "Status"
 
 #: youtube_dl_gui/mainframe.py:235
 msgid "Get URL"
-msgstr "클립보드로 URL 복사"
+msgstr "URL holen"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr "커맨드라인 명령어 복사"
+msgstr "Get command"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"
-msgstr "폴더 열기"
+msgstr "Öffne Ziel"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
-msgstr "대기열에 넣기"
+msgstr "Erneute Eingabe"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
-msgstr "이어받기"
+msgstr "Fortsetzen"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"
-msgstr "비디오"
+msgstr "Video"
 
 #: youtube_dl_gui/mainframe.py:484
 msgid "Audio"
-msgstr "오디오"
+msgstr "Audio"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "No items selected. Please pick an action"
-msgstr "선택된 아이템이 없습니다. 다음 중 하나를 실행하시겠습니까?"
+msgstr "Keine Elemente selektiert. Bitte wählen Sie eine Aktion"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove all"
-msgstr "전체삭제"
+msgstr "Alle entfernen"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove completed"
-msgstr "완료된 것만 삭제"
+msgstr "Abgeschlossene entfernen"
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"
-msgstr "해당 아이템을 삭제하시겠습니까?"
+msgstr "Sollen die selektierten Elemente wirklich entfernt werden?"
 
 #: youtube_dl_gui/mainframe.py:546
 msgid "Item is active, cannot remove"
-msgstr "삭제할 수 없습니다."
+msgstr "Element ist aktiv, kann nicht entfernt werden"
 
 #: youtube_dl_gui/mainframe.py:579
 msgid "Item is not completed"
-msgstr "다운로드가 완료되지 않았습니다."
+msgstr "Element ist nicht vollständig"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"
-msgstr "업데이트가 완료될 때까지 기다려주세요."
+msgstr "Update wird ausgeführt. Bitte warten bis Update abgeschlossen wurde"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr "로깅이 비활성화되었습니다."
+msgstr "Logging ist deaktiviert"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"
-msgstr "시스템 종료"
+msgstr "Herunterfahren"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutting down in {0} second(s)"
-msgstr "{0}초 후에 시스템이 종료됩니다."
+msgstr "Herunterfahren in {0} Sekunde(n)"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
-msgstr "다운로드할 아이템이 없습니다."
+msgstr "Keine Elemente zum herunterladen"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Are you sure you want to exit?"
-msgstr "종료하시겠습니까?"
+msgstr "Wirklich beenden?"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Exit"
-msgstr "종료"
+msgstr "Beenden"
 
 #: youtube_dl_gui/mainframe.py:1301 youtube_dl_gui/mainframe.py:1451
 msgid "Cancel"
-msgstr "취소"
+msgstr "Abbrechen"
 
 #: youtube_dl_gui/mainframe.py:1450
 msgid "OK"
-msgstr "확인"
+msgstr "OK"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
-msgstr "초기화"
+msgstr "Zurücksetzen"
 
 #: youtube_dl_gui/optionsframe.py:66
 msgid "Close"
-msgstr "닫기"
+msgstr "Schließen"
 
 #: youtube_dl_gui/optionsframe.py:72
 msgid "General"
-msgstr "일반"
+msgstr "Allgemein"
 
 #: youtube_dl_gui/optionsframe.py:73
 msgid "Formats"
-msgstr "포맷"
+msgstr "Formate"
 
 #: youtube_dl_gui/optionsframe.py:74
 msgid "Downloads"
-msgstr "다운로드"
+msgstr "Downloads"
 
 #: youtube_dl_gui/optionsframe.py:75
 msgid "Advanced"
-msgstr "고급설정"
+msgstr "Fortgeschritten"
 
 #: youtube_dl_gui/optionsframe.py:76
 msgid "Extra"
-msgstr "기타"
+msgstr "Extra"
 
 #: youtube_dl_gui/optionsframe.py:315
 msgid "Language"
-msgstr "언어"
+msgstr "Sprache"
 
 #: youtube_dl_gui/optionsframe.py:318
 msgid "Filename format"
-msgstr "파일이름 형식"
+msgstr "Dateinamen Format"
 
 #: youtube_dl_gui/optionsframe.py:323
 msgid "Filename options"
-msgstr "파일이름 옵션"
+msgstr "Dateinamen Optionen"
 
 #: youtube_dl_gui/optionsframe.py:324
 msgid "Restrict filenames to ASCII"
-msgstr "ASCII 문자로 제한"
+msgstr "Dateinamen auf ASCII beschränken"
 
 #: youtube_dl_gui/optionsframe.py:326
 msgid "More options"
-msgstr "추가옵션"
+msgstr "Mehr Optionen"
 
 #: youtube_dl_gui/optionsframe.py:327
 msgid "Confirm on exit"
-msgstr "종료시 확인"
+msgstr "Bestätigen zum beenden"
 
 #: youtube_dl_gui/optionsframe.py:328
 msgid "Confirm item deletion"
-msgstr "아이템 삭제시 확인"
+msgstr "Element Löschung bestätigen"
 
 #: youtube_dl_gui/optionsframe.py:329
 msgid "Inform me on download completion"
-msgstr "완료시 알림"
+msgstr "Informiere über abgeschlossenen Download"
 
 #: youtube_dl_gui/optionsframe.py:331
 msgid "Shutdown on download completion"
-msgstr "완료시 시스템종료"
+msgstr "Herunterfahren nach vollständigem Download"
 
 #: youtube_dl_gui/optionsframe.py:342
 msgid "SUDO password"
-msgstr "SUDO 암호"
+msgstr "SUDO Passwort"
 
 #: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
 msgid "In order for the changes to take effect please restart {0}"

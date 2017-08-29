@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
-"PO-Revision-Date: 2017-08-28 17:14+EEST\n"
-"Last-Translator: mosh D <https://github.com/mosheDO>\n"
+"PO-Revision-Date: 2017-06-15 17:14+EEST\n"
+"Last-Translator: Sotiris Papadopoulos <ytubedlg@gmail.com>\n"
 "Language-Team: en\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -117,11 +117,11 @@ msgstr "אודות"
 
 #: youtube_dl_gui/mainframe.py:115
 msgid "View Log"
-msgstr "צפה בלוג"
+msgstr "צפה ביומן רישום"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "הוריד בהצלחה {0} URL(s) ב {1} ימים {2} שעות {3} דקות {4 {4} שניות"
+msgstr "הוריד בהצלחה את {0} כתובות האתרים תוך {1} ימים {2} שעות {3} דקות {4} שניות"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
@@ -161,35 +161,35 @@ msgstr "העדכון כבר מתבצע"
 
 #: youtube_dl_gui/mainframe.py:130
 msgid "Downloading latest youtube-dl. Please wait..."
-msgstr ""
+msgstr "מוריד את הגירסא האחרונה של youtube-dl. אנא המתן"
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr ""
+msgstr "הורדת youtube-dl נכשלה [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr ""
+msgstr "youtube-dl הורד בהצלחה"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr ""
+msgstr "פתיחת התיקייה נכשלה: '{dir}'. הנתיב שצוין אינו קיים"
 
 #: youtube_dl_gui/mainframe.py:136
 msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr ""
+msgstr "שגיאה בעת כיבוי. ודא שהקלדת את הסיסמה הנכונה"
 
 #: youtube_dl_gui/mainframe.py:138
 msgid "Shutting down system"
-msgstr ""
+msgstr "כיבוי המערכת"
 
 #: youtube_dl_gui/mainframe.py:141
 msgid "Extension"
-msgstr ""
+msgstr "סיומת"
 
 #: youtube_dl_gui/mainframe.py:142
 msgid "Size"
-msgstr ""
+msgstr "גודל"
 
 #: youtube_dl_gui/mainframe.py:143
 msgid "Percent"
@@ -209,39 +209,39 @@ msgstr "מצב"
 
 #: youtube_dl_gui/mainframe.py:235
 msgid "Get URL"
-msgstr ""
+msgstr "קבל כתובת אתר"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr ""
+msgstr "קבל פקודה"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"
-msgstr ""
+msgstr "פתח יעד"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
-msgstr ""
+msgstr "הזן מחדש"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
-msgstr ""
+msgstr "התחל מחדש"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"
-msgstr ""
+msgstr "וידיאו"
 
 #: youtube_dl_gui/mainframe.py:484
 msgid "Audio"
-msgstr ""
+msgstr "שמע"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "No items selected. Please pick an action"
-msgstr ""
+msgstr "לא נבחרו פריטים. נא בחר פעולה"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove all"
-msgstr ""
+msgstr "מחק הכל"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove completed"
@@ -249,51 +249,51 @@ msgstr ""
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"
-msgstr ""
+msgstr "האם אתה בטוח שברצונך להסיר פריטים נבחרים?"
 
 #: youtube_dl_gui/mainframe.py:546
 msgid "Item is active, cannot remove"
-msgstr ""
+msgstr "הפריט פעיל, לא ניתן להסיר"
 
 #: youtube_dl_gui/mainframe.py:579
 msgid "Item is not completed"
-msgstr ""
+msgstr "הפריט לא הושלם"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"
-msgstr ""
+msgstr "עדכון בתהליך. המתן עד להשלמת העדכון"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr ""
+msgstr "רישום מושבת"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"
-msgstr ""
+msgstr "כיבוי"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutting down in {0} second(s)"
-msgstr ""
+msgstr "כיבוי בעוד {0} שניות"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
-msgstr ""
+msgstr "אין פריטים להורדה"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Are you sure you want to exit?"
-msgstr ""
+msgstr "אתה בטוח שאתה רוצה לצאת?"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Exit"
-msgstr ""
+msgstr "יציאה"
 
 #: youtube_dl_gui/mainframe.py:1301 youtube_dl_gui/mainframe.py:1451
 msgid "Cancel"
-msgstr ""
+msgstr "בטל"
 
 #: youtube_dl_gui/mainframe.py:1450
 msgid "OK"
-msgstr ""
+msgstr "אשר"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
@@ -337,7 +337,7 @@ msgstr "אפשרויות שם הקובץ"
 
 #: youtube_dl_gui/optionsframe.py:324
 msgid "Restrict filenames to ASCII"
-msgstr ""
+msgstr "הגבל שמות קבצים ל- ASCII"
 
 #: youtube_dl_gui/optionsframe.py:326
 msgid "More options"
@@ -361,7 +361,7 @@ msgstr "כבה בסיום ההורדה"
 
 #: youtube_dl_gui/optionsframe.py:342
 msgid "SUDO password"
-msgstr ""
+msgstr "סיסמת SUDO"
 
 #: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
 msgid "In order for the changes to take effect please restart {0}"
@@ -385,15 +385,15 @@ msgstr "רגיל"
 
 #: youtube_dl_gui/optionsframe.py:473
 msgid "Video formats"
-msgstr "פורמט הוידאו"
+msgstr "פורמטי וידאו"
 
 #: youtube_dl_gui/optionsframe.py:476
 msgid "Audio formats"
-msgstr "פ	 האודיו"
+msgstr "פורמטי אודיו"
 
 #: youtube_dl_gui/optionsframe.py:479
 msgid "Post-Process options"
-msgstr ""
+msgstr "אפשרויות לאחר תהליך"
 
 #: youtube_dl_gui/optionsframe.py:480
 msgid "Keep original files"
@@ -405,11 +405,11 @@ msgstr "חלץ שמע מקבצי וידיאו"
 
 #: youtube_dl_gui/optionsframe.py:482
 msgid "Embed thumbnail in audio file"
-msgstr ""
+msgstr "הטמע תמונה ממוזערת בקובץ שמע"
 
 #: youtube_dl_gui/optionsframe.py:483
 msgid "Add metadata to file"
-msgstr ""
+msgstr "הוסף נתונים לקובץ"
 
 #: youtube_dl_gui/optionsframe.py:485
 msgid "Audio quality"
@@ -461,19 +461,19 @@ msgstr "טורקית"
 
 #: youtube_dl_gui/optionsframe.py:569
 msgid "None"
-msgstr ""
+msgstr "ריק"
 
 #: youtube_dl_gui/optionsframe.py:570
 msgid "Automatic subtitles (YOUTUBE ONLY)"
-msgstr ""
+msgstr "כתוביות אוטומטיות (YOUTUBE בלבד)"
 
 #: youtube_dl_gui/optionsframe.py:571
 msgid "All available subtitles"
-msgstr ""
+msgstr "כל הכתוביות הזמינות"
 
 #: youtube_dl_gui/optionsframe.py:572
 msgid "Subtitles by language"
-msgstr ""
+msgstr "כתוביות לפי שפה"
 
 #: youtube_dl_gui/optionsframe.py:578
 msgid "Subtitles"
@@ -481,19 +481,19 @@ msgstr "כתוביות"
 
 #: youtube_dl_gui/optionsframe.py:582
 msgid "Subtitles options"
-msgstr ""
+msgstr "אפשרויות כתוביות"
 
 #: youtube_dl_gui/optionsframe.py:583
 msgid "Embed subtitles into video file (mp4 ONLY)"
-msgstr ""
+msgstr "תרגום כתוביות לקובץ וידאו (mp4 בלבד)"
 
 #: youtube_dl_gui/optionsframe.py:585
 msgid "Playlist"
-msgstr ""
+msgstr "רשימת השמעה"
 
 #: youtube_dl_gui/optionsframe.py:591 youtube_dl_gui/optionsframe.py:596
 msgid "Max"
-msgstr ""
+msgstr "מקסימלי"
 
 #: youtube_dl_gui/optionsframe.py:594
 msgid "Filesize"
@@ -501,15 +501,15 @@ msgstr "גודל הקובץ"
 
 #: youtube_dl_gui/optionsframe.py:599
 msgid "Min"
-msgstr ""
+msgstr "מינימלי"
 
 #: youtube_dl_gui/optionsframe.py:728
 msgid "Retries"
-msgstr ""
+msgstr "נסיונות"
 
 #: youtube_dl_gui/optionsframe.py:731
 msgid "Authentication"
-msgstr ""
+msgstr "אימות"
 
 #: youtube_dl_gui/optionsframe.py:733
 msgid "Username"
@@ -521,7 +521,7 @@ msgstr "סיסמא"
 
 #: youtube_dl_gui/optionsframe.py:737
 msgid "Video password"
-msgstr ""
+msgstr "סיסמת וידאו"
 
 #: youtube_dl_gui/optionsframe.py:740
 msgid "Network"
@@ -537,7 +537,7 @@ msgstr ""
 
 #: youtube_dl_gui/optionsframe.py:746
 msgid "Referer"
-msgstr ""
+msgstr "מפנה"
 
 #: youtube_dl_gui/optionsframe.py:749
 msgid "Logging"
@@ -545,11 +545,11 @@ msgstr "מתחבר"
 
 #: youtube_dl_gui/optionsframe.py:751
 msgid "Enable log"
-msgstr ""
+msgstr "הפעל יומן רישום"
 
 #: youtube_dl_gui/optionsframe.py:752
 msgid "View"
-msgstr ""
+msgstr "הצג"
 
 #: youtube_dl_gui/optionsframe.py:753
 msgid "Clear"
@@ -557,32 +557,32 @@ msgstr "אפס"
 
 #: youtube_dl_gui/optionsframe.py:863
 msgid "Youtube-dl command line options (e.g. --help)"
-msgstr ""
+msgstr "אפשרויות שורת הפקודה של youtube-dl (למשל - עזרה)"
 
 #: youtube_dl_gui/optionsframe.py:866
 msgid "Extra options"
-msgstr ""
+msgstr "אפשרויות נוספות"
 
 #: youtube_dl_gui/optionsframe.py:868
 msgid "Debug youtube-dl"
-msgstr ""
+msgstr "Debug youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:869
 msgid "Ignore errors"
-msgstr "התעלם מהערות"
+msgstr "התעלם משגיאות"
 
 #: youtube_dl_gui/optionsframe.py:870
 msgid "Ignore youtube-dl config"
-msgstr ""
+msgstr "התעלם מהתצורה של youtube-dl"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"
-msgstr ""
+msgstr "No mtime"
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"
-msgstr ""
+msgstr "Prefer native HLS"
 
 #: youtube_dl_gui/optionsframe.py:933
 msgid "Log Viewer"
-msgstr ""
+msgstr "Log Viewer"

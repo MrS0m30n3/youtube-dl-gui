@@ -43,7 +43,7 @@ msgstr "既定値"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
-msgstr "URLを入力してください"
+msgstr "URLを下の欄に入力してください"
 
 #: youtube_dl_gui/mainframe.py:98
 msgid "Update"
@@ -59,7 +59,7 @@ msgstr "停止"
 
 #: youtube_dl_gui/mainframe.py:101
 msgid "Info"
-msgstr "製品情報"
+msgstr "情報"
 
 #: youtube_dl_gui/mainframe.py:102
 msgid "Welcome"
@@ -106,7 +106,7 @@ msgstr "一時停止"
 #: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
 #: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:587
 msgid "Start"
-msgstr "開始"
+msgstr "ダウンロード開始"
 
 #: youtube_dl_gui/mainframe.py:114
 msgid "About"
@@ -126,7 +126,7 @@ msgstr "ダウンロード完了"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
-msgstr ""
+msgstr "全体進捗: {0:.1f}% | 待機 ({1}) 停止 ({2}) 進行中 ({3}) 完了 ({4}) エラー ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -146,7 +146,7 @@ msgstr "ダウンロードを開始しました"
 
 #: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
-msgstr "ディレクトリを選択してください"
+msgstr "フォルダを選択してください"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
@@ -170,18 +170,15 @@ msgstr "Youtube-dlのダウンロードに成功しました"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr ""
-"ディレクトリを開くことができません: '{dir}'。指定されたパスが存在しません。"
+msgstr "フォルダを開くことができません: '{dir}'。指定されたパスが存在しません。"
 
 #: youtube_dl_gui/mainframe.py:136
 msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr ""
-"シャットダウンの際にエラーが発生しました。必ず正確なパスワードを入力したこと"
-"を確認してください"
+msgstr "シャットダウンの際にエラーが発生しました。必ず正確なパスワードを入力したことを確認してください"
 
 #: youtube_dl_gui/mainframe.py:138
 msgid "Shutting down system"
-msgstr "システムをシャットダウンする"
+msgstr "システムをシャットダウンします"
 
 #: youtube_dl_gui/mainframe.py:141
 msgid "Extension"
@@ -209,11 +206,11 @@ msgstr "状態"
 
 #: youtube_dl_gui/mainframe.py:235
 msgid "Get URL"
-msgstr "URLを取得"
+msgstr "URLをコピー"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr "コマンドを取得"
+msgstr "コマンドをコピー"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"
@@ -221,11 +218,11 @@ msgstr "保存先フォルダを開く"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
-msgstr "再入力"
+msgstr "再登録"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
-msgstr "レジューム"
+msgstr "再開"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"
@@ -577,7 +574,7 @@ msgstr "youtube-dlのconfig無視"
 
 #: youtube_dl_gui/optionsframe.py:871
 msgid "No mtime"
-msgstr "No mtime"
+msgstr "mtime無し"
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"

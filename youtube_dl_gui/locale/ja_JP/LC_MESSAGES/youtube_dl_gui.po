@@ -43,7 +43,7 @@ msgstr "既定値"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
-msgstr "URLを下の欄に入力してください"
+msgstr "下の欄にURLを入力してください"
 
 #: youtube_dl_gui/mainframe.py:98
 msgid "Update"
@@ -96,7 +96,7 @@ msgstr "下へ"
 
 #: youtube_dl_gui/mainframe.py:111
 msgid "Reload"
-msgstr "リロード"
+msgstr "再読込み"
 
 #: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
 #: youtube_dl_gui/mainframe.py:649
@@ -114,7 +114,7 @@ msgstr "製品情報"
 
 #: youtube_dl_gui/mainframe.py:115
 msgid "View Log"
-msgstr "ログを見る"
+msgstr "ログの表示"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
@@ -126,7 +126,7 @@ msgstr "ダウンロード完了"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
-msgstr "全体進捗: {0:.1f}% | 待機 ({1}) 停止 ({2}) 進行中 ({3}) 完了 ({4}) エラー ({5})"
+msgstr "進捗状況: {0:.1f}% | 待機 ({1}) 停止 ({2}) 進行中 ({3}) 完了 ({4}) エラー ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -138,7 +138,7 @@ msgstr "ダウンロードを停止しました"
 
 #: youtube_dl_gui/mainframe.py:123
 msgid "You need to provide at least one URL"
-msgstr "最低でも1つのURLを入力する必要があります"
+msgstr "最低でも1つはURLを入力する必要があります"
 
 #: youtube_dl_gui/mainframe.py:124
 msgid "Downloads started"
@@ -226,7 +226,7 @@ msgstr "再開"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"
-msgstr "ビデオ"
+msgstr "動画"
 
 #: youtube_dl_gui/mainframe.py:484
 msgid "Audio"
@@ -234,7 +234,7 @@ msgstr "音声"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "No items selected. Please pick an action"
-msgstr "アイテムが選択されていません。"
+msgstr "項目が選択されていません。操作項目を選択してください"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove all"
@@ -274,7 +274,7 @@ msgstr "{0} 秒後にシャットダウンします"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
-msgstr "ダウンロードするアイテムがありません"
+msgstr "ダウンロードする項目がありません"
 
 #: youtube_dl_gui/mainframe.py:1060
 msgid "Are you sure you want to exit?"
@@ -314,11 +314,11 @@ msgstr "ダウンロード"
 
 #: youtube_dl_gui/optionsframe.py:75
 msgid "Advanced"
-msgstr "詳細設定"
+msgstr "高度"
 
 #: youtube_dl_gui/optionsframe.py:76
 msgid "Extra"
-msgstr "高度"
+msgstr "その他"
 
 #: youtube_dl_gui/optionsframe.py:315
 msgid "Language"
@@ -362,7 +362,7 @@ msgstr "SUDO パスワード"
 
 #: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
 msgid "In order for the changes to take effect please restart {0}"
-msgstr "変更を反映するには再起動してください {0}"
+msgstr "変更を反映するに再起動してください {0}"
 
 #: youtube_dl_gui/optionsframe.py:421 youtube_dl_gui/optionsframe.py:822
 msgid "Restart"
@@ -542,7 +542,7 @@ msgstr "ロギング"
 
 #: youtube_dl_gui/optionsframe.py:751
 msgid "Enable log"
-msgstr "ログを有効"
+msgstr "ログを有効化"
 
 #: youtube_dl_gui/optionsframe.py:752
 msgid "View"
@@ -562,7 +562,7 @@ msgstr "追加設定"
 
 #: youtube_dl_gui/optionsframe.py:868
 msgid "Debug youtube-dl"
-msgstr "youtube-dl デバッグ"
+msgstr "youtube-dlのデバッグ"
 
 #: youtube_dl_gui/optionsframe.py:869
 msgid "Ignore errors"

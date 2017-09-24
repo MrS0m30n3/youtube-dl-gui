@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
 "PO-Revision-Date: 2017-06-15 17:14+EEST\n"
-"Last-Translator: Sotiris Papadopoulos <ytubedlg@gmail.com>\n"
+"Last-Translator: mosheDO <moshedopp@gmail.com>\n"
 "Language-Team: en\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -129,7 +129,7 @@ msgstr "ההורדה הושלמה"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
-msgstr "סה"כ התקדמות: {0:.1f}% | בהמתנה ({1}) בהפסקה ({2}) פעילים ({3}) הושלמו ({4}) בשגיאה ({5})"
+msgstr "סה''כ התקדמות: {0:.1f}% | בהמתנה ({1}) בהפסקה ({2}) פעילים ({3}) הושלמו ({4}) בשגיאה ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -221,7 +221,7 @@ msgstr "פתח יעד"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
-msgstr "הזן מחדש"
+msgstr "המשך"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
@@ -245,7 +245,7 @@ msgstr "מחק הכל"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove completed"
-msgstr ""
+msgstr "ההסרה הושלמה"
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"

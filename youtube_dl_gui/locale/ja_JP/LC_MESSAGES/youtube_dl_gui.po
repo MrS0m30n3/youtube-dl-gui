@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
-"POT-Creation-Date: 2017-09-26 00:44+JST\n"
+"POT-Creation-Date: 2017-06-15 17:13+EEST\n"
 "PO-Revision-Date: 2017-09-26 00:44+JST\n"
 "Last-Translator: Mitsuya Tsujikawa <mtujikawa@gmail.com>\n"
 "Language-Team: ja\n"

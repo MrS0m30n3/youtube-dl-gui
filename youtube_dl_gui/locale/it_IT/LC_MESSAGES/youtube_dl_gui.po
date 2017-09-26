@@ -124,23 +124,16 @@ msgid "View Log"
 msgstr "Mostra registro"
 
 #: youtube_dl_gui/mainframe.py:117
-msgid ""
-"Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) "
-"{4} second(s)"
-msgstr ""
-"Scaricate correttamente {0} URL in {1} giorni {2} ore {3} minuti {4} secondi"
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "Scaricate correttamente {0} URL in {1} giorni {2} ore {3} minuti {4} secondi"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
 msgstr "Scaricamenti completati"
 
 #: youtube_dl_gui/mainframe.py:120
-msgid ""
-"Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed "
-"({4}) Error ({5})"
-msgstr ""
-"Progresso complessivo: {0:.1f}% | Accodati ({1}) In pausa ({2}) Attivi ({3}) "
-"Completati ({4}) Con errori ({5})"
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "Progresso complessivo: {0:.1f}% | Accodati ({1}) In pausa ({2}) Attivi ({3}) Completati ({4}) Con errori ({5})"
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
@@ -164,8 +157,7 @@ msgstr "Scegli cartella"
 
 #: youtube_dl_gui/mainframe.py:127
 msgid "Download in progress. Please wait for all downloads to complete"
-msgstr ""
-"Scaricamento in corso. Attendi che tutti gli scaricamenti vengano completati"
+msgstr "Scaricamento in corso. Attendi che tutti gli scaricamenti vengano completati"
 
 #: youtube_dl_gui/mainframe.py:128
 msgid "Update already in progress"
@@ -175,10 +167,9 @@ msgstr "Aggiornamento già in corso"
 msgid "Downloading latest youtube-dl. Please wait..."
 msgstr "Scaricamento youtube-dl più recente. Attendere..."
 
-# Scaricamento youtube-dl non riuscito [{0}]
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Youtube-dl download failed [{0}]"
+msgstr "Scaricamento youtube-dl non riuscito [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
@@ -186,13 +177,11 @@ msgstr "Youtube-dl scaricato con successo"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr ""
-"Impossibile aprire la cartella: '{dir}'. Il percorso indicato non esiste"
+msgstr "Impossibile aprire la cartella: '{dir}'. Il percorso indicato non esiste"
 
 #: youtube_dl_gui/mainframe.py:136
 msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr ""
-"Errore durante l'arresto. Assicurati di aver inserito la password esatta"
+msgstr "Errore durante l'arresto. Assicurati di aver inserito la password esatta"
 
 #: youtube_dl_gui/mainframe.py:138
 msgid "Shutting down system"

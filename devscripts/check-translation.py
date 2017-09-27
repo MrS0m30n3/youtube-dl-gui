@@ -48,6 +48,7 @@ def parse():
     parser.add_argument("-w", "--werror", action="store_true", help="treat all warning messages as errors")
     parser.add_argument("-o", "--only-headers", action="store_true", help="check only the PO file headers")
     parser.add_argument("-n", "--no-translate", action="store_true", help="do not use the translator to check 'msgstr' fields")
+    parser.add_argument("-t", "--tlang", help="force a different language on the translator than the one given")
 
     return parser.parse_args()
 
@@ -199,15 +200,20 @@ def main(args):
 
     translator = google_translate.GoogleTranslator(timeout=5.0, retries=2, wait_time=WTIME)
 
-    # Get a valid source language for Google
-    # for example convert 'ar_SA' to 'ar' or 'zh_CN' to 'zh-CN'
-    src_lang = args.language
-
-    if src_lang not in translator._lang_dict:
-        src_lang = src_lang.replace("_", "-")
+    # Set source language for GoogleTranslator
+    if args.tlang is not None:
+        src_lang = args.tlang
+        pinfo("Forcing '{}' as the translator's source language".format(src_lang))
+    else:
+        # Get a valid source language for Google
+        # for example convert 'ar_SA' to 'ar' or 'zh_CN' to 'zh-CN'
+        src_lang = args.language
 
         if src_lang not in translator._lang_dict:
-            src_lang = src_lang.split("-")[0]
+            src_lang = src_lang.replace("_", "-")
+
+            if src_lang not in translator._lang_dict:
+                src_lang = src_lang.split("-")[0]
 
     for entry in po_file:
         if not entry.translated():

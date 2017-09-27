@@ -7,6 +7,9 @@
 - Do **NOT** send me the PO files via email since i'm not looking at them anymore
 - See the **Help** & **Helpful links** sections below for help
 - The instructions below assume basic knowledge of the command line (OS independent)
+- Make sure to update the following headers in the **PO** file:
+  - **PO-Revision-Date** - update the revision date
+  - **Last-Translator** - provide valid contact information
 
 ---
 
@@ -14,7 +17,8 @@
 1. Fork the project
 2. Create a local clone of your fork repo
 3. Change directory into **youtube-dl-gui**
-4. Run the **new-locale.py** script under the **devscripts** directory
+4. Run the **new-locale.py** script under the **devscripts** directory: 
+`python new-locale.py language_code_here`
 5. Edit the created **PO** file with your favorite editor
 6. Add the new language in the **optionsframe.py** file
 7. Build the binary translation files (MO) using the **setup.py** script:
@@ -32,7 +36,7 @@ git push origin master
 ---
 
 ### Help
-- The language code being used should be in the format `<ISO 639-1>_<ISO 3166-1 alpha-2>` (e.g. en_US)
+- The **language code** being used should be in the format `<ISO 639-1>_<ISO 3166-1 alpha-2>` (e.g. en_US)
 
 - To translate the PO file just edit the **msgstr** fields as shown below:
 

@@ -1,5 +1,9 @@
 # Frequently Asked Questions
 
+* **How can I make sure I'm getting the best quality possible?**:
+Don't force any output format, leave the **default** format selected in the main window (*default = highest quality*).
+Read https://github.com/rg3/youtube-dl#format-selection for more details.
+
 * **Post processing takes too long**:
 There should be no post-processing if you leave the video format to default (which defaults to the best format) and did not check convert to audio or embed subtitles, otherwise the file will be re-encoded to the format you selected (which takes time/CPU resources).
 

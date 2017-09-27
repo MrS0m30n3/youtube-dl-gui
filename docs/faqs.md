@@ -52,5 +52,5 @@ That's also a known issue with the HLS downloader on Windows. You should use the
 * **Is it possible to use a youtube-dl version other than the official one?**:
 You can use your own version of youtube-dl by editing the "youtubedl_path" option in your settings.json file and make it point to your own binary (e.g. /usr/local/bin). Note that if youtube-dl-gui does not have write permissions to this new directory the "update" option in the GUI will fail. Also, note that changing the "youtubedl_path" won't change the update source which is hardcoded for now to "https://yt-dl.org/latest/".
 
-* **The program crashes frequently (Windows):**
+* **The program crashes frequently or pretends to succeed downloading the files (Windows)**:
 Follow [youtube-dl instructions](https://github.com/rg3/youtube-dl#the-exe-throws-an-error-due-to-missing-msvcr100dll) on updating your Visual C++ Redistributable.

@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2017-06-15 17:13+EEST\n"
-"PO-Revision-Date: 2017-10-08 00:30+0200\n"
+"PO-Revision-Date: 2017-10-08 19:27+0200\n"
 "Last-Translator: Pavel Řehák <pavel-rehak@email.cz>\n"
 "Language-Team: \n"
 "Language: cs_CZ\n"
@@ -79,7 +79,7 @@ msgstr "Přidat"
 
 #: youtube_dl_gui/mainframe.py:106
 msgid "Download list"
-msgstr "Seznam stahovaných"
+msgstr "Seznam stahování"
 
 #: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
 #: youtube_dl_gui/mainframe.py:534
@@ -170,7 +170,7 @@ msgstr "Stahování youtube-dl selhalo [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "youtube-dl byl úspěšně stažen"
+msgstr "Youtube-dl byl úspěšně stažen"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
@@ -582,7 +582,7 @@ msgstr ""
 
 #: youtube_dl_gui/optionsframe.py:872
 msgid "Prefer native HLS"
-msgstr ""
+msgstr "Preferovat nativní HLS"
 
 #: youtube_dl_gui/optionsframe.py:933
 msgid "Log Viewer"

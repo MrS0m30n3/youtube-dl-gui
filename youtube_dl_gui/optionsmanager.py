@@ -21,7 +21,6 @@ from .formats import (
     FORMATS
 )
 
-
 class OptionsManager(object):
 
     """Handles youtubedlg options.
@@ -281,7 +280,7 @@ class OptionsManager(object):
             'enable_log': True,
             'log_time': True,
             'workers_number': 3,
-            'locale_name': 'en_US',
+            'locale_name': '',
             'main_win_size': (740, 490),
             'opts_win_size': (640, 490),
             'selected_video_formats': ['webm', 'mp4'],

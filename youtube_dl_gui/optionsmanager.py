@@ -21,6 +21,7 @@ from .formats import (
     FORMATS
 )
 
+
 class OptionsManager(object):
 
     """Handles youtubedlg options.

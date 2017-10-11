@@ -65,7 +65,6 @@ if opt_manager.options['enable_log']:
 # because the GUI strings are class level attributes
 locale_dir = get_locale_file()
 
-
 try:
     gettext.translation(__packagename__, locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
 # If the configure file (settings.json) is missing, the except occurs (first run)

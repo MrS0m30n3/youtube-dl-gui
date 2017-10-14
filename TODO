@@ -1,6 +1,5 @@
 Release 0.4.1
 =============
-* Add ChangeLog
 * Intergrity check youtube-dl bin
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
 * Custom youtube-dl format selection filters (e.g. -f best[height<=360])

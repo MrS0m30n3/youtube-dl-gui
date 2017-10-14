@@ -1,0 +1,588 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2017-06-15 17:13+EEST\n"
+"PO-Revision-Date: 2017-09-26 00:44+JST\n"
+"Last-Translator: Mitsuya Tsujikawa <mtujikawa@gmail.com>\n"
+"Language-Team: ja\n"
+"Language: JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:108
+msgid "ID"
+msgstr "ID"
+
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:109
+#: youtube_dl_gui/mainframe.py:140
+msgid "Title"
+msgstr "タイトル"
+
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:110
+msgid "Title + ID"
+msgstr "タイトル + ID"
+
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:111
+msgid "Title + Quality"
+msgstr "タイトル + 品質"
+
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:112
+msgid "Title + ID + Quality"
+msgstr "タイトル + ID + 品質"
+
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:113
+msgid "Custom"
+msgstr "カスタム"
+
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:118
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
+msgid "default"
+msgstr "既定値"
+
+#: youtube_dl_gui/mainframe.py:97
+msgid "Enter URLs below"
+msgstr "下の欄にURLを入力してください"
+
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr "更新"
+
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Options"
+msgstr "設定"
+
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:589
+msgid "Stop"
+msgstr "停止"
+
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr "情報"
+
+#: youtube_dl_gui/mainframe.py:102
+msgid "Welcome"
+msgstr "ようこそ"
+
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warning"
+msgstr "警告"
+
+#: youtube_dl_gui/mainframe.py:105
+msgid "Add"
+msgstr "追加"
+
+#: youtube_dl_gui/mainframe.py:106
+msgid "Download list"
+msgstr "ダウンロードリスト"
+
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Delete"
+msgstr "削除"
+
+#: youtube_dl_gui/mainframe.py:108
+msgid "Play"
+msgstr "再生"
+
+#: youtube_dl_gui/mainframe.py:109
+msgid "Up"
+msgstr "上へ"
+
+#: youtube_dl_gui/mainframe.py:110
+msgid "Down"
+msgstr "下へ"
+
+#: youtube_dl_gui/mainframe.py:111
+msgid "Reload"
+msgstr "再読込み"
+
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr "一時停止"
+
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:587
+msgid "Start"
+msgstr "ダウンロード開始"
+
+#: youtube_dl_gui/mainframe.py:114
+msgid "About"
+msgstr "製品情報"
+
+#: youtube_dl_gui/mainframe.py:115
+msgid "View Log"
+msgstr "ログの表示"
+
+#: youtube_dl_gui/mainframe.py:117
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "正常にダウンロードしました: {0} URL(s) in {1} 日 {2} 時 {3} 分 {4} 秒"
+
+#: youtube_dl_gui/mainframe.py:119
+msgid "Downloads completed"
+msgstr "ダウンロード完了"
+
+#: youtube_dl_gui/mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "進捗状況: {0:.1f}% | 待機 ({1}) 停止 ({2}) 進行中 ({3}) 完了 ({4}) エラー ({5})"
+
+#: youtube_dl_gui/mainframe.py:121
+msgid "Stopping downloads"
+msgstr "ダウンロードを停止中"
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads stopped"
+msgstr "ダウンロードを停止しました"
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "最低でも1つはURLを入力する必要があります"
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads started"
+msgstr "ダウンロードを開始しました"
+
+#: youtube_dl_gui/mainframe.py:125
+msgid "Choose Directory"
+msgstr "フォルダを選択してください"
+
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "ダウンロード中です。すべて完了するまでお待ちください。"
+
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update already in progress"
+msgstr "更新中です"
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "youtube-dlの最新版をダウンロードしています。お待ちください..."
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Youtube-dlのダウンロードに失敗しました [{0}]"
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "Youtube-dlのダウンロードに成功しました"
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "フォルダを開くことができません: '{dir}'。指定されたパスが存在しません。"
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "シャットダウンの際にエラーが発生しました。必ず正確なパスワードを入力したことを確認してください"
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "Shutting down system"
+msgstr "システムをシャットダウンします"
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Extension"
+msgstr "拡張子"
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Size"
+msgstr "サイズ"
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Percent"
+msgstr "パーセント"
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr "ETA"
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Speed"
+msgstr "速度"
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr "状態"
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "Get URL"
+msgstr "URLをコピー"
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get command"
+msgstr "コマンドをコピー"
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Open destination"
+msgstr "保存先フォルダを開く"
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Re-enter"
+msgstr "再登録"
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Resume"
+msgstr "再開"
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr "動画"
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr "音声"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "No items selected. Please pick an action"
+msgstr "項目が選択されていません。操作項目を選択してください"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove all"
+msgstr "全消去"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove completed"
+msgstr "消去完了"
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Are you sure you want to remove selected items?"
+msgstr "選択アイテムを消去してよろしいですか?"
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Item is active, cannot remove"
+msgstr "使用中のため削除できません"
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Item is not completed"
+msgstr "未完了のアイテムです"
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "アップデート中です。完了までお待ちください"
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging is disabled"
+msgstr "ロギング無効"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutdown"
+msgstr "シャットダウン"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutting down in {0} second(s)"
+msgstr "{0} 秒後にシャットダウンします"
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "No items to download"
+msgstr "ダウンロードする項目がありません"
+
+#: youtube_dl_gui/mainframe.py:1060
+msgid "Are you sure you want to exit?"
+msgstr "終了してよろしいですか?"
+
+#: youtube_dl_gui/mainframe.py:1060
+msgid "Exit"
+msgstr "終了"
+
+#: youtube_dl_gui/mainframe.py:1301 youtube_dl_gui/mainframe.py:1451
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: youtube_dl_gui/mainframe.py:1450
+msgid "OK"
+msgstr "OK"
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Reset"
+msgstr "リセット"
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Close"
+msgstr "閉じる"
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "General"
+msgstr "一般"
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formats"
+msgstr "形式"
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr "ダウンロード"
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Advanced"
+msgstr "高度"
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr "その他"
+
+#: youtube_dl_gui/optionsframe.py:315
+msgid "Language"
+msgstr "言語"
+
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Filename format"
+msgstr "ファイル名の形式"
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Filename options"
+msgstr "ファイル名のオプション"
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Restrict filenames to ASCII"
+msgstr "ファイル名をASCIIに制限する"
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "More options"
+msgstr "詳細設定"
+
+#: youtube_dl_gui/optionsframe.py:327
+msgid "Confirm on exit"
+msgstr "終了時の確認"
+
+#: youtube_dl_gui/optionsframe.py:328
+msgid "Confirm item deletion"
+msgstr "アイテム削除時の確認"
+
+#: youtube_dl_gui/optionsframe.py:329
+msgid "Inform me on download completion"
+msgstr "ダウンロード完了時に通知"
+
+#: youtube_dl_gui/optionsframe.py:331
+msgid "Shutdown on download completion"
+msgstr "ダウンロード完了後シャットダウン"
+
+#: youtube_dl_gui/optionsframe.py:342
+msgid "SUDO password"
+msgstr "SUDO パスワード"
+
+#: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "変更を反映するに再起動してください {0}"
+
+#: youtube_dl_gui/optionsframe.py:421 youtube_dl_gui/optionsframe.py:822
+msgid "Restart"
+msgstr "再起動"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "high"
+msgstr "高"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "low"
+msgstr "低"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "mid"
+msgstr "中"
+
+#: youtube_dl_gui/optionsframe.py:473
+msgid "Video formats"
+msgstr "動画形式"
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Audio formats"
+msgstr "音声形式"
+
+#: youtube_dl_gui/optionsframe.py:479
+msgid "Post-Process options"
+msgstr "後処理の設定"
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Keep original files"
+msgstr "オリジナルファイルを残す"
+
+#: youtube_dl_gui/optionsframe.py:481
+msgid "Extract audio from video file"
+msgstr "動画から音声を抽出"
+
+#: youtube_dl_gui/optionsframe.py:482
+msgid "Embed thumbnail in audio file"
+msgstr "音声ファイルにサムネイル埋め込み"
+
+#: youtube_dl_gui/optionsframe.py:483
+msgid "Add metadata to file"
+msgstr "メタデータの追加"
+
+#: youtube_dl_gui/optionsframe.py:485
+msgid "Audio quality"
+msgstr "音声品質"
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "English"
+msgstr "英語"
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "French"
+msgstr "フランス語"
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "German"
+msgstr "ドイツ語"
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Greek"
+msgstr "ギリシャ語"
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Hebrew"
+msgstr "ヘブライ語"
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Italian"
+msgstr "イタリア語"
+
+#: youtube_dl_gui/optionsframe.py:549
+msgid "Portuguese"
+msgstr "ポルトガル語"
+
+#: youtube_dl_gui/optionsframe.py:550
+msgid "Russian"
+msgstr "ロシア語"
+
+#: youtube_dl_gui/optionsframe.py:551
+msgid "Spanish"
+msgstr "スペイン語"
+
+#: youtube_dl_gui/optionsframe.py:552
+msgid "Swedish"
+msgstr "スウェーデン語"
+
+#: youtube_dl_gui/optionsframe.py:553
+msgid "Turkish"
+msgstr "トルコ語"
+
+#: youtube_dl_gui/optionsframe.py:569
+msgid "None"
+msgstr "なし"
+
+#: youtube_dl_gui/optionsframe.py:570
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "自動字幕 (Youtubeのみ)"
+
+#: youtube_dl_gui/optionsframe.py:571
+msgid "All available subtitles"
+msgstr "すべての字幕"
+
+#: youtube_dl_gui/optionsframe.py:572
+msgid "Subtitles by language"
+msgstr "字幕言語"
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Subtitles"
+msgstr "字幕"
+
+#: youtube_dl_gui/optionsframe.py:582
+msgid "Subtitles options"
+msgstr "字幕設定"
+
+#: youtube_dl_gui/optionsframe.py:583
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "動画に字幕埋め込み (mp4のみ)"
+
+#: youtube_dl_gui/optionsframe.py:585
+msgid "Playlist"
+msgstr "プレイリスト"
+
+#: youtube_dl_gui/optionsframe.py:591 youtube_dl_gui/optionsframe.py:596
+msgid "Max"
+msgstr "最大"
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Filesize"
+msgstr "ファイルサイズ"
+
+#: youtube_dl_gui/optionsframe.py:599
+msgid "Min"
+msgstr "最小"
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Retries"
+msgstr "リトライ"
+
+#: youtube_dl_gui/optionsframe.py:731
+msgid "Authentication"
+msgstr "認証情報"
+
+#: youtube_dl_gui/optionsframe.py:733
+msgid "Username"
+msgstr "アカウント"
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Password"
+msgstr "パスワード"
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Video password"
+msgstr "ビデオパスワード"
+
+#: youtube_dl_gui/optionsframe.py:740
+msgid "Network"
+msgstr "ネットワーク"
+
+#: youtube_dl_gui/optionsframe.py:742
+msgid "Proxy"
+msgstr "プロキシ"
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "User agent"
+msgstr "ユーザーエージェント(UA)"
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Referer"
+msgstr "リファラー(Referer)"
+
+#: youtube_dl_gui/optionsframe.py:749
+msgid "Logging"
+msgstr "ロギング"
+
+#: youtube_dl_gui/optionsframe.py:751
+msgid "Enable log"
+msgstr "ログを有効化"
+
+#: youtube_dl_gui/optionsframe.py:752
+msgid "View"
+msgstr "表示"
+
+#: youtube_dl_gui/optionsframe.py:753
+msgid "Clear"
+msgstr "消去"
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "Youtube-dl コマンドラインオプション (例 --help)"
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "Extra options"
+msgstr "追加設定"
+
+#: youtube_dl_gui/optionsframe.py:868
+msgid "Debug youtube-dl"
+msgstr "youtube-dlのデバッグ"
+
+#: youtube_dl_gui/optionsframe.py:869
+msgid "Ignore errors"
+msgstr "エラーを無視"
+
+#: youtube_dl_gui/optionsframe.py:870
+msgid "Ignore youtube-dl config"
+msgstr "youtube-dlのconfig無視"
+
+#: youtube_dl_gui/optionsframe.py:871
+msgid "No mtime"
+msgstr "mtime無し"
+
+#: youtube_dl_gui/optionsframe.py:872
+msgid "Prefer native HLS"
+msgstr "ネイティブHLS優先"
+
+#: youtube_dl_gui/optionsframe.py:933
+msgid "Log Viewer"
+msgstr "ログビュワー"

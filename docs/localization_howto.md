@@ -1,4 +1,6 @@
-## ADD SUPPORT FOR NEW LANGUAGE
+## This guide is deprecated. We currently use [Transifex](https://www.transifex.com/youtube-dl-gui/public/) to manage our translations. New guide coming up soon!
+
+## ~~ADD SUPPORT FOR NEW LANGUAGE~~
 
 ### Requirements
 - [GNU gettext](https://www.gnu.org/software/gettext) (To build the .MO files)

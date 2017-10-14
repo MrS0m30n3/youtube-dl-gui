@@ -1,0 +1,15 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+
+## [Unreleased]
+
+### Added
+- ChangeLog
+- 'flac' in available audio formats (#234)
+- French translation (#203)
+- Japanese translation (#226)
+- Italian translation (#231)
+- Czech translation (#233)
+

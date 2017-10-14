@@ -1,12 +1,15 @@
-## ADD SUPPORT FOR NEW LANGUAGE
+## This guide is deprecated. We currently use [Transifex](https://www.transifex.com/youtube-dl-gui/public/) to manage our translations. New guide coming up soon!
+
+## ~~ADD SUPPORT FOR NEW LANGUAGE~~
 
 ### Requirements
-- [GNU gettext](https://www.gnu.org/software/gettext) (To build the MO files)
+- [GNU gettext](https://www.gnu.org/software/gettext) (To build the .MO files)
 
 ### Notes
 - Do **NOT** send me the PO files via email since i'm not looking at them anymore
 - See the **Help** & **Helpful links** sections below for help
 - The instructions below assume basic knowledge of the command line (OS independent)
+- Binary translation files (.MO) built during step 7 are only for the translator to test his work (in step 8) and you should **NOT** force push them
 - Make sure to update the following headers in the **PO** file:
   - **PO-Revision-Date** - update the revision date
   - **Last-Translator** - provide valid contact information
@@ -21,7 +24,7 @@
 `python new-locale.py language_code_here`
 5. Edit the created **PO** file with your favorite editor
 6. Add the new language in the **optionsframe.py** file
-7. Build the binary translation files (MO) using the **setup.py** script:
+7. Build the binary translation files (.MO) using the **setup.py** script:
 `python setup.py build_trans`
 8. Test the translations by running youtube-dl-gui:
 `python -m youtube_dl_gui`
@@ -49,7 +52,7 @@ git push origin master
 
  1. Open **optionsframe.py** with your favorite editor
  2. Locate the **LOCALE_NAMES** attribute
- 3. Add your language to it (make sure to sort alphabetically based on the language name)
+ 3. Add your language to it (make sure to **sort alphabetically** based on the language name)
 
   ``` python
   LOCALE_NAMES = twodict([

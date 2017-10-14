@@ -74,7 +74,8 @@ AUDIO_FORMATS = tdict([
     ("aac", "aac"),
     ("m4a", "m4a"),
     ("vorbis", "vorbis"),
-    ("opus", "opus")
+    ("opus", "opus"),
+    ("flac", "flac")
 ])
 
 
@@ -173,7 +174,8 @@ def reload_strings():
         ("aac", "aac"),
         ("m4a", "m4a"),
         ("vorbis", "vorbis"),
-        ("opus", "opus")
+        ("opus", "opus"),
+        ("flac", "flac")
     ])
 
 

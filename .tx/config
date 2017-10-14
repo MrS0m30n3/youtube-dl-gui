@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[youtube-dl-gui.resources]
+file_filter = youtube_dl_gui/locale/<lang>/LC_MESSAGES/youtube_dl_gui.po
+source_file = youtube_dl_gui/locale/en_US/LC_MESSAGES/youtube_dl_gui.po
+source_lang = en_US
+type = PO
+

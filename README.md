@@ -36,13 +36,6 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 1. Download & extract the Windows installer
 2. Run the `setup.exe` file
 
-### Building the Debian package
-
-1. Download & extract the source
-2. Open a shell in the source directory
-3. Run `cd .. && tar -cJvf youtube-dl-gui_0.4.0.orig.tar.xz youtube-dl-gui && cd youtube-dl-gui && dpkg-buildpackage -rfakeroot`
-4. The debian package will be available in the parent directory, install it using `gdebi` or `dpkg -i`
-
 ## Contributing
 * **Add support for new language:** See [localization howto](docs/localization_howto.md)
 * **Report a bug:** See [issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues)

@@ -4,5 +4,5 @@ Type=Application
 Name=youtube-dlG
 Exec=youtube-dl-gui
 Icon=youtube-dl-gui
-Categories=Network;Multimedia
+Categories=Network;AudioVideo
 Comment=A graphical interface for youtube-dl media downloader

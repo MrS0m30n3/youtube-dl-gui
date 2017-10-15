@@ -10,6 +10,7 @@ Homepage: https://github.com/MrS0m30n3/youtube-dl-gui
 Package: youtube-dl-gui
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Recommends: ffmpeg
 Description: A cross platform front-end GUI for the popular youtube-dl media downloader
  Cross platform front-end GUI for the popular youtube-dl media downloader, 
  written in wxPython. Supported sites can be found at

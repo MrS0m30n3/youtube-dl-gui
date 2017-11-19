@@ -78,9 +78,9 @@ def convert_item(item, to_unicode=False):
 
         for sub_item in item:
             if isinstance(item, dict):
-                temp_list.append((sub_item, convert_item(item[sub_item])))
+                temp_list.append((convert_item(sub_item, to_unicode), convert_item(item[sub_item], to_unicode)))
             else:
-                temp_list.append(convert_item(sub_item))
+                temp_list.append(convert_item(sub_item, to_unicode))
 
         return type(item)(temp_list)
 

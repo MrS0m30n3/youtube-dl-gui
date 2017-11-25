@@ -53,6 +53,40 @@ def get_encoding():
     return encoding
 
 
+def convert_item(item, to_unicode=False):
+    """Convert item between 'unicode' and 'str'.
+
+    Args:
+        item (-): Can be any python item.
+
+        to_unicode (boolean): When True it will convert all the 'str' types
+            to 'unicode'. When False it will convert all the 'unicode'
+            types back to 'str'.
+
+    """
+    if to_unicode and isinstance(item, str):
+        # Convert str to unicode
+        return item.decode(get_encoding(), 'ignore')
+
+    if not to_unicode and isinstance(item, unicode):
+        # Convert unicode to str
+        return item.encode(get_encoding(), 'ignore')
+
+    if hasattr(item, '__iter__'):
+        # Handle iterables
+        temp_list = []
+
+        for sub_item in item:
+            if isinstance(item, dict):
+                temp_list.append((convert_item(sub_item, to_unicode), convert_item(item[sub_item], to_unicode)))
+            else:
+                temp_list.append(convert_item(sub_item, to_unicode))
+
+        return type(item)(temp_list)
+
+    return item
+
+
 def convert_on_bounds(func):
     """Decorator to convert string inputs & outputs.
 
@@ -62,39 +96,6 @@ def convert_on_bounds(func):
     returned strings values back to 'unicode'.
 
     """
-    def convert_item(item, to_unicode=False):
-        """The actual function which handles the conversion.
-
-        Args:
-            item (-): Can be any python item.
-
-            to_unicode (boolean): When True it will convert all the 'str' types
-                to 'unicode'. When False it will convert all the 'unicode'
-                types back to 'str'.
-
-        """
-        if to_unicode and isinstance(item, str):
-            # Convert str to unicode
-            return item.decode(get_encoding(), 'ignore')
-
-        if not to_unicode and isinstance(item, unicode):
-            # Convert unicode to str
-            return item.encode(get_encoding(), 'ignore')
-
-        if hasattr(item, '__iter__'):
-            # Handle iterables
-            temp_list = []
-
-            for sub_item in item:
-                if isinstance(item, dict):
-                    temp_list.append((sub_item, convert_item(item[sub_item])))
-                else:
-                    temp_list.append(convert_item(sub_item))
-
-            return type(item)(temp_list)
-
-        return item
-
     def wrapper(*args, **kwargs):
         returned_value = func(*convert_item(args), **convert_item(kwargs))
 

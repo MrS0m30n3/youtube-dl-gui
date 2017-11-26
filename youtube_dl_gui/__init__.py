@@ -67,21 +67,9 @@ locale_dir = get_locale_file()
 
 try:
     gettext.translation(__packagename__, locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
-# If the configure file (settings.json) is missing, the except occurs (first run)
 except IOError:
-    import locale
-    # get the default locale using the locale module
-    default_lang, default_enc = locale.getdefaultlocale()
-    # if not found, set locale to en_US
-    if not default_lang:
-        default_lang = 'en_US'
-    try:
-        gettext.translation(__packagename__, locale_dir, [default_lang]).install(unicode=True)
-        opt_manager.options['locale_name'] = default_lang
-    # If the default locale is detected but the .mo file is missing, set locale to en_US
-    except IOError:
-        gettext.translation(__packagename__, locale_dir, ['en_US']).install(unicode=True)
-        opt_manager.options['locale_name'] = 'en_US'
+    opt_manager.options['locale_name'] = 'en_US'
+    gettext.install(__packagename__)
 
 reload_strings()
 

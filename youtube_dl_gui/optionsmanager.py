@@ -13,7 +13,8 @@ from .utils import (
     os_path_exists,
     encode_tuple,
     decode_tuple,
-    check_path
+    check_path,
+    get_default_lang
 )
 
 from .formats import (
@@ -282,7 +283,7 @@ class OptionsManager(object):
             'enable_log': True,
             'log_time': True,
             'workers_number': 3,
-            'locale_name': '',
+            'locale_name': get_default_lang(),
             'main_win_size': (740, 490),
             'opts_win_size': (640, 490),
             'selected_video_formats': ['webm', 'mp4'],

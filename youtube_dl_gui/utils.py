@@ -376,3 +376,12 @@ def build_command(options_list, url):
     url = "\"{}\"".format(url)
 
     return " ".join([YOUTUBEDL_BIN] + options + [url])
+
+def get_default_lang():
+    """get default language (and default encoding) using the locale module"""
+    default_lang, default_enc = locale.getdefaultlocale()
+    """if not found, set locale to en_US"""
+    if not default_lang:
+        default_lang = 'en_US'
+
+    return default_lang

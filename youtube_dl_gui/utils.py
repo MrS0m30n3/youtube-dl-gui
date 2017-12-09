@@ -116,6 +116,9 @@ os_path_abspath = convert_on_bounds(os.path.abspath)
 os_path_realpath = convert_on_bounds(os.path.realpath)
 os_path_expanduser = convert_on_bounds(os.path.expanduser)
 
+# Patch locale functions
+locale_getdefaultlocale = convert_on_bounds(locale.getdefaultlocale)
+
 # Patch Windows specific functions
 if os.name == 'nt':
     os_startfile = convert_on_bounds(os.startfile)
@@ -376,3 +379,13 @@ def build_command(options_list, url):
     url = "\"{}\"".format(url)
 
     return " ".join([YOUTUBEDL_BIN] + options + [url])
+
+
+def get_default_lang():
+    """Get default language using the 'locale' module."""
+    default_lang, _ = locale_getdefaultlocale()
+
+    if not default_lang:
+        default_lang = "en_US"
+
+    return default_lang

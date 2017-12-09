@@ -13,6 +13,8 @@ PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
+    import mock
+
     from youtube_dl_gui import utils
 except ImportError as error:
     print error
@@ -172,6 +174,35 @@ class TestConvertItem(unittest.TestCase):
 
     def test_convert_item_dict_str_unicode(self):
         self.check_iter(self.input_dict_s, dict, True)
+
+
+class TestGetDefaultLang(unittest.TestCase):
+
+    """Test case for the get_default_lang function."""
+
+    @mock.patch("youtube_dl_gui.utils.locale_getdefaultlocale")
+    def run_tests(self, ret_value, result, mock_getdefaultlocale):
+        """Run the main test.
+
+        Args:
+            ret_value (tuple): Return tuple of the locale.getdefaultlocale module
+            result (unicode): Result we want to see
+            mock_getdefaultlocale (MagicMock): Mock object
+        """
+        mock_getdefaultlocale.return_value = ret_value
+        lang = utils.get_default_lang()
+
+        mock_getdefaultlocale.assert_called_once()
+        self.assertEqual(lang, result)
+
+    def test_get_default_lang(self):
+        self.run_tests(("it_IT", "UTF-8"), "it_IT")
+
+    def test_get_default_lang_none(self):
+        self.run_tests((None, None), "en_US")
+
+    def test_get_default_lang_empty(self):
+        self.run_tests(("", ""), "en_US")
 
 
 def main():

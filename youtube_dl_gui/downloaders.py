@@ -161,7 +161,8 @@ class YoutubeDLDownloader(object):
         cmd = self._get_cmd(url, options)
         self._create_process(cmd)
 
-        self._stderr_reader.attach_filedescriptor(self._proc.stderr)
+        if self._proc is not None:
+            self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
             stdout = self._proc.stdout.readline().rstrip()
@@ -184,6 +185,17 @@ class YoutubeDLDownloader(object):
                 self._set_returncode(self.WARNING)
             else:
                 self._set_returncode(self.ERROR)
+
+        # Set return code to ERROR if we could not start the download process
+        # or the childs return code is not equal to zero
+        # NOTE: In Linux if the called script is just empty Python exits
+        # normally (ret=0), so we cant detect this or similar cases
+        # using the code below
+        if self._proc is None or self._proc.returncode:
+            self._return_code = self.ERROR
+
+        if self._proc is not None and self._proc.returncode:
+            self._log('Child process exited with non-zero code: {}'.format(self._proc.returncode))
 
         self._last_data_hook()
 
@@ -330,11 +342,15 @@ class YoutubeDLDownloader(object):
         if sys.version_info < (3, 0):
             cmd = [item.encode(self._encoding, 'ignore') for item in cmd]
 
-        self._proc = subprocess.Popen(cmd,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE,
-                                      preexec_fn=preexec,
-                                      startupinfo=info)
+        try:
+            self._proc = subprocess.Popen(cmd,
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE,
+                                          preexec_fn=preexec,
+                                          startupinfo=info)
+        except (ValueError, OSError) as error:
+            self._log('Failed to start process: {}'.format(cmd))
+            self._log(unicode(error))
 
 
 def extract_data(stdout):

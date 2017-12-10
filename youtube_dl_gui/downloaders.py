@@ -328,6 +328,9 @@ class YoutubeDLDownloader(object):
         """
         info = preexec = None
 
+        # Keep a unicode copy of cmd for the log
+        ucmd = cmd
+
         if os.name == 'nt':
             # Hide subprocess window
             info = subprocess.STARTUPINFO()
@@ -349,8 +352,8 @@ class YoutubeDLDownloader(object):
                                           preexec_fn=preexec,
                                           startupinfo=info)
         except (ValueError, OSError) as error:
-            self._log('Failed to start process: {}'.format(cmd))
-            self._log(unicode(error))
+            self._log('Failed to start process: {}'.format(ucmd))
+            self._log(str(error).decode(self._encoding, 'ignore'))
 
 
 def extract_data(stdout):

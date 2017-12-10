@@ -187,14 +187,16 @@ class YoutubeDLDownloader(object):
                 self._set_returncode(self.ERROR)
 
         # Set return code to ERROR if we could not start the download process
-        # or the childs return code is not equal to zero
+        # or the childs return code is greater than zero
         # NOTE: In Linux if the called script is just empty Python exits
         # normally (ret=0), so we cant detect this or similar cases
         # using the code below
-        if self._proc is None or self._proc.returncode:
+        # NOTE: In Unix a negative return code (-N) indicates that the child
+        # was terminated by signal N (e.g. -9 = SIGKILL)
+        if self._proc is None or self._proc.returncode > 0:
             self._return_code = self.ERROR
 
-        if self._proc is not None and self._proc.returncode:
+        if self._proc is not None and self._proc.returncode > 0:
             self._log('Child process exited with non-zero code: {}'.format(self._proc.returncode))
 
         self._last_data_hook()

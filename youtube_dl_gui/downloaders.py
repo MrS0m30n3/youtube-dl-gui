@@ -211,6 +211,12 @@ class YoutubeDLDownloader(object):
                 # os.killpg is not available on Windows
                 # See: https://bugs.python.org/issue5115
                 self._proc.kill()
+
+                # When we kill the child process on Windows the return code
+                # gets set to 1, so we want to reset the return code back to 0
+                # in order to avoid creating logging output in the download(...)
+                # method
+                self._proc.returncode = 0
             else:
                 os.killpg(self._proc.pid, signal.SIGKILL)
 

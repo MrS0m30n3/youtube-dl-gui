@@ -36,6 +36,10 @@ class PipeReader(Thread):
     Args:
         queue (Queue.Queue): Python queue to store the output of the subprocess.
 
+    Warnings:
+        All the operations are based on 'str' types. The caller has to convert
+        the queued items back to 'unicode' if he needs to.
+
     """
 
     WAIT_TIME = 0.1
@@ -54,7 +58,7 @@ class PipeReader(Thread):
 
         while self._running:
             if self._filedescriptor is not None:
-                for line in iter(self._filedescriptor.readline, ''):
+                for line in iter(self._filedescriptor.readline, str('')):
                     # Ignore ffmpeg stderr
                     if str('ffmpeg version') in line:
                         ignore_line = True

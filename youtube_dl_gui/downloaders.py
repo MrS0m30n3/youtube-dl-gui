@@ -6,10 +6,6 @@
 This module contains the actual downloaders responsible
 for downloading the video files.
 
-Note:
-    downloaders.py is part of the youtubedlg package but it can be used
-    as a stand alone module for downloading videos.
-
 """
 
 from __future__ import unicode_literals
@@ -24,6 +20,8 @@ import subprocess
 from time import sleep
 from Queue import Queue
 from threading import Thread
+
+from .utils import convert_item
 
 
 class PipeReader(Thread):
@@ -132,7 +130,6 @@ class YoutubeDLDownloader(object):
         self._return_code = self.OK
         self._proc = None
 
-        self._encoding = self._get_encoding()
         self._stderr_queue = Queue()
         self._stderr_reader = PipeReader(self._stderr_queue)
 
@@ -166,7 +163,7 @@ class YoutubeDLDownloader(object):
 
         while self._proc_is_alive():
             stdout = self._proc.stdout.readline().rstrip()
-            stdout = stdout.decode(self._encoding, 'ignore')
+            stdout = convert_item(stdout, to_unicode=True)
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -177,7 +174,7 @@ class YoutubeDLDownloader(object):
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
             stderr = self._stderr_queue.get_nowait().rstrip()
-            stderr = stderr.decode(self._encoding, 'ignore')
+            stderr = convert_item(stderr, to_unicode=True)
 
             self._log(stderr)
 
@@ -317,16 +314,6 @@ class YoutubeDLDownloader(object):
 
         return cmd
 
-    def _get_encoding(self):
-        """Return system encoding. """
-        try:
-            encoding = locale.getpreferredencoding()
-            'TEST'.encode(encoding)
-        except:
-            encoding = 'UTF-8'
-
-        return encoding
-
     def _create_process(self, cmd):
         """Create new subprocess.
 
@@ -351,7 +338,7 @@ class YoutubeDLDownloader(object):
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
         if sys.version_info < (3, 0):
-            cmd = [item.encode(self._encoding, 'ignore') for item in cmd]
+            cmd = convert_item(cmd, to_unicode=False)
 
         try:
             self._proc = subprocess.Popen(cmd,
@@ -361,7 +348,7 @@ class YoutubeDLDownloader(object):
                                           startupinfo=info)
         except (ValueError, OSError) as error:
             self._log('Failed to start process: {}'.format(ucmd))
-            self._log(str(error).decode(self._encoding, 'ignore'))
+            self._log(convert_item(str(error), to_unicode=True))
 
 
 def extract_data(stdout):

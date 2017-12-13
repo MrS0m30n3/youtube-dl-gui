@@ -43,6 +43,7 @@
   * [Git](https://git-scm.com/downloads)
   * [Transifex CLI client](https://docs.transifex.com/client/installing-the-client)
   * Some kind of text editor to edit some code (notepad++, nano, etc are sufficient)
+  * A Transifex account, [sign-up](https://www.transifex.com/signup/)
 
 ### Notes
   * The instructions below assume basic knowledge of the command line (OS independent).
@@ -50,6 +51,7 @@
   * You can locally edit the translation file (PO) by opening it using a simple editor and editing the **msgstr** fields.
   * You can find the translation file (PO) after downloading it under the
     `youtube_dl_gui/locale/<LANG_CODE>/LC_MESSAGES/` directory.
+  * In order to get the translations from Transifex **your account needs permissions to access the project**.
 
 ### Getting Started
   1. Open a terminal
@@ -57,7 +59,7 @@
   3. Test that Transifex CLI client works: `tx --version`
   4. Clone upstream using Git: `git clone https://github.com/MrS0m30n3/youtube-dl-gui`
   5. Change to project directory: `cd youtube-dl-gui`
-  6. Pull the translation you want to test from Transifex: `tx pull --force -l <LANGUAGE_CODE_HERE>`
+  6. Pull the translation you want to test from Transifex (**Auth needed**): `tx pull --force -l <LANGUAGE_CODE_HERE>`
   7. Make the language appear under **Options>General** tab (only for new languages):
       1. Open the **optionsframe.py** under the **youtube_dl_gui** directory
       2. Search for the **LOCALE_NAMES** attribute
@@ -89,6 +91,7 @@
   * Read [Testers](localization_howto.md#testers) notes first.
   * Binary translation files (MO) are ignored and you should not push them upstream.
   * Don't forget to update the [ChangeLog](../ChangeLog) after adding a new language.
+  * You can gather all extra requirements below using **pip**.
 
 ### Getting Started
 
@@ -109,13 +112,21 @@
 #### Build the binary translation files (MO)
   1. Just run the setup script: `python setup.py build_trans`
 
-#### Automatically check translations using Google translate (Requires: polib & google_translate)
+#### Automatically check translations using Google translate (Requires: polib & doodle_translate)
   1. Change directory to `devscripts`
   2. Run the check script: `python check-translation.py <LANGUAGE_CODE_HERE>`
 
-#### Update source strings
+#### Get translations from Transifex (Requires: Permissions to access project)
+  * Pull everything: `tx pull -a`
+  * Pull reviewed: `tx pull --mode reviewed -a`
+  * Pull everything (force): `tx pull -a -f`
+  * Pull specific language: `tx pull -l <LANGUAGE_CODE_HERE>`
+  * Pull only completed translations (100%): `tx pull -a --minimum-perc=100`
+
+#### Update source strings (Only Maintainers, Requires: python-gettext)
   1. Change directory to `devscripts`
   2. Run the `update-locales.sh` script (also builds MO files)
+  3. Push changes to Transifex: `tx push --source --translations`
 
 #### Add support for new language locally (DEPRECATED, ONLY TESTING)
   1. Change directory to `devscripts`
@@ -127,6 +138,7 @@
   * [PO file headers](https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html)
   * [GNU gettext manual](https://www.gnu.org/software/gettext/manual/html_node/index.html#SEC_Contents)
   * Transifex [user roles](https://docs.transifex.com/teams/understanding-user-roles)
+  * Transifex [CLI client introduction](https://docs.transifex.com/client/introduction)
 
 ## FAQs
   No faqs yet

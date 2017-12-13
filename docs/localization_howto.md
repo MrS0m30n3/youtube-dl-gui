@@ -1,72 +1,132 @@
-## This guide is deprecated. We currently use [Transifex](https://www.transifex.com/youtube-dl-gui/public/) to manage our translations. New guide coming up soon!
+# Localization Guide - [Transifex](https://www.transifex.com/youtube-dl-gui/public/)
 
-## ~~ADD SUPPORT FOR NEW LANGUAGE~~
+## &#x1F534; DISCLAIMER
+**By sending a translation you agree to publish your work under the [UNLICENSE](https://unlicense.org/) license!**
+
+## Contents
+  * [Translators](localization_howto.md#translators)
+  * [Testers](localization_howto.md#testers)
+  * [Devs](localization_howto.md#devs)
+  * [FAQs](localization_howto.md#faqs)
+
+## Translators
 
 ### Requirements
-- [GNU gettext](https://www.gnu.org/software/gettext) (To build the .MO files)
+  * A modern browser
+  * A Transifex account, [sign-up](https://www.transifex.com/signup/)
 
 ### Notes
-- Do **NOT** send me the PO files via email since i'm not looking at them anymore
-- See the **Help** & **Helpful links** sections below for help
-- The instructions below assume basic knowledge of the command line (OS independent)
-- Binary translation files (.MO) built during step 7 are only for the translator to test his work (in step 8) and you should **NOT** force push them
-- Make sure to update the following headers in the **PO** file:
-  - **PO-Revision-Date** - update the revision date
-  - **Last-Translator** - provide valid contact information
+  * If your language is currently not supported you can make a request for new language support.
+  * When you request support for a new language, the language code should be in the format **en_US** and NOT just **en**.
+  * Variables such as **{0}**, **{1}**, **{dir}**, **{0:.1f}**, etc should be copied exactly as they appear in the translation box.
+  * Variables represent a word that will be replaced by real data (name, number, etc).
+  * Variables can be moved around the string in order to make the most logical translation.
+  * When new strings for translation are available you will get inbox notifications.
+  * For help you can leave a comment with @username or send a direct message to one of the maintainers.
+  * Maintainer usernames are: `MrS0m30n3`, `nodiscc`
 
----
-
-### Getting started
-1. Fork the project
-2. Create a local clone of your fork repo
-3. Change directory into **youtube-dl-gui**
-4. Run the **new-locale.py** script under the **devscripts** directory: 
-`python new-locale.py language_code_here`
-5. Edit the created **PO** file with your favorite editor
-6. Add the new language in the **optionsframe.py** file
-7. Build the binary translation files (.MO) using the **setup.py** script:
-`python setup.py build_trans`
-8. Test the translations by running youtube-dl-gui:
-`python -m youtube_dl_gui`
-9. Push your changes:
-```
-git add -A
-git commit -m "Your commit message here"
-git push origin master
-```
-10. Open a new pull request
-
----
+### Gettings Started
+  1. [Sign-in](https://www.transifex.com/signin/) to Transifex
+  2. [Join a translation team](https://docs.transifex.com/getting-started/translators#joining-a-translation-team)
+  3. [Start translating using the web editor](https://docs.transifex.com/translation/translating-with-the-web-editor)
 
 ### Help
-- The **language code** being used should be in the format `<ISO 639-1>_<ISO 3166-1 alpha-2>` (e.g. en_US)
+  * [Translators getting started](https://docs.transifex.com/getting-started/translators)
+  * [Translating offline](https://docs.transifex.com/translation/offline)
+  * [Using the glossary](https://docs.transifex.com/translation/using-the-glossary)
+  * For help you can [leave a comment or open an issue](https://docs.transifex.com/translation/tools-in-the-editor#comments-and-issues)
 
-- To translate the PO file just edit the **msgstr** fields as shown below:
+## Testers
 
- ``` pot
- msgid "Download"
- msgstr "ダウンロード"
- ```
+### Requirements
+  * Check [project requirements](../README.md#requirements)
+  * [Git](https://git-scm.com/downloads)
+  * [Transifex CLI client](https://docs.transifex.com/client/installing-the-client)
+  * Some kind of text editor to edit some code (notepad++, nano, etc are sufficient)
 
-- In order for youtube-dl-gui to display the new language you must add it to the **optionsframe.py** file:
+### Notes
+  * The instructions below assume basic knowledge of the command line (OS independent).
+  * The **language code** being used should be in the format `<ISO 639-1>_<ISO 3166-1 alpha-2>` (e.g. en_US).
+  * You can locally edit the translation file (PO) by opening it using a simple editor and editing the **msgstr** fields.
+  * You can find the translation file (PO) after downloading it under the
+    `youtube_dl_gui/locale/<LANG_CODE>/LC_MESSAGES/` directory.
 
- 1. Open **optionsframe.py** with your favorite editor
- 2. Locate the **LOCALE_NAMES** attribute
- 3. Add your language to it (make sure to **sort alphabetically** based on the language name)
+### Getting Started
+  1. Open a terminal
+  2. Test that Git works: `git --version`
+  3. Test that Transifex CLI client works: `tx --version`
+  4. Clone upstream using Git: `git clone https://github.com/MrS0m30n3/youtube-dl-gui`
+  5. Change to project directory: `cd youtube-dl-gui`
+  6. Pull the translation you want to test from Transifex: `tx pull --force -l <LANGUAGE_CODE_HERE>`
+  7. Make the language appear under **Options>General** tab (only for new languages):
+      1. Open the **optionsframe.py** under the **youtube_dl_gui** directory
+      2. Search for the **LOCALE_NAMES** attribute
+      3. Add the new language to it (in our example `('el_GR', 'Greek'),`)
+      4. Don't forget to save your changes
 
-  ``` python
+  ```python
+  LOCALE_NAMES = twodict([
+    + ('el_GR', 'Greek'),   # language_code, language_name
+      ('ar_SA', 'Arabic'),
+      ('cs_CZ', 'Czech'),
+        ...
+  ```
+  8. Build the binary translation files (MO): `python setup.py build_trans`
+  9. Test the translations by running youtube-dl-gui and selecting your language: `python -m youtube_dl_gui`
+  10. Make changes locally in your translation file (PO) and go back to step 8 to test them
+
+### Help
+  * [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+  * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+  * [Command line basics Linux](https://lifehacker.com/5633909/who-needs-a-mouse-learn-to-use-the-command-line-for-almost-anything)
+
+## Devs
+
+### Requirements
+  * See [Testers](localization_howto.md#testers) requirements
+
+### Notes
+  * Read [Testers](localization_howto.md#testers) notes first.
+  * Binary translation files (MO) are ignored and you should not push them upstream.
+  * Don't forget to update the [ChangeLog](../ChangeLog) after adding a new language.
+
+### Getting Started
+
+#### Add a new language under Options>General tab
+  1. Open the **optionsframe.py** file
+  2. Search for the **LOCALE_NAMES** attribute
+  3. Add the new language to it and make sure to **sort alphabetically** based on the language name
+
+  ```python
   LOCALE_NAMES = twodict([
     ('en_US', 'English'),
-  + ('ja_JP', 'Japanese')
-  ])
+    ('fr_FR', 'French'),
+  + ('el_GR', 'Greek'),
+    ('it_IT', 'Italian'),
+        ...
   ```
 
----
+#### Build the binary translation files (MO)
+  1. Just run the setup script: `python setup.py build_trans`
 
-### Helpful links
+#### Automatically check translations using Google translate (Requires: polib & google_translate)
+  1. Change directory to `devscripts`
+  2. Run the check script: `python check-translation.py <LANGUAGE_CODE_HERE>`
 
-- [Creating a pull request](https://help.github.com/articles/creating-a-pull-request)
-- [Fork A Repo](https://help.github.com/articles/fork-a-repo)
-- [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
-- [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-- [PO file headers](https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html)
+#### Update source strings
+  1. Change directory to `devscripts`
+  2. Run the `update-locales.sh` script (also builds MO files)
+
+#### Add support for new language locally (DEPRECATED, ONLY TESTING)
+  1. Change directory to `devscripts`
+  2. Run the new locale script: `python new-locale.py <LANGUAGE_CODE_HERE>`
+
+### Help
+  * [ISO 639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+  * [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+  * [PO file headers](https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html)
+  * [GNU gettext manual](https://www.gnu.org/software/gettext/manual/html_node/index.html#SEC_Contents)
+  * Transifex [user roles](https://docs.transifex.com/teams/understanding-user-roles)
+
+## FAQs
+  No faqs yet

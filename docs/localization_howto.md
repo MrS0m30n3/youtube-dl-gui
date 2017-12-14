@@ -141,4 +141,6 @@
   * Transifex [CLI client introduction](https://docs.transifex.com/client/introduction)
 
 ## FAQs
-  No faqs yet
+
+* **Translations unnecessarily having country codes?**:
+Some languages have dialects in different countries. For example, `de_AT` is used for Austria, and `pt_BR` for Brazil. The country code serves to distinguish the dialects. Also, using a single format (*ll_CC*) instead of multiple for the locale name simplifies some implementation specific things.

@@ -429,7 +429,7 @@ class GeneralTab(TabPanel):
         self.sudo_textctrl.Enable(self.shutdown_checkbox.GetValue())
 
     def load_options(self):
-        self.language_combobox.SetValue(self.LOCALE_NAMES.get(self.opt_manager.options["locale_name"], "en_US"))
+        self.language_combobox.SetValue(self.LOCALE_NAMES.get(self.opt_manager.options["locale_name"], "English"))
         self.filename_format_combobox.SetValue(OUTPUT_FORMATS[self.opt_manager.options["output_format"]])
         self.filename_custom_format.SetValue(self.opt_manager.options["output_template"])
         self.filename_ascii_checkbox.SetValue(self.opt_manager.options["restrict_filenames"])

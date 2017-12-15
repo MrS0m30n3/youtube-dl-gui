@@ -198,22 +198,25 @@ def main(args):
         if msgid not in po_msgid:
             missing_msgid.append(msgid)
 
-    translator = google_translate.GoogleTranslator(timeout=5.0, retries=2, wait_time=WTIME)
+    # Init translator only if the '--no-translate' flag is NOT set
+    translator = None
+    if not args.no_translate:
+        translator = google_translate.GoogleTranslator(timeout=5.0, retries=2, wait_time=WTIME)
 
-    # Set source language for GoogleTranslator
-    if args.tlang is not None:
-        src_lang = args.tlang
-        pinfo("Forcing '{}' as the translator's source language".format(src_lang))
-    else:
-        # Get a valid source language for Google
-        # for example convert 'ar_SA' to 'ar' or 'zh_CN' to 'zh-CN'
-        src_lang = args.language
-
-        if src_lang not in translator._lang_dict:
-            src_lang = src_lang.replace("_", "-")
+        # Set source language for GoogleTranslator
+        if args.tlang is not None:
+            src_lang = args.tlang
+            pinfo("Forcing '{}' as the translator's source language".format(src_lang))
+        else:
+            # Get a valid source language for Google
+            # for example convert 'ar_SA' to 'ar' or 'zh_CN' to 'zh-CN'
+            src_lang = args.language
 
             if src_lang not in translator._lang_dict:
-                src_lang = src_lang.split("-")[0]
+                src_lang = src_lang.replace("_", "-")
+
+                if src_lang not in translator._lang_dict:
+                    src_lang = src_lang.split("-")[0]
 
     for entry in po_file:
         if not entry.translated():
@@ -223,7 +226,7 @@ def main(args):
             same_msgstr.append(entry)
 
         else:
-            if args.no_translate:
+            if translator is None:
                 continue
 
             word_dict = translator.get_info_dict(entry.msgstr, "en", src_lang)

@@ -217,6 +217,9 @@ def main(args):
                 if src_lang not in translator._lang_dict:
                     src_lang = src_lang.split("-")[0]
 
+    # Keep entries that need further analysis using the translator
+    further_analysis = []
+
     for entry in po_file:
         if not entry.translated():
             not_translated.append(entry)
@@ -225,10 +228,15 @@ def main(args):
             same_msgstr.append(entry)
 
         else:
-            if translator is None:
-                continue
+            further_analysis.append(entry)
 
-            word_dict = translator.get_info_dict(entry.msgstr, "en", src_lang)
+    if translator is not None:
+        # Pass translations as a list since GoogleTranslator can handle them
+        words_dict = translator.get_info_dict([entry.msgstr for entry in further_analysis], "en", src_lang)
+
+        for index, word_dict in enumerate(words_dict):
+            # Get the corresponding POEntry since the words_dict does not contain those
+            entry = further_analysis[index]
 
             if word_dict is not None:
                 if word_dict["has_typo"]:
@@ -246,8 +254,6 @@ def main(args):
 
                     if not found:
                         verify_trans.append((entry, word_dict["translation"]))
-
-            sleep(WTIME)
 
     # time to report
     print("=" * 25 + "Report" + "=" * 25)

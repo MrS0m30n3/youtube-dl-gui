@@ -179,10 +179,6 @@ def main(args):
 
     pinfo("Checking translations, this might take a while...")
 
-    eta = timedelta(seconds=len(pot_file) * WTIME)
-
-    pinfo("Approximate time to check translations online: {}".format(eta))
-
     pot_msgid = [entry.msgid for entry in pot_file]
     po_msgid = [entry.msgid for entry in po_file]
 
@@ -201,6 +197,9 @@ def main(args):
     # Init translator only if the '--no-translate' flag is NOT set
     translator = None
     if not args.no_translate:
+        eta = timedelta(seconds=len(pot_file) * WTIME)
+        pinfo("Approximate time to check translations online: {}".format(eta))
+
         translator = google_translate.GoogleTranslator(timeout=5.0, retries=2, wait_time=WTIME)
 
         # Set source language for GoogleTranslator

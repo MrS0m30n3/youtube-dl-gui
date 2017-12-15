@@ -89,6 +89,7 @@ def parse_date(date_string):
 
     # Just a small list with the most common timezones
     offset_list = [
+        ("JST", "0900"),
         ("EEST", "0300"),
         ("EET", "0200"),
         ("GMT", "0000"),

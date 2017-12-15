@@ -312,6 +312,8 @@ def main(args):
     print("Verify translation\t: {}".format(len(verify_trans)))
     print("Fuzzy translations\t: {}".format(len(fuzzy_trans)))
     print("Total\t\t\t: {}".format(total))
+    print("")
+    print("Total entries\t\t: {}".format(len(po_file)))
 
 
 if __name__ == "__main__":

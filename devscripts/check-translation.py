@@ -197,9 +197,6 @@ def main(args):
     # Init translator only if the '--no-translate' flag is NOT set
     translator = None
     if not args.no_translate:
-        eta = timedelta(seconds=len(pot_file) * WTIME)
-        pinfo("Approximate time to check translations online: {}".format(eta))
-
         translator = google_translate.GoogleTranslator(timeout=5.0, retries=2, wait_time=WTIME)
 
         # Set source language for GoogleTranslator
@@ -230,7 +227,16 @@ def main(args):
         else:
             further_analysis.append(entry)
 
-    if translator is not None:
+    if translator is not None and further_analysis:
+        # eta = (items_to_analyze * (WTIME + avg_ms)) - WTIME
+        # We subtract WTIME at the end because there is no wait for the last item on the list
+        # avg_msg = 200ms
+        eta_seconds = (len(further_analysis) * (WTIME + 0.2)) - WTIME
+        eta_seconds = int(round(eta_seconds))
+
+        eta = timedelta(seconds=eta_seconds)
+        pinfo("Approximate time to check translations online: {}".format(eta))
+
         # Pass translations as a list since GoogleTranslator can handle them
         words_dict = translator.get_info_dict([entry.msgstr for entry in further_analysis], "en", src_lang)
 

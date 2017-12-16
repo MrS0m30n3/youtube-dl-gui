@@ -1,0 +1,17 @@
+Source: youtube-dl-gui
+Section: web
+Priority: optional
+Maintainer: nodiscc <nodiscc@gmail.com>
+Build-Depends: debhelper (>= 9), dh-python, python-wxgtk3.0, python-twodict, python-all
+X-Python-Version: >= 2.7
+Standards-Version: 3.9.8
+Homepage: https://github.com/MrS0m30n3/youtube-dl-gui
+
+Package: youtube-dl-gui
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}
+Recommends: ffmpeg
+Description: A cross platform front-end GUI for the popular youtube-dl media downloader
+ Cross platform front-end GUI for the popular youtube-dl media downloader, 
+ written in wxPython. Supported sites can be found at
+ https://rg3.github.io/youtube-dl/supportedsites.html

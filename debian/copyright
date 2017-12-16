@@ -1,0 +1,17 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: youtube-dl-gui
+Source: https://github.com/MrS0m30n3/youtube-dl-gui
+
+Files: *
+Copyright: none
+License: Public Domain
+
+Files: youtube_dl_gui/data/pixmaps/
+Copyright: 2016-2017 Google <youtube_dl_gui/data/pixmaps/icons-license>
+License: Creative Commons
+
+License: Public Domain
+  https://unlicense.org/
+
+License: Creative Commons
+  https://creativecommons.org/licenses/by-sa/3.0/

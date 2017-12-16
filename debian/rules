@@ -1,0 +1,20 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2
+
+override_dh_auto_install:
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/16x16/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/16x16/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/32x32/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/32x32/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/48x48/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/48x48/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/64x64/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/64x64/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/128x128/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/128x128/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube_dl_gui/data/icons/hicolor/256x256/apps/youtube-dl-gui.png $(CURDIR)/debian/youtube-dl-gui/usr/share/icons/hicolor/256x256/apps/youtube-dl-gui.png
+	install -Dm 644 $(CURDIR)/youtube-dl-gui.desktop $(CURDIR)/debian/youtube-dl-gui/usr/share/applications/youtube-dl-gui.desktop
+	dh_auto_install
+
+clean:
+	rm -rf build
+	rm -f youtube_dl_gui/*.pyc
+	dh_clean
+

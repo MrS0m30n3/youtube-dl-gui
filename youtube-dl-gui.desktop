@@ -1,0 +1,8 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=youtube-dlG
+Exec=youtube-dl-gui
+Icon=youtube-dl-gui
+Categories=Network;AudioVideo
+Comment=A graphical interface for youtube-dl media downloader

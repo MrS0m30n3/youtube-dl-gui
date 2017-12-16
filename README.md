@@ -29,10 +29,10 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 2. Change directory into *youtube-dl-gui-0.4*
 3. Run `python setup.py install`
 
-### Install PyPi
+### Install from PyPi
 1. Run `pip install youtube-dlg`
 
-### Install Windows Installer
+### Windows Installer
 1. Download & extract the Windows installer
 2. Run the `setup.exe` file
 

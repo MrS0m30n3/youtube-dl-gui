@@ -1,0 +1,6 @@
+version=4
+
+# GitHub hosted projects
+opts="filenamemangle=s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%<project>-$1.tar.gz%" \
+   https://github.com/MrS0m30n3/youtube-dl-gui/tags \
+   (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian uupdate

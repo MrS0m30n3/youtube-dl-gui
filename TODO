@@ -41,3 +41,4 @@ Probably wont add
 * Add '--recode-video' to Formats tab
 * Auto video format detection
 * Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
+* Use proxy during update phase (see: issue #244)

@@ -12,7 +12,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - Japanese translation (#226)
 - Italian translation (#231)
 - Czech translation (#233)
+- Automatic locale detection during first run (#235)
 
 ### Fixed
 - Bug in utils.convert_item function
+- Bug in downloaders.YoutubeDLDownloader (#244)
+
+### Changed
+- Update timeout from 20 to 10 seconds (#244)
 

@@ -1065,6 +1065,7 @@ class MainFrame(wx.Frame):
             result = True
 
         if result:
+            self.save_url_list_to_file() # save url list to file
             self.close()
 
     def close(self):
@@ -1085,6 +1086,10 @@ class MainFrame(wx.Frame):
         self.opt_manager.save_to_file()
 
         self.Destroy()
+
+    def save_url_list_to_file(self):
+        with open('url-list.txt', mode="w") as out_file:
+            out_file.writelines(self._url_list.GetValue())
 
 
 class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):

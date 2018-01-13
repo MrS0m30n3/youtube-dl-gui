@@ -175,6 +175,11 @@ def linux_setup():
         ("share/pixmaps", ["youtube_dl_gui/data/pixmaps/youtube-dl-gui.png"])
     )
 
+    # Add man page
+    data_files.append(
+        ("share/man/man1", ["youtube-dl-gui.1"])
+    )
+
     # Add pixmaps icons (*.png) & i18n files
     package_data[__packagename__] = [
         "data/pixmaps/*.png",

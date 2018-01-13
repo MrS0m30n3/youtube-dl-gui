@@ -3,6 +3,8 @@ include AUTHORS
 include LICENSE
 include README.md
 include MANIFEST.in
+include ChangeLog
+include youtube-dl-gui.1
 
 include tests/*.py
 include devscripts/*

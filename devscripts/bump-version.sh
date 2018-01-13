@@ -12,6 +12,7 @@ FILES=`cat <<EOF
 $PACKAGE/version.py
 .github/ISSUE_TEMPLATE.md
 README.md
+youtube-dl-gui.1
 EOF`
 
 # Update version string on given file

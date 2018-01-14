@@ -5,8 +5,8 @@
 
 from __future__ import unicode_literals
 
+import os
 import json
-import os.path
 
 from .utils import (
     os_path_expanduser,
@@ -302,6 +302,12 @@ class OptionsManager(object):
             'add_metadata': False,
             'disable_update': False
         }
+
+        # Set the youtubedl_path again if the disable_update option is set
+        new_path = '/usr/bin'
+
+        if self.options['disable_update'] and os.name != 'nt' and os.path.exists(new_path):
+            self.options['youtubedl_path'] = new_path
 
     def load_from_file(self):
         """Load options from settings file. """

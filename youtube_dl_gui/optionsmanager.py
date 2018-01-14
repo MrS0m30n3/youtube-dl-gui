@@ -232,6 +232,8 @@ class OptionsManager(object):
 
             add_metadata (boolean): When True will write metadata to file.
 
+            disable_update (boolean): When True the update process will be disabled.
+
         """
         #REFACTOR Remove old options & check options validation
         self.options = {
@@ -297,7 +299,8 @@ class OptionsManager(object):
             'confirm_deletion': True,
             'nomtime': False,
             'embed_thumbnail': False,
-            'add_metadata': False
+            'add_metadata': False,
+            'disable_update': False
         }
 
     def load_from_file(self):

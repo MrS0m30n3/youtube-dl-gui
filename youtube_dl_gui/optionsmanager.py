@@ -306,7 +306,7 @@ class OptionsManager(object):
         # Set the youtubedl_path again if the disable_update option is set
         new_path = '/usr/bin'
 
-        if self.options['disable_update'] and os.name != 'nt' and os.path.exists(new_path):
+        if self.options['disable_update'] and os.name != 'nt' and os_path_exists(new_path):
             self.options['youtubedl_path'] = new_path
 
     def load_from_file(self):

@@ -1036,7 +1036,12 @@ class MainFrame(wx.Frame):
             Currently there is not way to stop the update process.
 
         """
-        self._update_youtubedl()
+        if self.opt_manager.options["disable_update"]:
+            self._create_popup(_("Updates are disabled for your system. Please use the system's package manager to update youtube-dl."),
+                               self.INFO_LABEL,
+                               wx.OK | wx.ICON_INFORMATION)
+        else:
+            self._update_youtubedl()
 
     def _on_options(self, event):
         """Event handler of the self._options_btn widget.

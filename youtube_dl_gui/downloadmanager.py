@@ -396,7 +396,8 @@ class DownloadManager(Thread):
         return self._time_it_took
 
     def run(self):
-        self._check_youtubedl()
+        if not self.opt_manager.options["disable_update"]:
+            self._check_youtubedl()
         self._time_it_took = time.time()
 
         while self._running:

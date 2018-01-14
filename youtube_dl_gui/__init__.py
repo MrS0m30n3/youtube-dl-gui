@@ -18,6 +18,7 @@ from __future__ import unicode_literals
 
 import sys
 import gettext
+import os.path
 
 try:
     import wx
@@ -48,7 +49,9 @@ from .optionsmanager import OptionsManager
 
 from .utils import (
     get_config_path,
-    get_locale_file
+    get_locale_file,
+    os_path_exists,
+    YOUTUBEDL_BIN
 )
 
 
@@ -78,7 +81,14 @@ from .mainframe import MainFrame
 
 def main():
     """The real main. Creates and calls the main app windows. """
+    youtubedl_path = os.path.join(opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
+
     app = wx.App()
     frame = MainFrame(opt_manager, log_manager)
     frame.Show()
+
+    if opt_manager.options["disable_update"] and not os_path_exists(youtubedl_path):
+        wx.MessageBox(_("Failed to locate youtube-dl and updates are disabled"), _("Error"), wx.OK | wx.ICON_ERROR)
+        frame.close()
+
     app.MainLoop()

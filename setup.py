@@ -51,7 +51,7 @@ Notes:
 
 """
 
-from distutils import cmd
+from distutils import cmd, log
 from distutils.core import setup
 from distutils.command.build import build
 
@@ -132,10 +132,10 @@ class BuildTranslations(cmd.Command):
             mo_file = po_file.replace(".po", ".mo")
 
             try:
-                print("building MO file for '{}'").format(po_file)
+                log.info("building MO file for '{}'".format(po_file))
                 call([self.exec_name, "-o", mo_file, po_file])
             except OSError:
-                print("could not locate file '{}', exiting...".format(self.exec_name))
+                log.error("could not locate file '{}', exiting...".format(self.exec_name))
                 sys.exit(1)
 
 
@@ -172,12 +172,12 @@ class Build(build):
             data = input_file.readlines()
 
         if data is None:
-            print("building with updates disabled failed!")
+            log.error("building with updates disabled failed!")
             sys.exit(1)
 
         for index, line in enumerate(data):
             if "'disable_update': False" in line:
-                print("disabling updates")
+                log.info("disabling updates")
                 data[index] = line.replace("False", "True")
                 break
 

@@ -24,6 +24,10 @@ Examples:
 
         python setup.py build_trans
 
+    Build with updates disabled::
+
+        python setup.py build --no-updates
+
 Requirements:
 
     * GNU gettext utilities
@@ -144,8 +148,41 @@ class Build(build):
         ("build_trans", None)
     ] + build.sub_commands
 
+    build.user_options.append(("no-updates", None, "build with updates disabled"))
+
+    def initialize_options(self):
+        build.initialize_options(self)
+        self.no_updates = None
+
     def run(self):
         build.run(self)
+
+        if self.no_updates:
+            self.__disable_updates()
+
+    def __disable_updates(self):
+        lib_dir = os.path.join(self.build_lib, __packagename__)
+        target_file = "optionsmanager.py"
+
+        # Options file should be available from previous build commands
+        optionsfile = os.path.join(lib_dir, target_file)
+        data = None
+
+        with open(optionsfile, "r") as input_file:
+            data = input_file.readlines()
+
+        if data is None:
+            print("building with updates disabled failed!")
+            sys.exit(1)
+
+        for index, line in enumerate(data):
+            if "'disable_update': False" in line:
+                print("disabling updates")
+                data[index] = line.replace("False", "True")
+                break
+
+        with open(optionsfile, "w") as output_file:
+            output_file.writelines(data)
 
 
 # Overwrite cmds

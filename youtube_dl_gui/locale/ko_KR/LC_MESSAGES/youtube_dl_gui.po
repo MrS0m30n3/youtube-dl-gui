@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
-"POT-Creation-Date: 2017-06-15 17:13+EEST\n"
+"POT-Creation-Date: 2018-01-15 16:42+EET\n"
 "PO-Revision-Date: 2017-02-22 02:49+GMT\n"
 "Last-Translator: Yi Soo, An <yisooan@gmail.com>\n"
 "Language-Team: kr\n"
@@ -14,32 +14,40 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: vim\n"
 
-#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:108
+#: youtube_dl_gui/__init__.py:91
+msgid "Error"
+msgstr ""
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Failed to locate youtube-dl and updates are disabled"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
 msgstr "ID"
 
-#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:109
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
 #: youtube_dl_gui/mainframe.py:140
 msgid "Title"
 msgstr "제목"
 
-#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
 msgid "Title + ID"
 msgstr "제목 + ID"
 
-#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:111
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
 msgid "Title + Quality"
 msgstr "제목 + 화질"
 
-#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:112
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
 msgid "Title + ID + Quality"
 msgstr "제목 + ID + 화질"
 
-#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:113
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
 msgid "Custom"
 msgstr "사용자 설정"
 
-#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:118
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
 #: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
 msgid "default"
 msgstr "기본값"
@@ -56,7 +64,7 @@ msgstr "업데이트"
 msgid "Options"
 msgstr "옵션"
 
-#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:589
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
 msgid "Stop"
 msgstr "정지"
 
@@ -107,7 +115,7 @@ msgid "Pause"
 msgstr "일시정지"
 
 #: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
-#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:587
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
 msgid "Start"
 msgstr "시작"
 
@@ -279,19 +287,23 @@ msgstr "{0}초 후에 시스템이 종료됩니다."
 msgid "No items to download"
 msgstr "다운로드할 아이템이 없습니다."
 
-#: youtube_dl_gui/mainframe.py:1060
+#: youtube_dl_gui/mainframe.py:1040
+msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1065
 msgid "Are you sure you want to exit?"
 msgstr "종료하시겠습니까?"
 
-#: youtube_dl_gui/mainframe.py:1060
+#: youtube_dl_gui/mainframe.py:1065
 msgid "Exit"
 msgstr "종료"
 
-#: youtube_dl_gui/mainframe.py:1301 youtube_dl_gui/mainframe.py:1451
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
 msgid "Cancel"
 msgstr "취소"
 
-#: youtube_dl_gui/mainframe.py:1450
+#: youtube_dl_gui/mainframe.py:1455
 msgid "OK"
 msgstr "확인"
 
@@ -323,266 +335,266 @@ msgstr "고급설정"
 msgid "Extra"
 msgstr "기타"
 
-#: youtube_dl_gui/optionsframe.py:315
+#: youtube_dl_gui/optionsframe.py:310
 msgid "Language"
 msgstr "언어"
 
-#: youtube_dl_gui/optionsframe.py:318
+#: youtube_dl_gui/optionsframe.py:313
 msgid "Filename format"
 msgstr "파일이름 형식"
 
-#: youtube_dl_gui/optionsframe.py:323
+#: youtube_dl_gui/optionsframe.py:318
 msgid "Filename options"
 msgstr "파일이름 옵션"
 
-#: youtube_dl_gui/optionsframe.py:324
+#: youtube_dl_gui/optionsframe.py:319
 msgid "Restrict filenames to ASCII"
 msgstr "ASCII 문자로 제한"
 
-#: youtube_dl_gui/optionsframe.py:326
+#: youtube_dl_gui/optionsframe.py:321
 msgid "More options"
 msgstr "추가옵션"
 
-#: youtube_dl_gui/optionsframe.py:327
+#: youtube_dl_gui/optionsframe.py:322
 msgid "Confirm on exit"
 msgstr "종료시 확인"
 
-#: youtube_dl_gui/optionsframe.py:328
+#: youtube_dl_gui/optionsframe.py:323
 msgid "Confirm item deletion"
 msgstr "아이템 삭제시 확인"
 
-#: youtube_dl_gui/optionsframe.py:329
+#: youtube_dl_gui/optionsframe.py:324
 msgid "Inform me on download completion"
 msgstr "완료시 알림"
 
-#: youtube_dl_gui/optionsframe.py:331
+#: youtube_dl_gui/optionsframe.py:326
 msgid "Shutdown on download completion"
 msgstr "완료시 시스템종료"
 
-#: youtube_dl_gui/optionsframe.py:342
+#: youtube_dl_gui/optionsframe.py:337
 msgid "SUDO password"
 msgstr "SUDO 암호"
 
-#: youtube_dl_gui/optionsframe.py:420 youtube_dl_gui/optionsframe.py:821
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
 msgid "In order for the changes to take effect please restart {0}"
 msgstr "설정값을 적용하기 위해 {0}을 재시작하세요."
 
-#: youtube_dl_gui/optionsframe.py:421 youtube_dl_gui/optionsframe.py:822
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
 msgid "Restart"
 msgstr "재시작"
 
-#: youtube_dl_gui/optionsframe.py:468
+#: youtube_dl_gui/optionsframe.py:463
 msgid "high"
 msgstr "높음"
 
-#: youtube_dl_gui/optionsframe.py:468
+#: youtube_dl_gui/optionsframe.py:463
 msgid "low"
 msgstr "낮음"
 
-#: youtube_dl_gui/optionsframe.py:468
+#: youtube_dl_gui/optionsframe.py:463
 msgid "mid"
 msgstr "중간"
 
-#: youtube_dl_gui/optionsframe.py:473
+#: youtube_dl_gui/optionsframe.py:468
 msgid "Video formats"
 msgstr "비디오 형식"
 
-#: youtube_dl_gui/optionsframe.py:476
+#: youtube_dl_gui/optionsframe.py:471
 msgid "Audio formats"
 msgstr "오디오 형식"
 
-#: youtube_dl_gui/optionsframe.py:479
+#: youtube_dl_gui/optionsframe.py:474
 msgid "Post-Process options"
 msgstr "후처리 옵션"
 
-#: youtube_dl_gui/optionsframe.py:480
+#: youtube_dl_gui/optionsframe.py:475
 msgid "Keep original files"
 msgstr "원본파일 유지"
 
-#: youtube_dl_gui/optionsframe.py:481
+#: youtube_dl_gui/optionsframe.py:476
 msgid "Extract audio from video file"
 msgstr "오디오 추출"
 
-#: youtube_dl_gui/optionsframe.py:482
+#: youtube_dl_gui/optionsframe.py:477
 msgid "Embed thumbnail in audio file"
 msgstr "오디오에 섬네일 추가"
 
-#: youtube_dl_gui/optionsframe.py:483
+#: youtube_dl_gui/optionsframe.py:478
 msgid "Add metadata to file"
 msgstr "메타데이터 추가"
 
-#: youtube_dl_gui/optionsframe.py:485
+#: youtube_dl_gui/optionsframe.py:480
 msgid "Audio quality"
 msgstr "오디오 음질"
 
-#: youtube_dl_gui/optionsframe.py:543
+#: youtube_dl_gui/optionsframe.py:538
 msgid "English"
 msgstr "English"
 
-#: youtube_dl_gui/optionsframe.py:544
+#: youtube_dl_gui/optionsframe.py:539
 msgid "French"
 msgstr "French"
 
-#: youtube_dl_gui/optionsframe.py:545
+#: youtube_dl_gui/optionsframe.py:540
 msgid "German"
 msgstr "German"
 
-#: youtube_dl_gui/optionsframe.py:546
+#: youtube_dl_gui/optionsframe.py:541
 msgid "Greek"
 msgstr "Greek"
 
-#: youtube_dl_gui/optionsframe.py:547
+#: youtube_dl_gui/optionsframe.py:542
 msgid "Hebrew"
 msgstr "Hebrew"
 
-#: youtube_dl_gui/optionsframe.py:548
+#: youtube_dl_gui/optionsframe.py:543
 msgid "Italian"
 msgstr "Italian"
 
-#: youtube_dl_gui/optionsframe.py:549
+#: youtube_dl_gui/optionsframe.py:544
 msgid "Portuguese"
 msgstr "Portuguese"
 
-#: youtube_dl_gui/optionsframe.py:550
+#: youtube_dl_gui/optionsframe.py:545
 msgid "Russian"
 msgstr "Russian"
 
-#: youtube_dl_gui/optionsframe.py:551
+#: youtube_dl_gui/optionsframe.py:546
 msgid "Spanish"
 msgstr "Spanish"
 
-#: youtube_dl_gui/optionsframe.py:552
+#: youtube_dl_gui/optionsframe.py:547
 msgid "Swedish"
 msgstr "Swedish"
 
-#: youtube_dl_gui/optionsframe.py:553
+#: youtube_dl_gui/optionsframe.py:548
 msgid "Turkish"
 msgstr "Turkish"
 
-#: youtube_dl_gui/optionsframe.py:569
+#: youtube_dl_gui/optionsframe.py:564
 msgid "None"
 msgstr "없음"
 
-#: youtube_dl_gui/optionsframe.py:570
+#: youtube_dl_gui/optionsframe.py:565
 msgid "Automatic subtitles (YOUTUBE ONLY)"
 msgstr "오토매틱 자막 (유튜브 전용)"
 
-#: youtube_dl_gui/optionsframe.py:571
+#: youtube_dl_gui/optionsframe.py:566
 msgid "All available subtitles"
 msgstr "사용가능한 모든 자막"
 
-#: youtube_dl_gui/optionsframe.py:572
+#: youtube_dl_gui/optionsframe.py:567
 msgid "Subtitles by language"
 msgstr "언어에 따른 자막"
 
-#: youtube_dl_gui/optionsframe.py:578
+#: youtube_dl_gui/optionsframe.py:573
 msgid "Subtitles"
 msgstr "자막"
 
-#: youtube_dl_gui/optionsframe.py:582
+#: youtube_dl_gui/optionsframe.py:577
 msgid "Subtitles options"
 msgstr "자막 옵션"
 
-#: youtube_dl_gui/optionsframe.py:583
+#: youtube_dl_gui/optionsframe.py:578
 msgid "Embed subtitles into video file (mp4 ONLY)"
 msgstr "비디오에 자막 삽입 (mp4 전용)"
 
-#: youtube_dl_gui/optionsframe.py:585
+#: youtube_dl_gui/optionsframe.py:580
 msgid "Playlist"
 msgstr "재생목록"
 
-#: youtube_dl_gui/optionsframe.py:591 youtube_dl_gui/optionsframe.py:596
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
 msgid "Max"
 msgstr "최대"
 
-#: youtube_dl_gui/optionsframe.py:594
+#: youtube_dl_gui/optionsframe.py:589
 msgid "Filesize"
 msgstr "파일크기"
 
-#: youtube_dl_gui/optionsframe.py:599
+#: youtube_dl_gui/optionsframe.py:594
 msgid "Min"
 msgstr "최소"
 
-#: youtube_dl_gui/optionsframe.py:728
+#: youtube_dl_gui/optionsframe.py:723
 msgid "Retries"
 msgstr "재시도 횟수"
 
-#: youtube_dl_gui/optionsframe.py:731
+#: youtube_dl_gui/optionsframe.py:726
 msgid "Authentication"
 msgstr "인증"
 
-#: youtube_dl_gui/optionsframe.py:733
+#: youtube_dl_gui/optionsframe.py:728
 msgid "Username"
 msgstr "사용자 이름"
 
-#: youtube_dl_gui/optionsframe.py:735
+#: youtube_dl_gui/optionsframe.py:730
 msgid "Password"
 msgstr "비밀번호"
 
-#: youtube_dl_gui/optionsframe.py:737
+#: youtube_dl_gui/optionsframe.py:732
 msgid "Video password"
 msgstr "비디오 비밀번호"
 
-#: youtube_dl_gui/optionsframe.py:740
+#: youtube_dl_gui/optionsframe.py:735
 msgid "Network"
 msgstr "네트워크"
 
-#: youtube_dl_gui/optionsframe.py:742
+#: youtube_dl_gui/optionsframe.py:737
 msgid "Proxy"
 msgstr "프록시"
 
-#: youtube_dl_gui/optionsframe.py:744
+#: youtube_dl_gui/optionsframe.py:739
 msgid "User agent"
 msgstr "User agent"
 
-#: youtube_dl_gui/optionsframe.py:746
+#: youtube_dl_gui/optionsframe.py:741
 msgid "Referer"
 msgstr "Referer"
 
-#: youtube_dl_gui/optionsframe.py:749
+#: youtube_dl_gui/optionsframe.py:744
 msgid "Logging"
 msgstr "로그"
 
-#: youtube_dl_gui/optionsframe.py:751
+#: youtube_dl_gui/optionsframe.py:746
 msgid "Enable log"
 msgstr "로그 사용"
 
-#: youtube_dl_gui/optionsframe.py:752
+#: youtube_dl_gui/optionsframe.py:747
 msgid "View"
 msgstr "보기"
 
-#: youtube_dl_gui/optionsframe.py:753
+#: youtube_dl_gui/optionsframe.py:748
 msgid "Clear"
 msgstr "초기화"
 
-#: youtube_dl_gui/optionsframe.py:863
+#: youtube_dl_gui/optionsframe.py:858
 msgid "Youtube-dl command line options (e.g. --help)"
 msgstr "Youtube-dl 커맨드라인 옵션 (예: --help)"
 
-#: youtube_dl_gui/optionsframe.py:866
+#: youtube_dl_gui/optionsframe.py:861
 msgid "Extra options"
 msgstr "기타 옵션"
 
-#: youtube_dl_gui/optionsframe.py:868
+#: youtube_dl_gui/optionsframe.py:863
 msgid "Debug youtube-dl"
 msgstr "Youtube-dl 디버그"
 
-#: youtube_dl_gui/optionsframe.py:869
+#: youtube_dl_gui/optionsframe.py:864
 msgid "Ignore errors"
 msgstr "오류 무시"
 
-#: youtube_dl_gui/optionsframe.py:870
+#: youtube_dl_gui/optionsframe.py:865
 msgid "Ignore youtube-dl config"
 msgstr "Youtube-dl 설정 무시"
 
-#: youtube_dl_gui/optionsframe.py:871
+#: youtube_dl_gui/optionsframe.py:866
 msgid "No mtime"
 msgstr "mtime 사용안함"
 
-#: youtube_dl_gui/optionsframe.py:872
+#: youtube_dl_gui/optionsframe.py:867
 msgid "Prefer native HLS"
 msgstr "네이티브 HLS 사용"
 
-#: youtube_dl_gui/optionsframe.py:933
+#: youtube_dl_gui/optionsframe.py:928
 msgid "Log Viewer"
 msgstr "로그 뷰어"

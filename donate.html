@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <link type="image/png" rel="icon" href="images/thumbnail.png"/>
+
+        <title>youtube-dlg - donate</title>
+
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-89216333-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+
+        <style>
+            body {
+              font-family: Arial;
+            }
+
+            form {
+              display: inline;
+            }
+
+            .content_box {
+              padding-bottom: 2%;
+              padding-top: 2%;
+            }
+
+            .content {
+              margin: 0 auto;
+              max-width: 50%;
+            }
+
+            .content h1 {
+              border-bottom: 1px solid black;
+            }
+
+            .content p {
+              padding-left: 2%;
+              display: inline;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="content_box">
+            <div class="content">
+                <h1>Donations</h1>
+
+                <h2 id="paypal">Paypal</h2>
+                <p>You can donate via PayPal here:</p>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="hosted_button_id" value="P4BVPPUR9575N">
+					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+				</form>
+            </div>
+        </div>
+    </body>
+</html>

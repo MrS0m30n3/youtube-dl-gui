@@ -46,6 +46,7 @@ ul a:hover {
   margin-bottom: 1vw;
   margin-top: 2vw;
   padding: 1.2vw;
+  text-align: center;
 }
 
 .button:hover {
@@ -119,6 +120,16 @@ ul a:hover {
   font-weight: normal;
 }
 
+.header_buttons {
+  float: right;
+  margin-right: 2%;
+}
+
+.header_buttons a {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .instruction {
   background-color: #F1F1F1;
   display: inline;
@@ -149,13 +160,6 @@ ul a:hover {
 .requirements li {
   color: #59ADDB;
   font-weight: bold;
-}
-
-.top_right {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin: 2% 2% 0 auto;
 }
 
 /* Resources */

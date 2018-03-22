@@ -4,9 +4,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
-"POT-Creation-Date: 2018-03-22 12:40+CST\n"
+"POT-Creation-Date: 2018-03-22 15:49+CST\n"
 "PO-Revision-Date: 2017-09-26 00:44+JST\n"
-"Last-Translator: robin5968 <robin5968@yahoo.com.tw>\n"
+"Last-Translator: robin840211 <robin840211@gmail.com>\n"
 "Language-Team: zh\n"
 "Language: TW\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,8 @@ msgstr "錯誤"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Failed to locate youtube-dl and updates are disabled"
-msgstr "無法取得 youtube-dl的位置，且更新已被禁用"
+msgstr "無法取得 youtube-dl 的位置，且更新已被禁用"
+
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
 msgstr "ID"
@@ -81,7 +82,7 @@ msgstr "警告"
 
 #: youtube_dl_gui/mainframe.py:105
 msgid "Add"
-msgstr "加入下載列表"
+msgstr "加入列表"
 
 #: youtube_dl_gui/mainframe.py:106
 msgid "Download list"
@@ -124,7 +125,7 @@ msgstr "關於 YoutubeDL-GUI"
 
 #: youtube_dl_gui/mainframe.py:115
 msgid "View Log"
-msgstr "檢視 Log 記錄檔"
+msgstr "檢視 Log 記錄"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
@@ -289,6 +290,7 @@ msgstr "沒有項目可以下載"
 #: youtube_dl_gui/mainframe.py:1040
 msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
 msgstr "更新已被你的系統停用。請使用系統更新管理員更新 youyube-dl"
+
 #: youtube_dl_gui/mainframe.py:1065
 msgid "Are you sure you want to exit?"
 msgstr "是否確認要離開?"
@@ -307,7 +309,7 @@ msgstr "OK"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
-msgstr "恢復預設值"
+msgstr "恢復預設"
 
 #: youtube_dl_gui/optionsframe.py:66
 msgid "Close"

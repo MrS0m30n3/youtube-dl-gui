@@ -272,6 +272,7 @@ class GeneralTab(TabPanel):
         ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),
+    	('hu_HU', 'Hungarian'),
         ('it_IT', 'Italian'),
         ('ja_JP', 'Japanese'),
         ('ko_KR', 'Korean'),

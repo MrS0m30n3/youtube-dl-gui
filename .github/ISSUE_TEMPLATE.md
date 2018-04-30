@@ -1,25 +1,24 @@
 ## Please follow the guide below
 
-- You will be asked some questions and requested to provide some information, please read them **carefully** and answer **honestly**
-- Put an `x` into all the boxes [ ] relevant to your issue (like that [x])
-- Use *Preview* tab to see how your issue will actually look like
+Please read the following carefully to ensure your issue can be dealt with more easily.
 
-### WARNING
-All invalid issues will be rejected!!
+- Put an `x` into all the boxes [ ] relevant to your issue (like that [x])
+- Don't delete the default text unless not relevant to your issue.
+- All invalid issues will be rejected.
 
 ---
 
 ### Before going further
 
-- If your problem is a bug with **youtube-dl** or a request for new site support please report it [here](https://github.com/rg3/youtube-dl/issues)
+- youtube-dl-gui is a graphical frontend for the  youtube-dl (https://rg3.github.io/youtube-dl) command-line utility. If your problem is a bug with `youtube-dl` or a request for new site support please report it here: https://github.com/rg3/youtube-dl/issues
 
-- Make sure you are using the *latest* **youtube-dl-gui** version (Click the `Settings` icon and then `About` to view the current version)
+- Make sure you are using the *latest* **youtube-dl-gui** version (Click the `Settings` icon and then `About` to view the current version).
 
-- Make sure you are using the *latest* **youtube-dl** version (Click the `Settings` icon and then `Update` to update to the latest **youtube-dl** version)
+- Make sure you are using the *latest* **youtube-dl** version (Click the `Settings` icon and then `Update` to update to the latest **youtube-dl** version).
 
-- Make sure you searched the bugtracker for similar issues **including closed ones**
+- Make sure you searched the bugtracker (https://github.com/MrS0m30n3/youtube-dl-gui/issues) for similar issues **including closed ones**.
 
-- Make sure to read the [FAQs](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/docs/faqs.md) file
+- Make sure to read the FAQs file: https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/docs/faqs.md
 
   - [ ] **I think** my problem is **NOT** with **youtube-dl**
   - [ ] I've **verified** and **i assure** that I'm running youtube-dl-gui **0.4**
@@ -36,9 +35,9 @@ All invalid issues will be rejected!!
 - [ ] Question
 - [ ] Other
 
-Please remove any sections between (---) if they are not related to your issue
+<:-- Please remove any sections between (---------------) if they are not related to your issue. -->
 
----
+----------------------------------------
 
 ### Bug report
 
@@ -67,19 +66,22 @@ delete me and insert your log content here
 
 #### What happens instead ?
 
+```
+insert your log content here if relevant
+```
 
----
+----------------------------------------
 
 ### Feature request (request for a new functionality)
 
-Please make sure that the requested feature is **NOT** already in the [TODO](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/TODO) list
+<!-- Please make sure that the requested feature is **NOT** already in the TODO list: https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/TODO -->
 
 - [ ] I've **verified** and **i assure** that my requested feature is **NOT** in the TODO list
 
 #### What operating system do you use ?
 
 
----
+#### Description
 
 <!--Enter description of your issue, suggested solution and other information below. Please make sure the description is worded well enough to be understood-->
 

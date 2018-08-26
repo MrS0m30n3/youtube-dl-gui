@@ -1,0 +1,616 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2018-01-15 16:42+EET\n"
+"PO-Revision-Date: 2018-08-24 14:18+0100\n"
+"Language-Team: \n"
+"Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.6.10\n"
+"Last-Translator: \n"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Error"
+msgstr "Hiba"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Failed to locate youtube-dl and updates are disabled"
+msgstr "Nem található a youtube-dl, és a frissítés ki van kapcsolva"
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
+msgid "ID"
+msgstr "Azonosító"
+
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/mainframe.py:140
+msgid "Title"
+msgstr "Cím"
+
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
+msgid "Title + ID"
+msgstr "Cím + azonosító"
+
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
+msgid "Title + Quality"
+msgstr "Cím + minőség"
+
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
+msgid "Title + ID + Quality"
+msgstr "Cím + azonosító + minőség"
+
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
+msgid "Custom"
+msgstr "Egyedi"
+
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
+msgid "default"
+msgstr "alapértelmezett"
+
+#: youtube_dl_gui/mainframe.py:97
+msgid "Enter URLs below"
+msgstr "Adja meg alább az URL-eket!"
+
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr "Frissítés"
+
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Options"
+msgstr "Beállítások"
+
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
+msgid "Stop"
+msgstr "Leállítás"
+
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr "Információ"
+
+#: youtube_dl_gui/mainframe.py:102
+msgid "Welcome"
+msgstr "Üdvözöljük!"
+
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+#: youtube_dl_gui/mainframe.py:105
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: youtube_dl_gui/mainframe.py:106
+msgid "Download list"
+msgstr "Letöltési lista"
+
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Delete"
+msgstr "Törlés"
+
+#: youtube_dl_gui/mainframe.py:108
+msgid "Play"
+msgstr "Lejátszás"
+
+#: youtube_dl_gui/mainframe.py:109
+msgid "Up"
+msgstr "Fel"
+
+#: youtube_dl_gui/mainframe.py:110
+msgid "Down"
+msgstr "Le"
+
+#: youtube_dl_gui/mainframe.py:111
+msgid "Reload"
+msgstr "Újrakezdés"
+
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr "Szüneteltetés"
+
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
+msgid "Start"
+msgstr "Indítás"
+
+#: youtube_dl_gui/mainframe.py:114
+msgid "About"
+msgstr "Névjegy"
+
+#: youtube_dl_gui/mainframe.py:115
+msgid "View Log"
+msgstr "Napló megtekintése"
+
+#: youtube_dl_gui/mainframe.py:117
+msgid ""
+"Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) "
+"{4} second(s)"
+msgstr ""
+"{0} URL sikeresen letöltve {1} nap {2} óra {3} perc {4} másodperc alatt"
+
+#: youtube_dl_gui/mainframe.py:119
+msgid "Downloads completed"
+msgstr "A letöltések elkészültek."
+
+#: youtube_dl_gui/mainframe.py:120
+msgid ""
+"Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed "
+"({4}) Error ({5})"
+msgstr ""
+"Az összes állapota: {0:.1f}% | {1} sorbaállítva, {2} szüneteltetve, {3} "
+"zajlik, {4} kész, {5} hibás"
+
+#: youtube_dl_gui/mainframe.py:121
+msgid "Stopping downloads"
+msgstr "Letöltések leállítása"
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads stopped"
+msgstr "Letöltések leállítva"
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "Legalább egy URL-t meg kell adni."
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads started"
+msgstr "Letöltések elindítva"
+
+#: youtube_dl_gui/mainframe.py:125
+msgid "Choose Directory"
+msgstr "Válasszon könyvtárat"
+
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "A letöltés zajlik. Kérjük, várja meg, míg minden letöltés elkészül."
+
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update already in progress"
+msgstr "A frissítés már zajlik."
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "A legfrissebb youtube-dl letöltése. Kérjük, várjon..."
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Nem sikerült letölteni a youtube-dl-t [{0}]."
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "Sikerült letölteni a youtube-dl-t."
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr ""
+"Nem lehet megnyitni a(z) '{dir}' könyvtárat. A megadott útvonal nem létezik."
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr ""
+"A rendszer leállítása során hiba merült fel. Ellenőrizze, hogy helyes "
+"jelszót adott-e meg."
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "Shutting down system"
+msgstr "A rendszer leállítása"
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Extension"
+msgstr "Kiterjesztés"
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Size"
+msgstr "Méret"
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Percent"
+msgstr "Százalék"
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr "Maradt"
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Speed"
+msgstr "Sebesség"
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr "Állapot"
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "Get URL"
+msgstr "URL másolása"
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get command"
+msgstr "Parancs másolása"
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Open destination"
+msgstr "Cél megnyitása"
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Re-enter"
+msgstr "Újrakezdés"
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Resume"
+msgstr "Folytatás"
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr "Videó"
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr "Hang"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "No items selected. Please pick an action"
+msgstr "Nincs elem kiválasztva. Kérjük, válasszon egy műveletet."
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove all"
+msgstr "Összes eltávolítása"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove completed"
+msgstr "Az elkészültek eltávolítása"
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Are you sure you want to remove selected items?"
+msgstr "Biztos, hogy eltávolítja a kiválasztott elemeket?"
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Item is active, cannot remove"
+msgstr "Az elem aktív, nem távolítható el"
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Item is not completed"
+msgstr "Az elem nincs kész"
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "A frissítés zajlik. Kérjük, várja meg, míg befejeződik."
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging is disabled"
+msgstr "Naplózás kikapcsolva"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutdown"
+msgstr "Leállítás"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutting down in {0} second(s)"
+msgstr "Leállítás {0} másodperc múlva"
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "No items to download"
+msgstr "Nincs letöltendő elem"
+
+#: youtube_dl_gui/mainframe.py:1040
+msgid ""
+"Updates are disabled for your system. Please use the system's package "
+"manager to update youtube-dl."
+msgstr ""
+"A frissítés ki van kapcsolva a rendszeren. Kérjük, a rendszer "
+"csomagkezelőjével frissítse a youtube-dl-t."
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Are you sure you want to exit?"
+msgstr "Biztosan kilép?"
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Exit"
+msgstr "Kilépés"
+
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: youtube_dl_gui/mainframe.py:1455
+msgid "OK"
+msgstr "OK"
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Reset"
+msgstr "Visszaállítás"
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Close"
+msgstr "Bezárás"
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "General"
+msgstr "Általános"
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formats"
+msgstr "Formátumok"
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr "Letöltések"
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Advanced"
+msgstr "Haladó"
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr "Extra"
+
+#: youtube_dl_gui/optionsframe.py:310
+msgid "Language"
+msgstr "Nyelv"
+
+#: youtube_dl_gui/optionsframe.py:313
+msgid "Filename format"
+msgstr "Fájlnév alakja"
+
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Filename options"
+msgstr "Fájlnév beállításai"
+
+#: youtube_dl_gui/optionsframe.py:319
+msgid "Restrict filenames to ASCII"
+msgstr "Csak ASCII fájlnevek"
+
+#: youtube_dl_gui/optionsframe.py:321
+msgid "More options"
+msgstr "További beállítások"
+
+#: youtube_dl_gui/optionsframe.py:322
+msgid "Confirm on exit"
+msgstr "Megerősítés kérése kilépéskor"
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Confirm item deletion"
+msgstr "Megerősítés kérése elem törlésekor"
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Inform me on download completion"
+msgstr "Jelezze, ha kész a letöltés"
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "Shutdown on download completion"
+msgstr "Állítsa le a rendszert, ha kész a letöltés"
+
+#: youtube_dl_gui/optionsframe.py:337
+msgid "SUDO password"
+msgstr "SUDO jelszó"
+
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "A változások életbe léptetéséhez kérjük, indítsa újra a(z) {0}-t"
+
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
+msgid "Restart"
+msgstr "Újraindítás"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "high"
+msgstr "magas"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "low"
+msgstr "alacsony"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "mid"
+msgstr "közepes"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "Video formats"
+msgstr "Videóformátumok"
+
+#: youtube_dl_gui/optionsframe.py:471
+msgid "Audio formats"
+msgstr "Hangformátumok"
+
+#: youtube_dl_gui/optionsframe.py:474
+msgid "Post-Process options"
+msgstr "Utófeldolgozás beállításai"
+
+#: youtube_dl_gui/optionsframe.py:475
+msgid "Keep original files"
+msgstr "Eredeti fájlok megtartása"
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Extract audio from video file"
+msgstr "Hang kibontása a videófájlból"
+
+#: youtube_dl_gui/optionsframe.py:477
+msgid "Embed thumbnail in audio file"
+msgstr "Bélyegkép beágyazása a hangfájlba"
+
+#: youtube_dl_gui/optionsframe.py:478
+msgid "Add metadata to file"
+msgstr "Metaadatok hozzáadása a fájlhoz"
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Audio quality"
+msgstr "Hangminőség"
+
+#: youtube_dl_gui/optionsframe.py:538
+msgid "English"
+msgstr "angol"
+
+#: youtube_dl_gui/optionsframe.py:539
+msgid "French"
+msgstr "francia"
+
+#: youtube_dl_gui/optionsframe.py:540
+msgid "German"
+msgstr "német"
+
+#: youtube_dl_gui/optionsframe.py:541
+msgid "Greek"
+msgstr "görög"
+
+#: youtube_dl_gui/optionsframe.py:542
+msgid "Hebrew"
+msgstr "héber"
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "Italian"
+msgstr "olasz"
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "Portuguese"
+msgstr "portugál"
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "Russian"
+msgstr "orosz"
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Spanish"
+msgstr "spanyol"
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Swedish"
+msgstr "svéd"
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Turkish"
+msgstr "török"
+
+#: youtube_dl_gui/optionsframe.py:564
+msgid "None"
+msgstr "Nincs"
+
+#: youtube_dl_gui/optionsframe.py:565
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "Automatikus feliratok (CSAK YOUTUBE)"
+
+#: youtube_dl_gui/optionsframe.py:566
+msgid "All available subtitles"
+msgstr "Minden elérhető felirat"
+
+#: youtube_dl_gui/optionsframe.py:567
+msgid "Subtitles by language"
+msgstr "Feliratok nyelv szerint"
+
+#: youtube_dl_gui/optionsframe.py:573
+msgid "Subtitles"
+msgstr "Feliratok"
+
+#: youtube_dl_gui/optionsframe.py:577
+msgid "Subtitles options"
+msgstr "Feliratok beállításai"
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "Feliratok beágyazása a videófájlba (CSAK mp4)"
+
+#: youtube_dl_gui/optionsframe.py:580
+msgid "Playlist"
+msgstr "Lejátszólista"
+
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
+msgid "Max"
+msgstr "Max."
+
+#: youtube_dl_gui/optionsframe.py:589
+msgid "Filesize"
+msgstr "Fájlméret"
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Min"
+msgstr "Min."
+
+#: youtube_dl_gui/optionsframe.py:723
+msgid "Retries"
+msgstr "Újrapróbálkozások"
+
+#: youtube_dl_gui/optionsframe.py:726
+msgid "Authentication"
+msgstr "Hitelesítés"
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Username"
+msgstr "Felhasználónév"
+
+#: youtube_dl_gui/optionsframe.py:730
+msgid "Password"
+msgstr "Jelszó"
+
+#: youtube_dl_gui/optionsframe.py:732
+msgid "Video password"
+msgstr "Videó jelszava"
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Network"
+msgstr "Hálózat"
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Proxy"
+msgstr "Proxy"
+
+#: youtube_dl_gui/optionsframe.py:739
+msgid "User agent"
+msgstr "User agent"
+
+#: youtube_dl_gui/optionsframe.py:741
+msgid "Referer"
+msgstr "Referer"
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "Logging"
+msgstr "Naplózás"
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Enable log"
+msgstr "Naplózás bekapcsolása"
+
+#: youtube_dl_gui/optionsframe.py:747
+msgid "View"
+msgstr "Megnéz"
+
+#: youtube_dl_gui/optionsframe.py:748
+msgid "Clear"
+msgstr "Töröl"
+
+#: youtube_dl_gui/optionsframe.py:858
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "A youtube-dl parancssori kapcsolói (pl. --help)"
+
+#: youtube_dl_gui/optionsframe.py:861
+msgid "Extra options"
+msgstr "További lehetőségek"
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Debug youtube-dl"
+msgstr "youtube-dl hibakeresése"
+
+#: youtube_dl_gui/optionsframe.py:864
+msgid "Ignore errors"
+msgstr "Hibák mellőzése"
+
+#: youtube_dl_gui/optionsframe.py:865
+msgid "Ignore youtube-dl config"
+msgstr "youtube-dl beállításainak mellőzése"
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "No mtime"
+msgstr "mtime mellőzése"
+
+#: youtube_dl_gui/optionsframe.py:867
+msgid "Prefer native HLS"
+msgstr "Elsősorban natív HLS"
+
+#: youtube_dl_gui/optionsframe.py:928
+msgid "Log Viewer"
+msgstr "Naplóolvasó"

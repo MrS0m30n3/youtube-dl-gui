@@ -19,11 +19,11 @@ msgstr ""
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Failed to locate youtube-dl and updates are disabled"
-msgstr ""
+msgstr "Error al ubicar youtube-dl y las actualizaciones están deshabilitadas"
 
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
@@ -57,7 +57,7 @@ msgstr "predeterminada"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
-msgstr "Pega direcciones URL en la parte inferior"
+msgstr "Pega las URLs en la parte inferior"
 
 #: youtube_dl_gui/mainframe.py:98
 msgid "Update"
@@ -73,11 +73,11 @@ msgstr "Detener"
 
 #: youtube_dl_gui/mainframe.py:101
 msgid "Info"
-msgstr "Info"
+msgstr "Información"
 
 #: youtube_dl_gui/mainframe.py:102
 msgid "Welcome"
-msgstr "Bienvenid@"
+msgstr "Bienvenido"
 
 #: youtube_dl_gui/mainframe.py:103
 msgid "Warning"

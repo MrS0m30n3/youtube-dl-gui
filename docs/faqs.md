@@ -58,3 +58,6 @@ You can use your own version of youtube-dl by editing the "youtubedl_path" optio
 
 * **The program crashes frequently or pretends to succeed downloading the files (Windows)**:
 Follow [youtube-dl instructions](https://github.com/rg3/youtube-dl#the-exe-throws-an-error-due-to-missing-msvcr100dll) on updating your Visual C++ Redistributable.
+
+* **How come 1080p YouTube downloads are not working?**:
+Try disabling native HLS. You can disable the "Prefer Native HLS" option under the Options>Extra tab.

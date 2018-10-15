@@ -278,7 +278,7 @@ class CustomComboBox(wx.Panel):
     NAME = "customComboBox"
 
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
+            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME, label=""):
         super(CustomComboBox, self).__init__(parent, id, pos, size, 0, name)
 
         assert style == self.CB_READONLY or style == 0
@@ -288,6 +288,7 @@ class CustomComboBox(wx.Panel):
         tc_height = self.textctrl.GetSize()[1]
 
         self.button = wx.Button(self, wx.ID_ANY, "▾", size=(tc_height, tc_height))
+        self.button.SetLabel(label)
 
         # Create the ListBoxPopup in two steps
         self.listbox = ListBoxPopup(self)

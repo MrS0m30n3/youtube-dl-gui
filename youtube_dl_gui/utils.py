@@ -1,6 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-
 """Youtubedlg module that contains util functions.
 
 Attributes:
@@ -9,8 +6,6 @@ Attributes:
     YOUTUBEDL_BIN (string): Youtube-dl binary filename.
 
 """
-
-from __future__ import unicode_literals
 
 import os
 import sys
@@ -22,7 +17,7 @@ import subprocess
 try:
     from twodict import TwoWayOrderedDict
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 from .info import __appname__
@@ -64,13 +59,13 @@ def convert_item(item, to_unicode=False):
             types back to 'str'.
 
     """
-    if to_unicode and isinstance(item, str):
+    if to_unicode and hasattr(item, 'encode'):
         # Convert str to unicode
-        return item.decode(get_encoding(), 'ignore')
-
-    if not to_unicode and isinstance(item, unicode):
-        # Convert unicode to str
         return item.encode(get_encoding(), 'ignore')
+
+    if not to_unicode and hasattr(item, 'decode'):
+        # Convert unicode to str
+        return item.decode(get_encoding(), 'ignore')
 
     if hasattr(item, '__iter__'):
         # Handle iterables
@@ -106,15 +101,16 @@ def convert_on_bounds(func):
 
 # See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
 # Patch os functions to convert between 'str' and 'unicode' on app bounds
-os_sep = unicode(os.sep)
-os_getenv = convert_on_bounds(os.getenv)
-os_makedirs = convert_on_bounds(os.makedirs)
-os_path_isdir = convert_on_bounds(os.path.isdir)
-os_path_exists = convert_on_bounds(os.path.exists)
-os_path_dirname = convert_on_bounds(os.path.dirname)
-os_path_abspath = convert_on_bounds(os.path.abspath)
-os_path_realpath = convert_on_bounds(os.path.realpath)
-os_path_expanduser = convert_on_bounds(os.path.expanduser)
+# not needed for Python 3
+os_sep = os.sep
+os_getenv = os.getenv
+os_makedirs = os.makedirs
+os_path_isdir = os.path.isdir
+os_path_exists = os.path.exists
+os_path_dirname = os.path.dirname
+os_path_abspath = os.path.abspath
+os_path_realpath = os.path.realpath
+os_path_expanduser = os.path.expanduser
 
 # Patch locale functions
 locale_getdefaultlocale = convert_on_bounds(locale.getdefaultlocale)
@@ -382,10 +378,10 @@ def build_command(options_list, url):
 
 
 def get_default_lang():
-    """Get default language using the 'locale' module."""
-    default_lang, _ = locale_getdefaultlocale()
-
-    if not default_lang:
-        default_lang = "en_US"
-
-    return default_lang
+    """Return the language.
+    
+    Returns:
+        The chosen language if present, or a default of 'en_US' if blank.
+    
+    """
+    return locale_getdefaultlocale()[0] or 'en_US'

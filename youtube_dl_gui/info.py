@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """Youtubedlg module that holds package information.
 
 Note:

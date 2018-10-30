@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """Contains test cases for the utils.py module."""
-
-from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -13,11 +8,11 @@ PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
-    import mock
+    import unittest.mock as mock
 
     from youtube_dl_gui import utils
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -111,70 +106,7 @@ class TestBuildCommand(unittest.TestCase):
 
         self.run_tests("youtube-dl.exe", tmpl)
 
-
-class TestConvertItem(unittest.TestCase):
-
-    """Test case for the convert_item function."""
-
-    def setUp(self):
-        self.input_list_u = ["v1", "v2", "v3"]
-        self.input_list_s = [str("v1"), str("v2"), str("v3")]
-
-        self.input_tuple_u = ("v1", "v2", "v3")
-        self.input_tuple_s = (str("v1"), str("v2"), str("v3"))
-
-        self.input_dict_u = {"k1": "v1", "k2": "v2"}
-        self.input_dict_s = {str("k1"): str("v1"), str("k2"): str("v2")}
-
-    def check_iter(self, iterable, iter_type, is_unicode):
-        check_type = unicode if is_unicode else str
-
-        iterable = utils.convert_item(iterable, is_unicode)
-
-        self.assertIsInstance(iterable, iter_type)
-
-        for item in iterable:
-            if iter_type == dict:
-                self.assertIsInstance(iterable[item], check_type)
-
-            self.assertIsInstance(item, check_type)
-
-    def test_convert_item_unicode_str(self):
-        self.assertIsInstance(utils.convert_item("test"), str)
-
-    def test_convert_item_unicode_unicode(self):
-        self.assertIsInstance(utils.convert_item("test", True), unicode)
-
-    def test_convert_item_str_unicode(self):
-        self.assertIsInstance(utils.convert_item(str("test"), True), unicode)
-
-    def test_convert_item_str_str(self):
-        self.assertIsInstance(utils.convert_item(str("test")), str)
-
-    def test_convert_item_list_empty(self):
-        self.assertEqual(len(utils.convert_item([])), 0)
-
-    def test_convert_item_dict_empty(self):
-        self.assertEqual(len(utils.convert_item({})), 0)
-
-    def test_convert_item_list_unicode_str(self):
-        self.check_iter(self.input_list_u, list, False)
-
-    def test_convert_item_list_str_unicode(self):
-        self.check_iter(self.input_list_s, list, True)
-
-    def test_convert_item_tuple_unicode_str(self):
-        self.check_iter(self.input_tuple_u, tuple, False)
-
-    def test_convert_item_tuple_str_unicode(self):
-        self.check_iter(self.input_tuple_s, tuple, True)
-
-    def test_convert_item_dict_unicode_str(self):
-        self.check_iter(self.input_dict_u, dict, False)
-
-    def test_convert_item_dict_str_unicode(self):
-        self.check_iter(self.input_dict_s, dict, True)
-
+# removed TestConvertItem for Python 3, as str is unicode
 
 class TestGetDefaultLang(unittest.TestCase):
 

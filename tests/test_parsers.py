@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-
 """Contains test cases for the parsers module."""
-
-from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -15,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 try:
     from youtube_dl_gui.parsers import OptionsParser
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -39,7 +34,7 @@ class TestParse(unittest.TestCase):
     def check_options_parse(self, expected_options):
         options_parser = OptionsParser()
 
-        self.assertItemsEqual(options_parser.parse(self.options_dict), expected_options)
+        self.assertEqual(sorted(options_parser.parse(self.options_dict)), sorted(expected_options))
 
     def test_parse_to_audio_requirement_bug(self):
         """Test case for the 'to_audio' requirement."""
@@ -56,7 +51,7 @@ class TestParse(unittest.TestCase):
                              "--audio-quality",
                              "9",
                              "-o",
-                             "/home/user/Workplace/test/youtube/%(title)s.%(ext)s"]
+                             os.path.join("/home/user/Workplace/test/youtube", "%(title)s.%(ext)s")]
 
         self.check_options_parse(expected_cmd_list)
 
@@ -82,7 +77,7 @@ class TestParse(unittest.TestCase):
                              "-f",
                              "mp4",
                              "-o",
-                             "/home/user/Workplace/test/youtube/%(title)s.%(ext)s",
+                             os.path.join("/home/user/Workplace/test/youtube", "%(title)s.%(ext)s"),
                              "--recode-video",
                              "mkv",
                              "--postprocessor-args",
@@ -98,7 +93,7 @@ class TestParse(unittest.TestCase):
                              "-f",
                              "mp4",
                              "-o",
-                             "/home/user/Workplace/test/youtube/%(title)s.%(ext)s",
+                             os.path.join("/home/user/Workplace/test/youtube", "%(title)s.%(ext)s"),
                              "--postprocessor-args",
                              "-y -report"]
 
@@ -112,7 +107,7 @@ class TestParse(unittest.TestCase):
                              "-f",
                              "mp4",
                              "-o",
-                             "/home/user/Workplace/test/youtube/%(title)s.%(ext)s",
+                             os.path.join("/home/user/Workplace/test/youtube", "%(title)s.%(ext)s"),
                              "--postprocessor-args",
                              "-y",
                              "-v"]
@@ -126,7 +121,7 @@ class TestParse(unittest.TestCase):
 
         expected_cmd_list = ["--newline",
                              "-o",
-                             "/home/user/Workplace/test/youtube/%(title)s.%(ext)s",
+                             os.path.join("/home/user/Workplace/test/youtube", "%(title)s.%(ext)s"),
                              "-f",
                              "(mp4)[width<1300]"]
 

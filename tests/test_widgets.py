@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-
 """Contains test cases for the widgets.py module."""
-
-from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -15,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
     import wx
-    import mock
+    import unittest.mock as mock
 
     from youtube_dl_gui.widgets import (
         ListBoxWithHeaders,
@@ -23,7 +18,7 @@ try:
         ListBoxPopup
     )
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -38,7 +33,7 @@ class TestListBoxWithHeaders(unittest.TestCase):
         self.listbox = ListBoxWithHeaders(self.frame)
 
         self.listbox.add_header("Header")
-        self.listbox.add_items(["item%s" % i for i in xrange(10)])
+        self.listbox.add_items(["item%s" % i for i in range(10)])
 
     def tearDown(self):
         self.frame.Destroy()
@@ -56,24 +51,24 @@ class TestListBoxWithHeaders(unittest.TestCase):
         self.assertEqual(self.listbox.FindString("item"), wx.NOT_FOUND)
 
     def test_get_string_header(self):
-        self.assertEqual(self.listbox.GetString(0), "Header")
+        self.assertEqual(self.listbox.GetString(0).strip(), "Header")
 
     def test_get_string_item(self):
-        self.assertEqual(self.listbox.GetString(10), "item9")
+        self.assertEqual(self.listbox.GetString(10).strip(), "item9")
 
     def test_get_string_item_not_found(self):
-        self.assertEqual(self.listbox.GetString(11), "")
+        self.assertEqual(self.listbox.GetString(11).strip(), "")
 
     def test_get_string_item_negative_index(self):
-        self.assertEqual(self.listbox.GetString(-1), "")
+        self.assertEqual(self.listbox.GetString(-1).strip(), "")
 
     def test_insert_items(self):
         self.listbox.SetSelection(1)
 
         self.listbox.InsertItems(["new_item1", "new_item2"], 1)
-        self.assertEqual(self.listbox.GetString(1), "new_item1")
-        self.assertEqual(self.listbox.GetString(2), "new_item2")
-        self.assertEqual(self.listbox.GetString(3), "item0")
+        self.assertEqual(self.listbox.GetString(1).strip(), "new_item1")
+        self.assertEqual(self.listbox.GetString(2).strip(), "new_item2")
+        self.assertEqual(self.listbox.GetString(3).strip(), "item0")
 
         self.assertTrue(self.listbox.IsSelected(3))  # Old selection + 2
 
@@ -94,11 +89,11 @@ class TestListBoxWithHeaders(unittest.TestCase):
 
     def test_set_string_item(self):
         self.listbox.SetString(1, "item_mod0")
-        self.assertEqual(self.listbox.GetString(1), "item_mod0")
+        self.assertEqual(self.listbox.GetString(1).strip(), "item_mod0")
 
     def test_set_string_header(self):
         self.listbox.SetString(0, "New header")
-        self.assertEqual(self.listbox.GetString(0), "New header")
+        self.assertEqual(self.listbox.GetString(0).strip(), "New header")
 
         # Make sure that the header is not selectable
         self.listbox.SetSelection(0)
@@ -123,12 +118,12 @@ class TestListBoxWithHeaders(unittest.TestCase):
 
     def test_append(self):
         self.listbox.Append("item666")
-        self.assertEqual(self.listbox.GetString(11), "item666")
+        self.assertEqual(self.listbox.GetString(11).strip(), "item666")
 
     def test_append_items(self):
         self.listbox.AppendItems(["new_item1", "new_item2"])
-        self.assertEqual(self.listbox.GetString(11), "new_item1")
-        self.assertEqual(self.listbox.GetString(12), "new_item2")
+        self.assertEqual(self.listbox.GetString(11).strip(), "new_item1")
+        self.assertEqual(self.listbox.GetString(12).strip(), "new_item2")
 
     def test_clear(self):
         self.listbox.Clear()
@@ -136,7 +131,7 @@ class TestListBoxWithHeaders(unittest.TestCase):
 
     def test_delete(self):
         self.listbox.Delete(0)
-        self.assertEqual(self.listbox.GetString(0), "item0")
+        self.assertEqual(self.listbox.GetString(0).strip(), "item0")
 
         # Test item selection
         self.listbox.SetSelection(0)
@@ -182,7 +177,7 @@ class TestCustomComboBox(unittest.TestCase):
 
         # Call directly the ListBoxWithHeaders methods
         self.combobox.listbox.GetControl().add_header("Header")
-        self.combobox.listbox.GetControl().add_items(["item%s" % i for i in xrange(10)])
+        self.combobox.listbox.GetControl().add_items(["item%s" % i for i in range(10)])
 
     def tearDown(self):
         self.frame.Destroy()
@@ -190,7 +185,7 @@ class TestCustomComboBox(unittest.TestCase):
     def test_init(self):
         combobox = CustomComboBox(self.frame, -1, "item1", choices=["item0", "item1", "item2"])
 
-        self.assertEqual(combobox.GetValue(), "item1")
+        self.assertEqual(combobox.GetValue().strip(), "item1")
         self.assertEqual(combobox.GetCount(), 3)
         self.assertEqual(combobox.GetSelection(), 1)
 
@@ -215,27 +210,27 @@ class TestCustomComboBox(unittest.TestCase):
     def test_set_selection_item(self):
         self.combobox.SetSelection(1)
         self.assertEqual(self.combobox.GetSelection(), 1)
-        self.assertEqual(self.combobox.GetValue(), "item0")
+        self.assertEqual(self.combobox.GetValue().strip(), "item0")
 
     def test_set_selection_header(self):
         self.combobox.SetSelection(0)
         self.assertEqual(self.combobox.GetSelection(), wx.NOT_FOUND)
-        self.assertEqual(self.combobox.GetValue(), "")
+        self.assertEqual(self.combobox.GetValue().strip(), "")
 
     def test_set_string_selection_item(self):
         self.combobox.SetStringSelection("item0")
-        self.assertEqual(self.combobox.GetStringSelection(), "item0")
-        self.assertEqual(self.combobox.GetValue(), "item0")
+        self.assertEqual(self.combobox.GetStringSelection().strip(), "item0")
+        self.assertEqual(self.combobox.GetValue().strip(), "item0")
 
     def test_set_string_selection_header(self):
         self.combobox.SetStringSelection("Header")
-        self.assertEqual(self.combobox.GetStringSelection(), "")
-        self.assertEqual(self.combobox.GetValue(), "")
+        self.assertEqual(self.combobox.GetStringSelection().strip(), "")
+        self.assertEqual(self.combobox.GetValue().strip(), "")
 
     def test_set_string_selection_invalid_string(self):
         self.combobox.SetStringSelection("abcde")
-        self.assertEqual(self.combobox.GetStringSelection(), "")
-        self.assertEqual(self.combobox.GetValue(), "")
+        self.assertEqual(self.combobox.GetStringSelection().strip(), "")
+        self.assertEqual(self.combobox.GetValue().strip(), "")
 
     # wx.ItemContainer methods
 
@@ -256,13 +251,13 @@ class TestCustomComboBox(unittest.TestCase):
 
     def test_delete(self):
         self.combobox.Delete(1)
-        self.assertEqual(self.combobox.GetString(1), "item1")
+        self.assertEqual(self.combobox.GetString(1).strip(), "item1")
 
     # wx.TextEntry methods
 
     def test_get_value(self):
         self.combobox.SetValue("value")
-        self.assertEqual(self.combobox.GetValue(), "value")
+        self.assertEqual(self.combobox.GetValue().strip(), "value")
 
 
 def main():

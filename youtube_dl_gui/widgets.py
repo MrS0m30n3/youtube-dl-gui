@@ -1,14 +1,9 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-
-from __future__ import unicode_literals
-
 import sys
 
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -87,13 +82,13 @@ class ListBoxWithHeaders(wx.ListBox):
     # wx.ListBox methods
 
     def FindString(self, string):
-        index = super(ListBoxWithHeaders, self).FindString(string)
-
-        if index == wx.NOT_FOUND:
-            # This time try with prefix
-            index = super(ListBoxWithHeaders, self).FindString(self._add_prefix(string))
-
-        return index
+        # self.GetString wasn't properly finding strings that were
+        # clearly in self.GetStrings()
+        content = list(map(str.strip, self.GetStrings()))
+        try:
+            return content.index(string.strip())
+        except ValueError:
+            return -1
 
     def GetStringSelection(self):
         return self._remove_prefix(super(ListBoxWithHeaders, self).GetStringSelection())
@@ -136,7 +131,11 @@ class ListBoxWithHeaders(wx.ListBox):
     # wx.ItemContainer methods
 
     def Append(self, string):
-        super(ListBoxWithHeaders, self).Append(self._add_prefix(string))
+        if isinstance(string, str): # for strings
+            content = self._add_prefix(string)
+        else: # for lists
+            content = list(map(self._add_prefix, string))
+        super(ListBoxWithHeaders, self).Append(content)
 
     def AppendItems(self, strings):
         strings = [self._add_prefix(string) for string in strings]

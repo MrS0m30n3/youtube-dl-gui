@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 import gettext
 
 from .utils import TwoWayOrderedDict as tdict

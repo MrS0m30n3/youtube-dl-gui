@@ -1,6 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-
 """Youtubedlg module to update youtube-dl binary.
 
 Attributes:
@@ -9,14 +6,11 @@ Attributes:
 
 """
 
-from __future__ import unicode_literals
-
 import os.path
 from threading import Thread
-from urllib2 import urlopen, URLError, HTTPError
+from urllib.request import urlopen, URLError, HTTPError
 
 from wx import CallAfter
-from wx.lib.pubsub import setuparg1
 from wx.lib.pubsub import pub as Publisher
 
 from .utils import (
@@ -93,4 +87,4 @@ class UpdateThread(Thread):
                 4) finish: The update thread is ready to join
 
         """
-        CallAfter(Publisher.sendMessage, UPDATE_PUB_TOPIC, (signal, data))
+        CallAfter(Publisher.sendMessage, UPDATE_PUB_TOPIC, msg=(signal, data))

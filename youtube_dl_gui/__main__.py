@@ -1,6 +1,3 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-
 """Youtubedlg __main__ file.
 
 __main__ file is a python 'executable' file which calls the youtubedlg
@@ -22,8 +19,6 @@ Example:
 
 """
 
-from __future__ import unicode_literals
-
 import sys
 
 if __package__ is None and not hasattr(sys, "frozen"):
@@ -33,7 +28,6 @@ if __package__ is None and not hasattr(sys, "frozen"):
     sys.path.append(os.path.dirname(os.path.dirname(PATH)))
 
 import youtube_dl_gui
-
 
 if __name__ == '__main__':
     youtube_dl_gui.main()

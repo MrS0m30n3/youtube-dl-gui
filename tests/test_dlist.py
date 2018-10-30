@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
-
 """Contains test cases for the DownloadList object."""
-
-from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -13,10 +8,10 @@ PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
-    import mock
+    import unittest.mock as mock
     from youtube_dl_gui.downloadmanager import DownloadList, synchronized
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 

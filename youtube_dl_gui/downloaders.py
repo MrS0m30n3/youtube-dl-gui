@@ -1,14 +1,13 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-
 """Python module to download videos.
 
 This module contains the actual downloaders responsible
 for downloading the video files.
 
-"""
+Note:
+    downloaders.py is part of the youtubedlg package but it can be used
+    as a stand alone module for downloading videos.
 
-from __future__ import unicode_literals
+"""
 
 import re
 import os
@@ -18,7 +17,7 @@ import signal
 import subprocess
 
 from time import sleep
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 
 from .utils import convert_item
@@ -35,7 +34,7 @@ class PipeReader(Thread):
 
     Args:
         queue (Queue.Queue): Python queue to store the output of the subprocess.
-
+        
     Warnings:
         All the operations are based on 'str' types. The caller has to convert
         the queued items back to 'unicode' if he needs to.
@@ -58,9 +57,9 @@ class PipeReader(Thread):
 
         while self._running:
             if self._filedescriptor is not None:
-                for line in iter(self._filedescriptor.readline, str('')):
+                for line in iter(self._filedescriptor.readline, b''):
                     # Ignore ffmpeg stderr
-                    if str('ffmpeg version') in line:
+                    if b'ffmpeg version' in line:
                         ignore_line = True
 
                     if not ignore_line:
@@ -161,13 +160,13 @@ class YoutubeDLDownloader(object):
 
         cmd = self._get_cmd(url, options)
         self._create_process(cmd)
-
+        
         if self._proc is not None:
             self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
             stdout = self._proc.stdout.readline().rstrip()
-            stdout = convert_item(stdout, to_unicode=True)
+            stdout = convert_item(stdout, to_unicode=False)
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -178,7 +177,7 @@ class YoutubeDLDownloader(object):
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
             stderr = self._stderr_queue.get_nowait().rstrip()
-            stderr = convert_item(stderr, to_unicode=True)
+            stderr = convert_item(stderr, to_unicode=False)
 
             self._log(stderr)
 
@@ -342,7 +341,7 @@ class YoutubeDLDownloader(object):
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
         if sys.version_info < (3, 0):
-            cmd = convert_item(cmd, to_unicode=False)
+            cmd = convert_item(cmd, to_unicode=True)
 
         try:
             self._proc = subprocess.Popen(cmd,

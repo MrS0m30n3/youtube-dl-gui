@@ -18,11 +18,11 @@ msgstr ""
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Failed to locate youtube-dl and updates are disabled"
-msgstr ""
+msgstr "Falha em localizar youtube-dl e as atualizações estão desativadas"
 
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
@@ -291,7 +291,7 @@ msgstr "Nenhum item para download"
 
 #: youtube_dl_gui/mainframe.py:1040
 msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
-msgstr ""
+msgstr "As atualizações estão desativadas no seu ssitema. Por favor, use o gerenciador de pacotes para atualizar o youtube-dl."
 
 #: youtube_dl_gui/mainframe.py:1065
 msgid "Are you sure you want to exit?"

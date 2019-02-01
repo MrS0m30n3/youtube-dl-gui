@@ -1,0 +1,600 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2019-02-01 00:00+CST\n"
+"PO-Revision-Date: 2019-02-01 00:00+CST\n"
+"Last-Translator: whc2001 <ianwang0122@outlook.com>\n"
+"Language-Team: zh\n"
+"Language: CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Error"
+msgstr ""
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Failed to locate youtube-dl and updates are disabled"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
+msgid "ID"
+msgstr "ID"
+
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/mainframe.py:140
+msgid "Title"
+msgstr "标题"
+
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
+msgid "Title + ID"
+msgstr "标题 + ID"
+
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
+msgid "Title + Quality"
+msgstr "标题 + 画质"
+
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
+msgid "Title + ID + Quality"
+msgstr "标题 + ID + 画质"
+
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
+msgid "Custom"
+msgstr "自定义"
+
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
+msgid "default"
+msgstr "默认"
+
+#: youtube_dl_gui/mainframe.py:97
+msgid "Enter URLs below"
+msgstr "请在下方输入视频的 URL"
+
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr "更新"
+
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Options"
+msgstr "设置"
+
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
+msgid "Stop"
+msgstr "停止"
+
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr "信息"
+
+#: youtube_dl_gui/mainframe.py:102
+msgid "Welcome"
+msgstr "欢迎使用"
+
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warning"
+msgstr "警告"
+
+#: youtube_dl_gui/mainframe.py:105
+msgid "Add"
+msgstr "增加"
+
+#: youtube_dl_gui/mainframe.py:106
+msgid "Download list"
+msgstr "下载列表"
+
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Delete"
+msgstr "删除"
+
+#: youtube_dl_gui/mainframe.py:108
+msgid "Play"
+msgstr "播放"
+
+#: youtube_dl_gui/mainframe.py:109
+msgid "Up"
+msgstr "上移"
+
+#: youtube_dl_gui/mainframe.py:110
+msgid "Down"
+msgstr "下移"
+
+#: youtube_dl_gui/mainframe.py:111
+msgid "Reload"
+msgstr "刷新"
+
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr "暂停"
+
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
+msgid "Start"
+msgstr "开始"
+
+#: youtube_dl_gui/mainframe.py:114
+msgid "About"
+msgstr "关于"
+
+#: youtube_dl_gui/mainframe.py:115
+msgid "View Log"
+msgstr "查看日志"
+
+#: youtube_dl_gui/mainframe.py:117
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "在 {1} 天 {2} 小时 {3} 分 {4} 秒内成功下载了 {0} 个 URL"
+
+#: youtube_dl_gui/mainframe.py:119
+msgid "Downloads completed"
+msgstr "全部下载已完成"
+
+#: youtube_dl_gui/mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "进度: {0:.1f}% | 挂起 ({1}) 暂停 ({2}) 进行中 ({3}) 完成 ({4}) 出错 ({5})"
+
+#: youtube_dl_gui/mainframe.py:121
+msgid "Stopping downloads"
+msgstr "正在停止所有下载"
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads stopped"
+msgstr "下载已停止"
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "请输入至少一个 URL"
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads started"
+msgstr "下载已开始"
+
+#: youtube_dl_gui/mainframe.py:125
+msgid "Choose Directory"
+msgstr "请选择目录"
+
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "下载正在进行，请耐心等待"
+
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update already in progress"
+msgstr "正在更新"
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "正在下载最新版本的 youtube-dl , 请稍候…"
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "youtube-dl 下载失败 [{0}]"
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "Youtube-dl 下载成功"
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "无法打开目录: '{dir}'。指定的目录不存在"
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "尝试关机时发生错误，请确定您输入了正确的密码"
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "Shutting down system"
+msgstr "正在关机"
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Extension"
+msgstr "格式"
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Size"
+msgstr "大小"
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Percent"
+msgstr "百分比"
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr "预计剩余时间"
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Speed"
+msgstr "速度"
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr "状态"
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "Get URL"
+msgstr "复制 URL"
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get command"
+msgstr "复制 youtube-dl 命令"
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Open destination"
+msgstr "打开下载目录"
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Re-enter"
+msgstr "重新下载"
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Resume"
+msgstr "恢复"
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr "视频"
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr "音频"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "No items selected. Please pick an action"
+msgstr "请至少选择一个项"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove all"
+msgstr "全部删除"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove completed"
+msgstr "删除成功"
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Are you sure you want to remove selected items?"
+msgstr "是否删除选定的项？"
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Item is active, cannot remove"
+msgstr "文件被占用，无法删除"
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Item is not completed"
+msgstr "尚未下载成功"
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "正在更新，请稍候"
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging is disabled"
+msgstr "登陆已禁用"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutdown"
+msgstr "关闭计算机"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutting down in {0} second(s)"
+msgstr "将在 {0} 秒后关闭计算机"
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "No items to download"
+msgstr "无可下载的项"
+
+#: youtube_dl_gui/mainframe.py:1040
+msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
+msgstr "无法在您正在使用的系统上更新 youtube-dl ，请使用系统自带的软件包管理器进行更新"
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Are you sure you want to exit?"
+msgstr "是否退出？"
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Exit"
+msgstr "退出"
+
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
+msgid "Cancel"
+msgstr "取消"
+
+#: youtube_dl_gui/mainframe.py:1455
+msgid "OK"
+msgstr "确定"
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Reset"
+msgstr "默认值"
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Close"
+msgstr "关闭"
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "General"
+msgstr "通用"
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formats"
+msgstr "格式"
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr "下载"
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Advanced"
+msgstr "高级"
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr "其他"
+
+#: youtube_dl_gui/optionsframe.py:310
+msgid "Language"
+msgstr "语言"
+
+#: youtube_dl_gui/optionsframe.py:313
+msgid "Filename format"
+msgstr "文件名格式"
+
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Filename options"
+msgstr "文件名选项"
+
+#: youtube_dl_gui/optionsframe.py:319
+msgid "Restrict filenames to ASCII"
+msgstr "使文件名仅包含 ASCII 字符"
+
+#: youtube_dl_gui/optionsframe.py:321
+msgid "More options"
+msgstr "更多选项"
+
+#: youtube_dl_gui/optionsframe.py:322
+msgid "Confirm on exit"
+msgstr "退出时确认"
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Confirm item deletion"
+msgstr "删除项时确认"
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Inform me on download completion"
+msgstr "下载完成后通知"
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "Shutdown on download completion"
+msgstr "下载完成后关闭计算机"
+
+#: youtube_dl_gui/optionsframe.py:337
+msgid "SUDO password"
+msgstr "系统管理员密码"
+
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "请重启 {0} 以使设置生效"
+
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
+msgid "Restart"
+msgstr "重启"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "high"
+msgstr "高"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "low"
+msgstr "低"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "mid"
+msgstr "中"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "Video formats"
+msgstr "视频格式"
+
+#: youtube_dl_gui/optionsframe.py:471
+msgid "Audio formats"
+msgstr "音频格式"
+
+#: youtube_dl_gui/optionsframe.py:474
+msgid "Post-Process options"
+msgstr "后期处理设置"
+
+#: youtube_dl_gui/optionsframe.py:475
+msgid "Keep original files"
+msgstr "保留原始文件"
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Extract audio from video file"
+msgstr "从视频中提取音频"
+
+#: youtube_dl_gui/optionsframe.py:477
+msgid "Embed thumbnail in audio file"
+msgstr "在音频文件中嵌入缩略图"
+
+#: youtube_dl_gui/optionsframe.py:478
+msgid "Add metadata to file"
+msgstr "在文件中增加元数据"
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Audio quality"
+msgstr "音频质量"
+
+#: youtube_dl_gui/optionsframe.py:538
+msgid "English"
+msgstr "英语"
+
+#: youtube_dl_gui/optionsframe.py:539
+msgid "French"
+msgstr "法语"
+
+#: youtube_dl_gui/optionsframe.py:540
+msgid "German"
+msgstr "德语"
+
+#: youtube_dl_gui/optionsframe.py:541
+msgid "Greek"
+msgstr "希腊语"
+
+#: youtube_dl_gui/optionsframe.py:542
+msgid "Hebrew"
+msgstr "希伯来语"
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "Italian"
+msgstr "意大利语"
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "Portuguese"
+msgstr "葡萄牙语"
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "Russian"
+msgstr "俄语"
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Spanish"
+msgstr "西班牙语"
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Swedish"
+msgstr "瑞典语"
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Turkish"
+msgstr "土耳其语"
+
+#: youtube_dl_gui/optionsframe.py:564
+msgid "None"
+msgstr "不下载字幕"
+
+#: youtube_dl_gui/optionsframe.py:565
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "自动字幕 (仅限 Youtube)"
+
+#: youtube_dl_gui/optionsframe.py:566
+msgid "All available subtitles"
+msgstr "所有可用字幕"
+
+#: youtube_dl_gui/optionsframe.py:567
+msgid "Subtitles by language"
+msgstr "根据选择的语言"
+
+#: youtube_dl_gui/optionsframe.py:573
+msgid "Subtitles"
+msgstr "字幕"
+
+#: youtube_dl_gui/optionsframe.py:577
+msgid "Subtitles options"
+msgstr "字幕设置"
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "在视频中嵌入字幕 (仅限 mp4)"
+
+#: youtube_dl_gui/optionsframe.py:580
+msgid "Playlist"
+msgstr "播放列表"
+
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
+msgid "Max"
+msgstr "最大"
+
+#: youtube_dl_gui/optionsframe.py:589
+msgid "Filesize"
+msgstr "文件大小"
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Min"
+msgstr "最小"
+
+#: youtube_dl_gui/optionsframe.py:723
+msgid "Retries"
+msgstr "重试次数"
+
+#: youtube_dl_gui/optionsframe.py:726
+msgid "Authentication"
+msgstr "认证信息"
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Username"
+msgstr "用户名"
+
+#: youtube_dl_gui/optionsframe.py:730
+msgid "Password"
+msgstr "密码"
+
+#: youtube_dl_gui/optionsframe.py:732
+msgid "Video password"
+msgstr "视频密码"
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Network"
+msgstr "网络"
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Proxy"
+msgstr "代理"
+
+#: youtube_dl_gui/optionsframe.py:739
+msgid "User agent"
+msgstr "User Agent"
+
+#: youtube_dl_gui/optionsframe.py:741
+msgid "Referer"
+msgstr "Referer"
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "Logging"
+msgstr "日志"
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Enable log"
+msgstr "启用日志"
+
+#: youtube_dl_gui/optionsframe.py:747
+msgid "View"
+msgstr "查看"
+
+#: youtube_dl_gui/optionsframe.py:748
+msgid "Clear"
+msgstr "清除"
+
+#: youtube_dl_gui/optionsframe.py:858
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "Youtube-dl 命令行选项 (如 --help)"
+
+#: youtube_dl_gui/optionsframe.py:861
+msgid "Extra options"
+msgstr "附加设置"
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Debug youtube-dl"
+msgstr "调试 youtube-dl"
+
+#: youtube_dl_gui/optionsframe.py:864
+msgid "Ignore errors"
+msgstr "忽略错误"
+
+#: youtube_dl_gui/optionsframe.py:865
+msgid "Ignore youtube-dl config"
+msgstr "忽略 youtube-dl 配置文件"
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "No mtime"
+msgstr "禁用 mtime"
+
+#: youtube_dl_gui/optionsframe.py:867
+msgid "Prefer native HLS"
+msgstr "优先使用 native HLS"
+
+#: youtube_dl_gui/optionsframe.py:928
+msgid "Log Viewer"
+msgstr "日志查看器"

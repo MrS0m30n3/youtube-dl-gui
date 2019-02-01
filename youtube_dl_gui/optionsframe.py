@@ -277,7 +277,8 @@ class GeneralTab(TabPanel):
         ('ko_KR', 'Korean'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
-        ('es_ES', 'Spanish')
+        ('es_ES', 'Spanish'),
+        ('zh_CN', 'Simplified Chinese')
     ])
 
     OUTPUT_TEMPLATES = [

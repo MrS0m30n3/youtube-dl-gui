@@ -273,7 +273,7 @@ msgstr "正在更新，请稍候"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr "登陆已禁用"
+msgstr "日志已禁用"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"

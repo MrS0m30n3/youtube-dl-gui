@@ -1,9 +1,18 @@
-include README.md
+include TODO
 include AUTHORS
 include LICENSE
-include ToDo
+include README.md
+include MANIFEST.in
+include ChangeLog
+include youtube-dl-gui.1
 
-include locale_build/*
+include tests/*.py
+include devscripts/*
+include docs/*
 
-recursive-include youtube_dl_gui/icons *.png *.ico *.icns
-recursive-include youtube_dl_gui/locale *.mo *.po
+include youtube_dl_gui/data/pixmaps/icons-license
+
+recursive-include youtube_dl_gui/data *.png *.ico
+recursive-include youtube_dl_gui/locale *.po
+
+recursive-exclude youtube_dl_gui/locale *.mo

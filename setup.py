@@ -3,38 +3,72 @@
 
 """Youtube-dlg setup file.
 
-Note:
-    If you get 'TypeError: decoding Unicode is not supported' when you run
-    py2exe then apply the following patch:
+Examples:
+    Windows::
 
-    http://sourceforge.net/p/py2exe/patches/28/
+        python setup.py py2exe
+
+    Linux::
+
+        python setup.py install
+
+    Build source distribution::
+
+        python setup.py sdist
+
+    Build platform distribution::
+
+        python setup.py bdist
+
+    Build the translations::
+
+        python setup.py build_trans
+
+    Build with updates disabled::
+
+        python setup.py build --no-updates
+
+Requirements:
+
+    * GNU gettext utilities
+
+Notes:
+    If you get 'TypeError: decoding Unicode is not supported' when you run
+    py2exe then apply the following patch::
+
+        http://sourceforge.net/p/py2exe/patches/28/
+
+    Basic steps of the setup::
+
+        * Run pre-build tasks
+        * Call setup handler based on OS & options
+            * Set up hicolor icons (if supported by platform)
+            * Set up fallback pixmaps icon (if supported by platform)
+            * Set up package level pixmaps icons (*.png)
+            * Set up package level i18n files (*.mo)
+            * Set up scripts (executables) (if supported by platform)
+        * Run setup
 
 """
 
+from distutils import cmd, log
+from distutils.core import setup
+from distutils.command.build import build
+
 import os
 import sys
-import shutil
+import glob
+from shutil import copyfile
+from subprocess import call
 
-PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == 'py2exe'
+PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == "py2exe"
 
 if PY2EXE:
     try:
         import py2exe
     except ImportError as error:
-        print error
+        print(error)
         sys.exit(1)
-
-PY2APP = len(sys.argv) >= 2 and sys.argv[1] == 'py2app'
-
-if PY2APP:
-    try:
-        import py2app
-    except ImportError as error:
-        print error
-        sys.exit(1)
-
-from distutils.core import setup
-from distutils.sysconfig import get_python_lib
 
 from youtube_dl_gui import (
     __author__,
@@ -44,151 +78,235 @@ from youtube_dl_gui import (
     __license__,
     __projecturl__,
     __description__,
+    __packagename__,
     __descriptionfull__
 )
 
-
-ICONS_SIZES = ('16x16', '32x32', '48x48', '64x64', '128x128', '256x256')
-ICONS_TEMPLATE = 'youtube_dl_gui/icons/youtube-dl-gui_{size}.png'
-
-ICONS_LIST = [ICONS_TEMPLATE.format(size=size) for size in ICONS_SIZES]
+# Setup can not handle unicode
+__packagename__ = str(__packagename__)
 
 
-# Set icons path
-PY2EXE_ICONS = 'icons'
-WINDOWS_ICONS = os.path.join(get_python_lib(), 'youtube_dl_gui', 'icons')
-LINUX_ICONS = '/usr/share/icons/hicolor/'
-
-LINUX_FALLBACK_ICONS = '/usr/share/pixmaps/'
+def on_windows():
+    """Returns True if OS is Windows."""
+    return os.name == "nt"
 
 
-# Set localization files path
-LOCALE_PATH = os.path.join('youtube_dl_gui', 'locale')
+class BuildBin(cmd.Command):
 
-PY2EXE_LOCALE_DIR = 'locale'
-WIN_LOCALE_DIR = os.path.join(get_python_lib(), 'youtube_dl_gui', 'locale')
-LINUX_LOCALE_DIR = '/usr/share/{app_name}/locale/'.format(app_name=__appname__.lower())
-OSX_PREFIX = '/usr/local/Cellar/youtube-dl-gui/{version}'.format(version=__version__)
-OSX_LOCALE_DIR = '{prefix}/share/locale'.format(prefix=OSX_PREFIX)
-OSX_APP = '{prefix}/YoutubeDlGui.app'.format(prefix=OSX_PREFIX)
+    description = "build the youtube-dl-gui binary file"
+    user_options = []
 
+    def initialize_options(self):
+        self.scripts_dir = None
 
-def create_scripts():
-    dest_dir = os.path.join('build', '_scripts')
+    def finalize_options(self):
+        self.scripts_dir = os.path.join("build", "_scripts")
 
-    dest_file = os.path.join(dest_dir, 'youtube-dl-gui')
-    src_file = os.path.join('youtube_dl_gui', '__main__.py')
+    def run(self):
+        if not os.path.exists(self.scripts_dir):
+            os.makedirs(self.scripts_dir)
 
-    if not os.path.exists(dest_dir):
-        os.makedirs(dest_dir)
-
-    shutil.copyfile(src_file, dest_file)
+        copyfile(os.path.join(__packagename__, "__main__.py"),
+                 os.path.join(self.scripts_dir, "youtube-dl-gui"))
 
 
-def set_locale_files(data_files):
-    for directory in os.listdir(LOCALE_PATH):
-        locale_lang = os.path.join(directory, 'LC_MESSAGES')
+class BuildTranslations(cmd.Command):
 
-        src = os.path.join(LOCALE_PATH, locale_lang, 'youtube_dl_gui.mo')
+    description = "build the translation files"
+    user_options = []
 
-        if PY2EXE:
-            dst = os.path.join(PY2EXE_LOCALE_DIR, locale_lang)
-        elif os.name == 'nt':
-            dst = os.path.join(WIN_LOCALE_DIR, locale_lang)
-        elif sys.platform == 'darwin':
-            dst = os.path.join(OSX_LOCALE_DIR, locale_lang)
+    def initialize_options(self):
+        self.exec_name = None
+        self.search_pattern = None
+
+    def finalize_options(self):
+        if on_windows():
+            self.exec_name = "msgfmt.exe"
         else:
-            dst = os.path.join(LINUX_LOCALE_DIR, locale_lang)
+            self.exec_name = "msgfmt"
+
+        self.search_pattern = os.path.join(__packagename__, "locale", "*", "LC_MESSAGES", "youtube_dl_gui.po")
+
+    def run(self):
+        for po_file in glob.glob(self.search_pattern):
+            mo_file = po_file.replace(".po", ".mo")
+
+            try:
+                log.info("building MO file for '{}'".format(po_file))
+                call([self.exec_name, "-o", mo_file, po_file])
+            except OSError:
+                log.error("could not locate file '{}', exiting...".format(self.exec_name))
+                sys.exit(1)
+
+
+class Build(build):
+
+    """Overwrite the default 'build' behaviour."""
+
+    sub_commands = [
+        ("build_bin", None),
+        ("build_trans", None)
+    ] + build.sub_commands
+
+    build.user_options.append(("no-updates", None, "build with updates disabled"))
+
+    def initialize_options(self):
+        build.initialize_options(self)
+        self.no_updates = None
+
+    def run(self):
+        build.run(self)
+
+        if self.no_updates:
+            self.__disable_updates()
+
+    def __disable_updates(self):
+        lib_dir = os.path.join(self.build_lib, __packagename__)
+        target_file = "optionsmanager.py"
+
+        # Options file should be available from previous build commands
+        optionsfile = os.path.join(lib_dir, target_file)
+        data = None
+
+        with open(optionsfile, "r") as input_file:
+            data = input_file.readlines()
+
+        if data is None:
+            log.error("building with updates disabled failed!")
+            sys.exit(1)
+
+        for index, line in enumerate(data):
+            if "'disable_update': False" in line:
+                log.info("disabling updates")
+                data[index] = line.replace("False", "True")
+                break
+
+        with open(optionsfile, "w") as output_file:
+            output_file.writelines(data)
+
+
+# Overwrite cmds
+cmdclass = {
+    "build": Build,
+    "build_bin": BuildBin,
+    "build_trans": BuildTranslations
+}
+
+
+def linux_setup():
+    scripts = []
+    data_files = []
+    package_data = {}
+
+    # Add hicolor icons
+    for path in glob.glob("youtube_dl_gui/data/icons/hicolor/*x*"):
+        size = os.path.basename(path)
+
+        dst = "share/icons/hicolor/{size}/apps".format(size=size)
+        src = "{icon_path}/apps/youtube-dl-gui.png".format(icon_path=path)
 
         data_files.append((dst, [src]))
 
+    # Add fallback icon, see issue #14
+    data_files.append(
+        ("share/pixmaps", ["youtube_dl_gui/data/pixmaps/youtube-dl-gui.png"])
+    )
 
-def py2exe_setup():
-    create_scripts()
+    # Add man page
+    data_files.append(
+        ("share/man/man1", ["youtube-dl-gui.1"])
+    )
 
-    py2exe_dependencies = [
-        'C:\\Windows\\System32\\ffmpeg.exe',
-        'C:\\Windows\\System32\\ffprobe.exe',
-        'C:\\python27\\DLLs\\MSVCP90.dll'
+    # Add pixmaps icons (*.png) & i18n files
+    package_data[__packagename__] = [
+        "data/pixmaps/*.png",
+        "locale/*/LC_MESSAGES/*.mo"
     ]
 
-    py2exe_data_files = [
-        ('', py2exe_dependencies),
-        (PY2EXE_ICONS, ICONS_LIST)
-    ]
+    # Add scripts
+    scripts.append("build/_scripts/youtube-dl-gui")
 
-    set_locale_files(py2exe_data_files)
-
-    py2exe_options = {
-        'includes': ['wx.lib.pubsub.*',
-                     'wx.lib.pubsub.core.*',
-                     'wx.lib.pubsub.core.arg1.*']
+    setup_params = {
+        "scripts": scripts,
+        "data_files": data_files,
+        "package_data": package_data
     }
 
-    py2exe_windows = {
-        'script': 'build\\_scripts\\youtube-dl-gui',
-        'icon_resources': [(0, 'youtube_dl_gui\\icons\\youtube-dl-gui.ico')]
-    }
-
-    params = {
-        'data_files': py2exe_data_files,
-        'windows': [py2exe_windows],
-        'options': {'py2exe': py2exe_options}
-    }
-
-    return params
-
-def py2app_setup():
-    data_files = []
-    create_scripts()
-    set_locale_files(data_files)
-    params = {
-        'data_files': data_files,
-        'app': ['build/_scripts/youtube-dl-gui'],
-        'setup_requires': ['py2app'],
-        'options': {'py2app': {'argv_emulation': True, 'iconfile': 'youtube_dl_gui/icons/osx/YoutubeDlGui.icns'}},
-    }
-
-    return params
-
-def normal_setup():
-    data_files = list()
-
-    if os.name == 'nt':
-        icons_dir = (WINDOWS_ICONS, ICONS_LIST)
-        data_files.append(icons_dir)
-
-        set_locale_files(data_files)
-
-        params = {'data_files': data_files}
-    else:
-        # Create all the hicolor icons
-        for index, size in enumerate(ICONS_SIZES):
-            icons_dest = os.path.join(LINUX_ICONS, size, 'apps')
-            icons_dir = (icons_dest, [ICONS_LIST[index]])
-
-            data_files.append(icons_dir)
-
-        # Add the 48x48 icon as fallback
-        fallback_icon = (LINUX_FALLBACK_ICONS, [ICONS_LIST[2]])
-        data_files.append(fallback_icon)
-
-        set_locale_files(data_files)
-
-        create_scripts()
-        params = {'data_files': data_files, 'scripts': ['build/_scripts/youtube-dl-gui']}
-
-    return params
+    return setup_params
 
 
-if PY2EXE:
-    params = py2exe_setup()
+def windows_setup():
+    def normal_setup():
+        package_data = {}
+
+        # Add pixmaps icons (*.png) & i18n files
+        package_data[__packagename__] = [
+            "data\\pixmaps\\*.png",
+            "locale\\*\\LC_MESSAGES\\*.mo"
+        ]
+
+        setup_params = {
+            "package_data": package_data
+        }
+
+        return setup_params
+
+    def py2exe_setup():
+        windows = []
+        data_files = []
+
+        # py2exe dependencies & options
+        # TODO change directory for ffmpeg.exe & ffprobe.exe
+        dependencies = [
+            "C:\\Windows\\System32\\ffmpeg.exe",
+            "C:\\Windows\\System32\\ffprobe.exe",
+            "C:\\python27\\DLLs\\MSVCP90.dll"
+        ]
+
+        options = {
+            "includes": ["wx.lib.pubsub.*",
+                         "wx.lib.pubsub.core.*",
+                         "wx.lib.pubsub.core.arg1.*"]
+        }
+        #############################################
+
+        # Add py2exe deps & pixmaps icons (*.png)
+        data_files.extend([
+            ("", dependencies),
+            ("data\\pixmaps", glob.glob("youtube_dl_gui\\data\\pixmaps\\*.png")),
+        ])
+
+        # We have to manually add the translation files since py2exe cant do it
+        for lang in os.listdir("youtube_dl_gui\\locale"):
+            dst = os.path.join("locale", lang, "LC_MESSAGES")
+            src = os.path.join("youtube_dl_gui", dst, "youtube_dl_gui.mo")
+
+            data_files.append((dst, [src]))
+
+        # Add GUI executable details
+        windows.append({
+            "script": "build\\_scripts\\youtube-dl-gui",
+            "icon_resources": [(0, "youtube_dl_gui\\data\\pixmaps\\youtube-dl-gui.ico")]
+        })
+
+        setup_params = {
+            "windows": windows,
+            "data_files": data_files,
+            "options": {"py2exe": options}
+        }
+
+        return setup_params
+
+    if PY2EXE:
+        return py2exe_setup()
+
+    return normal_setup()
+
+
+if on_windows():
+    params = windows_setup()
 else:
-    if PY2APP:
-        params = py2app_setup()
-    else:
-        params = normal_setup()
-
+    params = linux_setup()
 
 setup(
     author              = __author__,
@@ -199,7 +317,8 @@ setup(
     url                 = __projecturl__,
     description         = __description__,
     long_description    = __descriptionfull__,
-    packages            = ['youtube_dl_gui'],
+    packages            = [__packagename__],
+    cmdclass            = cmdclass,
 
     **params
 )

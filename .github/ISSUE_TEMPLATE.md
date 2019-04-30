@@ -1,61 +1,64 @@
 ## Please follow the guide below
 
-- You will be asked some questions and requested to provide some information, please read them **carefully** and answer honestly
-- Put an `x` into all the boxes [ ] relevant to your *issue* (like that [x])
+- You will be asked some questions and requested to provide some information, please read them **carefully** and answer **honestly**
+- Put an `x` into all the boxes [ ] relevant to your issue (like that [x])
 - Use *Preview* tab to see how your issue will actually look like
 
----
-
 ### WARNING
-All the invalid issues will be rejected!!
+All invalid issues will be rejected!!
 
 ---
 
 ### Before going further
-* If your problem is a bug with the **youtube-dl** program or a request for new site support please report it [here](https://github.com/rg3/youtube-dl/issues)
 
-* Make sure you are using the *latest* **youtube-dl-gui** version: `Options > About` tab. If it's not please download & install the latest version for your OS and check if your issue still persists
+- If your problem is a bug with **youtube-dl** or a request for new site support please report it [here](https://github.com/rg3/youtube-dl/issues)
 
-* Make sure you are using the *latest* **youtube-dl** version: Click the `Update` button on the main screen and check if your issue still persists
+- Make sure you are using the *latest* **youtube-dl-gui** version (Click the `Settings` icon and then `About` to view the current version)
 
-* Make sure you searched the bugtracker for similar issues including closed ones
+- Make sure you are using the *latest* **youtube-dl** version (Click the `Settings` icon and then `Update` to update to the latest **youtube-dl** version)
 
-  - [ ] **I assure** that my problem is **NOT** with **youtube-dl**
-  - [ ] I've **verified** and **I assure** that I'm running youtube-dl-gui **0.3.8**
+- Make sure you searched the bugtracker for similar issues **including closed ones**
+
+- Make sure to read the [FAQs](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/docs/faqs.md) file
+
+  - [ ] **I think** my problem is **NOT** with **youtube-dl**
+  - [ ] I've **verified** and **i assure** that I'm running youtube-dl-gui **0.4**
   - [ ] **I assure** that i am using the latest version of **youtube-dl**
   - [ ] [Searched](https://github.com/MrS0m30n3/youtube-dl-gui/issues) bugtracker
+  - [ ] I've read the FAQs file
 
 ---
 
 ### What is the purpose of your *issue*?
-- [ ] Bug during the download process (encountered problems after hitting the *Download* button)
-- [ ] Bug other (encountered other problems with *youtube-dl-gui*)
+
+- [ ] Bug report
 - [ ] Feature request (request for a new functionality)
 - [ ] Question
 - [ ] Other
 
----
-
-Please remove the following section between the (---) if your problem does not belong to the **bug during the download process** category
-
-#### Provide the full verbose output as follows:
-
-1. Add `-v` flag to Options > Commands tab
-2. Re-try to download the URL
-3. Go to `Options > Log` tab and click the `View Log` button
-4. Copy the **whole** content of the log file and insert it between the triple ``` part
-
-```
-[delete me and insert your log content here]
-```
+Please remove any sections between (---) if they are not related to your issue
 
 ---
 
-Please remove the following section between the (---) if your problem does not belong to **the first two categories (bug report)**
+### Bug report
+
+#### If the problem occurs when downloading a URL please provide the full verbose output as follows:
+
+1. Restart **youtube-dl-gui**
+1. Go to `Options > Extra` tab
+2. Enable **Debug youtube-dl**
+3. Go to `Options > Advanced` tab and **Clear** your log content
+4. Try to download the URL
+5. Copy the **whole** log content and insert it between the ``` part below
+
+```
+delete me and insert your log content here
+```
 
 #### What operating system do you use ?
 
 #### List of actions to perform to reproduce the problem:
+
   1. ..
   2. ..
   3. ..
@@ -64,7 +67,19 @@ Please remove the following section between the (---) if your problem does not b
 
 #### What happens instead ?
 
+
 ---
 
-### Description of your *issue*, suggested solution and other information. Please make sure the description is worded well enough to be understood.
+### Feature request (request for a new functionality)
+
+Please make sure that the requested feature is **NOT** already in the [TODO](https://github.com/MrS0m30n3/youtube-dl-gui/blob/master/TODO) list
+
+- [ ] I've **verified** and **i assure** that my requested feature is **NOT** in the TODO list
+
+#### What operating system do you use ?
+
+
+---
+
+<!--Enter description of your issue, suggested solution and other information below. Please make sure the description is worded well enough to be understood-->
 

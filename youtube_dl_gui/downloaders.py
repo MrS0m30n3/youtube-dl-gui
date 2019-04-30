@@ -6,10 +6,6 @@
 This module contains the actual downloaders responsible
 for downloading the video files.
 
-Note:
-    downloaders.py is part of the youtubedlg package but it can be used
-    as a stand alone module for downloading videos.
-
 """
 
 from __future__ import unicode_literals
@@ -25,6 +21,8 @@ from time import sleep
 from Queue import Queue
 from threading import Thread
 
+from .utils import convert_item
+
 
 class PipeReader(Thread):
     """Helper class to avoid deadlocks when reading from subprocess pipes.
@@ -37,6 +35,10 @@ class PipeReader(Thread):
 
     Args:
         queue (Queue.Queue): Python queue to store the output of the subprocess.
+
+    Warnings:
+        All the operations are based on 'str' types. The caller has to convert
+        the queued items back to 'unicode' if he needs to.
 
     """
 
@@ -56,7 +58,7 @@ class PipeReader(Thread):
 
         while self._running:
             if self._filedescriptor is not None:
-                for line in iter(self._filedescriptor.readline, ''):
+                for line in iter(self._filedescriptor.readline, str('')):
                     # Ignore ffmpeg stderr
                     if str('ffmpeg version') in line:
                         ignore_line = True
@@ -132,7 +134,6 @@ class YoutubeDLDownloader(object):
         self._return_code = self.OK
         self._proc = None
 
-        self._encoding = self._get_encoding()
         self._stderr_queue = Queue()
         self._stderr_reader = PipeReader(self._stderr_queue)
 
@@ -161,11 +162,12 @@ class YoutubeDLDownloader(object):
         cmd = self._get_cmd(url, options)
         self._create_process(cmd)
 
-        self._stderr_reader.attach_filedescriptor(self._proc.stderr)
+        if self._proc is not None:
+            self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
             stdout = self._proc.stdout.readline().rstrip()
-            stdout = stdout.decode(self._encoding, 'ignore')
+            stdout = convert_item(stdout, to_unicode=True)
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -176,7 +178,7 @@ class YoutubeDLDownloader(object):
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
             stderr = self._stderr_queue.get_nowait().rstrip()
-            stderr = stderr.decode(self._encoding, 'ignore')
+            stderr = convert_item(stderr, to_unicode=True)
 
             self._log(stderr)
 
@@ -184,6 +186,19 @@ class YoutubeDLDownloader(object):
                 self._set_returncode(self.WARNING)
             else:
                 self._set_returncode(self.ERROR)
+
+        # Set return code to ERROR if we could not start the download process
+        # or the childs return code is greater than zero
+        # NOTE: In Linux if the called script is just empty Python exits
+        # normally (ret=0), so we cant detect this or similar cases
+        # using the code below
+        # NOTE: In Unix a negative return code (-N) indicates that the child
+        # was terminated by signal N (e.g. -9 = SIGKILL)
+        if self._proc is None or self._proc.returncode > 0:
+            self._return_code = self.ERROR
+
+        if self._proc is not None and self._proc.returncode > 0:
+            self._log('Child process exited with non-zero code: {}'.format(self._proc.returncode))
 
         self._last_data_hook()
 
@@ -197,6 +212,12 @@ class YoutubeDLDownloader(object):
                 # os.killpg is not available on Windows
                 # See: https://bugs.python.org/issue5115
                 self._proc.kill()
+
+                # When we kill the child process on Windows the return code
+                # gets set to 1, so we want to reset the return code back to 0
+                # in order to avoid creating logging output in the download(...)
+                # method
+                self._proc.returncode = 0
             else:
                 os.killpg(self._proc.pid, signal.SIGKILL)
 
@@ -297,16 +318,6 @@ class YoutubeDLDownloader(object):
 
         return cmd
 
-    def _get_encoding(self):
-        """Return system encoding. """
-        try:
-            encoding = locale.getpreferredencoding()
-            'TEST'.encode(encoding)
-        except:
-            encoding = 'UTF-8'
-
-        return encoding
-
     def _create_process(self, cmd):
         """Create new subprocess.
 
@@ -315,6 +326,9 @@ class YoutubeDLDownloader(object):
 
         """
         info = preexec = None
+
+        # Keep a unicode copy of cmd for the log
+        ucmd = cmd
 
         if os.name == 'nt':
             # Hide subprocess window
@@ -328,13 +342,17 @@ class YoutubeDLDownloader(object):
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
         if sys.version_info < (3, 0):
-            cmd = [item.encode(self._encoding, 'ignore') for item in cmd]
+            cmd = convert_item(cmd, to_unicode=False)
 
-        self._proc = subprocess.Popen(cmd,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE,
-                                      preexec_fn=preexec,
-                                      startupinfo=info)
+        try:
+            self._proc = subprocess.Popen(cmd,
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE,
+                                          preexec_fn=preexec,
+                                          startupinfo=info)
+        except (ValueError, OSError) as error:
+            self._log('Failed to start process: {}'.format(ucmd))
+            self._log(convert_item(str(error), to_unicode=True))
 
 
 def extract_data(stdout):
@@ -360,12 +378,23 @@ def extract_data(stdout):
         'playlist_size'  : The number of videos in the playlist.
 
     """
+    # REFACTOR
+    def extract_filename(input_data):
+        path, fullname = os.path.split(input_data.strip("\""))
+        filename, extension = os.path.splitext(fullname)
+
+        return path, filename, extension
+
     data_dictionary = {}
 
     if not stdout:
         return data_dictionary
 
-    stdout = [string for string in stdout.split(' ') if string != '']
+    # We want to keep the spaces in order to extract filenames with
+    # multiple whitespaces correctly. We also keep a copy of the old
+    # 'stdout' for backward compatibility with the old code
+    stdout_with_spaces = stdout.split(' ')
+    stdout = stdout.split()
 
     stdout[0] = stdout[0].lstrip('\r')
 
@@ -374,14 +403,11 @@ def extract_data(stdout):
 
         # Get path, filename & extension
         if stdout[1] == 'Destination:':
-            path, fullname = os.path.split(' '.join(stdout[2:]))
-            filename, extension = os.path.splitext(fullname)
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
 
             data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
             data_dictionary['extension'] = extension
-            # remove the format that youtube-dl adds during the merging
-            # process at end of the filename
-            data_dictionary['filename'] = re.sub('\.f[0-9]{1,3}$', '', filename)
 
         # Get progress info
         if '%' in stdout[1]:
@@ -401,9 +427,21 @@ def extract_data(stdout):
             data_dictionary['playlist_index'] = stdout[3]
             data_dictionary['playlist_size'] = stdout[5]
 
+        # Remove the 'and merged' part from stdout when using ffmpeg to merge the formats
+        if stdout[-3] == 'downloaded' and stdout [-1] == 'merged':
+            stdout = stdout[:-2]
+            stdout_with_spaces = stdout_with_spaces[:-2]
+
+            data_dictionary['percent'] = '100%'
+
         # Get file already downloaded status
         if stdout[-1] == 'downloaded':
             data_dictionary['status'] = 'Already Downloaded'
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[1:-4]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
 
         # Get filesize abort status
         if stdout[-1] == 'Aborting.':
@@ -427,7 +465,30 @@ def extract_data(stdout):
 
         # Get final extension after merging process
         if stdout[1] == 'Merging':
-            data_dictionary['extension'] = os.path.splitext(' '.join(stdout[4:])[:-1])[1]
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[4:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
+        # Get final extension ffmpeg post process simple (not file merge)
+        if stdout[1] == 'Destination:':
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[2:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
+        # Get final extension after recoding process
+        if stdout[1] == 'Converting':
+            path, filename, extension = extract_filename(' '.join(stdout_with_spaces[8:]))
+
+            data_dictionary['path'] = path
+            data_dictionary['filename'] = filename
+            data_dictionary['extension'] = extension
+
+    elif stdout[0][0] != '[' or stdout[0] == '[debug]':
+        pass  # Just ignore this output
 
     else:
         data_dictionary['status'] = 'Pre Processing'

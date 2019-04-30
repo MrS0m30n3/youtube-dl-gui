@@ -1,49 +1,55 @@
-# youtube-dlG
+[![Donations Badge](https://yourdonation.rocks/images/badge.svg)](https://mrs0m30n3.github.io/youtube-dl-gui/donate.html)
 
-A cross platform front-end GUI of the popular [youtube-dl](http://rg3.github.io/youtube-dl/) media downloader, written in wxPython. [List of supported sites](https://rg3.github.io/youtube-dl/supportedsites.html).
+# youtube-dlG
+A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io/youtube-dl/) media downloader written in wxPython. [Supported sites](https://rg3.github.io/youtube-dl/supportedsites.html)
 
 ## Screenshots
+![youtube-dl-gui main window](https://raw.githubusercontent.com/MrS0m30n3/youtube-dl-gui/gh-pages/images/ydlg_ui.gif)
 
-**Main window**
+## Requirements
+* [Python 2.7.3+](https://www.python.org/downloads)
+* [wxPython 3](https://wxpython.org/download.php)
+* [TwoDict](https://pypi.python.org/pypi/twodict)
+* [GNU gettext](https://www.gnu.org/software/gettext/) (to build the package)
+* [FFmpeg](https://ffmpeg.org/download.html) (optional, to post process video files)
 
-![Youtube-dl-gui main window](http://i.imgur.com/I4oXPWs.png)
-
-**Options window**
-
-![Options window](http://i.imgur.com/eShdoLD.png)
+## Downloads
+* [Source (.zip)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.zip)
+* [Source (.tar.gz)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.tar.gz)
+* [PyPi](https://pypi.python.org/pypi/youtube-dlg/0.4)
+* [Ubuntu PPA](http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/)
+* [Arch AUR](https://aur.archlinux.org/packages/youtube-dl-gui-git/)
+* [Slackware SlackBuild](https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/)
+* [openSUSE](https://software.opensuse.org/package/youtube-dl-gui)
+* [Windows Installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-setup.zip)
+* [Windows Portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-portable.zip)
 
 ## Installation
 
-**Linux (from source):** `sudo python setup.py install`
+### Install From Source
+1. Download & extract the source
+2. Change directory into *youtube-dl-gui-0.4*
+3. Run `python setup.py install`
 
-**Linux (Ubuntu PPA):** http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/ (TODO: update)
+### Install PyPi
+1. Run `pip install youtube-dlg`
 
-**Linux (Arch AUR):** https://aur.archlinux.org/packages/youtube-dl-gui-git/ (TODO: update)
-
-**Windows:** TODO Package MSI/portable ZIP
-
-**Mac:** TODO Package app
-
-Then you can call youtube-dlg from the command line, using the `youtube-dl-gui` command, or by creating a desktop launcher (TODO)
+### Install Windows Installer
+1. Download & extract the Windows installer
+2. Run the `setup.exe` file
 
 ## Contributing
-
-**Support for new language:** See [Localization HOWTO](locale_build/HOWTO.md).
-
-**Reporting bugs:** See [Issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues).
-
-
-## Requirements
-[Python](http://www.python.org) 2.7+, [wxPython](http://wxpython.org), [FFMPEG & FFPROBE](http://www.ffmpeg.org) (optional, to convert video files to audio-only files).
+* **Add support for new language:** See [localization howto](docs/localization_howto.md)
+* **Report a bug:** See [issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues)
 
 ## Authors
-
 See [AUTHORS](AUTHORS) file
-      
-## License
 
+## License
 The [Public Domain License](LICENSE)
 
-## Thanks
+## Frequently Asked Questions
+See [FAQs](docs/faqs.md) file
 
-Thanks to youtube-dl authors for creating such an amazing tool.
+## Thanks
+Thanks to everyone who contributed to this project and to [@philipzae](https://github.com/philipzae) for designing the new UI layout.

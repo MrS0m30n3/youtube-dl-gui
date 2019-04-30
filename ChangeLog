@@ -1,0 +1,25 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+
+## [Unreleased]
+
+### Added
+- ChangeLog
+- 'flac' in available audio formats (#234)
+- French translation (#203)
+- Japanese translation (#226)
+- Italian translation (#231)
+- Czech translation (#233)
+- Automatic locale detection during first run (#235)
+- Man page (#259)
+- Option to disable youtube-dl updates (#21)
+
+### Fixed
+- Bug in utils.convert_item function
+- Bug in downloaders.YoutubeDLDownloader (#244)
+
+### Changed
+- Update timeout from 20 to 10 seconds (#244)
+

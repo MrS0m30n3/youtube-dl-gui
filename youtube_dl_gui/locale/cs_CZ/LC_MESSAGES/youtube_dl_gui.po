@@ -1,440 +1,601 @@
 # Youtube-dlG localization file.
 # FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
-# Ondrej Kovar <ondrej95kovar@gmail.com>, 2016.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: youtube-dlg 0.3.8\n"
-"POT-Creation-Date: 2015-07-02 15:31+EEST\n"
-"PO-Revision-Date: 2016-09-03 15:37+EEST\n"
-"Last-Translator: Ondrej Kovar <ondrej95kovar@gmail.com>\n"
-"Language-Team: Czech\n"
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2018-01-15 16:42+EET\n"
+"PO-Revision-Date: 2017-10-08 19:27+0200\n"
+"Last-Translator: Pavel Řehák <pavel-rehak@email.cz>\n"
+"Language-Team: \n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
-#: mainframe.py:82
-msgid "URLs"
-msgstr "Odkazy"
-
-#: mainframe.py:83
-msgid "Download"
-msgstr "Stáhni"
-
-#: mainframe.py:84
-msgid "Update"
-msgstr "Update"
-
-#: mainframe.py:85 optionsframe.py:40
-msgid "Options"
-msgstr "Nastavení"
-
-#: mainframe.py:86
+#: youtube_dl_gui/__init__.py:91
 msgid "Error"
-msgstr "Chyba"
+msgstr ""
 
-#: mainframe.py:87
-msgid "Stop"
-msgstr "Stop"
+#: youtube_dl_gui/__init__.py:91
+msgid "Failed to locate youtube-dl and updates are disabled"
+msgstr ""
 
-#: mainframe.py:88
-msgid "Info"
-msgstr "Info"
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
+msgid "ID"
+msgstr "ID"
 
-#: mainframe.py:89
-msgid "Welcome"
-msgstr "Vítejte"
-
-#: mainframe.py:90
-msgid "Successfully downloaded {0} url(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "Úspěšně staženo {0} odkaz(ů) za {1} dní {2} hodin {3} minut {4} sekund"
-
-#: mainframe.py:92
-msgid "Downloads completed"
-msgstr "Stahování dokončeno"
-
-#: mainframe.py:93
-msgid "Downloading {0} url(s)"
-msgstr "Stahuji {0} odkaz(y)"
-
-#: mainframe.py:94
-msgid "Stopping downloads"
-msgstr "Zastavují stahování"
-
-#: mainframe.py:95
-msgid "Downloads stopped"
-msgstr "Stahování zastaveno"
-
-#: mainframe.py:96
-msgid "You need to provide at least one url"
-msgstr "Musíte poskytnout alespoň jeden odkaz"
-
-#: mainframe.py:97
-msgid "Downloads started"
-msgstr "Stahování zahájeno"
-
-#: mainframe.py:99
-msgid "Downloading latest youtube-dl. Please wait..."
-msgstr "Stahuji poslední youtube-dl. Prosím vyčkejte..."
-
-#: mainframe.py:100
-msgid "Youtube-dl download failed [{0}]"
-msgstr "Youtube-dl stažení skončilo chybou [{0}]"
-
-#: mainframe.py:101
-msgid "Youtube-dl downloaded correctly"
-msgstr "Youtube-dl staženo"
-
-#: mainframe.py:103
-msgid "Unable to open directory: '{dir}'. The specified path does not exist"
-msgstr "Nemohu otevřít adresář: '{dir}'. Zadaná cesta neexistuje"
-
-#: mainframe.py:105
-msgid "Error while shutting down. Make sure you typed the correct password"
-msgstr "Chyba při ukončování. Ujistěte se, že jste zadali správné heslo"
-
-#: mainframe.py:107
-msgid "Shutting down system"
-msgstr "Vypínám"
-
-#: mainframe.py:109
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/mainframe.py:140
 msgid "Title"
-msgstr "Titul"
+msgstr "Název"
 
-#: mainframe.py:110
-msgid "Size"
-msgstr "Velikost"
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
+msgid "Title + ID"
+msgstr "Název + ID"
 
-#: mainframe.py:111
-msgid "Percent"
-msgstr "Procent"
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
+msgid "Title + Quality"
+msgstr "Název + Kvalita"
 
-#: mainframe.py:112
-msgid "ETA"
-msgstr "OZČ"
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
+msgid "Title + ID + Quality"
+msgstr "Název + ID + Kvalita"
 
-#: mainframe.py:113
-msgid "Speed"
-msgstr "Rychlost"
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
+msgid "Custom"
+msgstr "Vlastní"
 
-#: mainframe.py:114
-msgid "Status"
-msgstr "Status"
-
-#: optionsframe.py:42
-msgid "General"
-msgstr "Obecné"
-
-#: optionsframe.py:43
-msgid "Video"
-msgstr "Video"
-
-#: optionsframe.py:44
-msgid "Audio"
-msgstr "Zvuk"
-
-#: optionsframe.py:45
-msgid "Playlist"
-msgstr "Seznam stop"
-
-#: optionsframe.py:46
-msgid "Output"
-msgstr "Výstup"
-
-#: optionsframe.py:47
-msgid "Subtitles"
-msgstr "Titulky"
-
-#: optionsframe.py:48
-msgid "Filesystem"
-msgstr "Filesystem"
-
-#: optionsframe.py:49
-msgid "Shutdown"
-msgstr "Vypnout"
-
-#: optionsframe.py:50
-msgid "Authentication"
-msgstr "Autentikace"
-
-#: optionsframe.py:51
-msgid "Connection"
-msgstr "Připojení"
-
-#: optionsframe.py:52
-msgid "Log"
-msgstr "Log"
-
-#: optionsframe.py:53
-msgid "Commands"
-msgstr "Příkazy"
-
-#: optionsframe.py:54
-msgid "Localization"
-msgstr "Lokalizace"
-
-#: optionsframe.py:400
-msgid "Enable Log"
-msgstr "Povolit logování"
-
-#: optionsframe.py:401
-msgid "Write Time"
-msgstr "Zapiš čas"
-
-#: optionsframe.py:402
-msgid "Clear Log"
-msgstr "Vyčisti log"
-
-#: optionsframe.py:403
-msgid "View Log"
-msgstr "Zhlédni log"
-
-#: optionsframe.py:404
-msgid "Path: {0}"
-msgstr "Cesta: {0}"
-
-#: optionsframe.py:405
-msgid "Log Size: {0} Bytes"
-msgstr "Velikost logu: {0}"
-
-#: optionsframe.py:406 optionsframe.py:1425
-msgid "Restart"
-msgstr "Restart"
-
-#: optionsframe.py:407
-msgid "Please restart {0}"
-msgstr "Restartujte prosím {0}"
-
-#: optionsframe.py:517
-msgid "Shutdown when finished"
-msgstr "Po skončení vypnout"
-
-#: optionsframe.py:518
-msgid "SUDO password"
-msgstr "SUDO password"
-
-#: optionsframe.py:570
-msgid "Playlist Start"
-msgstr "Začít seznam stop"
-
-#: optionsframe.py:571
-msgid "Playlist Stop"
-msgstr "Zastavit seznam stop"
-
-#: optionsframe.py:572
-msgid "Max Downloads"
-msgstr "Max stažení"
-
-#: optionsframe.py:630
-msgid "Retries"
-msgstr "Obnovení"
-
-#: optionsframe.py:631
-msgid "User Agent"
-msgstr "User Agent"
-
-#: optionsframe.py:632
-msgid "Referer"
-msgstr "Referer"
-
-#: optionsframe.py:633
-msgid "Proxy"
-msgstr "Proxy"
-
-#: optionsframe.py:707
-msgid "Username"
-msgstr "Uživatelské jméno"
-
-#: optionsframe.py:708
-msgid "Password"
-msgstr "Heslo"
-
-#: optionsframe.py:709
-msgid "Video Password (vimeo, smotri)"
-msgstr "Video heslo (vimeo, smotri)"
-
-#: optionsframe.py:767
-msgid "high"
-msgstr "vysoké"
-
-#: optionsframe.py:767
-msgid "low"
-msgstr "nízké"
-
-#: optionsframe.py:767
-msgid "mid"
-msgstr "střední"
-
-#: optionsframe.py:770
-msgid "Convert to Audio"
-msgstr "Překonvertovat do zvuku"
-
-#: optionsframe.py:771
-msgid "Keep Video"
-msgstr "Zachovej video"
-
-#: optionsframe.py:772
-msgid "Audio Format"
-msgstr "Formát zvuku"
-
-#: optionsframe.py:773
-msgid "Audio Quality"
-msgstr "Kvalita zvuku"
-
-#: optionsframe.py:890
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
 msgid "default"
 msgstr "výchozí"
 
-#: optionsframe.py:891
-msgid "none"
-msgstr "žádné"
+#: youtube_dl_gui/mainframe.py:97
+msgid "Enter URLs below"
+msgstr "Níže vložte URL adresy"
 
-#: optionsframe.py:895
-msgid "Video Format"
-msgstr "Formát videa"
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr "Aktualizovat"
 
-#: optionsframe.py:896
-msgid "Mix Format"
-msgstr "Formát mix"
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Options"
+msgstr "Volby"
 
-#: optionsframe.py:955
-msgid "Restrict filenames (ASCII)"
-msgstr "Omezit názvy souborů (ASCII)"
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
+msgid "Stop"
+msgstr "Zastavit"
 
-#: optionsframe.py:956
-msgid "ID as Name"
-msgstr "ID jako název"
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr "Informace"
 
-#: optionsframe.py:957
-msgid "Title as Name"
-msgstr "Titul jako název"
+#: youtube_dl_gui/mainframe.py:102
+msgid "Welcome"
+msgstr "Vítejte"
 
-#: optionsframe.py:958
-msgid "Custom Template (youtube-dl)"
-msgstr "Vlastní šablona (youtube-dl)"
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warning"
+msgstr "Upozornění"
 
-#: optionsframe.py:1052
-msgid "Ignore Errors"
-msgstr "Ignorovat chyby"
+#: youtube_dl_gui/mainframe.py:105
+msgid "Add"
+msgstr "Přidat"
 
-#: optionsframe.py:1053
-msgid "Open destination folder"
-msgstr "Otevřít cílový adresář"
+#: youtube_dl_gui/mainframe.py:106
+msgid "Download list"
+msgstr "Seznam stahování"
 
-#: optionsframe.py:1054
-msgid "Write info to (.json) file"
-msgstr "Zapiš info do (.json) souboru"
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Delete"
+msgstr "Smazat"
 
-#: optionsframe.py:1055
-msgid "Write description to file"
-msgstr "Zapiš popis do souboru"
+#: youtube_dl_gui/mainframe.py:108
+msgid "Play"
+msgstr "Přehrát"
 
-#: optionsframe.py:1056
-msgid "Write thumbnail to disk"
-msgstr "Zapiš nádhled na disk"
+#: youtube_dl_gui/mainframe.py:109
+msgid "Up"
+msgstr "Nahoru"
 
-#: optionsframe.py:1057
-msgid "Filesize"
-msgstr "Velikost souboru"
+#: youtube_dl_gui/mainframe.py:110
+msgid "Down"
+msgstr "Dolů"
 
-#: optionsframe.py:1058
-msgid "Min"
-msgstr "Min"
+#: youtube_dl_gui/mainframe.py:111
+msgid "Reload"
+msgstr "Obnovit"
 
-#: optionsframe.py:1059
-msgid "Max"
-msgstr "Max"
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr "Pozastavit"
 
-#: optionsframe.py:1172
-msgid "English"
-msgstr "Angličtina"
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
+msgid "Start"
+msgstr "Spustit"
 
-#: optionsframe.py:1173
-msgid "Greek"
-msgstr "Řečtina"
-
-#: optionsframe.py:1174
-msgid "Portuguese"
-msgstr "Portugalština"
-
-#: optionsframe.py:1175
-msgid "French"
-msgstr "Francouzština"
-
-#: optionsframe.py:1176
-msgid "Italian"
-msgstr "Italština"
-
-#: optionsframe.py:1177
-msgid "Russian"
-msgstr "Ruština"
-
-#: optionsframe.py:1178
-msgid "Spanish"
-msgstr "Španělština"
-
-#: optionsframe.py:1179
-msgid "German"
-msgstr "Němčina"
-
-#: optionsframe.py:1182
-msgid "Download subtitle file by language"
-msgstr "Stáhni soubor s titulkami podle jazyka"
-
-#: optionsframe.py:1183
-msgid "Download all available subtitles"
-msgstr "Stáhni všechny dostupné titulky"
-
-#: optionsframe.py:1184
-msgid "Download automatic subtitle file (YOUTUBE ONLY)"
-msgstr "Stáhni automaticky soubor s titulkami (POUZE YOUTUBE)"
-
-#: optionsframe.py:1185
-msgid "Embed subtitles in the video (only mp4 videos)"
-msgstr "Vlož titulky přímo do videa (pouze mp4)"
-
-#: optionsframe.py:1186
-msgid "Subtitles Language"
-msgstr "Jazyk titulek"
-
-#: optionsframe.py:1280
+#: youtube_dl_gui/mainframe.py:114
 msgid "About"
 msgstr "O aplikaci"
 
-#: optionsframe.py:1281
-msgid "Open"
-msgstr "Otevřít"
+#: youtube_dl_gui/mainframe.py:115
+msgid "View Log"
+msgstr "Zobrazit záznam"
 
-#: optionsframe.py:1282
-msgid "Reset Options"
-msgstr "Obnovit nastavení"
+#: youtube_dl_gui/mainframe.py:117
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "Úspěšně staženo {0} URL za {1} dní {2} hodin {3} minut {4} sekund"
 
-#: optionsframe.py:1283
-msgid "Save Path"
-msgstr "Uložit cestu"
+#: youtube_dl_gui/mainframe.py:119
+msgid "Downloads completed"
+msgstr "Stahování dokončeno"
 
-#: optionsframe.py:1284
-msgid "Settings File: {0}"
-msgstr "Soubor nastavení: {0}"
+#: youtube_dl_gui/mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "Celkový postup: {0:.1f}% | Ve frontě ({1}) Pozastaveno ({2}) Aktivní ({3}) Dokončené ({4}) Chyby ({5})"
 
-#: optionsframe.py:1285
+#: youtube_dl_gui/mainframe.py:121
+msgid "Stopping downloads"
+msgstr "Stahování se zastavuje"
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads stopped"
+msgstr "Stahování zastaveno"
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "Je třeba zadat alespoň jednu URL adresu"
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads started"
+msgstr "Stahování zahájeno"
+
+#: youtube_dl_gui/mainframe.py:125
 msgid "Choose Directory"
 msgstr "Vyberte adresář"
 
-#: optionsframe.py:1370
-msgid "Command line arguments (e.g. --help)"
-msgstr "Argumenty příkazové řádky (např. --help)"
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "Stahuje se. Počkejte prosím, až se dokončí všechna stahování"
 
-#: optionsframe.py:1426
-msgid "Localization Language"
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update already in progress"
+msgstr "Aktualizace již probíhá"
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "Stahuje se nejnovější youtube-dl. Počkejte prosím..."
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Stahování youtube-dl selhalo [{0}]"
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "Youtube-dl byl úspěšně stažen"
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "Nelze otevřít adresář: '{dir}'. Uvedená cesta neexistuje"
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Při vypínání nastala chyba. Ujistěte se, že jste zadali správné heslo"
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "Shutting down system"
+msgstr "Systém se vypíná"
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Extension"
+msgstr "Přípona"
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Size"
+msgstr "Velikost"
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Percent"
+msgstr "Procenta"
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr "ETA"
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Speed"
+msgstr "Rychlost"
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr "Stav"
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "Get URL"
+msgstr "Kopírovat URL"
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get command"
+msgstr "Kopírovat příkaz"
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Open destination"
+msgstr "Otevřít cíl"
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Re-enter"
+msgstr "Znovu vložit"
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Resume"
+msgstr "Pokračovat"
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr "Video"
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr "Zvuk"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "No items selected. Please pick an action"
+msgstr "Není vybrána žádná položka. Prosím vyberte akci"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove all"
+msgstr "Odstranit vše"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove completed"
+msgstr "Odstranit dokončené"
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Are you sure you want to remove selected items?"
+msgstr "Jste si jistí, že chcete odstranit vybranou položku?"
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Item is active, cannot remove"
+msgstr "Položka je aktivní, nelze ji odstranit"
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Item is not completed"
+msgstr "Položka není dokončena"
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "Probíhá aktualizace. Počkejte prosím, až se aktualizace dokončí"
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging is disabled"
+msgstr "Záznamy jsou zakázány"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutdown"
+msgstr "Vypnout"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutting down in {0} second(s)"
+msgstr "Vypnutí za {0} sekund"
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "No items to download"
+msgstr "Nejsou žádné položky ke stažení"
+
+#: youtube_dl_gui/mainframe.py:1040
+msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Are you sure you want to exit?"
+msgstr "Jste si jistí, že chcete aplikaci ukončit?"
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Exit"
+msgstr "Ukončit"
+
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: youtube_dl_gui/mainframe.py:1455
+msgid "OK"
+msgstr "OK"
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Reset"
+msgstr "Resetovat"
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Close"
+msgstr "Zavřít"
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "General"
+msgstr "Obecné"
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formats"
+msgstr "Formáty"
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr "Stahování"
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr "Extra"
+
+#: youtube_dl_gui/optionsframe.py:310
+msgid "Language"
 msgstr "Jazyk"
 
-#: optionsframe.py:1427
-msgid "In order for the changes to take effect please restart {0}"
-msgstr "Restartuje prosím, aby se projevily změny {0}"
+#: youtube_dl_gui/optionsframe.py:313
+msgid "Filename format"
+msgstr "Formát názvu souboru"
 
-#: optionsframe.py:1474
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Filename options"
+msgstr "Volby pro název souboru"
+
+#: youtube_dl_gui/optionsframe.py:319
+msgid "Restrict filenames to ASCII"
+msgstr "Omezit názvy souborů na ASCII"
+
+#: youtube_dl_gui/optionsframe.py:321
+msgid "More options"
+msgstr "Další volby"
+
+#: youtube_dl_gui/optionsframe.py:322
+msgid "Confirm on exit"
+msgstr "Potvrdit při ukončení"
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Confirm item deletion"
+msgstr "Potvrdit mazání položky"
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Inform me on download completion"
+msgstr "Informovat mě, když je stahování dokončeno"
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "Shutdown on download completion"
+msgstr "Vypnout, když je stahování dokončeno"
+
+#: youtube_dl_gui/optionsframe.py:337
+msgid "SUDO password"
+msgstr "Heslo SUDO"
+
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "Aby se projevily změny, prosím restartujte {0}"
+
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
+msgid "Restart"
+msgstr "Restartovat"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "high"
+msgstr "vysoká"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "low"
+msgstr "nízká"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "mid"
+msgstr "střední"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "Video formats"
+msgstr "Video formáty"
+
+#: youtube_dl_gui/optionsframe.py:471
+msgid "Audio formats"
+msgstr "Zvukové formáty"
+
+#: youtube_dl_gui/optionsframe.py:474
+msgid "Post-Process options"
+msgstr "Volby po stažení"
+
+#: youtube_dl_gui/optionsframe.py:475
+msgid "Keep original files"
+msgstr "Zachovat původní soubory"
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Extract audio from video file"
+msgstr "Extrahovat zvuk z video souboru"
+
+#: youtube_dl_gui/optionsframe.py:477
+msgid "Embed thumbnail in audio file"
+msgstr "Vložit náhled do zvukového souboru"
+
+#: youtube_dl_gui/optionsframe.py:478
+msgid "Add metadata to file"
+msgstr "Přidat do souboru metadata"
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Audio quality"
+msgstr "Kvalita zvuku"
+
+#: youtube_dl_gui/optionsframe.py:538
+msgid "English"
+msgstr "Angličtina"
+
+#: youtube_dl_gui/optionsframe.py:539
+msgid "French"
+msgstr "Francouzština"
+
+#: youtube_dl_gui/optionsframe.py:540
+msgid "German"
+msgstr "Němčina"
+
+#: youtube_dl_gui/optionsframe.py:541
+msgid "Greek"
+msgstr "Řečtina"
+
+#: youtube_dl_gui/optionsframe.py:542
+msgid "Hebrew"
+msgstr "Hebrejština"
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "Italian"
+msgstr "Italština"
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "Portuguese"
+msgstr "Portugalština"
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "Russian"
+msgstr "Ruština"
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Spanish"
+msgstr "Španělština"
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Swedish"
+msgstr "Švédština"
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Turkish"
+msgstr "Turečtina"
+
+#: youtube_dl_gui/optionsframe.py:564
+msgid "None"
+msgstr "Žádné"
+
+#: youtube_dl_gui/optionsframe.py:565
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "Automatické titulky (POUZE YOUTUBE)"
+
+#: youtube_dl_gui/optionsframe.py:566
+msgid "All available subtitles"
+msgstr "Všechny dostupné titulky"
+
+#: youtube_dl_gui/optionsframe.py:567
+msgid "Subtitles by language"
+msgstr "Titulky dle jazyka"
+
+#: youtube_dl_gui/optionsframe.py:573
+msgid "Subtitles"
+msgstr "Titulky"
+
+#: youtube_dl_gui/optionsframe.py:577
+msgid "Subtitles options"
+msgstr "Volby pro titulky"
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "Vložit titulky do video souboru (POUZE mp4)"
+
+#: youtube_dl_gui/optionsframe.py:580
+msgid "Playlist"
+msgstr "Seznam k přehrání"
+
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
+msgid "Max"
+msgstr "Max"
+
+#: youtube_dl_gui/optionsframe.py:589
+msgid "Filesize"
+msgstr "Velikost souboru"
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Min"
+msgstr "Min"
+
+#: youtube_dl_gui/optionsframe.py:723
+msgid "Retries"
+msgstr "Opakování"
+
+#: youtube_dl_gui/optionsframe.py:726
+msgid "Authentication"
+msgstr "Ověření"
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: youtube_dl_gui/optionsframe.py:730
+msgid "Password"
+msgstr "Heslo"
+
+#: youtube_dl_gui/optionsframe.py:732
+msgid "Video password"
+msgstr "Heslo videa"
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Network"
+msgstr "Síť"
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Proxy"
+msgstr "Proxy"
+
+#: youtube_dl_gui/optionsframe.py:739
+msgid "User agent"
+msgstr "Uživatelský agent"
+
+#: youtube_dl_gui/optionsframe.py:741
+msgid "Referer"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "Logging"
+msgstr "Záznamy"
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Enable log"
+msgstr "Povolit záznam"
+
+#: youtube_dl_gui/optionsframe.py:747
+msgid "View"
+msgstr "Zobrazit"
+
+#: youtube_dl_gui/optionsframe.py:748
+msgid "Clear"
+msgstr "Vymazat"
+
+#: youtube_dl_gui/optionsframe.py:858
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "Volby příkazového řádku pro youtube-dl (např. --help)"
+
+#: youtube_dl_gui/optionsframe.py:861
+msgid "Extra options"
+msgstr "Další volby"
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Debug youtube-dl"
+msgstr "Debug youtube-dl"
+
+#: youtube_dl_gui/optionsframe.py:864
+msgid "Ignore errors"
+msgstr "Ignorovat chyby"
+
+#: youtube_dl_gui/optionsframe.py:865
+msgid "Ignore youtube-dl config"
+msgstr "Ignorovat nastavení youtube-dl"
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "No mtime"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:867
+msgid "Prefer native HLS"
+msgstr "Preferovat nativní HLS"
+
+#: youtube_dl_gui/optionsframe.py:928
 msgid "Log Viewer"
-msgstr "Náhled logu"
+msgstr "Prohlížeč záznamu událostí"

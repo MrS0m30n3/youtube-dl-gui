@@ -14,8 +14,16 @@ from __future__ import unicode_literals
 
 import os
 import sys
+import json
+import math
 import locale
 import subprocess
+
+try:
+    from twodict import TwoWayOrderedDict
+except ImportError as error:
+    print error
+    sys.exit(1)
 
 from .info import __appname__
 from .version import __version__
@@ -29,6 +37,11 @@ if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
 
 
+FILESIZE_METRICS = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+
+KILO_SIZE = 1024.0
+
+
 def get_encoding():
     """Return system encoding. """
     try:
@@ -40,6 +53,40 @@ def get_encoding():
     return encoding
 
 
+def convert_item(item, to_unicode=False):
+    """Convert item between 'unicode' and 'str'.
+
+    Args:
+        item (-): Can be any python item.
+
+        to_unicode (boolean): When True it will convert all the 'str' types
+            to 'unicode'. When False it will convert all the 'unicode'
+            types back to 'str'.
+
+    """
+    if to_unicode and isinstance(item, str):
+        # Convert str to unicode
+        return item.decode(get_encoding(), 'ignore')
+
+    if not to_unicode and isinstance(item, unicode):
+        # Convert unicode to str
+        return item.encode(get_encoding(), 'ignore')
+
+    if hasattr(item, '__iter__'):
+        # Handle iterables
+        temp_list = []
+
+        for sub_item in item:
+            if isinstance(item, dict):
+                temp_list.append((convert_item(sub_item, to_unicode), convert_item(item[sub_item], to_unicode)))
+            else:
+                temp_list.append(convert_item(sub_item, to_unicode))
+
+        return type(item)(temp_list)
+
+    return item
+
+
 def convert_on_bounds(func):
     """Decorator to convert string inputs & outputs.
 
@@ -49,39 +96,6 @@ def convert_on_bounds(func):
     returned strings values back to 'unicode'.
 
     """
-    def convert_item(item, to_unicode=False):
-        """The actual function which handles the conversion.
-
-        Args:
-            item (-): Can be any python item.
-
-            to_unicode (boolean): When True it will convert all the 'str' types
-                to 'unicode'. When False it will convert all the 'unicode'
-                types back to 'str'.
-
-        """
-        if to_unicode and isinstance(item, str):
-            # Convert str to unicode
-            return item.decode(get_encoding(), 'ignore')
-
-        if not to_unicode and isinstance(item, unicode):
-            # Convert unicode to str
-            return item.encode(get_encoding(), 'ignore')
-
-        if hasattr(item, '__iter__'):
-            # Handle iterables
-            temp_list = []
-
-            for sub_item in item:
-                if isinstance(item, dict):
-                    temp_list.append((sub_item, covert_item(item[sub_item])))
-                else:
-                    temp_list.append(convert_item(sub_item))
-
-            return type(item)(temp_list)
-
-        return item
-
     def wrapper(*args, **kwargs):
         returned_value = func(*convert_item(args), **convert_item(kwargs))
 
@@ -92,6 +106,7 @@ def convert_on_bounds(func):
 
 # See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
 # Patch os functions to convert between 'str' and 'unicode' on app bounds
+os_sep = unicode(os.sep)
 os_getenv = convert_on_bounds(os.getenv)
 os_makedirs = convert_on_bounds(os.makedirs)
 os_path_isdir = convert_on_bounds(os.path.isdir)
@@ -101,10 +116,19 @@ os_path_abspath = convert_on_bounds(os.path.abspath)
 os_path_realpath = convert_on_bounds(os.path.realpath)
 os_path_expanduser = convert_on_bounds(os.path.expanduser)
 
+# Patch locale functions
+locale_getdefaultlocale = convert_on_bounds(locale.getdefaultlocale)
+
 # Patch Windows specific functions
 if os.name == 'nt':
     os_startfile = convert_on_bounds(os.startfile)
 
+def remove_file(filename):
+    if os_path_exists(filename):
+        os.remove(filename)
+        return True
+
+    return False
 
 def remove_shortcuts(path):
     """Return given path after removing the shortcuts. """
@@ -116,18 +140,22 @@ def absolute_path(filename):
     return os_path_dirname(os_path_realpath(os_path_abspath(filename)))
 
 
-def open_dir(path):
-    """Open path using default file navigator.
-    Return True if path exists else False. """
-    path = remove_shortcuts(path)
+def open_file(file_path):
+    """Open file in file_path using the default OS application.
 
-    if not os_path_exists(path):
+    Returns:
+        True on success else False.
+
+    """
+    file_path = remove_shortcuts(file_path)
+
+    if not os_path_exists(file_path):
         return False
 
-    if os.name == 'nt':
-        os_startfile(path)
+    if os.name == "nt":
+        os_startfile(file_path)
     else:
-        subprocess.call(('xdg-open', path))
+        subprocess.call(("xdg-open", file_path))
 
     return True
 
@@ -244,19 +272,15 @@ def get_locale_file():
     Note:
         Paths that get_locale_file() func searches.
 
-        __main__ dir, library dir, /usr/share/youtube-dlg/locale
+        __main__ dir, library dir
 
     """
-    DIR_NAME = 'locale'
+    DIR_NAME = "locale"
 
     SEARCH_DIRS = [
         os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
         os.path.join(os_path_dirname(__file__), DIR_NAME),
-        os.path.join('/usr', 'share', __appname__.lower(), DIR_NAME)
     ]
-
-    if sys.platform == 'darwin':
-      SEARCH_DIRS.append('/usr/local/Cellar/youtube-dl-gui/{version}/share/locale'.format(version=__version__))
 
     for directory in SEARCH_DIRS:
         if os_path_isdir(directory):
@@ -271,242 +295,97 @@ def get_icon_file():
     Returns:
         The path to youtube-dlg icon file if exists, else returns None.
 
-    Note:
-        Paths that get_icon_file() function searches.
-
-        __main__ dir, library dir, /usr/share/pixmaps, $XDG_DATA_DIRS
-
     """
-    SIZES = ('256x256', '128x128', '64x64', '48x48', '32x32', '16x16')
-    ICON_NAME = 'youtube-dl-gui_%s.png'
+    ICON_NAME = "youtube-dl-gui.png"
 
-    ICONS_LIST = [ICON_NAME % size for size in SIZES]
+    pixmaps_dir = get_pixmaps_dir()
 
-    search_dirs = [
-        os.path.join(absolute_path(sys.argv[0]), 'icons'),
-        os.path.join(os_path_dirname(__file__), 'icons'),
-    ]
+    if pixmaps_dir is not None:
+        icon_file = os.path.join(pixmaps_dir, ICON_NAME)
 
-    # Append $XDG_DATA_DIRS on search_dirs
-    path = os_getenv('XDG_DATA_DIRS')
-
-    if path is not None:
-        for xdg_path in path.split(':'):
-            xdg_path = os.path.join(xdg_path, 'icons', 'hicolor')
-
-            for size in SIZES:
-                search_dirs.append(os.path.join(xdg_path, size, 'apps'))
-
-    # Also append /usr/share/pixmaps on search_dirs
-    search_dirs.append('/usr/share/pixmaps')
-
-    for directory in search_dirs:
-        for icon in ICONS_LIST:
-            icon_file = os.path.join(directory, icon)
-
-            if os_path_exists(icon_file):
-                return icon_file
+        if os_path_exists(icon_file):
+            return icon_file
 
     return None
 
 
-class TwoWayOrderedDict(dict):
-
-    """Custom data structure which implements a two way ordrered dictionary.
-
-    TwoWayOrderedDict it's a custom dictionary in which you can get the
-    key:value relationship but you can also get the value:key relationship.
-    It also remembers the order in which the items were inserted and supports
-    almost all the features of the build-in dict.
+def get_pixmaps_dir():
+    """Return absolute path to the pixmaps icons folder.
 
     Note:
-        Ways to create a new dictionary.
-
-        *) d = TwoWayOrderedDict(a=1, b=2) (Unordered)
-        *) d = TwoWayOrderedDict({'a': 1, 'b': 2}) (Unordered)
-
-        *) d = TwoWayOrderedDict([('a', 1), ('b', 2)]) (Ordered)
-        *) d = TwoWayOrderedDict(zip(['a', 'b', 'c'], [1, 2, 3])) (Ordered)
-
-    Examples:
-        >>> d = TwoWayOrderedDict(a=1, b=2)
-        >>> d['a']
-        1
-        >>> d[1]
-        'a'
-        >>> print d
-        TwoWayOrderedDict([('a', 1), ('b', 2)])
+        Paths we search: __main__ dir, library dir
 
     """
+    search_dirs = [
+        os.path.join(absolute_path(sys.argv[0]), "data"),
+        os.path.join(os_path_dirname(__file__), "data")
+    ]
 
-    _PREV = 0
-    _KEY = 1
-    _NEXT = 2
+    for directory in search_dirs:
+        pixmaps_dir = os.path.join(directory, "pixmaps")
 
-    def __init__(self, *args, **kwargs):
-        self._items = item = []
-        self._items += [item, None, item]  # Double linked list [prev, key, next]
-        self._items_map = {}  # Map link list items into keys to speed up lookup
-        self._load(args, kwargs)
+        if os_path_exists(pixmaps_dir):
+            return pixmaps_dir
 
-    def __setitem__(self, key, value):
-        if key in self:
-            # If self[key] == key for example {'b': 'b'} and we
-            # do d['b'] = 2 then we dont want to remove the 'b'
-            # from our linked list because we will lose the order
-            if self[key] in self._items_map and key != self[key]:
-                self._remove_mapped_key(self[key])
+    return None
 
-            dict.__delitem__(self, self[key])
 
-        if value in self:
-            # If value == key we dont have to remove the
-            # value from the items_map because the value is
-            # the key and we want to keep the key in our
-            # linked list in order to keep the order.
-            if value in self._items_map and key != value:
-                self._remove_mapped_key(value)
+def to_bytes(string):
+    """Convert given youtube-dl size string to bytes."""
+    value = 0.0
 
-            if self[value] in self._items_map:
-                self._remove_mapped_key(self[value])
+    for index, metric in enumerate(reversed(FILESIZE_METRICS)):
+        if metric in string:
+            value = float(string.split(metric)[0])
+            break
 
-            # Check if self[value] is in the dict
-            # for cases like {'a': 'a'} where we
-            # have only one copy instead of {'a': 1, 1: 'a'}
-            if self[value] in self:
-                dict.__delitem__(self, self[value])
+    exponent = index * (-1) + (len(FILESIZE_METRICS) - 1)
 
-        if key not in self._items_map:
-            last = self._items[self._PREV]  # self._items prev always points to the last item
-            last[self._NEXT] = self._items[self._PREV] = self._items_map[key] = [last, key, self._items]
+    return round(value * (KILO_SIZE ** exponent), 2)
 
-        dict.__setitem__(self, key, value)
-        dict.__setitem__(self, value, key)
 
-    def __delitem__(self, key):
-        if self[key] in self._items_map:
-            self._remove_mapped_key(self[key])
+def format_bytes(bytes):
+    """Format bytes to youtube-dl size output strings."""
+    if bytes == 0.0:
+        exponent = 0
+    else:
+        exponent = int(math.log(bytes, KILO_SIZE))
 
-        if key in self._items_map:
-            self._remove_mapped_key(key)
+    suffix = FILESIZE_METRICS[exponent]
+    output_value = bytes / (KILO_SIZE ** exponent)
 
-        dict.__delitem__(self, self[key])
+    return "%.2f%s" % (output_value, suffix)
 
-        # Check if key is in the dict
-        # for cases like {'a': 'a'} where we
-        # have only one copy instead of {'a': 1, 1: 'a'}
-        if key in self:
-            dict.__delitem__(self, key)
 
-    def __len__(self):
-        return len(self._items_map)
+def build_command(options_list, url):
+    """Build the youtube-dl command line string."""
 
-    def __iter__(self):
-        curr = self._items[self._NEXT]
-        while curr is not self._items:
-            yield curr[self._KEY]
-            curr = curr[self._NEXT]
+    def escape(option):
+        """Wrap option with double quotes if it contains special symbols."""
+        special_symbols = [" ", "(", ")"]
 
-    def __reversed__(self):
-        curr = self._items[self._PREV]
-        while curr is not self._items:
-            yield curr[self._KEY]
-            curr = curr[self._PREV]
+        for symbol in special_symbols:
+            if symbol in option:
+                return "\"{}\"".format(option)
 
-    def __repr__(self):
-        return '%s(%r)' % (self.__class__.__name__, self.items())
+        return option
 
-    def __eq__(self, other):
-        if isinstance(other, self.__class__):
-            return self.items() == other.items()
-        return False
+    # If option has special symbols wrap it with double quotes
+    # Probably not the best solution since if the option already contains
+    # double quotes it will be a mess, see issue #173
+    options = [escape(option) for option in options_list]
 
-    def __ne__(self, other):
-        return not self == other
+    # Always wrap the url with double quotes
+    url = "\"{}\"".format(url)
 
-    def _remove_mapped_key(self, key):
-        """Remove the given key both from the linked list
-        and the map dictionary. """
-        prev, __, next = self._items_map.pop(key)
-        prev[self._NEXT] = next
-        next[self._PREV] = prev
+    return " ".join([YOUTUBEDL_BIN] + options + [url])
 
-    def _load(self, args, kwargs):
-        """Load items into our dictionary. """
-        for item in args:
-            if type(item) == dict:
-                item = item.iteritems()
 
-            for key, value in item:
-                self[key] = value
+def get_default_lang():
+    """Get default language using the 'locale' module."""
+    default_lang, _ = locale_getdefaultlocale()
 
-        for key, value in kwargs.items():
-            self[key] = value
+    if not default_lang:
+        default_lang = "en_US"
 
-    def items(self):
-        return [(key, self[key]) for key in self]
-
-    def values(self):
-        return [self[key] for key in self]
-
-    def keys(self):
-        return list(self)
-
-    def pop(self, key, default=_RANDOM_OBJECT):
-        try:
-            value = self[key]
-
-            del self[key]
-        except KeyError as error:
-            if default == _RANDOM_OBJECT:
-                raise error
-
-            value = default
-
-        return value
-
-    def popitem(self, last=True):
-        """Remove and return a (key, value) pair from the dictionary.
-        If the dictionary is empty calling popitem() raises a KeyError.
-
-        Args:
-            last (bool): When False popitem() will remove the first item
-                from the list.
-
-        Note:
-            popitem() is useful to destructively iterate over a dictionary.
-
-        Raises:
-            KeyError
-
-        """
-        if not self:
-            raise KeyError('popitem(): dictionary is empty')
-
-        if last:
-            __, key, __ = self._items[self._PREV]
-        else:
-            __, key, __ = self._items[self._NEXT]
-
-        value = self.pop(key)
-
-        return key, value
-
-    def update(self, *args, **kwargs):
-        self._load(args, kwargs)
-
-    def setdefault(self, key, default=None):
-        try:
-            return self[key]
-        except KeyError:
-            self[key] = default
-            return default
-
-    def copy(self):
-        return self.__class__(self.items())
-
-    def clear(self):
-        self._items = item = []
-        self._items += [item, None, item]
-        self._items_map = {}
-        dict.clear(self)
+    return default_lang

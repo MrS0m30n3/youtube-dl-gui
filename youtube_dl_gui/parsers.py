@@ -97,10 +97,16 @@ class OptionsParser(object):
             OptionHolder('save_path', '-o', ''),
             OptionHolder('embed_subs', '--embed-subs', False, ['write_auto_subs', 'write_subs']),
             OptionHolder('to_audio', '-x', False),
-            OptionHolder('audio_format', '--audio-format', '', ['to_audio']),
+            OptionHolder('audio_format', '--audio-format', ''),
             OptionHolder('video_format', '-f', '0'),
             OptionHolder('subs_lang', '--sub-lang', '', ['write_subs']),
-            OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio'])
+            OptionHolder('audio_quality', '--audio-quality', '5', ['to_audio']),
+            OptionHolder('youtube_dl_debug', '-v', False),
+            OptionHolder('ignore_config', '--ignore-config', False),
+            OptionHolder('native_hls', '--hls-prefer-native', False),
+            OptionHolder('nomtime', '--no-mtime', False),
+            OptionHolder('embed_thumbnail', '--embed-thumbnail', False),
+            OptionHolder('add_metadata', '--add-metadata', False)
         ]
 
     def parse(self, options_dictionary):
@@ -115,6 +121,7 @@ class OptionsParser(object):
             List of strings with all the youtube-dl command line options.
 
         """
+        # REFACTOR
         options_list = ['--newline']
 
         # Create a copy of options_dictionary
@@ -128,7 +135,44 @@ class OptionsParser(object):
 
         # Parse basic youtube-dl command line options
         for option in self._ydl_options:
-            if option.check_requirements(options_dict):
+            #NOTE Special case should be removed
+            if option.name == "to_audio":
+                if options_dict["audio_format"] == "":
+                    value = options_dict[option.name]
+
+                    if value != option.default_value:
+                        options_list.append(option.flag)
+            elif option.name == "audio_format":
+                value = options_dict[option.name]
+
+                if value != option.default_value:
+                    options_list.append("-x")
+                    options_list.append(option.flag)
+                    options_list.append(to_string(value))
+
+                    #NOTE Temp fix
+                    # If current 'audio_quality' is not the default one ('5')
+                    # then append the audio quality flag and value to the
+                    # options list
+                    if options_dict["audio_quality"] != "5":
+                        options_list.append("--audio-quality")
+                        options_list.append(to_string(options_dict["audio_quality"]))
+
+            elif option.name == "audio_quality":
+                # If the '--audio-quality' is not already in the options list
+                # from the above branch then follow the standard procedure.
+                # We don't have to worry for the sequence in which the code
+                # will be executed since the 'audio_quality' option is placed
+                # after the 'audio_format' option in the self._ydl_options list
+                if option.flag not in options_list:
+                    if option.check_requirements(options_dict):
+                        value = options_dict[option.name]
+
+                        if value != option.default_value:
+                            options_list.append(option.flag)
+                            options_list.append(to_string(value))
+
+            elif option.check_requirements(options_dict):
                 value = options_dict[option.name]
 
                 if value != option.default_value:
@@ -138,8 +182,33 @@ class OptionsParser(object):
                         options_list.append(to_string(value))
 
         # Parse cmd_args
-        for option in options_dict['cmd_args'].split():
-            options_list.append(option)
+
+        # Indicates whether an item needs special handling
+        special_case = False
+
+        # Temp list to hold special items
+        special_items = []
+
+        for item in options_dict["cmd_args"].split():
+
+            # Its a special case if its already a special case
+            # or an item starts with double quotes
+            special_case = (special_case or item[0] == "\"")
+
+            if special_case:
+                special_items.append(item)
+            else:
+                options_list.append(item)
+
+            # If its a special case and we meet a double quote
+            # at the end of the item, special case is over and
+            # we need to join, filter and append our special items
+            # to the options list
+            if special_case and item[-1] == "\"":
+                options_list.append(" ".join(special_items)[1:-1])
+
+                special_case = False
+                special_items = []
 
         return options_list
 
@@ -155,14 +224,20 @@ class OptionsParser(object):
         """
         save_path = remove_shortcuts(options_dict['save_path'])
 
-        if options_dict['output_format'] == 'id':
-            save_path = os.path.join(save_path, '%(id)s.%(ext)s')
-        elif options_dict['output_format'] == 'title':
-            save_path = os.path.join(save_path, '%(title)s.%(ext)s')
+        if options_dict["output_format"] == 0:
+            template = "%(id)s.%(ext)s"
+        elif options_dict["output_format"] == 1:
+            template = "%(title)s.%(ext)s"
+        elif options_dict["output_format"] == 2:
+            template = "%(title)s-%(id)s.%(ext)s"
+        elif options_dict["output_format"] == 4:
+            template = "%(title)s-%(height)sp.%(ext)s"
+        elif options_dict["output_format"] == 5:
+            template = "%(title)s-%(id)s-%(height)sp.%(ext)s"
         else:
-            save_path = os.path.join(save_path, options_dict['output_template'])
+            template = options_dict["output_template"]
 
-        options_dict['save_path'] = save_path
+        options_dict["save_path"] = os.path.join(save_path, template)
 
     def _build_videoformat(self, options_dict):
         """Build the video format.

@@ -21,7 +21,10 @@ from time import sleep
 from Queue import Queue
 from threading import Thread
 
-from .utils import convert_item
+from .utils import (
+    convert_item,
+    system_youtube_dl,
+)
 
 
 class PipeReader(Thread):
@@ -314,7 +317,11 @@ class YoutubeDLDownloader(object):
         if os.name == 'nt':
             cmd = [self.youtubedl_path] + options + [url]
         else:
-            cmd = ['python', self.youtubedl_path] + options + [url]
+            if (system_youtube_dl is None):
+                cmd = ['python', self.youtubedl_path] + options + [url]
+            else:
+                cmd = [system_youtube_dl] + options + [url]
+            #print("Executing cmd: ", cmd)
 
         return cmd
 

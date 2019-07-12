@@ -40,6 +40,7 @@ from .downloaders import YoutubeDLDownloader
 
 from .utils import (
     YOUTUBEDL_BIN,
+    system_youtube_dl,
     os_path_exists,
     format_bytes,
     to_string,
@@ -506,7 +507,7 @@ class DownloadManager(Thread):
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
-        if not os_path_exists(self._youtubedl_path()) and self.parent.update_thread is None:
+        if (system_youtube_dl is None) and not os_path_exists(self._youtubedl_path()) and self.parent.update_thread is None:
             self.parent.update_thread = UpdateThread(self.opt_manager.options['youtubedl_path'], True)
             self.parent.update_thread.join()
             self.parent.update_thread = None
@@ -529,7 +530,10 @@ class DownloadManager(Thread):
     def _youtubedl_path(self):
         """Returns the path to youtube-dl binary. """
         path = self.opt_manager.options['youtubedl_path']
-        path = os.path.join(path, YOUTUBEDL_BIN)
+        if system_youtube_dl is not None:
+            path = system_youtube_dl
+        else:
+            path = os.path.join(self.opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
         return path
 
 

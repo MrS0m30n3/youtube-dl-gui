@@ -19,6 +19,9 @@ import math
 import locale
 import subprocess
 
+import distutils
+from distutils.spawn import find_executable
+
 try:
     from twodict import TwoWayOrderedDict
 except ImportError as error:
@@ -36,6 +39,9 @@ YOUTUBEDL_BIN = 'youtube-dl'
 if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
 
+# Prefer system youtube-dl; if it does not exist, fallback to downloading
+# it in downloadmanager.py/_check_youtubedl
+system_youtube_dl = find_executable(YOUTUBEDL_BIN)
 
 FILESIZE_METRICS = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
 

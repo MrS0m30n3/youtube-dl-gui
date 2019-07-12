@@ -51,7 +51,8 @@ from .utils import (
     get_config_path,
     get_locale_file,
     os_path_exists,
-    YOUTUBEDL_BIN
+    YOUTUBEDL_BIN,
+    system_youtube_dl,
 )
 
 
@@ -81,7 +82,12 @@ from .mainframe import MainFrame
 
 def main():
     """The real main. Creates and calls the main app windows. """
-    youtubedl_path = os.path.join(opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
+
+    if system_youtube_dl is not None:
+        youtubedl_path = system_youtube_dl
+        print("Found and using system youtube-dl")
+    else:
+        youtubedl_path = os.path.join(opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
 
     app = wx.App()
     frame = MainFrame(opt_manager, log_manager)

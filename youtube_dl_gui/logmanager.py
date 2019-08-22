@@ -5,6 +5,7 @@
 
 from __future__ import unicode_literals
 
+
 import os.path
 from time import strftime
 
@@ -14,6 +15,8 @@ from .utils import (
     check_path
 )
 
+from wx import CallAfter
+from wx.lib.pubsub import pub as Publisher
 
 class LogManager(object):
 
@@ -79,13 +82,18 @@ class LogManager(object):
         """
         check_path(self.config_path)
 
-        with open(self.log_file, mode) as log:
-            if mode == 'a' and self.add_time:
-                msg = self.TIME_TEMPLATE.format(time=strftime('%c'), error_msg=data)
-            else:
-                msg = data
+        try:
+            with open(self.log_file, mode) as log:
+                if mode == 'a' and self.add_time:
+                    msg = self.TIME_TEMPLATE.format(time=strftime('%c'), error_msg=data)
+                else:
+                    msg = data
 
-            log.write(msg.encode(self._encoding, 'ignore'))
+                log.write(msg.encode(self._encoding, 'ignore'))
+        except Exception as e:
+            # Add a GUI popup to inform the user
+            print('Cant log to file, Permissions Denied.')
+            return False
 
     def _init_log(self):
         """Initialize the log file if not exist. """

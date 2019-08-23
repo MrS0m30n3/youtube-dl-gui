@@ -82,18 +82,15 @@ class LogManager(object):
         """
         check_path(self.config_path)
 
-        try:
-            with open(self.log_file, mode) as log:
-                if mode == 'a' and self.add_time:
-                    msg = self.TIME_TEMPLATE.format(time=strftime('%c'), error_msg=data)
-                else:
-                    msg = data
 
-                log.write(msg.encode(self._encoding, 'ignore'))
-        except Exception as e:
-            # Add a GUI popup to inform the user
-            print('Cant log to file, Permissions Denied.')
-            return False
+        with open(self.log_file, mode) as log:
+            if mode == 'a' and self.add_time:
+                msg = self.TIME_TEMPLATE.format(time=strftime('%c'), error_msg=data)
+            else:
+                msg = data
+
+            log.write(msg.encode(self._encoding, 'ignore'))
+
 
     def _init_log(self):
         """Initialize the log file if not exist. """

@@ -16,6 +16,7 @@ import os
 import sys
 import json
 import math
+import errno
 import locale
 import subprocess
 
@@ -192,6 +193,17 @@ def get_config_path():
 
     return os.path.join(path, __appname__.lower())
 
+
+def check_pers():
+    path = get_config_path()
+    try:
+        with open(path + '/tst.log', 'w') as f:
+            # opened for writing. write to it here
+            return True
+    except IOError as x:
+        if x.errno == errno.EACCES:
+            print('Permissions Denied, check {0}'.format(path))
+            return False
 
 def shutdown_sys(password=None):
     """Shuts down the system.

@@ -15,8 +15,6 @@ from .utils import (
     check_path
 )
 
-from wx import CallAfter
-from wx.lib.pubsub import pub as Publisher
 
 class LogManager(object):
 

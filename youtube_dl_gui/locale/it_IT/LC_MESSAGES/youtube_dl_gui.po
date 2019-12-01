@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2018-01-15 16:42+EET\n"
-"PO-Revision-Date: 2017-07-21 09:00+0200\n"
-"Last-Translator: Luigi Baldoni <aloisio@gmx.com>\n"
+"PO-Revision-Date: 2019-07-21 15:38+0100\n"
+"Last-Translator: Albano Battistella <albano_battistella@hotmail.com>\n"
 "Language-Team: en\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,11 @@ msgstr ""
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Error"
-msgstr ""
+msgstr "Errore"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Failed to locate youtube-dl and updates are disabled"
-msgstr ""
+msgstr "Impossibile trovare youtube-dl e gli aggiornamenti sono disabilitati"
 
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
@@ -293,7 +293,7 @@ msgstr "Nessun elemento da scaricare"
 
 #: youtube_dl_gui/mainframe.py:1040
 msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
-msgstr ""
+msgstr "Gli aggiornamenti sono disabilitati per il tuo sistema. Utilizzare il gestore pacchetti del sistema per aggiornare youtube-dl."
 
 #: youtube_dl_gui/mainframe.py:1065
 msgid "Are you sure you want to exit?"

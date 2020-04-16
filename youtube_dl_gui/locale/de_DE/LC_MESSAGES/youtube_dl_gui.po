@@ -198,7 +198,7 @@ msgstr "Dateinamenserweiterung"
 
 #: youtube_dl_gui/mainframe.py:142
 msgid "Size"
-msgstr "Grüße"
+msgstr "Größe"
 
 #: youtube_dl_gui/mainframe.py:143
 msgid "Percent"

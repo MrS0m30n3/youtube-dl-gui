@@ -222,7 +222,7 @@ msgstr "URL in Zwischenablage kopieren"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr "Kommandozeile in Zwischenablage kopieren"
+msgstr "Command in Zwischenablage kopieren"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"

@@ -270,7 +270,7 @@ msgstr "Das Element ist nicht komplett"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"
-msgstr "Es wird ein Update durchgeführt, bitte das Update abwarten"
+msgstr "Ein Update wird durchgeführt. Bitte warten."
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"

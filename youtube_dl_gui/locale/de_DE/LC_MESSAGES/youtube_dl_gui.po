@@ -370,7 +370,7 @@ msgstr "Bei Beendigung eines Downloads informieren"
 
 #: youtube_dl_gui/optionsframe.py:326
 msgid "Shutdown on download completion"
-msgstr "Bei Beendigung eines Downloads das System herunterfahren"
+msgstr "Nach Beendigung aller Downloads das System herunterfahren"
 
 #: youtube_dl_gui/optionsframe.py:337
 msgid "SUDO password"

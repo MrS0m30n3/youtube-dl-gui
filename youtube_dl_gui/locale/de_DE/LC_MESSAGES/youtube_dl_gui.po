@@ -574,7 +574,7 @@ msgstr "Youtube-dl Kommendozeilenoptionen (e.g. --help)"
 
 #: youtube_dl_gui/optionsframe.py:861
 msgid "Extra options"
-msgstr "Weitere Optionen"
+msgstr "Erweiterte Optionen"
 
 #: youtube_dl_gui/optionsframe.py:863
 msgid "Debug youtube-dl"

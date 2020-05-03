@@ -518,7 +518,7 @@ msgstr "Min"
 
 #: youtube_dl_gui/optionsframe.py:723
 msgid "Retries"
-msgstr "Wiederholungen"
+msgstr "Wiederholungsversuche"
 
 #: youtube_dl_gui/optionsframe.py:726
 msgid "Authentication"

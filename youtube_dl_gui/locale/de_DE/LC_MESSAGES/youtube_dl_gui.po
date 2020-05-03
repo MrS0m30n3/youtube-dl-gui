@@ -266,7 +266,7 @@ msgstr "Das Element ist aktiv und kann nicht entfernt werden"
 
 #: youtube_dl_gui/mainframe.py:579
 msgid "Item is not completed"
-msgstr "Das Element ist nicht komplett"
+msgstr "Der Download ist noch nicht abgeschlossen"
 
 #: youtube_dl_gui/mainframe.py:668
 msgid "Update in progress. Please wait for the update to complete"

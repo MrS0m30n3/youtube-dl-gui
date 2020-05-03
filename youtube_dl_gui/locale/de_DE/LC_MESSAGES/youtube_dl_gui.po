@@ -258,7 +258,7 @@ msgstr "Entfernen erfolgreich"
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"
-msgstr "Wollen Sie das ausgewählte Element entfernen?"
+msgstr "Wollen Sie die ausgewählten Elemente entfernen?"
 
 #: youtube_dl_gui/mainframe.py:546
 msgid "Item is active, cannot remove"

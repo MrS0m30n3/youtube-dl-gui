@@ -418,7 +418,7 @@ msgstr "Audio aus Videodatei extrahieren"
 
 #: youtube_dl_gui/optionsframe.py:477
 msgid "Embed thumbnail in audio file"
-msgstr "Thumbnail in Audiodatei einbinden"
+msgstr "Thumbnail in Audiodatei einbetten"
 
 #: youtube_dl_gui/optionsframe.py:478
 msgid "Add metadata to file"

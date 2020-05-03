@@ -414,7 +414,7 @@ msgstr "Originaldateien behalten"
 
 #: youtube_dl_gui/optionsframe.py:476
 msgid "Extract audio from video file"
-msgstr "Audio aus Videodatei entnehmen"
+msgstr "Audio aus Videodatei extrahieren"
 
 #: youtube_dl_gui/optionsframe.py:477
 msgid "Embed thumbnail in audio file"

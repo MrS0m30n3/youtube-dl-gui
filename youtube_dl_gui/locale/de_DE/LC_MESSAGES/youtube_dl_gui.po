@@ -310,7 +310,7 @@ msgstr "OK"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
-msgstr "Wiederherstellen"
+msgstr "Zurücksetzten"
 
 #: youtube_dl_gui/optionsframe.py:66
 msgid "Close"

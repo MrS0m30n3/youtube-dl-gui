@@ -234,7 +234,7 @@ msgstr "Zurücksetzten"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
-msgstr "Wiederholen"
+msgstr "Fortsetzen"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"

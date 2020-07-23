@@ -6,3 +6,4 @@ dist/
 build/
 
 .idea
+*.spec

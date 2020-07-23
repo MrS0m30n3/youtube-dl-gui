@@ -1,9 +1,7 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for parsing the options. """
 
-from __future__ import unicode_literals
 
 import os.path
 
@@ -135,7 +133,7 @@ class OptionsParser(object):
 
         # Parse basic youtube-dl command line options
         for option in self._ydl_options:
-            #NOTE Special case should be removed
+            # NOTE Special case should be removed
             if option.name == "to_audio":
                 if options_dict["audio_format"] == "":
                     value = options_dict[option.name]
@@ -150,7 +148,7 @@ class OptionsParser(object):
                     options_list.append(option.flag)
                     options_list.append(to_string(value))
 
-                    #NOTE Temp fix
+                    # NOTE Temp fix
                     # If current 'audio_quality' is not the default one ('5')
                     # then append the audio quality flag and value to the
                     # options list
@@ -212,7 +210,8 @@ class OptionsParser(object):
 
         return options_list
 
-    def _build_savepath(self, options_dict):
+    @staticmethod
+    def _build_savepath(options_dict):
         """Build the save path.
 
         We use this method to build the value of the 'save_path' option and
@@ -239,7 +238,8 @@ class OptionsParser(object):
 
         options_dict["save_path"] = os.path.join(save_path, template)
 
-    def _build_videoformat(self, options_dict):
+    @staticmethod
+    def _build_videoformat(options_dict):
         """Build the video format.
 
         We use this method to build the value of the 'video_format' option and
@@ -252,7 +252,8 @@ class OptionsParser(object):
         if options_dict['video_format'] != '0' and options_dict['second_video_format'] != '0':
             options_dict['video_format'] = options_dict['video_format'] + '+' + options_dict['second_video_format']
 
-    def _build_filesizes(self, options_dict):
+    @staticmethod
+    def _build_filesizes(options_dict):
         """Build the filesize options values.
 
         We use this method to build the values of 'min_filesize' and

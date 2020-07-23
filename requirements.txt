@@ -1,0 +1,3 @@
+Pypubsub==4.0.3
+twodict==1.2
+wxPython==4.0.4

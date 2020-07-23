@@ -1,9 +1,7 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module to handle settings. """
 
-from __future__ import unicode_literals
 
 import os
 import json
@@ -314,7 +312,7 @@ class OptionsManager(object):
         if not os_path_exists(self.settings_file):
             return
 
-        with open(self.settings_file, 'rb') as settings_file:
+        with open(self.settings_file, 'r') as settings_file:
             try:
                 options = json.load(settings_file)
 
@@ -327,7 +325,7 @@ class OptionsManager(object):
         """Save options to settings file. """
         check_path(self.config_path)
 
-        with open(self.settings_file, 'wb') as settings_file:
+        with open(self.settings_file, 'w') as settings_file:
             options = self._get_options()
             json.dump(options,
                       settings_file,

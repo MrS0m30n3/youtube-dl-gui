@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Python module to download videos.
@@ -8,7 +7,6 @@ for downloading the video files.
 
 """
 
-from __future__ import unicode_literals
 
 import re
 import os
@@ -18,10 +16,10 @@ import signal
 import subprocess
 
 from time import sleep
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 
-from .utils import convert_item
+from .utils import get_encoding
 
 
 class PipeReader(Thread):
@@ -59,11 +57,12 @@ class PipeReader(Thread):
         while self._running:
             if self._filedescriptor is not None:
                 for line in iter(self._filedescriptor.readline, str('')):
+                    line = bytes(line).decode(encoding=get_encoding(), errors='ignore')
                     # Ignore ffmpeg stderr
                     if str('ffmpeg version') in line:
                         ignore_line = True
 
-                    if not ignore_line:
+                    if not ignore_line and line != "":
                         self._queue.put_nowait(line)
 
                 self._filedescriptor = None
@@ -167,7 +166,6 @@ class YoutubeDLDownloader(object):
 
         while self._proc_is_alive():
             stdout = self._proc.stdout.readline().rstrip()
-            stdout = convert_item(stdout, to_unicode=True)
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -177,8 +175,7 @@ class YoutubeDLDownloader(object):
         # Read stderr after download process has been completed
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
-            stderr = self._stderr_queue.get_nowait().rstrip()
-            stderr = convert_item(stderr, to_unicode=True)
+            stderr = str(self._stderr_queue.get_nowait()).rstrip()
 
             self._log(stderr)
 
@@ -234,7 +231,7 @@ class YoutubeDLDownloader(object):
             self._return_code = code
 
     def _is_warning(self, stderr):
-        return stderr.split(':')[0] == 'WARNING'
+        return str(stderr).split(':')[0] == 'WARNING'
 
     def _last_data_hook(self):
         """Set the last data information based on the return code. """
@@ -328,7 +325,7 @@ class YoutubeDLDownloader(object):
         info = preexec = None
 
         # Keep a unicode copy of cmd for the log
-        ucmd = cmd
+        # ucmd = cmd
 
         if os.name == 'nt':
             # Hide subprocess window
@@ -341,8 +338,8 @@ class YoutubeDLDownloader(object):
 
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
-        if sys.version_info < (3, 0):
-            cmd = convert_item(cmd, to_unicode=False)
+        # if sys.version_info < (3, 0):
+        #    cmd = convert_item(cmd, to_unicode=False)
 
         try:
             self._proc = subprocess.Popen(cmd,
@@ -350,9 +347,10 @@ class YoutubeDLDownloader(object):
                                           stderr=subprocess.PIPE,
                                           preexec_fn=preexec,
                                           startupinfo=info)
-        except (ValueError, OSError) as error:
-            self._log('Failed to start process: {}'.format(ucmd))
-            self._log(convert_item(str(error), to_unicode=True))
+        except (ValueError, OSError, FileNotFoundError) as error:
+            self._log('Failed to start process: {}'.format(str(cmd)))
+            self._log(str(error))
+            print(str(error))
 
 
 def extract_data(stdout):
@@ -393,6 +391,7 @@ def extract_data(stdout):
     # We want to keep the spaces in order to extract filenames with
     # multiple whitespaces correctly. We also keep a copy of the old
     # 'stdout' for backward compatibility with the old code
+    stdout = bytes(stdout).decode(encoding=get_encoding(), errors='ignore')
     stdout_with_spaces = stdout.split(' ')
     stdout = stdout.split()
 

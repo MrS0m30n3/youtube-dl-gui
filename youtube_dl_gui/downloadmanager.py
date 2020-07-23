@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module for managing the download process.
@@ -19,7 +18,6 @@ Note:
 
 """
 
-from __future__ import unicode_literals
 
 import time
 import os.path
@@ -31,8 +29,7 @@ from threading import (
 )
 
 from wx import CallAfter
-from wx.lib.pubsub import setuparg1
-from wx.lib.pubsub import pub as Publisher
+from pubsub import pub as Publisher
 
 from .parsers import OptionsParser
 from .updatemanager import UpdateThread
@@ -166,7 +163,7 @@ class DownloadItem(object):
             if key in self.progress_stats:
                 value = stats_dict[key]
 
-                if not isinstance(value, basestring) or not value:
+                if not value:
                     self.progress_stats[key] = self.default_values[key]
                 else:
                     self.progress_stats[key] = value
@@ -380,7 +377,7 @@ class DownloadManager(Thread):
         # Init the custom workers thread pool
         log_lock = None if log_manager is None else Lock()
         wparams = (opt_manager, self._youtubedl_path(), log_manager, log_lock)
-        self._workers = [Worker(*wparams) for _ in xrange(opt_manager.options["workers_number"])]
+        self._workers = [Worker(*wparams) for _ in range(opt_manager.options["workers_number"])]
 
         self.start()
 
@@ -415,13 +412,9 @@ class DownloadManager(Thread):
 
             time.sleep(self.WAIT_TIME)
 
-        # Close all the workers
+        # Close all the workers and collect
         for worker in self._workers:
             worker.close()
-
-        # Join and collect
-        for worker in self._workers:
-            worker.join()
             self._successful += worker.successful
 
         self._time_it_took = time.time() - self._time_it_took
@@ -486,7 +479,7 @@ class DownloadManager(Thread):
                 if worker.has_index(data['index']):
                     worker.update_data(data)
 
-    def _talk_to_gui(self, data):
+    def _talk_to_gui(self, signal, data=None):
         """Send data back to the GUI using wxCallAfter and wxPublisher.
 
         Args:
@@ -502,7 +495,7 @@ class DownloadManager(Thread):
                     downloads using the active() method.
 
         """
-        CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, data)
+        CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, signal=signal, data=data)
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
@@ -563,6 +556,8 @@ class Worker(Thread):
 
     def __init__(self, opt_manager, youtubedl, log_manager=None, log_lock=None):
         super(Worker, self).__init__()
+        # Use Daemon ?
+        # self.setDaemon(True)
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         self.log_lock = log_lock
@@ -755,5 +750,5 @@ class Worker(Thread):
         if signal == 'receive':
             self._wait_for_reply = True
 
-        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, (signal, data))
+        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, signal=signal, data=data)
 

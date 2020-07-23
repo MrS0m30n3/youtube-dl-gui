@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module that contains util functions.
@@ -10,8 +9,6 @@ Attributes:
 
 """
 
-from __future__ import unicode_literals
-
 import os
 import sys
 import json
@@ -22,20 +19,17 @@ import subprocess
 try:
     from twodict import TwoWayOrderedDict
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 from .info import __appname__
 from .version import __version__
 
-
 _RANDOM_OBJECT = object()
-
 
 YOUTUBEDL_BIN = 'youtube-dl'
 if os.name == 'nt':
     YOUTUBEDL_BIN += '.exe'
-
 
 FILESIZE_METRICS = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
 
@@ -47,7 +41,7 @@ def get_encoding():
     try:
         encoding = locale.getpreferredencoding()
         'TEST'.encode(encoding)
-    except:
+    except locale.Error:
         encoding = 'UTF-8'
 
     return encoding
@@ -66,11 +60,11 @@ def convert_item(item, to_unicode=False):
     """
     if to_unicode and isinstance(item, str):
         # Convert str to unicode
-        return item.decode(get_encoding(), 'ignore')
+        return str(bytes(item), encoding=get_encoding(), errors="ignore")
 
-    if not to_unicode and isinstance(item, unicode):
-        # Convert unicode to str
-        return item.encode(get_encoding(), 'ignore')
+    if not to_unicode and isinstance(item, bytes):
+        # Convert bytes to str
+        return bytes(item).decode(encoding=get_encoding(), errors="ignore")
 
     if hasattr(item, '__iter__'):
         # Handle iterables
@@ -96,6 +90,7 @@ def convert_on_bounds(func):
     returned strings values back to 'unicode'.
 
     """
+
     def wrapper(*args, **kwargs):
         returned_value = func(*convert_item(args), **convert_item(kwargs))
 
@@ -106,22 +101,22 @@ def convert_on_bounds(func):
 
 # See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
 # Patch os functions to convert between 'str' and 'unicode' on app bounds
-os_sep = unicode(os.sep)
-os_getenv = convert_on_bounds(os.getenv)
-os_makedirs = convert_on_bounds(os.makedirs)
-os_path_isdir = convert_on_bounds(os.path.isdir)
-os_path_exists = convert_on_bounds(os.path.exists)
-os_path_dirname = convert_on_bounds(os.path.dirname)
-os_path_abspath = convert_on_bounds(os.path.abspath)
-os_path_realpath = convert_on_bounds(os.path.realpath)
-os_path_expanduser = convert_on_bounds(os.path.expanduser)
+os_sep = str(os.sep)
+os_getenv = os.getenv
+os_makedirs = os.makedirs
+os_path_isdir = os.path.isdir
+os_path_exists = os.path.exists
+os_path_dirname = os.path.dirname
+os_path_abspath = os.path.abspath
+os_path_realpath = os.path.realpath
+os_path_expanduser = os.path.expanduser
 
-# Patch locale functions
-locale_getdefaultlocale = convert_on_bounds(locale.getdefaultlocale)
+locale_getdefaultlocale = locale.getdefaultlocale
 
 # Patch Windows specific functions
 if os.name == 'nt':
-    os_startfile = convert_on_bounds(os.startfile)
+    os_startfile = os.startfile
+
 
 def remove_file(filename):
     if os_path_exists(filename):
@@ -129,6 +124,7 @@ def remove_file(filename):
         return True
 
     return False
+
 
 def remove_shortcuts(path):
     """Return given path after removing the shortcuts. """
@@ -316,12 +312,14 @@ def get_pixmaps_dir():
         Paths we search: __main__ dir, library dir
 
     """
-    search_dirs = [
-        os.path.join(absolute_path(sys.argv[0]), "data"),
-        os.path.join(os_path_dirname(__file__), "data")
+    DIR_NAME = "data"
+
+    SEARCH_DIRS = [
+        os.path.join(absolute_path(sys.argv[0]), DIR_NAME),
+        os.path.join(os_path_dirname(__file__), DIR_NAME),
     ]
 
-    for directory in search_dirs:
+    for directory in SEARCH_DIRS:
         pixmaps_dir = os.path.join(directory, "pixmaps")
 
         if os_path_exists(pixmaps_dir):
@@ -333,6 +331,7 @@ def get_pixmaps_dir():
 def to_bytes(string):
     """Convert given youtube-dl size string to bytes."""
     value = 0.0
+    index = 0
 
     for index, metric in enumerate(reversed(FILESIZE_METRICS)):
         if metric in string:
@@ -344,15 +343,15 @@ def to_bytes(string):
     return round(value * (KILO_SIZE ** exponent), 2)
 
 
-def format_bytes(bytes):
+def format_bytes(bytes_):
     """Format bytes to youtube-dl size output strings."""
     if bytes == 0.0:
         exponent = 0
     else:
-        exponent = int(math.log(bytes, KILO_SIZE))
+        exponent = int(math.log(bytes_, KILO_SIZE))
 
     suffix = FILESIZE_METRICS[exponent]
-    output_value = bytes / (KILO_SIZE ** exponent)
+    output_value = bytes_ / (KILO_SIZE ** exponent)
 
     return "%.2f%s" % (output_value, suffix)
 

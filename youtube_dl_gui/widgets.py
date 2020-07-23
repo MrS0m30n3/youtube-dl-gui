@@ -1,14 +1,12 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-from __future__ import unicode_literals
 
 import sys
 
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -18,7 +16,6 @@ def crt_command_event(event_type, event_id=0):
 
 
 class ListBoxWithHeaders(wx.ListBox):
-
     """Custom ListBox object that supports 'headers'.
 
     Attributes:
@@ -45,7 +42,7 @@ class ListBoxWithHeaders(wx.ListBox):
     ]
 
     def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
+                 size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
         super(ListBoxWithHeaders, self).__init__(parent, id, pos, size, [], style, validator, name)
         self.__headers = set()
 
@@ -135,9 +132,6 @@ class ListBoxWithHeaders(wx.ListBox):
 
     # wx.ItemContainer methods
 
-    def Append(self, string):
-        super(ListBoxWithHeaders, self).Append(self._add_prefix(string))
-
     def AppendItems(self, strings):
         strings = [self._add_prefix(string) for string in strings]
         super(ListBoxWithHeaders, self).AppendItems(strings)
@@ -174,7 +168,6 @@ class ListBoxWithHeaders(wx.ListBox):
 
 
 class ListBoxPopup(wx.PopupTransientWindow):
-
     """ListBoxWithHeaders as a popup.
 
     This class uses the wx.PopupTransientWindow to create the popup and the
@@ -188,7 +181,7 @@ class ListBoxPopup(wx.PopupTransientWindow):
 
     EVENTS_TABLE = {
         "EVT_COMBOBOX": crt_command_event(wx.EVT_COMBOBOX),
-        "EVT_COMBOBOX_DROPDOWN" : crt_command_event(wx.EVT_COMBOBOX_DROPDOWN),
+        "EVT_COMBOBOX_DROPDOWN": crt_command_event(wx.EVT_COMBOBOX_DROPDOWN),
         "EVT_COMBOBOX_CLOSEUP": crt_command_event(wx.EVT_COMBOBOX_CLOSEUP)
     }
 
@@ -255,12 +248,11 @@ class ListBoxPopup(wx.PopupTransientWindow):
     def GetStringValue(self):
         return self.__listbox.GetString(self.value)
 
-    #def SetStringValue(self, string):
-        #self.__listbox.SetStringSelection(string)
+    # def SetStringValue(self, string):
+    # self.__listbox.SetStringSelection(string)
 
 
 class CustomComboBox(wx.Panel):
-
     """Custom combobox.
 
     Attributes:
@@ -270,15 +262,15 @@ class CustomComboBox(wx.Panel):
         NAME (string): Default name for the name argument of the __init__.
 
     """
-    #NOTE wx.ComboBox does not support EVT_MOTION inside the popup
-    #NOTE Tried with ComboCtrl but i was not able to draw the button
+    # NOTE wx.ComboBox does not support EVT_MOTION inside the popup
+    # NOTE Tried with ComboCtrl but i was not able to draw the button
 
     CB_READONLY = wx.TE_READONLY
 
     NAME = "customComboBox"
 
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
+                 size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
         super(CustomComboBox, self).__init__(parent, id, pos, size, 0, name)
 
         assert style == self.CB_READONLY or style == 0
@@ -343,7 +335,7 @@ class CustomComboBox(wx.Panel):
         self.listbox.Dismiss()
 
     def FindString(self, string, caseSensitive=False):
-        #TODO handle caseSensitive
+        # TODO handle caseSensitive
         return self.listbox.GetControl().FindString(string)
 
     def GetCount(self):

@@ -1,16 +1,15 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for the main app window. """
 
-from __future__ import unicode_literals
 
 import os
 import gettext
+_ = gettext.gettext
 
 import wx
-from wx.lib.pubsub import setuparg1 #NOTE Should remove deprecated
-from wx.lib.pubsub import pub as Publisher
+import wx.adv
+from pubsub import pub as Publisher
 
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
@@ -169,7 +168,7 @@ class MainFrame(wx.Frame):
         self.log_manager = log_manager
         self.download_manager = None
         self.update_thread = None
-        self.app_icon = None  #REFACTOR Get and set on __init__.py
+        self.app_icon = None  # REFACTOR Get and set on __init__.py
 
         self._download_list = DownloadList()
 
@@ -246,7 +245,7 @@ class MainFrame(wx.Frame):
 
         self._url_text = self._create_statictext(self.URLS_LABEL)
 
-        #REFACTOR Move to buttons_data
+        # REFACTOR Move to buttons_data
         self._settings_button = self._create_bitmap_button(self._bitmaps["settings"], (30, 30), self._on_settings)
 
         self._url_list = self._create_textctrl(wx.TE_MULTILINE | wx.TE_DONTWRAP, self._on_urllist_edit)
@@ -517,7 +516,7 @@ class MainFrame(wx.Frame):
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 
-            #REFACTOR Maybe add this functionality directly to DownloadList?
+            # REFACTOR Maybe add this functionality directly to DownloadList?
             if ret_code == 1:
                 for ditem in self._download_list.get_items():
                     if ditem.stage != "Active":
@@ -645,7 +644,7 @@ class MainFrame(wx.Frame):
         selected_rows = self._status_list.get_all_selected()
 
         if selected_rows:
-            #REFACTOR Use DoubleStageButton for this and check stage
+            # REFACTOR Use DoubleStageButton for this and check stage
             if self._buttons["pause"].GetLabel() == _("Pause"):
                 new_state = "Paused"
             else:
@@ -722,7 +721,7 @@ class MainFrame(wx.Frame):
             log_window.Show()
 
     def _on_about(self, event):
-        info = wx.AboutDialogInfo()
+        info = wx.adv.AboutDialogInfo()
 
         if self.app_icon is not None:
             info.SetIcon(self.app_icon)
@@ -734,7 +733,7 @@ class MainFrame(wx.Frame):
         info.SetLicense(__licensefull__)
         info.AddDeveloper(__author__)
 
-        wx.AboutBox(info)
+        wx.adv.AboutBox(info)
 
     def _set_publisher(self, handler, topic):
         """Sets a handler for the given topic.
@@ -801,7 +800,7 @@ class MainFrame(wx.Frame):
 
         top_sizer = wx.BoxSizer(wx.HORIZONTAL)
         top_sizer.Add(self._url_text, 0, wx.ALIGN_BOTTOM | wx.BOTTOM, 5)
-        top_sizer.AddSpacer((-1, -1), 1)
+        top_sizer.AddStretchSpacer(1)
         top_sizer.Add(self._settings_button)
         panel_sizer.Add(top_sizer, 0, wx.EXPAND)
 
@@ -809,13 +808,13 @@ class MainFrame(wx.Frame):
 
         mid_sizer = wx.BoxSizer(wx.HORIZONTAL)
         mid_sizer.Add(self._folder_icon)
-        mid_sizer.AddSpacer((3, -1))
+        mid_sizer.AddSpacer(3)
         mid_sizer.Add(self._path_combobox, 2, wx.ALIGN_CENTER_VERTICAL)
-        mid_sizer.AddSpacer((5, -1))
+        mid_sizer.AddSpacer(5)
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
-        mid_sizer.AddSpacer((10, -1), 1)
+        mid_sizer.AddSpacer(10)
         mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
-        mid_sizer.AddSpacer((5, -1))
+        mid_sizer.AddSpacer(5)
         mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
         panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
@@ -824,17 +823,17 @@ class MainFrame(wx.Frame):
 
         bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         bottom_sizer.Add(self._buttons["delete"])
-        bottom_sizer.AddSpacer((5, -1))
+        bottom_sizer.AddSpacer(5)
         bottom_sizer.Add(self._buttons["play"])
-        bottom_sizer.AddSpacer((5, -1))
+        bottom_sizer.AddSpacer(5)
         bottom_sizer.Add(self._buttons["up"])
-        bottom_sizer.AddSpacer((5, -1))
+        bottom_sizer.AddSpacer(5)
         bottom_sizer.Add(self._buttons["down"])
-        bottom_sizer.AddSpacer((5, -1))
+        bottom_sizer.AddSpacer(5)
         bottom_sizer.Add(self._buttons["reload"])
-        bottom_sizer.AddSpacer((5, -1))
+        bottom_sizer.AddSpacer(5)
         bottom_sizer.Add(self._buttons["pause"])
-        bottom_sizer.AddSpacer((10, -1), 1)
+        bottom_sizer.AddStretchSpacer(1)
         bottom_sizer.Add(self._buttons["start"])
         panel_sizer.Add(bottom_sizer, 0, wx.EXPAND | wx.TOP, 5)
 
@@ -904,7 +903,7 @@ class MainFrame(wx.Frame):
             if self.opt_manager.options["show_completion_popup"]:
                 self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
-    def _download_worker_handler(self, msg):
+    def _download_worker_handler(self, signal, data=None):
         """downloadmanager.Worker thread handler.
 
         Handles messages from the Worker thread.
@@ -913,15 +912,14 @@ class MainFrame(wx.Frame):
             See downloadmanager.Worker _talk_to_gui() method.
 
         """
-        signal, data = msg.data
+        # signal, data = msg.data
 
         download_item = self._download_list.get_item(data["index"])
         download_item.update_stats(data)
         row = self._download_list.index(data["index"])
-
         self._status_list._update_from_item(row, download_item)
 
-    def _download_manager_handler(self, msg):
+    def _download_manager_handler(self, signal, data=None):
         """downloadmanager.DownloadManager thread handler.
 
         Handles messages from the DownloadManager thread.
@@ -930,27 +928,27 @@ class MainFrame(wx.Frame):
             See downloadmanager.DownloadManager _talk_to_gui() method.
 
         """
-        data = msg.data
+        # TODO: REFACTOR Manage better the signal stage
 
-        if data == 'finished':
+        if signal == 'finished':
             self._print_stats()
             self._reset_widgets()
             self.download_manager = None
             self._app_timer.Stop()
             self._after_download()
-        elif data == 'closed':
+        elif signal == 'closed':
             self._status_bar_write(self.CLOSED_MSG)
             self._reset_widgets()
             self.download_manager = None
             self._app_timer.Stop()
-        elif data == 'closing':
+        elif signal == 'closing':
             self._status_bar_write(self.CLOSING_MSG)
-        elif data == 'report_active':
+        elif signal == 'report_active':
             pass
-            #NOTE Remove from here and downloadmanager
-            #since now we have the wx.Timer to check progress
+            # NOTE Remove from here and downloadmanager
+            # since now we have the wx.Timer to check progress
 
-    def _update_handler(self, msg):
+    def _update_handler(self, signal, data=None):
         """updatemanager.UpdateThread thread handler.
 
         Handles messages from the UpdateThread thread.
@@ -959,13 +957,12 @@ class MainFrame(wx.Frame):
             See updatemanager.UpdateThread _talk_to_gui() method.
 
         """
-        data = msg.data
 
-        if data[0] == 'download':
+        if signal == 'download':
             self._status_bar_write(self.UPDATING_MSG)
-        elif data[0] == 'error':
-            self._status_bar_write(self.UPDATE_ERR_MSG.format(data[1]))
-        elif data[0] == 'correct':
+        elif signal == 'error':
+            self._status_bar_write(self.UPDATE_ERR_MSG.format(data))
+        elif signal == 'correct':
             self._status_bar_write(self.UPDATE_SUCC_MSG)
         else:
             self._reset_widgets()
@@ -1004,7 +1001,7 @@ class MainFrame(wx.Frame):
 
                     data = data.GetText()
 
-                    if data[-1] != '\n':
+                    if data != "" and data[-1] != '\n':
                         data += '\n'
 
                     self._url_list.WriteText(data)
@@ -1106,11 +1103,16 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         ListCtrlAutoWidthMixin.__init__(self)
         self.columns = columns
         self._list_index = 0
+        self._map_id = {}
         self._url_list = set()
         self._set_columns()
 
     def remove_row(self, row_number):
         self.DeleteItem(row_number)
+        total = len(self._map_id)
+        for row in range(row_number, total - 1):
+            self._map_id[row] = self._map_id[row + 1]
+        del self._map_id[total - 1]
         self._list_index -= 1
 
     def move_item_up(self, row_number):
@@ -1126,9 +1128,12 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
         item.SetId(new_row)
         self.InsertItem(item)
+        # Swap Data associated (Python Data Mixing)
+        self._map_id[new_row], self._map_id[cur_row] = self._map_id[cur_row], self._map_id[new_row]
 
         self.Select(new_row)
         self.Thaw()
+        # self.SetFocus()
 
     def has_url(self, url):
         """Returns True if the url is aleady in the ListCtrl else False.
@@ -1140,13 +1145,18 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         return url in self._url_list
 
     def bind_item(self, download_item):
-        self.InsertStringItem(self._list_index, download_item.url)
+        self.InsertItem(self._list_index, download_item.url)
 
         self.SetItemData(self._list_index, download_item.object_id)
+        self._map_id[self._list_index] = download_item.object_id
 
         self._update_from_item(self._list_index, download_item)
 
         self._list_index += 1
+    
+    def GetItemData(self, row_index_selected):
+        return self._map_id.get(row_index_selected, None)
+        
 
     def _update_from_item(self, row, download_item):
         progress_stats = download_item.progress_stats
@@ -1160,9 +1170,9 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
                                               progress_stats["playlist_index"],
                                               progress_stats["playlist_size"])
 
-                self.SetStringItem(row, column, status)
+                self.SetItem(row, column, status)
             else:
-                self.SetStringItem(row, column, progress_stats[key])
+                self.SetItem(row, column, progress_stats[key])
 
     def clear(self):
         """Clear the ListCtrl widget & reset self._list_index and
@@ -1179,10 +1189,10 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         return self.GetNextItem(-1, wx.LIST_NEXT_ALL, wx.LIST_STATE_SELECTED)
 
     def get_all_selected(self):
-        return [index for index in xrange(self._list_index) if self.IsSelected(index)]
+        return [index for index in range(self._list_index) if self.IsSelected(index)]
 
     def deselect_all(self):
-        for index in xrange(self._list_index):
+        for index in range(self._list_index):
             self.Select(index, on=0)
 
     def get_next_selected(self, start=-1, reverse=False):
@@ -1198,7 +1208,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         end = -1 if reverse else self._list_index
         step = -1 if reverse else 1
 
-        for index in xrange(start, end, step):
+        for index in range(start, end, step):
             if self.IsSelected(index):
                 return index
 
@@ -1221,6 +1231,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
                 self.setResizeColumn(column_item[0])
 
 # REFACTOR Extra widgets below should move to other module with widgets
+
 
 class ExtComboBox(wx.ComboBox):
 
@@ -1337,7 +1348,7 @@ class ButtonsChoiceDialog(wx.Dialog):
 
         message_sizer = wx.BoxSizer(wx.HORIZONTAL)
         message_sizer.Add(info_icon)
-        message_sizer.AddSpacer((10, 10))
+        message_sizer.AddSpacer(10)
         message_sizer.Add(msg_text, flag=wx.EXPAND)
 
         vertical_sizer.Add(message_sizer, 1, wx.ALL, border=self.BORDER)
@@ -1345,9 +1356,9 @@ class ButtonsChoiceDialog(wx.Dialog):
         buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
         for button in buttons[1:]:
             buttons_sizer.Add(button)
-            buttons_sizer.AddSpacer((5, -1))
+            buttons_sizer.AddSpacer(5)
 
-        buttons_sizer.AddSpacer((-1, -1), 1)
+        buttons_sizer.AddSpacer(1)
         buttons_sizer.Add(buttons[0], flag=wx.ALIGN_RIGHT)
         vertical_sizer.Add(buttons_sizer, flag=wx.EXPAND | wx.ALL, border=self.BORDER)
 

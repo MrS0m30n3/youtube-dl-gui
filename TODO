@@ -1,4 +1,4 @@
-Release 0.4.1
+Release 1.0.1
 =============
 * Intergrity check youtube-dl bin
 * Non-Windows shutdown using D-Bus instead of 'shutdown'
@@ -29,7 +29,6 @@ Other
 
 * Refactor
 * Review - rewrite threads communications
-* Add support for Python 3.*
 * Logging system using the Python 'logging' module
 * Use youtube-dl directly from python instead of using the subprocess module
 

@@ -3,6 +3,7 @@
 import gettext
 
 from .utils import TwoWayOrderedDict as tdict
+_ = gettext.gettext
 
 
 OUTPUT_FORMATS = tdict([
@@ -78,7 +79,6 @@ AUDIO_FORMATS = tdict([
     ("flac", "flac")
 ])
 
-
 FORMATS = DEFAULT_FORMATS.copy()
 FORMATS.update(VIDEO_FORMATS)
 FORMATS.update(AUDIO_FORMATS)
@@ -96,7 +96,7 @@ def reload_strings():
     #
     #
     #
-    #NOTE Remove
+    # NOTE Remove
     # Code is so messed up that i need to reload strings else
     # the translations wont work on the about gettext tags
     global OUTPUT_FORMATS
@@ -177,7 +177,6 @@ def reload_strings():
         ("opus", "opus"),
         ("flac", "flac")
     ])
-
 
     FORMATS = DEFAULT_FORMATS.copy()
     FORMATS.update(VIDEO_FORMATS)

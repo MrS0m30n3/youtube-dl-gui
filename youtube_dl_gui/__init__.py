@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg __init__ file.
@@ -14,7 +13,6 @@ Example:
 
 """
 
-from __future__ import unicode_literals
 
 import sys
 import gettext
@@ -23,7 +21,7 @@ import os.path
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 __packagename__ = "youtube_dl_gui"
@@ -53,6 +51,8 @@ from .utils import (
     os_path_exists,
     YOUTUBEDL_BIN
 )
+
+_ = gettext.gettext
 
 
 # Set config path and create options and log managers

@@ -1,15 +1,14 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg module responsible for the options window. """
 
-from __future__ import unicode_literals
 
 import os
 import gettext
+_ = gettext.gettext
 
 import wx
-import wx.combo
+import wx.adv
 from wx.lib.art import flagart
 
 from .utils import (
@@ -26,7 +25,7 @@ from .formats import (
     VIDEO_FORMATS,
     AUDIO_FORMATS
 )
-#REFACTOR Move all formats, etc to formats.py
+# REFACTOR Move all formats, etc to formats.py
 
 
 class OptionsFrame(wx.Frame):
@@ -49,7 +48,7 @@ class OptionsFrame(wx.Frame):
         self.app_icon = None
 
         # Set the app icon
-        #REFACTOR Get icon from parent
+        # REFACTOR Get icon from parent
         app_icon_path = get_icon_file()
         if app_icon_path is not None:
             self.app_icon = wx.Icon(app_icon_path, wx.BITMAP_TYPE_PNG)
@@ -98,7 +97,7 @@ class OptionsFrame(wx.Frame):
 
         buttons_sizer = wx.BoxSizer(wx.HORIZONTAL)
         buttons_sizer.Add(self.reset_button)
-        buttons_sizer.AddSpacer((5, -1))
+        buttons_sizer.AddSpacer(5)
         buttons_sizer.Add(self.close_button)
 
         main_sizer.Add(buttons_sizer, flag=wx.ALIGN_RIGHT | wx.ALL, border=5)
@@ -110,7 +109,7 @@ class OptionsFrame(wx.Frame):
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()
-        #REFACTOR Parent create specific callback
+        # REFACTOR Parent create specific callback
         self.GetParent()._update_videoformat_combobox()
         self.Hide()
 
@@ -126,12 +125,12 @@ class OptionsFrame(wx.Frame):
 
     def load_all_options(self):
         """Load all the options on each tab."""
-        for tab, _ in self.tabs:
+        for tab, label in self.tabs:
             tab.load_options()
 
     def save_all_options(self):
         """Save all the options from all the tabs back to the OptionsManager."""
-        for tab, _ in self.tabs:
+        for tab, label in self.tabs:
             tab.save_options()
 
     def Show(self, *args, **kwargs):
@@ -172,9 +171,9 @@ class TabPanel(wx.Panel):
 
     def __init__(self, parent, notebook):
         super(TabPanel, self).__init__(notebook)
-        #REFACTOR Maybe add methods to access those
-        #save_options(key, value)
-        #load_options(key)
+        # REFACTOR Maybe add methods to access those
+        # save_options(key, value)
+        # load_options(key)
         self.opt_manager = parent.opt_manager
         self.log_manager = parent.log_manager
         self.app_icon = parent.app_icon
@@ -216,7 +215,7 @@ class TabPanel(wx.Panel):
         return combobox
 
     def crt_bitmap_combobox(self, choices, size=(-1, -1), event_handler=None):
-        combobox = wx.combo.BitmapComboBox(self, size=size, style=wx.CB_READONLY)
+        combobox = wx.adv.BitmapComboBox(self, size=size, style=wx.CB_READONLY)
 
         for item in choices:
             lang_code, lang_name = item
@@ -348,7 +347,7 @@ class GeneralTab(TabPanel):
 
         custom_format_sizer = wx.BoxSizer(wx.HORIZONTAL)
         custom_format_sizer.Add(self.filename_custom_format, 1, wx.ALIGN_CENTER_VERTICAL)
-        custom_format_sizer.AddSpacer((5, -1))
+        custom_format_sizer.AddSpacer(5)
         custom_format_sizer.Add(self.filename_custom_format_button)
 
         vertical_sizer.Add(custom_format_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
@@ -363,7 +362,7 @@ class GeneralTab(TabPanel):
 
         shutdown_sizer = wx.BoxSizer(wx.HORIZONTAL)
         shutdown_sizer.Add(self.shutdown_checkbox)
-        shutdown_sizer.AddSpacer((-1, -1), 1)
+        shutdown_sizer.AddSpacer(-1)
         shutdown_sizer.Add(self.sudo_textctrl, 1)
 
         vertical_sizer.Add(shutdown_sizer, flag=wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
@@ -500,7 +499,7 @@ class FormatsTab(TabPanel):
 
         audio_quality_sizer = wx.BoxSizer(wx.HORIZONTAL)
         audio_quality_sizer.Add(self.audio_quality_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        audio_quality_sizer.AddSpacer((20, -1))
+        audio_quality_sizer.AddSpacer(20)
         audio_quality_sizer.Add(self.audio_quality_combobox)
 
         vertical_sizer.Add(audio_quality_sizer, flag=wx.LEFT | wx.RIGHT | wx.BOTTOM, border=5)
@@ -610,7 +609,7 @@ class DownloadsTab(TabPanel):
 
         plist_and_fsize_sizer = wx.BoxSizer(wx.HORIZONTAL)
         plist_and_fsize_sizer.Add(self._build_playlist_sizer(), 1, wx.EXPAND)
-        plist_and_fsize_sizer.AddSpacer((5, -1))
+        plist_and_fsize_sizer.AddSpacer(5)
         plist_and_fsize_sizer.Add(self._build_filesize_sizer(), 1, wx.EXPAND)
 
         vertical_sizer.Add(plist_and_fsize_sizer, 1, wx.EXPAND | wx.TOP, border=5)
@@ -620,7 +619,7 @@ class DownloadsTab(TabPanel):
 
     def _build_playlist_sizer(self):
         playlist_box_sizer = wx.StaticBoxSizer(self.playlist_box, wx.VERTICAL)
-        playlist_box_sizer.AddSpacer((-1, 10))
+        playlist_box_sizer.AddSpacer(10)
 
         border = wx.GridBagSizer(5, 40)
 
@@ -760,7 +759,7 @@ class AdvancedTab(TabPanel):
         # Set up retries box
         retries_sizer = wx.BoxSizer(wx.HORIZONTAL)
         retries_sizer.Add(self.retries_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        retries_sizer.AddSpacer((20, -1))
+        retries_sizer.AddSpacer(20)
         retries_sizer.Add(self.retries_spinctrl)
         vertical_sizer.Add(retries_sizer, flag=wx.ALIGN_RIGHT | wx.TOP | wx.RIGHT, border=5)
 
@@ -801,9 +800,9 @@ class AdvancedTab(TabPanel):
 
         logging_sizer = wx.BoxSizer(wx.HORIZONTAL)
         logging_sizer.Add(self.enable_log_checkbox)
-        logging_sizer.AddSpacer((-1, -1), 1)
+        logging_sizer.AddSpacer(-1)
         logging_sizer.Add(self.view_log_button)
-        logging_sizer.AddSpacer((5, -1))
+        logging_sizer.AddSpacer(5)
         logging_sizer.Add(self.clear_log_button)
 
         vertical_sizer.Add(logging_sizer, flag=wx.EXPAND | wx.ALL, border=5)
@@ -856,7 +855,7 @@ class ExtraTab(TabPanel):
         super(ExtraTab, self).__init__(*args, **kwargs)
 
         self.cmdline_args_label = self.crt_statictext(_("Youtube-dl command line options (e.g. --help)"))
-        self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE | wx.TE_LINEWRAP)
+        self.cmdline_args_textctrl = self.crt_textctrl(wx.TE_MULTILINE)
 
         self.extra_opts_label = self.crt_statictext(_("Extra options"))
 
@@ -879,13 +878,13 @@ class ExtraTab(TabPanel):
 
         extra_opts_sizer = wx.WrapSizer()
         extra_opts_sizer.Add(self.youtube_dl_debug_checkbox)
-        extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.AddSpacer(5)
         extra_opts_sizer.Add(self.ignore_errors_checkbox)
-        extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.AddSpacer(5)
         extra_opts_sizer.Add(self.ignore_config_checkbox)
-        extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.AddSpacer(5)
         extra_opts_sizer.Add(self.no_mtime_checkbox)
-        extra_opts_sizer.AddSpacer((5, -1))
+        extra_opts_sizer.AddSpacer(5)
         extra_opts_sizer.Add(self.native_hls_checkbox)
 
         vertical_sizer.Add(extra_opts_sizer, flag=wx.ALL, border=5)

@@ -350,7 +350,6 @@ class YoutubeDLDownloader(object):
         except (ValueError, OSError, FileNotFoundError) as error:
             self._log('Failed to start process: {}'.format(str(cmd)))
             self._log(str(error))
-            print(str(error))
 
 
 def extract_data(stdout):

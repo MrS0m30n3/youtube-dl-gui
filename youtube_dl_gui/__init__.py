@@ -15,7 +15,7 @@ Example:
 
 
 import sys
-import os.path
+import os
 
 if __package__ is None and not hasattr(sys, 'frozen'):
     # direct call of __main__.py
@@ -31,9 +31,7 @@ except ImportError as error:
     print(error)
     sys.exit(1)
 
-__packagename__ = "youtube_dl_gui"
-
-# For package use
+from .formats import *
 from .version import __version__
 from .info import (
     __author__,
@@ -46,12 +44,8 @@ from .info import (
     __descriptionfull__,
 )
 
-gettext.install(__packagename__)
-from .formats import reload_strings
-
 from .logmanager import LogManager
 from .optionsmanager import OptionsManager
-
 from .utils import (
     get_config_path,
     get_locale_file,
@@ -59,8 +53,7 @@ from .utils import (
     YOUTUBEDL_BIN
 )
 
-_ = gettext.gettext
-
+__packagename__ = "youtube_dl_gui"
 
 # Set config path and create options and log managers
 config_path = get_config_path()
@@ -74,14 +67,23 @@ if opt_manager.options['enable_log']:
 # Set gettext before MainFrame import
 # because the GUI strings are class level attributes
 locale_dir = get_locale_file()
+lang = gettext.gettext
 
 try:
-    gettext.translation(__packagename__, locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
+    lang = gettext.translation(__packagename__,
+                               locale_dir,
+                               [opt_manager.options['locale_name']])
 except IOError:
     opt_manager.options['locale_name'] = 'en_US'
-    gettext.install(__packagename__)
+    lang = gettext.translation(__packagename__,
+                               locale_dir,
+                               [opt_manager.options['locale_name']])
 
-reload_strings()
+
+# Redefine _ to gettext in builtins
+_ = lang.gettext
+OUTPUT_FORMATS, DEFAULT_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS, FORMATS = reload_strings(_)
+
 
 from .mainframe import MainFrame
 

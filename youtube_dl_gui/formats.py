@@ -84,7 +84,8 @@ FORMATS.update(VIDEO_FORMATS)
 FORMATS.update(AUDIO_FORMATS)
 
 
-def reload_strings():
+# noinspection PyPep8Naming
+def reload_strings(func):
     # IF YOU DONT WANT YOUR EYES TO BLEED STOP HERE
     # YOU HAVE BEEN WARNED
     # DO NOT LOOK THE CODE BELOW
@@ -99,11 +100,7 @@ def reload_strings():
     # NOTE Remove
     # Code is so messed up that i need to reload strings else
     # the translations wont work on the about gettext tags
-    global OUTPUT_FORMATS
-    global DEFAULT_FORMATS
-    global VIDEO_FORMATS
-    global AUDIO_FORMATS
-    global FORMATS
+    _ = func
 
     OUTPUT_FORMATS = tdict([
         (0, _("ID")),
@@ -181,3 +178,5 @@ def reload_strings():
     FORMATS = DEFAULT_FORMATS.copy()
     FORMATS.update(VIDEO_FORMATS)
     FORMATS.update(AUDIO_FORMATS)
+
+    return OUTPUT_FORMATS, DEFAULT_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS, FORMATS

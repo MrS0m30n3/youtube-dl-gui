@@ -4,12 +4,12 @@
 
 
 import os
-import gettext
-_ = gettext.gettext
+import warnings
 
 import wx
 import wx.adv
 from wx.lib.art import flagart
+from wx.lib.embeddedimage import PyEmbeddedImage
 
 from .utils import (
     TwoWayOrderedDict as twodict,
@@ -19,12 +19,15 @@ from .utils import (
 )
 
 from .info import __appname__
-
-from .formats import (
+from youtube_dl_gui import lang
+from youtube_dl_gui import (
     OUTPUT_FORMATS,
     VIDEO_FORMATS,
     AUDIO_FORMATS
 )
+
+_ = lang.gettext
+
 # REFACTOR Move all formats, etc to formats.py
 
 
@@ -219,11 +222,27 @@ class TabPanel(wx.Panel):
 
         for item in choices:
             lang_code, lang_name = item
+            _lang, country = lang_code.split('_')
 
-            _, country = lang_code.split('_')
+            warnings.filterwarnings("ignore")
 
             if country in flagart.catalog:
                 flag_bmp = flagart.catalog[country].getBitmap()
+            elif country == 'CU':
+                # Cuba Flag .png in base64encode.org
+                # Me dicen Cuba ;)
+                flag_bmp = PyEmbeddedImage(
+                    "iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0R"
+                    "Vh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHFSURBVHjaYrzNwKDquJyBjYfhxz"
+                    "eGfwwMf/4w/PnH8AuI/sBIMPoBRL8Y2NgAAohFhYHhk831pRr+H7iF/v/7/+/f/z8Q8u8/IOP"
+                    "Pn39///37/ef/73//gCLzc/YABBDjZwYG7uqqT8+e8yUl/LawYWD4D9T2/z8DFIOpf2CakZHx"
+                    "/cePAAHEAnTF73//OX///jx9Bs/Xrwyu7v8ZGaAKYYgJTDIyMrAxMQAEEONHBgb29nZmM7Pfs"
+                    "2f//P5jH5/WdvMwoON///kHcgaQ/AslpQQ5lhRuBQggkA0srq4MurrMv/+wTppk9/LMp11f56"
+                    "gF/f4FhH9//fn7+/e/X0ANf/79lOBiYLgHEEAgDX927GD69On31Mk/f//ay6uz2ypa/B8DxFQ"
+                    "Q+gOyAehjCREOBgYZgABifMvAwJWV9f/+/e9//vAmxP0PCfuPDTAwAP3A+ObNG4AAAjvpz58P"
+                    "f/5wZaT/9vL9/+f/f2iogEhg+ILDiwESSt9+/AEIIBYeBoaPf/+3RfT9esvwZ+FNiO3AGPgNY"
+                    "fwFxcPfv////vv/9z/DvuY5AAHEeJqBwVR0JjRSgdH5/w/QUzD0C0z+A5MMYJIJIMAA5qlT7L"
+                    "92ZXAAAAAASUVORK5CYII=").getBitmap()
             else:
                 flag_bmp = flagart.catalog["BLANK"].getBitmap()
 
@@ -268,6 +287,7 @@ class GeneralTab(TabPanel):
     # Lang code = <ISO 639-1>_<ISO 3166-1 alpha-2>
     LOCALE_NAMES = twodict([
         ('ar_SA', 'Arabic'),
+        ('es_CU', 'Cuba'),
         ('cs_CZ', 'Czech'),
         ('en_US', 'English'),
         ('fr_FR', 'French'),
@@ -276,7 +296,7 @@ class GeneralTab(TabPanel):
         ('ko_KR', 'Korean'),
         ('pt_BR', 'Portuguese'),
         ('ru_RU', 'Russian'),
-        ('es_ES', 'Spanish')
+        ('es_ES', 'Spanish'),
     ])
 
     OUTPUT_TEMPLATES = [

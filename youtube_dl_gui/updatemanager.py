@@ -58,8 +58,8 @@ class UpdateThread(Thread):
         self.start()
 
     def get_latest_sourcefile(self):
+        source_file = self.GITHUB_API
         try:
-            source_file = self.GITHUB_API
             stream = urlopen(self.LATEST_YOUTUBE_DL_API, timeout=self.DOWNLOAD_TIMEOUT)
 
             latest_json = json.load(stream)
@@ -69,10 +69,10 @@ class UpdateThread(Thread):
                 if asset["name"] == YOUTUBEDL_BIN:
                     source_file = asset["browser_download_url"]
                     break
-
-            return source_file
         except (HTTPError, URLError, json.JSONDecodeError) as error:
             self._talk_to_gui('error', error)
+
+        return source_file
 
     def run(self):
         self._talk_to_gui('download')

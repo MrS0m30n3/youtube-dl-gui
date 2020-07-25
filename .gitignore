@@ -7,3 +7,4 @@ build/
 
 .idea
 *.spec
+*.egg-info

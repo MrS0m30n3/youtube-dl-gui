@@ -15,7 +15,7 @@ from .utils import (
     get_default_lang
 )
 
-from .formats import (
+from youtube_dl_gui import (
     OUTPUT_FORMATS,
     FORMATS
 )

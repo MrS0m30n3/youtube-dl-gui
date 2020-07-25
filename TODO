@@ -25,7 +25,7 @@ Localization
 
 Other
 =====
-* Re-structure package
+* Re-structure package (Avoid Circular Imports)
 
 * Refactor
 * Review - rewrite threads communications

@@ -4,8 +4,15 @@
 
 
 import os
-import gettext
-_ = gettext.gettext
+from youtube_dl_gui import lang
+from youtube_dl_gui import (
+    DEFAULT_FORMATS,
+    VIDEO_FORMATS,
+    AUDIO_FORMATS,
+    FORMATS,
+    OUTPUT_FORMATS
+)
+
 
 import wx
 import wx.adv
@@ -45,23 +52,19 @@ from .utils import (
 
 from .widgets import CustomComboBox
 
-from .formats import (
-    DEFAULT_FORMATS,
-    VIDEO_FORMATS,
-    AUDIO_FORMATS,
-    FORMATS
-)
-
 from .info import (
     __descriptionfull__,
     __licensefull__,
     __projecturl__,
     __appname__,
-    __author__
+    __author__,
+    __maintainer__,
+    __maintainer_contact__
 )
 
 from .version import __version__
 
+_ = lang.gettext
 
 class MainFrame(wx.Frame):
 
@@ -731,7 +734,10 @@ class MainFrame(wx.Frame):
         info.SetDescription(__descriptionfull__)
         info.SetWebSite(__projecturl__)
         info.SetLicense(__licensefull__)
-        info.AddDeveloper(__author__)
+        info.AddDeveloper(
+            (__author__ + "\n" + __maintainer__ + "\n" +
+             "see AUTHORS file for the complete list.")
+        )
 
         wx.adv.AboutBox(info)
 

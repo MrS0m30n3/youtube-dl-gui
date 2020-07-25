@@ -111,7 +111,7 @@ def version2str(commit=0):
     return "%s.%s.%s.%s" % version_tuple
 
 
-# noinspection PyAttributeOutsideInit
+# noinspection PyAttributeOutsideInit,PyArgumentList
 class BuildTranslations(Command):
     description = "Build the translation files"
     user_options = []
@@ -141,7 +141,7 @@ class BuildTranslations(Command):
             sys.exit(1)
 
 
-# noinspection PyAttributeOutsideInit
+# noinspection PyAttributeOutsideInit,PyArgumentList
 class BuildNoUpdate(Command):
     description = "Build with updates disabled"
     user_options = []
@@ -245,7 +245,6 @@ class BuildPyinstallerBin(Command):
             SetVersion("./dist/youtube-dl-gui.exe", version)
 
 
-pyinstaller_cmd = dict()
 pyinstaller_console = [
     {
         "script": "./"+__packagename__+"/__main__.py",
@@ -313,11 +312,8 @@ def setup_windows():
 params = dict()
 
 if PYINSTALLER:
-    make_executable = True
-    pyinstaller_cmd.update({"pyinstaller": BuildPyinstallerBin})
+    cmdclass.update({"pyinstaller": BuildPyinstallerBin})
 else:
-    make_executable = False
-
     if on_windows():
         params = setup_windows()
     else:
@@ -327,9 +323,6 @@ else:
         "console_scripts": ["youtube-dl-gui = " + __packagename__ + ":main"]
     }
 
-
-if make_executable:
-    cmdclass.update(pyinstaller_cmd)
 
 setup(
     name=__packagename__,
@@ -344,19 +337,17 @@ setup(
     license=__license__,
     packages=[__packagename__],
     classifiers=[
-        "Topic :: Multimedia :: Video",
+        "Topic :: Multimedia :: Video :: User Interfaces",
         "Development Status :: 5 - Production/Stable",
-        "Environment :: Console",
+        "Environment :: MacOS X :: Cocoa",
+        "Environment :: Win32 (MS Windows)",
+        "Environment :: X11 Applications :: GTK",
         "License :: Public Domain",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.2",
-        "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: Implementation",
         "Programming Language :: Python :: Implementation :: CPython",
     ],

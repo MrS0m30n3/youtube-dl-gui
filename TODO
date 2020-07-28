@@ -27,10 +27,20 @@ Other
 =====
 * Re-structure package (Avoid Circular Imports)
 
-* Refactor
+* Refactor to Python3
 * Review - rewrite threads communications
 * Logging system using the Python 'logging' module
 * Use youtube-dl directly from python instead of using the subprocess module
+
+
+Extras
+======
+* En GNU/Linux requiere gtk3-devel - Development files for the GTK+ toolkit library v3
+* freeglut-devel (Freeglut is a completely open source alternative to the OpenGL Utility Toolkit (GLUT) library - alternative to OpenGL headers)
+python3-gst
+* gstreamer-plugins-base-devel 
+* gstreamer-devel (GStreamer 1.0)
+* Opcional libwx_gtk3
 
 
 Probably wont add
@@ -41,3 +51,412 @@ Probably wont add
 * Auto video format detection
 * Change 'Warning' status to 'Finished (*)' or something similar? (see: issue #131)
 * Use proxy during update phase (see: issue #244)
+
+
+COMMANDS
+========
+git submodule update --recursive 
+
+OR
+
+git clone https://github.com/wxWidgets/wxWidgets.git /home/oleksis/Phoenix/ext/wxWidgets
+git clone https://github.com/wxWidgets/Catch.git /home/oleksis/Phoenix/ext/wxWidgets/3rdparty/catch
+
+
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+python build.py dox etg --nodoc sip build
+python build.py build_py -v
+
+
+ERRORS
+======
+
+
+=== CON ERROR en wx-config unicode =====
+(env) oleksis@linux-fkos:~/Phoenix> python build.py build_py -v
+Will build using: "/home/oleksis/Phoenix/env/bin/python"
+3.6.5 (default, Mar 31 2018, 19:45:04) [GCC]
+Python's architecture is 64bit
+cfg.VERSION: 4.1.1a1
+
+Running command: build_py
+Checking for /home/oleksis/Phoenix/bin/waf-2.0.19...
+"/home/oleksis/Phoenix/env/bin/python" /home/oleksis/Phoenix/bin/waf-2.0.19 --verbose --wx_config=/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config --verbose --gtk3 --python="/home/oleksis/Phoenix/env/bin/python" --out=build/waf/3.6/gtk3 configure build 
+Setting top to                           : /home/oleksis/Phoenix 
+Setting out to                           : /home/oleksis/Phoenix/build/waf/3.6/gtk3 
+Checking for 'gcc' (C compiler)          : 22:14:36 runner ['/usr/bin/gcc', '-dM', '-E', '-']
+/usr/bin/gcc 
+Checking for 'g++' (C++ compiler)        : 22:14:37 runner ['/usr/bin/g++', '-dM', '-E', '-']
+/usr/bin/g++ 
+Checking for program 'python'            : /home/oleksis/Phoenix/env/bin/python 
+22:14:37 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', 'import sys\ntry:\n print(sys.implementation.cache_tag)\nexcept AttributeError:\n import imp\n print(imp.get_tag())\n']
+22:14:38 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', 'import sys\nfor x in sys.version_info: print(str(x))']
+22:14:38 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_python_lib(standard_lib=0, prefix='/usr/local') or ''))"]
+22:14:39 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_python_lib(plat_specific=1, standard_lib=0, prefix='/usr/local') or ''))"]
+Checking for python version >= 2.7.0     : 3.6.5 
+22:14:39 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_config_var('prefix') or ''))\nprint(repr(get_config_var('SO') or ''))\nprint(repr(get_config_var('LDFLAGS') or ''))\nprint(repr(get_config_var('LIBDIR') or ''))\nprint(repr(get_config_var('LIBPL') or ''))\nprint(repr(get_config_var('INCLUDEPY') or ''))\nprint(repr(get_config_var('Py_ENABLE_SHARED') or ''))\nprint(repr(get_config_var('MACOSX_DEPLOYMENT_TARGET') or ''))\nprint(repr(get_config_var('LDSHARED') or ''))\nprint(repr(get_config_var('CFLAGS') or ''))\nprint(repr(get_config_var('LDVERSION') or ''))"]
+python-config                            : /usr/bin/python3.6-config 
+Asking python-config for pyext '--cflags --libs --ldflags' flags : 22:14:39 runner ['/usr/bin/python3.6-config', '--cflags', '--libs', '--ldflags']
+yes 
+Testing pyext configuration                                      : 22:14:40 runner ['/usr/bin/g++', '-fPIC', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-D_FORTIFY_SOURCE=2', '-DNDEBUG', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../test.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/.conf_check_eaab107a0ad0c09fe99b0e743a890f00/testbuild/test.cpp.1.o']
+22:14:41 runner ['/usr/bin/g++', '-shared', '-Xlinker', '-export-dynamic', 'test.cpp.1.o', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/.conf_check_eaab107a0ad0c09fe99b0e743a890f00/testbuild/testprog.cpython-36m-x86_64-linux-gnu.so', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/usr/lib64', '-lpython3.6m', '-lpthread', '-ldl', '-lutil', '-lm', '-lpython3.6m', '-lpthread', '-ldl', '-lutil', '-lm']
+yes 
+Finding libs for WX                                              : 22:14:43 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'core,net', '--no-rpath']
+yes 
+Finding libs for WXADV                                           : 22:14:43 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'adv,core,net', '--no-rpath']
+yes 
+Finding libs for WXSTC                                           : 22:14:44 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'stc,core,net', '--no-rpath']
+yes 
+Finding libs for WXHTML                                          : 22:14:44 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'html,core,net', '--no-rpath']
+yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_GLCANVAS is not available.
+Finding libs for WXGL                                            : 22:14:44 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'core,net', '--no-rpath']
+yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_WEBVIEW is not available.
+Finding libs for WXWEBVIEW                                       : 22:14:45 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'core,net', '--no-rpath']
+yes 
+Finding libs for WXXML                                           : 22:14:45 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'xml,core,net', '--no-rpath']
+yes 
+Finding libs for WXXRC                                           : 22:14:45 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'xrc,xml,core,net', '--no-rpath']
+yes 
+Finding libs for WXRICHTEXT                                      : 22:14:45 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'richtext,core,net', '--no-rpath']
+yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_MEDIACTRL is not available.
+Finding libs for WXMEDIA                                         : 22:14:46 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'core,net', '--no-rpath']
+yes 
+Finding libs for WXRIBBON                                        : 22:14:46 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'ribbon,core,net', '--no-rpath']
+yes 
+Finding libs for WXPROPGRID                                      : 22:14:46 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'propgrid,core', '--no-rpath']
+yes 
+Finding libs for WXAUI                                           : 22:14:47 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'aui,core', '--no-rpath']
+yes 
+'configure' finished successfully (11.443s)
+Waf: Entering directory `/home/oleksis/Phoenix/build/waf/3.6/gtk3'
+**** Compiler: /usr/bin/gcc --version
+     gcc (SUSE Linux) 7.3.1 20180323 [gcc-7-branch revision 258812]
+     Copyright (C) 2017 Free Software Foundation, Inc.
+     This is free software; see the source for copying conditions.  There is NO
+     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Erroneous order constraint after='siplib' on bld(source='siplib.cpython-36m-x86_64-linux-gnu.so', target='pkg.siplib.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=2, tg_idx_count=2, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='siplib', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_core' on bld(source='_core.cpython-36m-x86_64-linux-gnu.so', target='pkg._core.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=4, tg_idx_count=4, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_core', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_adv' on bld(source='_adv.cpython-36m-x86_64-linux-gnu.so', target='pkg._adv.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=6, tg_idx_count=6, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_adv', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_dataview' on bld(source='_dataview.cpython-36m-x86_64-linux-gnu.so', target='pkg._dataview.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=8, tg_idx_count=8, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_dataview', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_grid' on bld(source='_grid.cpython-36m-x86_64-linux-gnu.so', target='pkg._grid.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=10, tg_idx_count=10, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_grid', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_stc' on bld(source='_stc.cpython-36m-x86_64-linux-gnu.so', target='pkg._stc.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=12, tg_idx_count=12, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_stc', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_html' on bld(source='_html.cpython-36m-x86_64-linux-gnu.so', target='pkg._html.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=14, tg_idx_count=14, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_html', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_glcanvas' on bld(source='_glcanvas.cpython-36m-x86_64-linux-gnu.so', target='pkg._glcanvas.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=16, tg_idx_count=16, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_glcanvas', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_html2' on bld(source='_html2.cpython-36m-x86_64-linux-gnu.so', target='pkg._html2.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=18, tg_idx_count=18, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_html2', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_xml' on bld(source='_xml.cpython-36m-x86_64-linux-gnu.so', target='pkg._xml.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=20, tg_idx_count=20, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_xml', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_xrc' on bld(source='_xrc.cpython-36m-x86_64-linux-gnu.so', target='pkg._xrc.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=22, tg_idx_count=22, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_xrc', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_richtext' on bld(source='_richtext.cpython-36m-x86_64-linux-gnu.so', target='pkg._richtext.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=24, tg_idx_count=24, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_richtext', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_media' on bld(source='_media.cpython-36m-x86_64-linux-gnu.so', target='pkg._media.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=26, tg_idx_count=26, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_media', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_ribbon' on bld(source='_ribbon.cpython-36m-x86_64-linux-gnu.so', target='pkg._ribbon.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=28, tg_idx_count=28, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_ribbon', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_propgrid' on bld(source='_propgrid.cpython-36m-x86_64-linux-gnu.so', target='pkg._propgrid.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=30, tg_idx_count=30, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_propgrid', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_aui' on bld(source='_aui.cpython-36m-x86_64-linux-gnu.so', target='pkg._aui.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=32, tg_idx_count=32, rule=<function copyFileToPkg at 0x7fb94ab902f0>, after='_aui', posted=True) in /home/oleksis/Phoenix (no such class)
+[ 11/918] Linking build/waf/3.6/gtk3/siplib.cpython-36m-x86_64-linux-gnu.so
+22:14:50 runner ['/usr/bin/g++', '-shared', '-shared', '-pthread', '-pthread', '-Xlinker', '-export-dynamic', 'sip/siplib/apiversions.c.1.o', 'sip/siplib/array.c.1.o', 'sip/siplib/bool.cpp.1.o', 'sip/siplib/descriptors.c.1.o', 'sip/siplib/int_convertors.c.1.o', 'sip/siplib/objmap.c.1.o', 'sip/siplib/qtlib.c.1.o', 'sip/siplib/siplib.c.1.o', 'sip/siplib/threads.c.1.o', 'sip/siplib/voidptr.c.1.o', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/siplib.cpython-36m-x86_64-linux-gnu.so', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/home/oleksis/Phoenix/build/wxbld/gtk3/lib64', '-lwx_gtk3u_core-3.1', '-lwx_baseu_net-3.1', '-lwx_baseu-3.1']
+/usr/lib64/gcc/x86_64-suse-linux/7/../../../../x86_64-suse-linux/bin/ld: no se puede encontrar -lwx_gtk3u_core-3.1
+/usr/lib64/gcc/x86_64-suse-linux/7/../../../../x86_64-suse-linux/bin/ld: no se puede encontrar -lwx_baseu_net-3.1
+/usr/lib64/gcc/x86_64-suse-linux/7/../../../../x86_64-suse-linux/bin/ld: no se puede encontrar -lwx_baseu-3.1
+collect2: error: ld returned 1 exit status
+
+Waf: Leaving directory `/home/oleksis/Phoenix/build/waf/3.6/gtk3'
+  File "/home/oleksis/Phoenix/bin/waf-2.0.19", line 168, in <module>
+    Scripting.waf_entry_point(cwd, VERSION, wafdir)
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Scripting.py", line 119, in waf_entry_point
+    run_commands()
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Scripting.py", line 182, in run_commands
+    ctx=run_command(cmd_name)
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Scripting.py", line 173, in run_command
+    ctx.execute()
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Scripting.py", line 375, in execute
+    return execute_method(self)
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Build.py", line 93, in execute
+    self.execute_build()
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Build.py", line 100, in execute_build
+    self.compile()
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Tools/errcheck.py", line 140, in check_compile
+    ret=self.orig_compile()
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Build.py", line 176, in compile
+    raise Errors.BuildError(self.producer.error)
+  File "/home/oleksis/Phoenix/bin/.waf3-2.0.19-1f3c580272b15a03d2566843c5fe872a/waflib/Errors.py", line 26, in __init__
+    WafError.__init__(self,self.format_error())
+ 
+Build failed
+ -> task in 'siplib' failed with exit status 1: 
+	{task 140433775912328: cxxshlib apiversions.c.1.o,array.c.1.o,bool.cpp.1.o,descriptors.c.1.o,int_convertors.c.1.o,objmap.c.1.o,qtlib.c.1.o,siplib.c.1.o,threads.c.1.o,voidptr.c.1.o -> siplib.cpython-36m-x86_64-linux-gnu.so}
+['/usr/bin/g++', '-shared', '-shared', '-pthread', '-pthread', '-Xlinker', '-export-dynamic', 'sip/siplib/apiversions.c.1.o', 'sip/siplib/array.c.1.o', 'sip/siplib/bool.cpp.1.o', 'sip/siplib/descriptors.c.1.o', 'sip/siplib/int_convertors.c.1.o', 'sip/siplib/objmap.c.1.o', 'sip/siplib/qtlib.c.1.o', 'sip/siplib/siplib.c.1.o', 'sip/siplib/threads.c.1.o', 'sip/siplib/voidptr.c.1.o', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/siplib.cpython-36m-x86_64-linux-gnu.so', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/home/oleksis/Phoenix/build/wxbld/gtk3/lib64', '-lwx_gtk3u_core-3.1', '-lwx_baseu_net-3.1', '-lwx_baseu-3.1']
+Command '"/home/oleksis/Phoenix/env/bin/python" /home/oleksis/Phoenix/bin/waf-2.0.19 --verbose --wx_config=/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config --verbose --gtk3 --python="/home/oleksis/Phoenix/env/bin/python" --out=build/waf/3.6/gtk3 configure build ' failed with exit code 1.
+Finished command: build_py (0m25.717s)
+
+
+==== SIN ERROR MODIFICANDO GTK3-UNICODE-3.1 (./Phoenix/build/wxbld/gtk3/lib/wx/config/gtk3-unicode-3.1) ====
+(env) oleksis@linux-fkos:~/Phoenix> python build.py build_py -v
+Will build using: "/home/oleksis/Phoenix/env/bin/python"
+3.6.5 (default, Mar 31 2018, 19:45:04) [GCC]
+Python's architecture is 64bit
+cfg.VERSION: 4.1.1a1
+
+Running command: build_py
+Checking for /home/oleksis/Phoenix/bin/waf-2.0.19...
+"/home/oleksis/Phoenix/env/bin/python" /home/oleksis/Phoenix/bin/waf-2.0.19 --verbose --wx_config=/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config --verbose --gtk3 --python="/home/oleksis/Phoenix/env/bin/python" --out=build/waf/3.6/gtk3 configure build 
+Setting top to                           : /home/oleksis/Phoenix 
+Setting out to                           : /home/oleksis/Phoenix/build/waf/3.6/gtk3 
+Checking for 'gcc' (C compiler)          : 00:27:25 runner ['/usr/bin/gcc', '-dM', '-E', '-']
+/usr/bin/gcc 
+Checking for 'g++' (C++ compiler)        : 00:27:26 runner ['/usr/bin/g++', '-dM', '-E', '-']
+/usr/bin/g++ 
+Checking for program 'python'            : /home/oleksis/Phoenix/env/bin/python 
+00:27:27 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', 'import sys\ntry:\n print(sys.implementation.cache_tag)\nexcept AttributeError:\n import imp\n print(imp.get_tag())\n']
+00:27:27 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', 'import sys\nfor x in sys.version_info: print(str(x))']
+00:27:28 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_python_lib(standard_lib=0, prefix='/usr/local') or ''))"]
+00:27:28 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_python_lib(plat_specific=1, standard_lib=0, prefix='/usr/local') or ''))"]
+Checking for python version >= 2.7.0     : 3.6.5 
+00:27:29 runner ['/home/oleksis/Phoenix/env/bin/python', '-c', "from distutils.sysconfig import get_config_var, get_python_lib\n\nprint(repr(get_config_var('prefix') or ''))\nprint(repr(get_config_var('SO') or ''))\nprint(repr(get_config_var('LDFLAGS') or ''))\nprint(repr(get_config_var('LIBDIR') or ''))\nprint(repr(get_config_var('LIBPL') or ''))\nprint(repr(get_config_var('INCLUDEPY') or ''))\nprint(repr(get_config_var('Py_ENABLE_SHARED') or ''))\nprint(repr(get_config_var('MACOSX_DEPLOYMENT_TARGET') or ''))\nprint(repr(get_config_var('LDSHARED') or ''))\nprint(repr(get_config_var('CFLAGS') or ''))\nprint(repr(get_config_var('LDVERSION') or ''))"]
+python-config                            : /usr/bin/python3.6-config 
+Asking python-config for pyext '--cflags --libs --ldflags' flags : 00:27:29 runner ['/usr/bin/python3.6-config', '--cflags', '--libs', '--ldflags']
+yes 
+Testing pyext configuration                                      : 00:27:29 runner ['/usr/bin/g++', '-fPIC', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-D_FORTIFY_SOURCE=2', '-DNDEBUG', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../test.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/.conf_check_eaab107a0ad0c09fe99b0e743a890f00/testbuild/test.cpp.1.o']
+00:27:31 runner ['/usr/bin/g++', '-shared', '-Xlinker', '-export-dynamic', 'test.cpp.1.o', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/.conf_check_eaab107a0ad0c09fe99b0e743a890f00/testbuild/testprog.cpython-36m-x86_64-linux-gnu.so', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/usr/lib64', '-lpython3.6m', '-lpthread', '-ldl', '-lutil', '-lm', '-lpython3.6m', '-lpthread', '-ldl', '-lutil', '-lm']
+yes 
+Finding libs for WX                                              : 00:27:33 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'core,net', '--no-rpath']
+yes 
+Finding libs for WXADV                                           : 00:27:33 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'adv,core,net', '--no-rpath']
+yes 
+Finding libs for WXSTC                                           : 00:27:33 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'stc,core,net', '--no-rpath']
+yes 
+Finding libs for WXHTML                                          : 00:27:34 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'html,core,net', '--no-rpath']
+yes 
+Finding libs for WXGL                                            : 00:27:34 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'gl,core,net', '--no-rpath']
+yes 
+Finding libs for WXWEBVIEW                                       : 00:27:34 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'webview,core,net', '--no-rpath']
+yes 
+Finding libs for WXXML                                           : 00:27:35 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'xml,core,net', '--no-rpath']
+yes 
+Finding libs for WXXRC                                           : 00:27:35 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'xrc,xml,core,net', '--no-rpath']
+yes 
+Finding libs for WXRICHTEXT                                      : 00:27:35 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'richtext,core,net', '--no-rpath']
+yes 
+Finding libs for WXMEDIA                                         : 00:27:35 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'media,core,net', '--no-rpath']
+yes 
+Finding libs for WXRIBBON                                        : 00:27:36 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'ribbon,core,net', '--no-rpath']
+yes 
+Finding libs for WXPROPGRID                                      : 00:27:36 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'propgrid,core', '--no-rpath']
+yes 
+Finding libs for WXAUI                                           : 00:27:36 runner ['/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config', '--cxxflags', '--libs', 'aui,core', '--no-rpath']
+yes 
+'configure' finished successfully (11.528s)
+Waf: Entering directory `/home/oleksis/Phoenix/build/waf/3.6/gtk3'
+**** Compiler: /usr/bin/gcc --version
+     gcc (SUSE Linux) 7.3.1 20180323 [gcc-7-branch revision 258812]
+     Copyright (C) 2017 Free Software Foundation, Inc.
+     This is free software; see the source for copying conditions.  There is NO
+     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Erroneous order constraint after='siplib' on bld(source='siplib.cpython-36m-x86_64-linux-gnu.so', target='pkg.siplib.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=2, tg_idx_count=2, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='siplib', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_core' on bld(source='_core.cpython-36m-x86_64-linux-gnu.so', target='pkg._core.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=4, tg_idx_count=4, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_core', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_adv' on bld(source='_adv.cpython-36m-x86_64-linux-gnu.so', target='pkg._adv.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=6, tg_idx_count=6, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_adv', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_dataview' on bld(source='_dataview.cpython-36m-x86_64-linux-gnu.so', target='pkg._dataview.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=8, tg_idx_count=8, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_dataview', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_grid' on bld(source='_grid.cpython-36m-x86_64-linux-gnu.so', target='pkg._grid.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=10, tg_idx_count=10, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_grid', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_stc' on bld(source='_stc.cpython-36m-x86_64-linux-gnu.so', target='pkg._stc.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=12, tg_idx_count=12, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_stc', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_html' on bld(source='_html.cpython-36m-x86_64-linux-gnu.so', target='pkg._html.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=14, tg_idx_count=14, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_html', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_glcanvas' on bld(source='_glcanvas.cpython-36m-x86_64-linux-gnu.so', target='pkg._glcanvas.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=16, tg_idx_count=16, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_glcanvas', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_html2' on bld(source='_html2.cpython-36m-x86_64-linux-gnu.so', target='pkg._html2.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=18, tg_idx_count=18, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_html2', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_xml' on bld(source='_xml.cpython-36m-x86_64-linux-gnu.so', target='pkg._xml.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=20, tg_idx_count=20, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_xml', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_xrc' on bld(source='_xrc.cpython-36m-x86_64-linux-gnu.so', target='pkg._xrc.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=22, tg_idx_count=22, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_xrc', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_richtext' on bld(source='_richtext.cpython-36m-x86_64-linux-gnu.so', target='pkg._richtext.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=24, tg_idx_count=24, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_richtext', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_media' on bld(source='_media.cpython-36m-x86_64-linux-gnu.so', target='pkg._media.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=26, tg_idx_count=26, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_media', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_ribbon' on bld(source='_ribbon.cpython-36m-x86_64-linux-gnu.so', target='pkg._ribbon.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=28, tg_idx_count=28, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_ribbon', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_propgrid' on bld(source='_propgrid.cpython-36m-x86_64-linux-gnu.so', target='pkg._propgrid.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=30, tg_idx_count=30, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_propgrid', posted=True) in /home/oleksis/Phoenix (no such class)
+Erroneous order constraint after='_aui' on bld(source='_aui.cpython-36m-x86_64-linux-gnu.so', target='pkg._aui.cpython-36m-x86_64-linux-gnu', meths=['check_err_features', 'check_err_order', 'process_rule', 'process_source'], features=[], path=/home/oleksis/Phoenix, idx=32, tg_idx_count=32, rule=<function copyFileToPkg at 0x7fbae184c2f0>, after='_aui', posted=True) in /home/oleksis/Phoenix (no such class)
+[  1/918] Compiling sip/siplib/qtlib.c
+00:27:39 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/qtlib.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/qtlib.c.1.o']
+[  2/918] Compiling sip/siplib/bool.cpp
+00:27:39 runner ['/usr/bin/g++', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/bool.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/bool.cpp.1.o']
+[  3/918] Compiling sip/siplib/apiversions.c
+00:27:40 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/apiversions.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/apiversions.c.1.o']
+[  4/918] Compiling sip/siplib/objmap.c
+00:27:42 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/objmap.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/objmap.c.1.o']
+[  5/918] Compiling sip/siplib/voidptr.c
+00:27:43 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/voidptr.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/voidptr.c.1.o']
+[  6/918] Compiling sip/siplib/array.c
+00:27:45 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/array.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/array.c.1.o']
+[  7/918] Compiling sip/siplib/descriptors.c
+00:27:46 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/descriptors.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/descriptors.c.1.o']
+[  8/918] Compiling sip/siplib/siplib.c
+00:27:49 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/siplib.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/siplib.c.1.o']
+[  9/918] Compiling sip/siplib/int_convertors.c
+00:27:49 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/int_convertors.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/int_convertors.c.1.o']
+[ 10/918] Compiling sip/siplib/threads.c
+00:27:51 runner ['/usr/bin/gcc', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/siplib/threads.c', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/siplib/threads.c.1.o']
+[ 11/918] Compiling sip/cpp/sip_corewxLogTextCtrl.cpp
+00:27:53 runner ['/usr/bin/g++', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/cpp/sip_corewxLogTextCtrl.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/cpp/sip_corewxLogTextCtrl.cpp.3.o']
+[ 12/918] Compiling sip/cpp/sip_corewxEvtHandler.cpp
+00:28:32 runner ['/usr/bin/g++', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/cpp/sip_corewxEvtHandler.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/cpp/sip_corewxEvtHandler.cpp.3.o']
+[ 13/918] Compiling sip/cpp/sip_corewxCollapsiblePaneEvent.cpp
+00:28:51 runner ['/usr/bin/g++', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/cpp/sip_corewxCollapsiblePaneEvent.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/cpp/sip_corewxCollapsiblePaneEvent.cpp.3.o']
+[ 14/918] Linking build/waf/3.6/gtk3/siplib.cpython-36m-x86_64-linux-gnu.so
+00:29:24 runner ['/usr/bin/g++', '-shared', '-shared', '-pthread', '-pthread', '-Xlinker', '-export-dynamic', 'sip/siplib/apiversions.c.1.o', 'sip/siplib/array.c.1.o', 'sip/siplib/bool.cpp.1.o', 'sip/siplib/descriptors.c.1.o', 'sip/siplib/int_convertors.c.1.o', 'sip/siplib/objmap.c.1.o', 'sip/siplib/qtlib.c.1.o', 'sip/siplib/siplib.c.1.o', 'sip/siplib/threads.c.1.o', 'sip/siplib/voidptr.c.1.o', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/siplib.cpython-36m-x86_64-linux-gnu.so', '-Wl,-Bstatic', '-Wl,-Bdynamic', '-L/home/oleksis/Phoenix/build/wxbld/gtk3/lib', '-lwx_gtk3u_core-3.1', '-lwx_baseu_net-3.1', '-lwx_baseu-3.1']
+[ 15/918] Compiling sip/cpp/sip_corewxAccessible.cpp
+00:29:29 runner ['/usr/bin/g++', '-fPIC', '-pthread', '-pthread', '-pthread', '-I/usr/include/gtk-3.0', '-I/usr/include/at-spi2-atk/2.0', '-I/usr/include/at-spi-2.0', '-I/usr/include/dbus-1.0', '-I/usr/lib64/dbus-1.0/include', '-I/usr/include/gtk-3.0', '-I/usr/include/gio-unix-2.0/', '-I/usr/include/libxkbcommon', '-I/usr/include/wayland', '-I/usr/include/cairo', '-I/usr/include/pango-1.0', '-I/usr/include/harfbuzz', '-I/usr/include/pango-1.0', '-I/usr/include/atk-1.0', '-I/usr/include/cairo', '-I/usr/include/pixman-1', '-I/usr/include/freetype2', '-I/usr/include/libdrm', '-I/usr/include/libpng16', '-I/usr/include/gdk-pixbuf-2.0', '-I/usr/include/glib-2.0', '-I/usr/lib64/glib-2.0/include', '-UNDEBUG', '-DSIP_MODULE_NAME=wx.siplib', '-DSIP_MODULE_BASENAME=siplib', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-fmessage-length=0', '-grecord-gcc-switches', '-O2', '-fstack-protector-strong', '-funwind-tables', '-fasynchronous-unwind-tables', '-fstack-clash-protection', '-g', '-I../../../wxbld/gtk3/lib/wx/include/gtk3-unicode-3.1', '-I../../../../ext/wxWidgets/include', '-Isip/siplib', '-I../../../../sip/siplib', '-Iwx/include', '-I../../../../wx/include', '-Isrc', '-I../../../../src', '-I/usr/include/python3.6m', '-DPYTHONDIR="/usr/local/lib/python3.6/site-packages"', '-DPYTHONARCHDIR="/usr/local/lib64/python3.6/site-packages"', '-DHAVE_PYEXT=1', '-DHAVE_PYTHON_H=1', '-DHAVE_WX=1', '-DHAVE_WXADV=1', '-DHAVE_WXSTC=1', '-DHAVE_WXHTML=1', '-DHAVE_WXGL=1', '-DHAVE_WXWEBVIEW=1', '-DHAVE_WXXML=1', '-DHAVE_WXXRC=1', '-DHAVE_WXRICHTEXT=1', '-DHAVE_WXMEDIA=1', '-DHAVE_WXRIBBON=1', '-DHAVE_WXPROPGRID=1', '-DHAVE_WXAUI=1', '-D_FILE_OFFSET_BITS=64', '-D__WXGTK__', '-D_FORTIFY_SOURCE=2', '-D_FORTIFY_SOURCE=2', '-DOPENSSL_LOAD_CONF', '../../../../sip/cpp/sip_corewxAccessible.cpp', '-c', '-o/home/oleksis/Phoenix/build/waf/3.6/gtk3/sip/cpp/sip_corewxAccessible.cpp.3.o']
+
+
+... MORE OUTPUT ...
+
+
+
+
+
+
+
+
+
+======
+(env) oleksis@linux-fkos:~/Phoenix> python build.py build_py
+Will build using: "/home/oleksis/Phoenix/env/bin/python"
+3.6.5 (default, Mar 31 2018, 19:45:04) [GCC]
+Python's architecture is 64bit
+cfg.VERSION: 4.1.1a1
+
+Running command: build_py
+Checking for /home/oleksis/Phoenix/bin/waf-2.0.19...
+Not found.  Attempting to download...
+Connection successful...
+Data downloaded...
+Checking for /home/oleksis/Phoenix/bin/waf-2.0.19...
+"/home/oleksis/Phoenix/env/bin/python" /home/oleksis/Phoenix/bin/waf-2.0.19 --wx_config=/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config --gtk3 --python="/home/oleksis/Phoenix/env/bin/python" --out=build/waf/3.6/gtk3 configure build 
+Setting top to                           : /home/oleksis/Phoenix 
+Setting out to                           : /home/oleksis/Phoenix/build/waf/3.6/gtk3 
+Checking for 'gcc' (C compiler)          : /usr/bin/gcc 
+Checking for 'g++' (C++ compiler)        : /usr/bin/g++ 
+Checking for program 'python'            : /home/oleksis/Phoenix/env/bin/python 
+Checking for python version >= 2.7.0     : 3.6.5 
+python-config                            : /usr/bin/python3.6-config 
+Asking python-config for pyext '--cflags --libs --ldflags' flags : yes 
+Testing pyext configuration                                      : yes 
+Finding libs for WX                                              : yes 
+Finding libs for WXADV                                           : yes 
+Finding libs for WXSTC                                           : yes 
+Finding libs for WXHTML                                          : yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_GLCANVAS is not available.
+Finding libs for WXGL                                            : yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_WEBVIEW is not available.
+Finding libs for WXWEBVIEW                                       : yes 
+Finding libs for WXXML                                           : yes 
+Finding libs for WXXRC                                           : yes 
+Finding libs for WXRICHTEXT                                      : yes 
+WARNING: Unable to find setup.h in /home/oleksis/Phoenix/build/wxbld/gtk3/lib64/wx/include/gtk3-unicode-3.1, assuming wxUSE_MEDIACTRL is not available.
+Finding libs for WXMEDIA                                         : yes 
+Finding libs for WXRIBBON                                        : yes 
+Finding libs for WXPROPGRID                                      : yes 
+Finding libs for WXAUI                                           : yes 
+'configure' finished successfully (12.577s)
+Waf: Entering directory `/home/oleksis/Phoenix/build/waf/3.6/gtk3'
+**** Compiler: /usr/bin/gcc --version
+     gcc (SUSE Linux) 7.3.1 20180323 [gcc-7-branch revision 258812]
+     Copyright (C) 2017 Free Software Foundation, Inc.
+     This is free software; see the source for copying conditions.  There is NO
+     warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+[  1/918] Compiling sip/siplib/qtlib.c
+[  2/918] Compiling sip/siplib/bool.cpp
+[  3/918] Compiling sip/siplib/apiversions.c
+[  4/918] Compiling sip/siplib/objmap.c
+[  5/918] Compiling sip/siplib/voidptr.c
+[  6/918] Compiling sip/siplib/array.c
+[  7/918] Compiling sip/siplib/siplib.c
+[  8/918] Compiling sip/siplib/descriptors.c
+[  9/918] Compiling sip/siplib/int_convertors.c
+[ 10/918] Compiling sip/siplib/threads.c
+[ 11/918] Compiling sip/cpp/sip_corewxLogTextCtrl.cpp
+In file included from ../../../../ext/wxWidgets/include/wx/defs.h:45:0,
+                 from ../../../../ext/wxWidgets/include/wx/wx.h:14,
+                 from ../../../../wx/include/wxPython/wxpy_api.h:41,
+                 from ../../../../sip/cpp/sipAPI_core.h:20778,
+                 from ../../../../sip/cpp/sip_corewxLogTextCtrl.cpp:10:
+../../../../ext/wxWidgets/include/wx/platform.h:160:10: fatal error: wx/setup.h: No existe el fichero o el directorio
+ #include "wx/setup.h"
+          ^~~~~~~~~~~~
+compilation terminated.
+
+Waf: Leaving directory `/home/oleksis/Phoenix/build/waf/3.6/gtk3'
+Build failed
+ -> task in '_core' failed with exit status 1 (run with -v to display more information)
+Command '"/home/oleksis/Phoenix/env/bin/python" /home/oleksis/Phoenix/bin/waf-2.0.19 --wx_config=/home/oleksis/Phoenix/build/wxbld/gtk3/wx-config --gtk3 --python="/home/oleksis/Phoenix/env/bin/python" --out=build/waf/3.6/gtk3 configure build ' failed with exit code 1.
+Finished command: build_py (1m21.708s)
+
+
+
+
+
+======
+
+    1743 translated messages, 54 fuzzy translations, 56 untranslated messages.
+    make[1]: se sale del directorio '/tmp/pip-install-ilickw8p/wxPython/ext/wxWidgets/locale'
+    make[1]: se entra en el directorio '/tmp/pip-install-ilickw8p/wxPython/ext/wxWidgets/locale'
+    msgfmt --verbose -c -o zh_TW.mo zh_TW.po
+    1710 translated messages, 82 fuzzy translations, 61 untranslated messages.
+    make[1]: se sale del directorio '/tmp/pip-install-ilickw8p/wxPython/ext/wxWidgets/locale'
+    Finished command: build_wx (229m10.920s)
+    Running command: build_py
+    Checking for /tmp/pip-install-ilickw8p/wxPython/bin/waf-2.0.8...
+    "/usr/bin/python3" /tmp/pip-install-ilickw8p/wxPython/bin/waf-2.0.8 --wx_config=/tmp/pip-install-ilickw8p/wxPython/build/wxbld/gtk3/wx-config --gtk3 --python="/usr/bin/python3" --out=build/waf/3.6/gtk3 configure build
+    Setting top to                           : /tmp/pip-install-ilickw8p/wxPython
+    Setting out to                           : /tmp/pip-install-ilickw8p/wxPython/build/waf/3.6/gtk3
+    Checking for 'gcc' (C compiler)          : /usr/bin/gcc
+    Checking for 'g++' (C++ compiler)        : /usr/bin/g++
+    Checking for program 'python'            : /usr/bin/python3
+    Checking for python version >= 2.7.0     : 3.6.5
+    python-config                            : /usr/bin/python3-config
+    Asking python-config for pyembed '--cflags --libs --ldflags' flags : yes
+    Testing pyembed configuration                                      : yes
+    Asking python-config for pyext '--cflags --libs --ldflags' flags   : yes
+    Testing pyext configuration                                        : yes
+    Finding libs for WX                                                : yes
+    Finding libs for WXADV                                             : yes
+    Finding libs for WXSTC                                             : yes
+    Finding libs for WXHTML                                            : yes
+    Finding libs for WXGL                                              : yes
+    Finding libs for WXWEBVIEW                                         : yes
+    Finding libs for WXXML                                             : yes
+    Finding libs for WXXRC                                             : yes
+    Finding libs for WXRICHTEXT                                        : yes
+    Finding libs for WXMEDIA                                           : yes
+    Finding libs for WXRIBBON                                          : yes
+    Finding libs for WXPROPGRID                                        : yes
+    Finding libs for WXAUI                                             : yes
+    'configure' finished successfully (43.155s)
+    Waf: Entering directory `/tmp/pip-install-ilickw8p/wxPython/build/waf/3.6/gtk3'
+    [  1/869] Compiling sip/siplib/qtlib.c
+    [  2/869] Compiling sip/siplib/bool.cpp
+    [  3/869] Compiling sip/siplib/apiversions.c
+    [  4/869] Compiling sip/siplib/objmap.c
+    [  5/869] Compiling sip/siplib/voidptr.c
+    [  6/869] Compiling sip/siplib/array.c
+    [  7/869] Compiling sip/siplib/siplib.c
+    [  8/869] Compiling sip/siplib/descriptors.c
+    [  9/869] Compiling sip/siplib/int_convertors.c
+    [ 10/869] Compiling sip/siplib/threads.c
+    [ 11/869] Compiling sip/cpp/sip_corewxMaximizeEvent.cpp
+    In file included from ../../../../ext/wxWidgets/include/wx/defs.h:27:0,
+                     from ../../../../ext/wxWidgets/include/wx/wx.h:14,
+                     from ../../../../wx/include/wxPython/wxpy_api.h:41,
+                     from ../../../../sip/cpp/sipAPI_core.h:19840,
+                     from ../../../../sip/cpp/sip_corewxMaximizeEvent.cpp:10:
+    ../../../../ext/wxWidgets/include/wx/platform.h:183:10: fatal error: wx/setup.h: No existe el fichero o el directorio
+     #include "wx/setup.h"
+              ^~~~~~~~~~~~
+    compilation terminated.
+    
+    Waf: Leaving directory `/tmp/pip-install-ilickw8p/wxPython/build/waf/3.6/gtk3'
+    Build failed
+     -> task in '_core' failed with exit status 1 (run with -v to display more information)
+    Command '"/usr/bin/python3" /tmp/pip-install-ilickw8p/wxPython/bin/waf-2.0.8 --wx_config=/tmp/pip-install-ilickw8p/wxPython/build/wxbld/gtk3/wx-config --gtk3 --python="/usr/bin/python3" --out=build/waf/3.6/gtk3 configure build ' failed with exit code 1.
+    Finished command: build_py (2m57.71s)
+    Finished command: build (232m7.996s)
+    Command '"/usr/bin/python3" -u build.py build' failed with exit code 1.
+    
+    ----------------------------------------
+Command "/usr/bin/python3 -u -c "import setuptools, tokenize;__file__='/tmp/pip-install-ilickw8p/wxPython/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-record-pdbovxhc/install-record.txt --single-version-externally-managed --compile --user --prefix=" failed with error code 1 in /tmp/pip-install-ilickw8p/wxPython/
+You are using pip version 18.1, however version 20.2b1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.

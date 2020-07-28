@@ -50,21 +50,45 @@ from distutils.spawn import spawn
 from distutils.errors import DistutilsExecError
 import time
 
-
-from youtube_dl_gui import __packagename__
-from youtube_dl_gui.info import (
-    __author__,
-    __appname__,
-    __contact__,
-    __maintainer__,
-    __maintainer_contact__,
-    __license__,
-    __projecturl__,
-    __description__,
-    __descriptionfull__
-)
+import polib
 
 
+__author__ = 'Sotiris Papadopoulos'
+__contact__ = 'ytubedlg@gmail.com'
+__maintainer__ = 'Oleksis Fraga'
+__maintainer_contact__ = 'oleksis.fraga@gmail.com'
+__projecturl__ = 'https://github.com/oleksis/youtube-dl-gui/'
+__appname__ = 'Youtube-DLG'
+__license__ = 'UNLICENSE'
+__description__ = 'Youtube-dl GUI'
+__descriptionfull__ = '''A cross platform front-end GUI of the popular
+youtube-dl written in wxPython Phoenix'''
+__licensefull__ = '''
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <http://unlicense.org/>'''
+__packagename__ = "youtube_dl_gui"
 DESCRIPTION = __description__
 LONG_DESCRIPTION = __descriptionfull__
 
@@ -123,21 +147,18 @@ class BuildTranslations(Command):
         self.search_pattern = os.path.join(__packagename__, "locale", "*", "LC_MESSAGES", "youtube_dl_gui.po")
 
     def run(self):
-        tools_path = os.path.join(sys.exec_prefix, 'Tools')
-        msgfmt_file = os.path.join(tools_path, 'i18n', 'msgfmt.py')
+        tools_path = os.path.join(sys.exec_prefix, 'bin')
+        msgfmt_file = os.path.join(tools_path, 'msgfmt')
 
-        if os.path.isfile(msgfmt_file):
+        try:
             for po_file in glob.glob(self.search_pattern):
                 mo_file = po_file.replace('.po', '.mo')
+                po = polib.pofile(po_file)
 
-                try:
-                    log.info("Building MO file for '{}'".format(po_file))
-                    spawn([sys.executable, msgfmt_file, '-o', mo_file, po_file])
-                except DistutilsExecError as error:
-                    log.error("Error '{}', exiting...".format(error))
-                    sys.exit(1)
-        else:
-            log.error("Could not locate file '{}', exiting...".format(msgfmt_file))
+                log.info("Building MO file for '{}'".format(po_file))
+                po.save_as_mofile(mo_file)
+        except:
+            log.error("Could not locate file '{}', exiting...".format(po_file))
             sys.exit(1)
 
 
@@ -226,14 +247,22 @@ class BuildPyinstallerBin(Command):
         pass
 
     def run(self, version=version_file):
+        #  --add-data <SRC;DEST or SRC:DEST>
+        # ``os.pathsep`` which is ``;`` on Windows
+        # and ``:`` on most unix systems) is used.
+        if on_windows():
+            path_sep = ";"
+        else:
+            path_sep = ":"
+        
         spawn(
             [
                 "pyinstaller",
                 "-w",
                 "-F",
                 "--icon="+__packagename__+"/data/pixmaps/youtube-dl-gui.ico",
-                "--add-data="+__packagename__+"/data;"+__packagename__+"/data",
-                "--add-data="+__packagename__+"/locale;"+__packagename__+"/locale",
+                "--add-data="+__packagename__+"/data"+path_sep+__packagename__+"/data",
+                "--add-data="+__packagename__+"/locale"+path_sep+__packagename__+"/locale",
                 "--exclude-module=tests",
                 "--name=youtube-dl-gui",
                 ""+__packagename__+"/__main__.py",

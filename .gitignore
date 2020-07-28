@@ -4,6 +4,7 @@ MANIFEST
 
 dist/
 build/
+env/
 
 .idea
 *.spec

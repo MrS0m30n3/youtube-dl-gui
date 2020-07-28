@@ -17,20 +17,23 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 * [GNU gettext](https://www.gnu.org/software/gettext/)
 
 ## Downloads
-* [Source (.zip)](https://github.com/oleksis/youtube-dl-gui/archive/1.0.0.zip)
-* [Source (.tar.gz)](https://github.com/oleksis/youtube-dl-gui/archive/1.0.0.tar.gz)
+* [Source (.zip)](https://github.com/oleksis/youtube-dl-gui/archive/v1.0.0-alpha.zip)
+* [Source (.tar.gz)](https://github.com/oleksis/youtube-dl-gui/archive/v1.0.0-alpha.tar.gz)
 
 ## Installation
 
 ### Install From Source
 1. Download & extract the source
-2. Change directory into *youtube-dl-gui-1.0*
-3. Run `python setup.py build_trans`
-4. Run `python setup.py install`
+2. Change directory into *youtube-dl-gui-1.0.0-alpha*
+3. Run `pip install -r requirements.txt`
+4. Run `python setup.py build_trans`
+5. Run `python setup.py install`
 
 ## Binaries
 Create binaries using [PyInstaller](https://www.pyinstaller.org/)
-1. Run `python setup.py pyinstaller`
+1. Run `pip install -r requirements.txt`
+2. Run `python setup.py build_trans`
+3. Run `python setup.py pyinstaller`
 
 ## Contributing
 * **Add support for new language:** See [localization howto](docs/localization_howto.md)

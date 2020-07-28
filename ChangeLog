@@ -19,8 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - Migration to Python 3.*
 - README.md
 - Refactored setup.py
-  - Build the translation files (*.mo) using Python 3 Tools i18n msgfmt
-  - Build the binaries using PyInstaller
+  - Build the translation files (*.mo) using polib
+  - Build the binaries using PyInstaller. Fix path sep for each OS
   - Build with updates disabled
   - Set up for Windows/Linux
 - Ignore wxPyDeprecationWarning

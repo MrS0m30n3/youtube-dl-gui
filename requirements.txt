@@ -1,5 +1,5 @@
 Pypubsub==4.0.3
 twodict==1.2
-wxPython>=4.0.1
+wxPython==4.0.4
 pyinstaller==3.6
 polib==1.1.0

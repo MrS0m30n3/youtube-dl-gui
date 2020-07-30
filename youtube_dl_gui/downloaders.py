@@ -308,10 +308,7 @@ class YoutubeDLDownloader(object):
             Python list that contains the command to execute.
 
         """
-        if os.name == 'nt':
-            cmd = [self.youtubedl_path] + options + [url]
-        else:
-            cmd = ['python', self.youtubedl_path] + options + [url]
+        cmd = [self.youtubedl_path] + options + [url]
 
         return cmd
 

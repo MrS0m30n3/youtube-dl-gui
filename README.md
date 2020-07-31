@@ -7,7 +7,9 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 ## Requirements
 * [Python 3](https://www.python.org/downloads)
 * [wxPython Phoenix 4](https://wxpython.org/download.php)
-* [TwoDict](https://pypi.python.org/pypi/twodict)
+* [TwoDict](https://pypi.org/project/twodict)
+* [PyPubSub](https://pypi.org/project/PyPubSub)
+* [polib](https://pypi.org/project/polib)
 * [FFmpeg](https://ffmpeg.org/download.html) (optional, to postprocess video files)
 
 ### Requirement for build Binaries/Executables
@@ -25,15 +27,23 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 ### Install From Source
 1. Download & extract the source
 2. Change directory into *youtube-dl-gui-1.0.0-alpha*
-3. Run `pip install -r requirements.txt`
-4. Run `python setup.py build_trans`
-5. Run `python setup.py install`
+3. Create virtual environment `python3 -m venv env`
+4. Activate virtual environment `source env/bin/activate`
+5. Run `pip install -r requirements.txt`
+6. Run `python setup.py build_trans`
+7. Run `python setup.py install`
 
 ## Binaries
 Create binaries using [PyInstaller](https://www.pyinstaller.org/)
-1. Run `pip install -r requirements.txt`
-2. Run `python setup.py build_trans`
-3. Run `python setup.py pyinstaller`
+1. Create virtual environment `python3 -m venv env`
+2. Activate virtual environment `source env/bin/activate`
+3. Run `pip install -r requirements.txt`
+4. Run `python setup.py build_trans`
+5. Run `python setup.py pyinstaller`
+
+## Run Youtube-DLG
+1. Activate virtual environment `source env/bin/activate`
+2. Run `python -m youtube_dl_gui`
 
 ## Contributing
 * **Add support for new language:** See [localization howto](docs/localization_howto.md)

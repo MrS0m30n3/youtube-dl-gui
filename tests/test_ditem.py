@@ -3,7 +3,6 @@
 
 """Contains test cases for the DownloadItem object."""
 
-from __future__ import unicode_literals
 
 import sys
 import os.path

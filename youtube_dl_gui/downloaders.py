@@ -318,19 +318,13 @@ class YoutubeDLDownloader(object):
             cmd (list): Python list that contains the command to execute.
 
         """
-        info = preexec = None
-
-        # Keep a unicode copy of cmd for the log
-        # ucmd = cmd
+        info = None
 
         if os.name == 'nt':
             # Hide subprocess window
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        else:
-            # Make subprocess the process group leader
-            # in order to kill the whole process group with os.killpg
-            preexec = os.setsid
+            info.wShowWindow = subprocess.SW_HIDE
 
         # Encode command for subprocess
         # Refer to http://stackoverflow.com/a/9951851/35070
@@ -339,10 +333,11 @@ class YoutubeDLDownloader(object):
 
         try:
             self._proc = subprocess.Popen(cmd,
+                                          stdin=subprocess.PIPE,
                                           stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE,
-                                          preexec_fn=preexec,
-                                          startupinfo=info)
+                                          stderr=subprocess.STDOUT,
+                                          startupinfo=info,
+                                          start_new_session=True)
         except (ValueError, OSError, FileNotFoundError) as error:
             self._log('Failed to start process: {}'.format(str(cmd)))
             self._log(str(error))

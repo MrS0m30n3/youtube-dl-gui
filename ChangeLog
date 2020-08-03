@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Fixed
 - Imports for Internationalization with gettext
+- Fix bug subprocess for Windows ([WinError 6] Handler no valid)
 
 ### Changed
 - Migration to Python 3.*

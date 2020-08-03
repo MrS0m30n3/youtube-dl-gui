@@ -11,6 +11,7 @@ import wx.adv
 from wx.lib.art import flagart
 from wx.lib.embeddedimage import PyEmbeddedImage
 
+# noinspection PyPep8Naming
 from .utils import (
     TwoWayOrderedDict as twodict,
     os_path_exists,
@@ -109,6 +110,7 @@ class OptionsFrame(wx.Frame):
 
         self.panel.Layout()
 
+    # noinspection PyProtectedMember,PyUnusedLocal
     def _on_close(self, event):
         """Event handler for wx.EVT_CLOSE event."""
         self.save_all_options()
@@ -116,6 +118,7 @@ class OptionsFrame(wx.Frame):
         self.GetParent()._update_videoformat_combobox()
         self.Hide()
 
+    # noinspection PyUnusedLocal
     def _on_reset(self, event):
         """Event handler for the reset button wx.EVT_BUTTON event."""
         self.reset()
@@ -327,10 +330,12 @@ class GeneralTab(TabPanel):
         super(GeneralTab, self).__init__(*args, **kwargs)
 
         self.language_label = self.crt_statictext(_("Language"))
-        self.language_combobox = self.crt_bitmap_combobox(list(self.LOCALE_NAMES.items()), event_handler=self._on_language)
+        self.language_combobox = self.crt_bitmap_combobox(list(self.LOCALE_NAMES.items()),
+                                                          event_handler=self._on_language)
 
         self.filename_format_label = self.crt_statictext(_("Filename format"))
-        self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()), event_handler=self._on_filename)
+        self.filename_format_combobox = self.crt_combobox(list(OUTPUT_FORMATS.values()),
+                                                          event_handler=self._on_filename)
         self.filename_custom_format = self.crt_textctrl()
         self.filename_custom_format_button = self.crt_button("...", self._on_format)
 
@@ -342,7 +347,8 @@ class GeneralTab(TabPanel):
         self.confirm_deletion_checkbox = self.crt_checkbox(_("Confirm item deletion"))
         self.show_completion_popup_checkbox = self.crt_checkbox(_("Inform me on download completion"))
 
-        self.shutdown_checkbox = self.crt_checkbox(_("Shutdown on download completion"), event_handler=self._on_shutdown)
+        self.shutdown_checkbox = self.crt_checkbox(_("Shutdown on download completion"),
+                                                   event_handler=self._on_shutdown)
         self.sudo_textctrl = self.crt_textctrl(wx.TE_PASSWORD)
 
         # Build the menu for the custom format button
@@ -429,6 +435,7 @@ class GeneralTab(TabPanel):
         event_object_pos = (event_object_pos[0], event_object_pos[1] + event_object_height)
         self.PopupMenu(self.custom_format_menu, event_object_pos)
 
+    # noinspection PyUnusedLocal
     def _on_language(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the language_combobox."""
         wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
@@ -436,6 +443,7 @@ class GeneralTab(TabPanel):
                       wx.OK | wx.ICON_INFORMATION,
                       self)
 
+    # noinspection PyUnusedLocal
     def _on_filename(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the filename_format_combobox."""
         custom_selected = self.filename_format_combobox.GetValue() == OUTPUT_FORMATS[3]
@@ -443,6 +451,7 @@ class GeneralTab(TabPanel):
         self.filename_custom_format.Enable(custom_selected)
         self.filename_custom_format_button.Enable(custom_selected)
 
+    # noinspection PyUnusedLocal
     def _on_shutdown(self, event):
         """Event handler for the wx.EVT_CHECKBOX of the shutdown_checkbox."""
         self.sudo_textctrl.Enable(self.shutdown_checkbox.GetValue())
@@ -458,10 +467,10 @@ class GeneralTab(TabPanel):
         self.show_completion_popup_checkbox.SetValue(self.opt_manager.options["show_completion_popup"])
         self.confirm_deletion_checkbox.SetValue(self.opt_manager.options["confirm_deletion"])
 
-        #REFACTOR Automatically call on the new methods
-        #save_options
-        #load_options
-        #NOTE Maybe on init add callback?
+        # REFACTOR Automatically call on the new methods
+        # save_options
+        # load_options
+        # NOTE Maybe on init add callback?
         self._on_filename(None)
         self._on_shutdown(None)
 
@@ -528,9 +537,11 @@ class FormatsTab(TabPanel):
         self.SetSizer(main_sizer)
 
     def load_options(self):
-        checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.opt_manager.options["selected_video_formats"]]
+        checked_video_formats = [VIDEO_FORMATS[vformat]
+                                 for vformat in self.opt_manager.options["selected_video_formats"]]
         self.video_formats_checklistbox.SetCheckedStrings(checked_video_formats)
-        checked_audio_formats = [AUDIO_FORMATS[aformat] for aformat in self.opt_manager.options["selected_audio_formats"]]
+        checked_audio_formats = [AUDIO_FORMATS[aformat]
+                                 for aformat in self.opt_manager.options["selected_audio_formats"]]
         self.audio_formats_checklistbox.SetCheckedStrings(checked_audio_formats)
         self.keep_video_checkbox.SetValue(self.opt_manager.options["keep_video"])
         self.audio_quality_combobox.SetValue(self.AUDIO_QUALITY[self.opt_manager.options["audio_quality"]])
@@ -539,9 +550,11 @@ class FormatsTab(TabPanel):
         self.add_metadata_checkbox.SetValue(self.opt_manager.options["add_metadata"])
 
     def save_options(self):
-        checked_video_formats = [VIDEO_FORMATS[vformat] for vformat in self.video_formats_checklistbox.GetCheckedStrings()]
+        checked_video_formats = [VIDEO_FORMATS[vformat]
+                                 for vformat in self.video_formats_checklistbox.GetCheckedStrings()]
         self.opt_manager.options["selected_video_formats"] = checked_video_formats
-        checked_audio_formats = [AUDIO_FORMATS[aformat] for aformat in self.audio_formats_checklistbox.GetCheckedStrings()]
+        checked_audio_formats = [AUDIO_FORMATS[aformat]
+                                 for aformat in self.audio_formats_checklistbox.GetCheckedStrings()]
         self.opt_manager.options["selected_audio_formats"] = checked_audio_formats
         self.opt_manager.options["keep_video"] = self.keep_video_checkbox.GetValue()
         self.opt_manager.options["audio_quality"] = self.AUDIO_QUALITY[self.audio_quality_combobox.GetValue()]
@@ -675,12 +688,13 @@ class DownloadsTab(TabPanel):
 
         return filesize_box_sizer
 
+    # noinspection PyUnusedLocal
     def _on_subtitles(self, event):
         """Event handler for the wx.EVT_COMBOBOX of the subtitles_combobox."""
         self.subtitles_lang_listbox.Enable(self.subtitles_combobox.GetValue() == self.SUBS_CHOICES[-1])
 
     def load_options(self):
-        #NOTE Find a better way to do this
+        # NOTE Find a better way to do this
         if self.opt_manager.options["write_subs"]:
             self.subtitles_combobox.SetValue(self.SUBS_CHOICES[3])
         elif self.opt_manager.options["write_all_subs"]:
@@ -830,6 +844,7 @@ class AdvancedTab(TabPanel):
         main_sizer.Add(vertical_sizer, 1, wx.EXPAND | wx.ALL, border=5)
         self.SetSizer(main_sizer)
 
+    # noinspection PyUnusedLocal
     def _on_enable_log(self, event):
         """Event handler for the wx.EVT_CHECKBOX of the enable_log_checkbox."""
         wx.MessageBox(_("In order for the changes to take effect please restart {0}").format(__appname__),
@@ -837,12 +852,14 @@ class AdvancedTab(TabPanel):
                       wx.OK | wx.ICON_INFORMATION,
                       self)
 
+    # noinspection PyUnusedLocal
     def _on_view(self, event):
         """Event handler for the wx.EVT_BUTTON of the view_log_button."""
         log_window = LogGUI(self)
         log_window.load(self.log_manager.log_file)
         log_window.Show()
 
+    # noinspection PyUnusedLocal
     def _on_clear(self, event):
         """Event handler for the wx.EVT_BUTTON of the clear_log_button."""
         if self.log_manager is not None:
@@ -931,16 +948,17 @@ class ExtraTab(TabPanel):
 
 class LogGUI(wx.Frame):
 
+    # noinspection PyUnresolvedReferences
     """Simple window for reading the STDERR.
 
-    Attributes:
-        TITLE (string): Frame title.
-        FRAME_SIZE (tuple): Tuple that holds the frame size (width, height).
+        Attributes:
+            TITLE (string): Frame title.
+            FRAME_SIZE (tuple): Tuple that holds the frame size (width, height).
 
-    Args:
-        parent (wx.Window): Frame parent.
+        Args:
+            parent (wx.Window): Frame parent.
 
-    """
+        """
 
     # REFACTOR move it on widgets module
 

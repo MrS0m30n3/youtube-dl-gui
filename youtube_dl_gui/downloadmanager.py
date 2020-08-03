@@ -29,6 +29,7 @@ from threading import (
 )
 
 from wx import CallAfter
+# noinspection PyPep8Naming
 from pubsub import pub as Publisher
 
 from .parsers import OptionsParser
@@ -49,6 +50,7 @@ WORKER_PUB_TOPIC = 'dlworker'
 
 _SYNC_LOCK = RLock()
 
+
 # Decorator that adds thread synchronization to a function
 def synchronized(lock):
     def _decorator(func):
@@ -63,23 +65,24 @@ def synchronized(lock):
 
 class DownloadItem(object):
 
+    # noinspection PyUnresolvedReferences
     """Object that represents a download.
 
-    Attributes:
-        STAGES (tuple): Main stages of the download item.
+        Attributes:
+            STAGES (tuple): Main stages of the download item.
 
-        ACTIVE_STAGES (tuple): Sub stages of the 'Active' stage.
+            ACTIVE_STAGES (tuple): Sub stages of the 'Active' stage.
 
-        COMPLETED_STAGES (tuple): Sub stages of the 'Completed' stage.
+            COMPLETED_STAGES (tuple): Sub stages of the 'Completed' stage.
 
-        ERROR_STAGES (tuple): Sub stages of the 'Error' stage.
+            ERROR_STAGES (tuple): Sub stages of the 'Error' stage.
 
-    Args:
-        url (string): URL that corresponds to the download item.
+        Args:
+            url (string): URL that corresponds to the download item.
 
-        options (list): Options list to use during the download phase.
+            options (list): Options list to use during the download phase.
 
-    """
+        """
 
     STAGES = ("Queued", "Active", "Paused", "Completed", "Error")
 
@@ -116,8 +119,10 @@ class DownloadItem(object):
         if value == "Error":
             self.progress_stats["status"] = self.ERROR_STAGES[0]
 
+        # noinspection PyAttributeOutsideInit
         self._stage = value
 
+    # noinspection PyAttributeOutsideInit
     def reset(self):
         if hasattr(self, "_stage") and self._stage == self.STAGES[1]:
             raise RuntimeError("Cannot reset an 'Active' item")
@@ -155,6 +160,7 @@ class DownloadItem(object):
 
         return files
 
+    # noinspection PyAttributeOutsideInit
     def update_stats(self, stats_dict):
         """Updates the progress_stats dict from the given dictionary."""
         assert isinstance(stats_dict, dict)
@@ -220,9 +226,7 @@ class DownloadItem(object):
         return self.object_id == other.object_id
 
 
-
 class DownloadList(object):
-
     """List like data structure that contains DownloadItems.
 
     Args:
@@ -344,22 +348,22 @@ class DownloadList(object):
 
 
 class DownloadManager(Thread):
-
+    # noinspection PyUnresolvedReferences
     """Manages the download process.
 
-    Attributes:
-        WAIT_TIME (float): Time in seconds to sleep.
+        Attributes:
+            WAIT_TIME (float): Time in seconds to sleep.
 
-    Args:
-        download_list (DownloadList): List that contains items to download.
+        Args:
+            download_list (DownloadList): List that contains items to download.
 
-        opt_manager (optionsmanager.OptionsManager): Object responsible for
-            managing the youtubedlg options.
+            opt_manager (optionsmanager.OptionsManager): Object responsible for
+                managing the youtubedlg options.
 
-        log_manager (logmanager.LogManager): Object responsible for writing
-            errors to the log.
+            log_manager (logmanager.LogManager): Object responsible for writing
+                errors to the log.
 
-    """
+        """
 
     WAIT_TIME = 0.1
 
@@ -431,12 +435,12 @@ class DownloadManager(Thread):
             active_items = (workers that work) + (items waiting in the url_list).
 
         """
-        #counter = 0
-        #for worker in self._workers:
-            #if not worker.available():
-                #counter += 1
-
-        #counter += len(self.download_list)
+        # counter = 0
+        # for worker in self._workers:
+        #     if not worker.available():
+        #         counter += 1
+        #
+        # counter += len(self.download_list)
 
         return len(self.download_list)
 
@@ -462,6 +466,7 @@ class DownloadManager(Thread):
                 download process.
 
         """
+        # noinspection PyUnresolvedReferences
         self.download_list.append(url)
 
     def send_to_worker(self, data):
@@ -479,7 +484,8 @@ class DownloadManager(Thread):
                 if worker.has_index(data['index']):
                     worker.update_data(data)
 
-    def _talk_to_gui(self, signal, data=None):
+    @staticmethod
+    def _talk_to_gui(signal, data=None):
         """Send data back to the GUI using wxCallAfter and wxPublisher.
 
         Args:
@@ -527,30 +533,30 @@ class DownloadManager(Thread):
 
 
 class Worker(Thread):
-
+    # noinspection PyUnresolvedReferences
     """Simple worker which downloads the given url using a downloader
-    from the downloaders.py module.
+        from the downloaders.py module.
 
-    Attributes:
-        WAIT_TIME (float): Time in seconds to sleep.
+        Attributes:
+            WAIT_TIME (float): Time in seconds to sleep.
 
-    Args:
-        opt_manager (optionsmanager.OptionsManager): Check DownloadManager
-            description.
+        Args:
+            opt_manager (optionsmanager.OptionsManager): Check DownloadManager
+                description.
 
-        youtubedl (string): Absolute path to youtube-dl binary.
+            youtubedl (string): Absolute path to youtube-dl binary.
 
-        log_manager (logmanager.LogManager): Check DownloadManager
-            description.
+            log_manager (logmanager.LogManager): Check DownloadManager
+                description.
 
-        log_lock (threading.Lock): Synchronization lock for the log_manager.
-            If the log_manager is set (not None) then the caller has to make
-            sure that the log_lock is also set.
+            log_lock (threading.Lock): Synchronization lock for the log_manager.
+                If the log_manager is set (not None) then the caller has to make
+                sure that the log_lock is also set.
 
-    Note:
-        For available data keys see self._data under the __init__() method.
+        Note:
+            For available data keys see self._data under the __init__() method.
 
-    """
+        """
 
     WAIT_TIME = 0.1
 
@@ -591,20 +597,12 @@ class Worker(Thread):
     def run(self):
         while self._running:
             if self._data['url'] is not None:
-                #options = self._options_parser.parse(self.opt_manager.options)
                 ret_code = self._downloader.download(self._data['url'], self._options)
 
                 if (ret_code == YoutubeDLDownloader.OK or
                         ret_code == YoutubeDLDownloader.ALREADY or
                         ret_code == YoutubeDLDownloader.WARNING):
                     self._successful += 1
-
-                # Ask GUI for name updates
-                #self._talk_to_gui('receive', {'source': 'filename', 'dest': 'new_filename'})
-
-                # Wait until you get a reply
-                #while self._wait_for_reply:
-                    #time.sleep(self.WAIT_TIME)
 
                 self._reset()
 
@@ -613,16 +611,18 @@ class Worker(Thread):
         # Call the destructor function of YoutubeDLDownloader object
         self._downloader.close()
 
+    # noinspection PyIncorrectDocstring
     def download(self, url, options, object_id):
+        # noinspection PyUnresolvedReferences
         """Download given item.
 
-        Args:
-            item (dict): Python dictionary that contains two keys.
-                The url and the index of the corresponding row in which
-                the worker should send back the information about the
-                download process.
+                Args:
+                    item (dict): Python dictionary that contains two keys.
+                        The url and the index of the corresponding row in which
+                        the worker should send back the information about the
+                        download process.
 
-        """
+                """
         self._data['url'] = url
         self._options = options
         self._data['index'] = object_id
@@ -690,27 +690,27 @@ class Worker(Thread):
                 extract_data() function under the downloaders.py module.
 
         """
-        ## Temp dictionary which holds the updates
-        #temp_dict = {}
+        # Temp dictionary which holds the updates
+        # temp_dict = {}
 
-        ## Update each key
-        #for key in data:
-            #if self._data[key] != data[key]:
-                #self._data[key] = data[key]
-                #temp_dict[key] = data[key]
+        # Update each key
+        # for key in data:
+        #     if self._data[key] != data[key]:
+        #         self._data[key] = data[key]
+        #         temp_dict[key] = data[key]
 
-        ## Build the playlist status if there is an update
-        ## REFACTOR re-implement this on DownloadItem or ListCtrl level?
-        ##if self._data['playlist_index'] is not None:
-            ##if 'status' in temp_dict or 'playlist_index' in temp_dict:
-                ##temp_dict['status'] = '{status} {index}/{size}'.format(
-                        ##status=self._data['status'],
-                        ##index=self._data['playlist_index'],
-                        ##size=self._data['playlist_size']
-                    ##)
+        # Build the playlist status if there is an update
+        # REFACTOR re-implement this on DownloadItem or ListCtrl level?
+        # if self._data['playlist_index'] is not None:
+        #     if 'status' in temp_dict or 'playlist_index' in temp_dict:
+        #         temp_dict['status'] = '{status} {index}/{size}'.format(
+        #                 status=self._data['status'],
+        #                 index=self._data['playlist_index'],
+        #                 size=self._data['playlist_size']
+        #             )
 
-        #if len(temp_dict):
-            #self._talk_to_gui('send', temp_dict)
+        # if len(temp_dict):
+        #     self._talk_to_gui('send', temp_dict)
         self._talk_to_gui('send', data)
 
     def _talk_to_gui(self, signal, data):
@@ -751,4 +751,3 @@ class Worker(Thread):
             self._wait_for_reply = True
 
         CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, signal=signal, data=data)
-

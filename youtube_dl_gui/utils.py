@@ -11,7 +11,6 @@ Attributes:
 
 import os
 import sys
-import json
 import math
 import locale
 import subprocess
@@ -23,7 +22,6 @@ except ImportError as error:
     sys.exit(1)
 
 from .info import __appname__
-from .version import __version__
 
 _RANDOM_OBJECT = object()
 

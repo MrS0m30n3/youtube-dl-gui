@@ -13,17 +13,10 @@ Example:
 
 """
 
-
+from gettext import translation
 import sys
 import os
 
-if __package__ is None and not hasattr(sys, 'frozen'):
-    # direct call of __main__.py
-    root_path = os.path.realpath(os.path.abspath(__file__))
-    sys.path.insert(0, os.path.dirname(os.path.dirname(root_path)))
-
-import youtube_dl_gui
-import gettext
 
 try:
     import wx
@@ -67,17 +60,16 @@ if opt_manager.options['enable_log']:
 # Set gettext before MainFrame import
 # because the GUI strings are class level attributes
 locale_dir = get_locale_file()
-lang = gettext.gettext
 
 try:
-    lang = gettext.translation(__packagename__,
-                               locale_dir,
-                               [opt_manager.options['locale_name']])
+    lang = translation(__packagename__,
+                       locale_dir,
+                       [opt_manager.options['locale_name']])
 except IOError:
     opt_manager.options['locale_name'] = 'en_US'
-    lang = gettext.translation(__packagename__,
-                               locale_dir,
-                               [opt_manager.options['locale_name']])
+    lang = translation(__packagename__,
+                       locale_dir,
+                       [opt_manager.options['locale_name']])
 
 
 # Redefine _ to gettext in builtins

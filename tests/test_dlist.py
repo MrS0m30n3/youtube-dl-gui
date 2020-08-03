@@ -16,7 +16,7 @@ try:
     import mock
     from youtube_dl_gui.downloadmanager import DownloadList, synchronized
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 

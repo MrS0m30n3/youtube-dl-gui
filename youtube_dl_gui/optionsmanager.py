@@ -2,7 +2,6 @@
 
 """Youtubedlg module to handle settings. """
 
-
 import os
 import json
 
@@ -22,30 +21,30 @@ from youtube_dl_gui import (
 
 
 class OptionsManager(object):
-
+    # noinspection PyUnresolvedReferences
     """Handles youtubedlg options.
 
-    This class is responsible for storing and retrieving the options.
+        This class is responsible for storing and retrieving the options.
 
-    Attributes:
-        SETTINGS_FILENAME (string): Filename of the settings file.
-        SENSITIVE_KEYS (tuple): Contains the keys that we don't want
-            to store on the settings file. (SECURITY ISSUES).
+        Attributes:
+            SETTINGS_FILENAME (string): Filename of the settings file.
+            SENSITIVE_KEYS (tuple): Contains the keys that we don't want
+                to store on the settings file. (SECURITY ISSUES).
 
-    Args:
-        config_path (string): Absolute path where OptionsManager
-            should store the settings file.
+        Args:
+            config_path (string): Absolute path where OptionsManager
+                should store the settings file.
 
-    Note:
-        See load_default() method for available options.
+        Note:
+            See load_default() method for available options.
 
-    Example:
-        Access the options using the 'options' variable.
+        Example:
+            Access the options using the 'options' variable.
 
-        opt_manager = OptionsManager('.')
-        opt_manager.options['save_path'] = '~/Downloads'
+            opt_manager = OptionsManager('.')
+            opt_manager.options['save_path'] = '~/Downloads'
 
-    """
+        """
 
     SETTINGS_FILENAME = 'settings.json'
     SENSITIVE_KEYS = ('sudo_password', 'password', 'video_password')
@@ -233,7 +232,7 @@ class OptionsManager(object):
             disable_update (boolean): When True the update process will be disabled.
 
         """
-        #REFACTOR Remove old options & check options validation
+        # REFACTOR Remove old options & check options validation
         self.options = {
             'save_path': os_path_expanduser('~'),
             'save_path_dirs': [
@@ -318,7 +317,7 @@ class OptionsManager(object):
 
                 if self._settings_are_valid(options):
                     self.options = options
-            except:
+            except json.JSONDecodeError:
                 self.load_default()
 
     def save_to_file(self):
@@ -343,10 +342,12 @@ class OptionsManager(object):
             True if settings.json dictionary is valid, else False.
 
         """
-        VALID_VIDEO_FORMAT = ('0', '17', '36', '5', '34', '35', '43', '44', '45',
-            '46', '18', '22', '37', '38', '160', '133', '134', '135', '136','137',
+        VALID_VIDEO_FORMAT = (
+            '0', '17', '36', '5', '34', '35', '43', '44', '45',
+            '46', '18', '22', '37', '38', '160', '133', '134', '135', '136', '137',
             '264', '138', '242', '243', '244', '247', '248', '271', '272', '82',
-            '83', '84', '85', '100', '101', '102', '139', '140', '141', '171', '172')
+            '83', '84', '85', '100', '101', '102', '139', '140', '141', '171', '172'
+        )
 
         VALID_AUDIO_FORMAT = ('mp3', 'wav', 'aac', 'm4a', 'vorbis', 'opus', 'flac', '')
 
@@ -366,7 +367,7 @@ class OptionsManager(object):
             if key not in settings_dictionary:
                 return False
 
-            if type(self.options[key]) != type(settings_dictionary[key]):
+            if not isinstance(self.options[key], type(settings_dictionary[key])):
                 return False
 
         # Check if each key has a valid value
@@ -412,4 +413,3 @@ class OptionsManager(object):
         temp_options['opts_win_size'] = encode_tuple(temp_options['opts_win_size'])
 
         return temp_options
-

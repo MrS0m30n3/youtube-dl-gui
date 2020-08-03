@@ -15,22 +15,23 @@ from .utils import (
 
 class LogManager(object):
 
+    # noinspection PyUnresolvedReferences
     """Simple log manager for youtube-dl.
 
-    This class is mainly used to log the youtube-dl STDERR.
+        This class is mainly used to log the youtube-dl STDERR.
 
-    Attributes:
-        LOG_FILENAME (string): Filename of the log file.
-        TIME_TEMPLATE (string): Custom template to log the time.
-        MAX_LOGSIZE (int): Maximum size(Bytes) of the log file.
+        Attributes:
+            LOG_FILENAME (string): Filename of the log file.
+            TIME_TEMPLATE (string): Custom template to log the time.
+            MAX_LOGSIZE (int): Maximum size(Bytes) of the log file.
 
-    Args:
-        config_path (string): Absolute path where LogManager should
-            store the log file.
+        Args:
+            config_path (string): Absolute path where LogManager should
+                store the log file.
 
-        add_time (boolean): If True LogManager will also log the time.
+            add_time (boolean): If True LogManager will also log the time.
 
-    """
+        """
 
     LOG_FILENAME = "log"
     TIME_TEMPLATE = "[{time}] {error_msg}"

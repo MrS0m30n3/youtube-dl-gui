@@ -15,12 +15,11 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 try:
     from youtube_dl_gui.downloadmanager import DownloadItem
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
 class TestItemInit(unittest.TestCase):
-
     """Test case for DownloadItem init."""
 
     def test_init(self):
@@ -32,7 +31,7 @@ class TestItemInit(unittest.TestCase):
         self.assertEqual(ditem.stage, "Queued")
         self.assertEqual(ditem.url, url)
         self.assertEqual(ditem.options, options)
-        self.assertEqual(ditem.object_id, hash(url + unicode(options)))
+        self.assertEqual(ditem.object_id, hash(url + str(options)))
 
         self.assertEqual(ditem.path, "")
         self.assertEqual(ditem.filenames, [])
@@ -54,7 +53,6 @@ class TestItemInit(unittest.TestCase):
 
 
 class TestGetFiles(unittest.TestCase):
-
     """Test case for DownloadItem get_files method."""
 
     def setUp(self):
@@ -67,14 +65,14 @@ class TestGetFiles(unittest.TestCase):
         self.ditem.filenames = ["file1", "file2"]
         self.ditem.extensions = [".mp4", ".m4a"]
 
-        self.assertEqual(self.ditem.get_files(), [os.path.join(path, "file1" + ".mp4"), os.path.join(path, "file2" + ".m4a")])
+        self.assertEqual(self.ditem.get_files(),
+                         [os.path.join(path, "file1" + ".mp4"), os.path.join(path, "file2" + ".m4a")])
 
     def test_get_files_no_data(self):
         self.assertEqual(self.ditem.get_files(), [])
 
 
 class TestItemComparison(unittest.TestCase):
-
     """Test case for DownloadItem __eq__ method."""
 
     def test_equal_true(self):
@@ -96,7 +94,6 @@ class TestItemComparison(unittest.TestCase):
 
 
 class TestSetItemStage(unittest.TestCase):
-
     """Test case for DownloadItem stage setter."""
 
     def setUp(self):
@@ -135,7 +132,6 @@ class TestSetItemStage(unittest.TestCase):
 
 
 class TestUpdateStats(unittest.TestCase):
-
     """Test case for DownloadItem update_stats method."""
 
     def setUp(self):
@@ -186,7 +182,6 @@ class TestUpdateStats(unittest.TestCase):
                                  "status": "Downloading"})
 
         self.assertEqual(self.ditem.filesizes, [9909043.20])
-
 
         self.ditem.update_stats({"filename": "somefilename.f2",
                                  "extension": ".m4a",
@@ -264,7 +259,6 @@ class TestUpdateStats(unittest.TestCase):
                                  "status": "Downloading"})
 
         self.assertEqual(self.ditem.filesizes, [10747904.0])
-
 
         self.ditem.update_stats({"filename": "someotherfilename.f2",
                                  "extension": ".m4a",
@@ -363,7 +357,6 @@ class TestUpdateStats(unittest.TestCase):
 
 
 class TestDownloadItemPrivate(unittest.TestCase):
-
     """Test case for private method of the DownloadItem."""
 
     def test_set_stage(self):
@@ -433,7 +426,6 @@ class TestDownloadItemPrivate(unittest.TestCase):
 
 
 class TestReset(unittest.TestCase):
-
     """Test case for the DownloadItem reset method."""
 
     def setUp(self):

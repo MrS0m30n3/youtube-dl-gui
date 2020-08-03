@@ -9,16 +9,16 @@ from youtube_dl_gui import (
     DEFAULT_FORMATS,
     VIDEO_FORMATS,
     AUDIO_FORMATS,
-    FORMATS,
-    OUTPUT_FORMATS
+    FORMATS
 )
 
 
 import wx
 import wx.adv
+from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
+# noinspection PyPep8Naming
 from pubsub import pub as Publisher
 
-from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 
 from .parsers import OptionsParser
 
@@ -45,7 +45,6 @@ from .utils import (
     build_command,
     get_icon_file,
     shutdown_sys,
-    remove_file,
     open_file,
     get_time
 )
@@ -58,40 +57,41 @@ from .info import (
     __projecturl__,
     __appname__,
     __author__,
-    __maintainer__,
-    __maintainer_contact__
+    __maintainer__
 )
 
 from .version import __version__
 
 _ = lang.gettext
 
+
 class MainFrame(wx.Frame):
 
+    # noinspection PyUnresolvedReferences
     """Main window class.
 
-    This class is responsible for creating the main app window
-    and binding the events.
+        This class is responsible for creating the main app window
+        and binding the events.
 
-    Attributes:
-        FRAMES_MIN_SIZE (tuple): Tuple that contains the minumum width, height of the frame.
+        Attributes:
+            FRAMES_MIN_SIZE (tuple): Tuple that contains the minumum width, height of the frame.
 
-        Labels area (strings): Strings for the widgets labels.
+            Labels area (strings): Strings for the widgets labels.
 
-        STATUSLIST_COLUMNS (dict): Python dictionary which holds informations
-            about the wxListCtrl columns. For more informations read the
-            comments above the STATUSLIST_COLUMNS declaration.
+            STATUSLIST_COLUMNS (dict): Python dictionary which holds informations
+                about the wxListCtrl columns. For more informations read the
+                comments above the STATUSLIST_COLUMNS declaration.
 
-    Args:
-        opt_manager (optionsmanager.OptionsManager): Object responsible for
-            handling the settings.
+        Args:
+            opt_manager (optionsmanager.OptionsManager): Object responsible for
+                handling the settings.
 
-        log_manager (logmanager.LogManager): Object responsible for handling
-            the log stuff.
+            log_manager (logmanager.LogManager): Object responsible for handling
+                the log stuff.
 
-        parent (wx.Window): Frame parent.
+            parent (wx.Window): Frame parent.
 
-    """
+        """
 
     FRAMES_MIN_SIZE = (560, 360)
 
@@ -117,7 +117,7 @@ class MainFrame(wx.Frame):
     VIEWLOG_LABEL = _("View Log")
 
     SUCC_REPORT_MSG = _("Successfully downloaded {0} URL(s) in {1} "
-                       "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
+                        "day(s) {2} hour(s) {3} minute(s) {4} second(s)")
     DL_COMPLETED_MSG = _("Downloads completed")
     URL_REPORT_MSG = _("Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})")
     CLOSING_MSG = _("Stopping downloads")
@@ -134,9 +134,9 @@ class MainFrame(wx.Frame):
     UPDATE_SUCC_MSG = _("Successfully downloaded youtube-dl")
 
     OPEN_DIR_ERR = _("Unable to open directory: '{dir}'. "
-                    "The specified path does not exist")
+                     "The specified path does not exist")
     SHUTDOWN_ERR = _("Error while shutting down. "
-                    "Make sure you typed the correct password")
+                     "Make sure you typed the correct password")
     SHUTDOWN_MSG = _("Shutting down system")
 
     VIDEO_LABEL = _("Title")
@@ -322,7 +322,8 @@ class MainFrame(wx.Frame):
 
         self._url_list.SetFocus()
 
-    def _create_menu_item(self, items):
+    @staticmethod
+    def _create_menu_item(items):
         menu = wx.Menu()
 
         for item in items:
@@ -342,6 +343,7 @@ class MainFrame(wx.Frame):
 
             self.PopupMenu(self._statuslist_menu)
 
+    # noinspection PyUnusedLocal
     def _on_reenter(self, event):
         selected = self._status_list.get_selected()
 
@@ -367,6 +369,7 @@ class MainFrame(wx.Frame):
         self._path_combobox.LoadMultiple(self.opt_manager.options["save_path_dirs"])
         self._path_combobox.SetValue(self.opt_manager.options["save_path"])
 
+    # noinspection PyUnusedLocal
     def _on_open_dest(self, event):
         selected = self._status_list.get_selected()
 
@@ -377,9 +380,11 @@ class MainFrame(wx.Frame):
             if download_item.path:
                 open_file(download_item.path)
 
+    # noinspection PyUnusedLocal
     def _on_open_path(self, event):
         open_file(self._path_combobox.GetValue())
 
+    # noinspection PyUnusedLocal
     def _on_geturl(self, event):
         selected = self._status_list.get_selected()
 
@@ -396,6 +401,7 @@ class MainFrame(wx.Frame):
                 wx.TheClipboard.SetData(clipdata)
                 wx.TheClipboard.Close()
 
+    # noinspection PyUnusedLocal
     def _on_getcmd(self, event):
         selected = self._status_list.get_selected()
 
@@ -412,6 +418,7 @@ class MainFrame(wx.Frame):
                 wx.TheClipboard.SetData(clipdata)
                 wx.TheClipboard.Close()
 
+    # noinspection PyUnusedLocal
     def _on_timer(self, event):
         total_percentage = 0.0
         queued = paused = active = completed = error = 0
@@ -444,6 +451,7 @@ class MainFrame(wx.Frame):
             # Dont overwrite the update messages
             self._status_bar_write(msg)
 
+    # noinspection PyUnusedLocal
     def _update_pause_button(self, event):
         selected_rows = self._status_list.get_all_selected()
 
@@ -495,12 +503,13 @@ class MainFrame(wx.Frame):
 
         self._update_videoformat(None)
 
+    # noinspection PyUnusedLocal
     def _update_videoformat(self, event):
         self.opt_manager.options["selected_format"] = selected_format = FORMATS[self._videoformat_combobox.GetValue()]
 
         if selected_format in VIDEO_FORMATS:
             self.opt_manager.options["video_format"] = selected_format
-            self.opt_manager.options["audio_format"] = ""  #NOTE Set to default value, check parsers.py
+            self.opt_manager.options["audio_format"] = ""  # NOTE Set to default value, check parsers.py
         elif selected_format in AUDIO_FORMATS:
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = selected_format
@@ -508,14 +517,19 @@ class MainFrame(wx.Frame):
             self.opt_manager.options["video_format"] = DEFAULT_FORMATS[_("default")]
             self.opt_manager.options["audio_format"] = ""
 
+    # noinspection PyUnusedLocal
     def _update_savepath(self, event):
         self.opt_manager.options["save_path"] = self._path_combobox.GetValue()
 
+    # noinspection PyUnusedLocal
     def _on_delete(self, event):
         index = self._status_list.get_next_selected()
 
         if index == -1:
-            dlg = ButtonsChoiceDialog(self, [_("Remove all"), _("Remove completed")], _("No items selected. Please pick an action"), _("Delete"))
+            dlg = ButtonsChoiceDialog(self,
+                                      [_("Remove all"), _("Remove completed")],
+                                      _("No items selected. Please pick an action"),
+                                      _("Delete"))
             ret_code = dlg.ShowModal()
             dlg.Destroy()
 
@@ -533,7 +547,10 @@ class MainFrame(wx.Frame):
                         self._download_list.remove(ditem.object_id)
         else:
             if self.opt_manager.options["confirm_deletion"]:
-                dlg = wx.MessageDialog(self, _("Are you sure you want to remove selected items?"), _("Delete"), wx.YES_NO | wx.ICON_QUESTION)
+                dlg = wx.MessageDialog(self,
+                                       _("Are you sure you want to remove selected items?"),
+                                       _("Delete"),
+                                       wx.YES_NO | wx.ICON_QUESTION)
                 result = dlg.ShowModal() == wx.ID_YES
                 dlg.Destroy()
             else:
@@ -545,18 +562,10 @@ class MainFrame(wx.Frame):
                     selected_download_item = self._download_list.get_item(object_id)
 
                     if selected_download_item.stage == "Active":
-                        self._create_popup(_("Item is active, cannot remove"), self.WARNING_LABEL, wx.OK | wx.ICON_EXCLAMATION)
+                        self._create_popup(_("Item is active, cannot remove"),
+                                           self.WARNING_LABEL,
+                                           wx.OK | wx.ICON_EXCLAMATION)
                     else:
-                        #if selected_download_item.stage == "Completed":
-                            #dlg = wx.MessageDialog(self, "Do you want to remove the files associated with this item?", "Remove files", wx.YES_NO | wx.ICON_QUESTION)
-
-                            #result = dlg.ShowModal() == wx.ID_YES
-                            #dlg.Destroy()
-
-                            #if result:
-                                #for cur_file in selected_download_item.get_files():
-                                    #remove_file(cur_file)
-
                         self._status_list.remove_row(index)
                         self._download_list.remove(object_id)
                         index -= 1
@@ -565,6 +574,7 @@ class MainFrame(wx.Frame):
 
         self._update_pause_button(None)
 
+    # noinspection PyUnusedLocal
     def _on_play(self, event):
         selected_rows = self._status_list.get_all_selected()
 
@@ -580,6 +590,7 @@ class MainFrame(wx.Frame):
                 else:
                     self._create_popup(_("Item is not completed"), self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
+    # noinspection PyUnusedLocal,PyProtectedMember
     def _on_arrow_up(self, event):
         index = self._status_list.get_next_selected()
 
@@ -599,6 +610,7 @@ class MainFrame(wx.Frame):
 
                 index = self._status_list.get_next_selected(index)
 
+    # noinspection PyUnusedLocal,PyProtectedMember
     def _on_arrow_down(self, event):
         index = self._status_list.get_next_selected(reverse=True)
 
@@ -618,6 +630,7 @@ class MainFrame(wx.Frame):
 
                 index = self._status_list.get_next_selected(index, True)
 
+    # noinspection PyUnusedLocal,PyProtectedMember
     def _on_reload(self, event):
         selected_rows = self._status_list.get_all_selected()
 
@@ -643,6 +656,7 @@ class MainFrame(wx.Frame):
 
             self._update_pause_button(None)
 
+    # noinspection PyUnusedLocal,PyProtectedMember
     def _on_pause(self, event):
         selected_rows = self._status_list.get_all_selected()
 
@@ -664,6 +678,7 @@ class MainFrame(wx.Frame):
 
             self._update_pause_button(None)
 
+    # noinspection PyUnusedLocal
     def _on_start(self, event):
         if self.download_manager is None:
             if self.update_thread is not None and self.update_thread.is_alive():
@@ -675,6 +690,7 @@ class MainFrame(wx.Frame):
         else:
             self.download_manager.stop_downloads()
 
+    # noinspection PyUnusedLocal
     def _on_savepath(self, event):
         dlg = wx.DirDialog(self, self.CHOOSE_DIRECTORY, self._path_combobox.GetStringSelection())
 
@@ -687,6 +703,7 @@ class MainFrame(wx.Frame):
 
         dlg.Destroy()
 
+    # noinspection PyUnusedLocal
     def _on_add(self, event):
         urls = self._get_urls()
 
@@ -706,13 +723,13 @@ class MainFrame(wx.Frame):
                     self._status_list.bind_item(download_item)
                     self._download_list.insert(download_item)
 
-
     def _on_settings(self, event):
         event_object_pos = event.EventObject.GetPosition()
         event_object_height = event.EventObject.GetSize()[1]
         event_object_pos = (event_object_pos[0], event_object_pos[1] + event_object_height)
         self.PopupMenu(self._settings_menu, event_object_pos)
 
+    # noinspection PyUnusedLocal
     def _on_viewlog(self, event):
         if self.log_manager is None:
             self._create_popup(_("Logging is disabled"),
@@ -723,6 +740,7 @@ class MainFrame(wx.Frame):
             log_window.load(self.log_manager.log_file)
             log_window.Show()
 
+    # noinspection PyUnusedLocal
     def _on_about(self, event):
         info = wx.adv.AboutDialogInfo()
 
@@ -741,7 +759,8 @@ class MainFrame(wx.Frame):
 
         wx.adv.AboutBox(info)
 
-    def _set_publisher(self, handler, topic):
+    @staticmethod
+    def _set_publisher(handler, topic):
         """Sets a handler for the given topic.
 
         Args:
@@ -796,7 +815,8 @@ class MainFrame(wx.Frame):
 
         return textctrl
 
-    def _create_popup(self, text, title, style):
+    @staticmethod
+    def _create_popup(text, title, style):
         wx.MessageBox(text, title, style)
 
     def _set_layout(self):
@@ -819,7 +839,8 @@ class MainFrame(wx.Frame):
         mid_sizer.AddSpacer(5)
         mid_sizer.Add(self._buttons["savepath"], flag=wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.AddSpacer(10)
-        mid_sizer.Add(self._videoformat_combobox, 1, wx.ALIGN_CENTER_VERTICAL)
+        mid_sizer.AddStretchSpacer(1)
+        mid_sizer.Add(self._videoformat_combobox, 0, wx.ALIGN_CENTER_VERTICAL)
         mid_sizer.AddSpacer(5)
         mid_sizer.Add(self._buttons["add"], flag=wx.ALIGN_CENTER_VERTICAL)
         panel_sizer.Add(mid_sizer, 0, wx.EXPAND | wx.ALL, 10)
@@ -909,6 +930,7 @@ class MainFrame(wx.Frame):
             if self.opt_manager.options["show_completion_popup"]:
                 self._create_popup(self.DL_COMPLETED_MSG, self.INFO_LABEL, wx.OK | wx.ICON_INFORMATION)
 
+    # noinspection PyUnusedLocal,PyProtectedMember
     def _download_worker_handler(self, signal, data=None):
         """downloadmanager.Worker thread handler.
 
@@ -918,13 +940,13 @@ class MainFrame(wx.Frame):
             See downloadmanager.Worker _talk_to_gui() method.
 
         """
-        # signal, data = msg.data
 
         download_item = self._download_list.get_item(data["index"])
         download_item.update_stats(data)
         row = self._download_list.index(data["index"])
         self._status_list._update_from_item(row, download_item)
 
+    # noinspection PyUnusedLocal
     def _download_manager_handler(self, signal, data=None):
         """downloadmanager.DownloadManager thread handler.
 
@@ -1029,6 +1051,7 @@ class MainFrame(wx.Frame):
             self._paste_from_clipboard()
             wx.TheClipboard.UsePrimarySelection(False)
 
+    # noinspection PyUnusedLocal
     def _on_update(self, event):
         """Event handler of the self._update_btn widget.
 
@@ -1040,12 +1063,14 @@ class MainFrame(wx.Frame):
 
         """
         if self.opt_manager.options["disable_update"]:
-            self._create_popup(_("Updates are disabled for your system. Please use the system's package manager to update youtube-dl."),
+            self._create_popup(_("Updates are disabled for your system. "
+                                 "Please use the system's package manager to update youtube-dl."),
                                self.INFO_LABEL,
                                wx.OK | wx.ICON_INFORMATION)
         else:
             self._update_youtubedl()
 
+    # noinspection PyUnusedLocal
     def _on_options(self, event):
         """Event handler of the self._options_btn widget.
 
@@ -1056,6 +1081,7 @@ class MainFrame(wx.Frame):
         self._options_frame.load_all_options()
         self._options_frame.Show()
 
+    # noinspection PyUnusedLocal
     def _on_close(self, event):
         """Event handler for the wx.EVT_CLOSE event.
 
@@ -1162,7 +1188,6 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
     
     def GetItemData(self, row_index_selected):
         return self._map_id.get(row_index_selected, None)
-        
 
     def _update_from_item(self, row, download_item):
         progress_stats = download_item.progress_stats
@@ -1239,6 +1264,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 # REFACTOR Extra widgets below should move to other module with widgets
 
 
+# noinspection PyPep8Naming
 class ExtComboBox(wx.ComboBox):
 
     def __init__(self, parent, max_items=-1, *args, **kwargs):
@@ -1504,6 +1530,7 @@ class ShutdownDialog(wx.Dialog):
     def _get_message(self):
         return self.message.format(self.timeout)
 
+    # noinspection PyUnusedLocal
     def _on_timer(self, event):
         self.timeout -= 1
         self.msg_text.SetLabel(self._get_message())

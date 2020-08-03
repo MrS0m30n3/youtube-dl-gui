@@ -16,6 +16,7 @@ from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
 from wx import CallAfter
+# noinspection PyPep8Naming
 from pubsub import pub as Publisher
 
 
@@ -29,21 +30,22 @@ UPDATE_PUB_TOPIC = 'update'
 
 class UpdateThread(Thread):
 
+    # noinspection PyUnresolvedReferences
     """Python Thread that downloads youtube-dl binary.
 
-    Attributes:
-        LATEST_YOUTUBE_DL (string): URL with the latest youtube-dl binary.
-        DOWNLOAD_TIMEOUT (int): Download timeout in seconds.
+        Attributes:
+            LATEST_YOUTUBE_DL (string): URL with the latest youtube-dl binary.
+            DOWNLOAD_TIMEOUT (int): Download timeout in seconds.
 
-    Args:
-        download_path (string): Absolute path where UpdateThread will download
-            the latest youtube-dl.
+        Args:
+            download_path (string): Absolute path where UpdateThread will download
+                the latest youtube-dl.
 
-        quiet (boolean): If True UpdateThread won't send the finish signal
-            back to the caller. Finish signal can be used to make sure that
-            the UpdateThread has been completed in an asynchronous way.
+            quiet (boolean): If True UpdateThread won't send the finish signal
+                back to the caller. Finish signal can be used to make sure that
+                the UpdateThread has been completed in an asynchronous way.
 
-    """
+        """
 
     LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
     GITHUB_API = "https://api.github.com/"
@@ -96,7 +98,8 @@ class UpdateThread(Thread):
         if not self.quiet:
             self._talk_to_gui('finish')
 
-    def _talk_to_gui(self, signal, data=None):
+    @staticmethod
+    def _talk_to_gui(signal, data=None):
         """Communicate with the GUI using wxCallAfter and wxPublisher.
 
         Args:

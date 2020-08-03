@@ -2,9 +2,10 @@
 
 import gettext
 
+# noinspection PyPep8Naming
 from .utils import TwoWayOrderedDict as tdict
-_ = gettext.gettext
 
+_ = gettext.gettext
 
 OUTPUT_FORMATS = tdict([
     (0, _("ID")),
@@ -15,11 +16,9 @@ OUTPUT_FORMATS = tdict([
     (3, _("Custom"))
 ])
 
-
 DEFAULT_FORMATS = tdict([
     ("0", _("default"))
 ])
-
 
 VIDEO_FORMATS = tdict([
     ("3gp", "3gp"),
@@ -68,7 +67,6 @@ VIDEO_FORMATS = tdict([
     ("172", "webm 256k (DASH Audio)")
 ])
 
-
 AUDIO_FORMATS = tdict([
     ("mp3", "mp3"),
     ("wav", "wav"),
@@ -111,11 +109,9 @@ def reload_strings(func):
         (3, _("Custom"))
     ])
 
-
     DEFAULT_FORMATS = tdict([
         ("0", _("default"))
     ])
-
 
     VIDEO_FORMATS = tdict([
         ("3gp", "3gp"),
@@ -163,7 +159,6 @@ def reload_strings(func):
         ("171", "webm 48k (DASH Audio)"),
         ("172", "webm 256k (DASH Audio)")
     ])
-
 
     AUDIO_FORMATS = tdict([
         ("mp3", "mp3"),

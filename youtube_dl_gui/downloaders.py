@@ -8,10 +8,7 @@ for downloading the video files.
 """
 
 
-import re
 import os
-import sys
-import locale
 import signal
 import subprocess
 
@@ -23,22 +20,23 @@ from .utils import get_encoding
 
 
 class PipeReader(Thread):
+    # noinspection PyUnresolvedReferences
     """Helper class to avoid deadlocks when reading from subprocess pipes.
 
-    This class uses python threads and queues in order to read from subprocess
-    pipes in an asynchronous way.
+        This class uses python threads and queues in order to read from subprocess
+        pipes in an asynchronous way.
 
-    Attributes:
-        WAIT_TIME (float): Time in seconds to sleep.
+        Attributes:
+            WAIT_TIME (float): Time in seconds to sleep.
 
-    Args:
-        queue (Queue.Queue): Python queue to store the output of the subprocess.
+        Args:
+            queue (Queue.Queue): Python queue to store the output of the subprocess.
 
-    Warnings:
-        All the operations are based on 'str' types. The caller has to convert
-        the queued items back to 'unicode' if he needs to.
+        Warnings:
+            All the operations are based on 'str' types. The caller has to convert
+            the queued items back to 'unicode' if he needs to.
 
-    """
+        """
 
     WAIT_TIME = 0.1
 
@@ -230,7 +228,8 @@ class YoutubeDLDownloader(object):
         if code >= self._return_code:
             self._return_code = code
 
-    def _is_warning(self, stderr):
+    @staticmethod
+    def _is_warning(stderr):
         return str(stderr).split(':')[0] == 'WARNING'
 
     def _last_data_hook(self):
@@ -373,6 +372,7 @@ def extract_data(stdout):
 
     """
     # REFACTOR
+    # noinspection PyShadowingNames
     def extract_filename(input_data):
         path, fullname = os.path.split(input_data.strip("\""))
         filename, extension = os.path.splitext(fullname)
@@ -423,7 +423,7 @@ def extract_data(stdout):
             data_dictionary['playlist_size'] = stdout[5]
 
         # Remove the 'and merged' part from stdout when using ffmpeg to merge the formats
-        if stdout[-3] == 'downloaded' and stdout [-1] == 'merged':
+        if stdout[-3] == 'downloaded' and stdout[-1] == 'merged':
             stdout = stdout[:-2]
             stdout_with_spaces = stdout_with_spaces[:-2]
 

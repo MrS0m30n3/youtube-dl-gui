@@ -24,8 +24,7 @@ import os.path
 
 from threading import (
     Thread,
-    RLock,
-    Lock
+    RLock
 )
 
 from wx import CallAfter
@@ -379,10 +378,11 @@ class DownloadManager(Thread):
         self._running = True
 
         # Init the custom workers thread pool
-        log_lock = None if log_manager is None else Lock()
-        wparams = (opt_manager, self._youtubedl_path(), log_manager, log_lock)
-        self._workers = [Worker(*wparams) for _ in range(opt_manager.options["workers_number"])]
+        wparams = (opt_manager, self._youtubedl_path(), log_manager)
+        self._workers = [Worker(*wparams, worker=worker)
+                         for worker in range(1, int(opt_manager.options["workers_number"]) + 1)]
 
+        self.setName("DownloadManager")
         self.start()
 
     @property
@@ -560,13 +560,18 @@ class Worker(Thread):
 
     WAIT_TIME = 0.1
 
-    def __init__(self, opt_manager, youtubedl, log_manager=None, log_lock=None):
+    def __init__(self, opt_manager, youtubedl, log_manager=None, worker=None):
         super(Worker, self).__init__()
         # Use Daemon ?
         # self.setDaemon(True)
         self.opt_manager = opt_manager
         self.log_manager = log_manager
-        self.log_lock = log_lock
+        if worker:
+            self.worker = worker
+        else:
+            self.worker = 1
+
+        self.setName("Worker_" + str(worker))
 
         self._downloader = YoutubeDLDownloader(youtubedl, self._data_hook, self._log_data)
         self._options_parser = OptionsParser()
@@ -674,9 +679,7 @@ class Worker(Thread):
 
         """
         if self.log_manager is not None:
-            self.log_lock.acquire()
             self.log_manager.log(data)
-            self.log_lock.release()
 
     def _data_hook(self, data):
         """Callback method for self._downloader.

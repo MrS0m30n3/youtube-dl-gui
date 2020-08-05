@@ -19,14 +19,14 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 * [GNU gettext](https://www.gnu.org/software/gettext/)
 
 ## Downloads
-* [Source (.zip)](https://github.com/oleksis/youtube-dl-gui/archive/v1.0.1-alpha.zip)
-* [Source (.tar.gz)](https://github.com/oleksis/youtube-dl-gui/archive/v1.0.1-alpha.tar.gz)
+* [Source (.zip)](https://github.com/oleksis/youtube-dl-gui/archive/v1.1.0-alpha.zip)
+* [Source (.tar.gz)](https://github.com/oleksis/youtube-dl-gui/archive/v1.1.0-alpha.tar.gz)
 
 ## Installation
 
 ### Install From Source
 * Download & extract the source
-* Change directory into *youtube-dl-gui-1.0.1-alpha*
+* Change directory into *youtube-dl-gui-1.1.0-alpha*
 * Create virtual environment 
 ```
 python3 -m venv env

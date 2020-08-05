@@ -10,7 +10,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - ChangeLog
 - Man page
 - Add locale (.mo) es_CU
-- Add Flag art for Cuba
+- Add flagart module
+  - Add Flag art for Cuba
+- Add Logging system using the Python 'logging' module
 
 ### Fixed
 - Imports for Internationalization with gettext
@@ -24,4 +26,3 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
   - Build the binaries using PyInstaller. Fix path sep for each OS
   - Build with updates disabled
   - Set up for Windows/Linux
-- Ignore wxPyDeprecationWarning

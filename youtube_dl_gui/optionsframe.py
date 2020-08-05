@@ -4,13 +4,11 @@
 
 
 import os
-import warnings
 
 import wx
 import wx.adv
-from wx.lib.art import flagart
-from wx.lib.embeddedimage import PyEmbeddedImage
 
+from .flagart import catalog
 # noinspection PyPep8Naming
 from .utils import (
     TwoWayOrderedDict as twodict,
@@ -227,27 +225,10 @@ class TabPanel(wx.Panel):
             lang_code, lang_name = item
             _lang, country = lang_code.split('_')
 
-            warnings.filterwarnings("ignore")
-
-            if country in flagart.catalog:
-                flag_bmp = flagart.catalog[country].getBitmap()
-            elif country == 'CU':
-                # Cuba Flag .png in base64encode.org
-                # Me dicen Cuba ;)
-                flag_bmp = PyEmbeddedImage(
-                    "iVBORw0KGgoAAAANSUhEUgAAABAAAAALCAIAAAD5gJpuAAAABGdBTUEAAK/INwWK6QAAABl0R"
-                    "Vh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAHFSURBVHjaYrzNwKDquJyBjYfhxz"
-                    "eGfwwMf/4w/PnH8AuI/sBIMPoBRL8Y2NgAAohFhYHhk831pRr+H7iF/v/7/+/f/z8Q8u8/IOP"
-                    "Pn39///37/ef/73//gCLzc/YABBDjZwYG7uqqT8+e8yUl/LawYWD4D9T2/z8DFIOpf2CakZHx"
-                    "/cePAAHEAnTF73//OX///jx9Bs/Xrwyu7v8ZGaAKYYgJTDIyMrAxMQAEEONHBgb29nZmM7Pfs"
-                    "2f//P5jH5/WdvMwoON///kHcgaQ/AslpQQ5lhRuBQggkA0srq4MurrMv/+wTppk9/LMp11f56"
-                    "gF/f4FhH9//fn7+/e/X0ANf/79lOBiYLgHEEAgDX927GD69On31Mk/f//ay6uz2ypa/B8DxFQ"
-                    "Q+gOyAehjCREOBgYZgABifMvAwJWV9f/+/e9//vAmxP0PCfuPDTAwAP3A+ObNG4AAAjvpz58P"
-                    "f/5wZaT/9vL9/+f/f2iogEhg+ILDiwESSt9+/AEIIBYeBoaPf/+3RfT9esvwZ+FNiO3AGPgNY"
-                    "fwFxcPfv////vv/9z/DvuY5AAHEeJqBwVR0JjRSgdH5/w/QUzD0C0z+A5MMYJIJIMAA5qlT7L"
-                    "92ZXAAAAAASUVORK5CYII=").getBitmap()
+            if country in catalog:
+                flag_bmp = catalog[country].GetBitmap()
             else:
-                flag_bmp = flagart.catalog["BLANK"].getBitmap()
+                flag_bmp = catalog["BLANK"].GetBitmap()
 
             combobox.Append(lang_name, flag_bmp)
 

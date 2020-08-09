@@ -228,14 +228,14 @@ class BuildPyinstallerBin(Command):
                 "--add-data="+__packagename__+"/data"+path_sep+__packagename__+"/data",
                 "--add-data="+__packagename__+"/locale"+path_sep+__packagename__+"/locale",
                 "--exclude-module=tests",
-                "--name=youtube-dl-gui",
+                "--name=youtube-dlg",
                 ""+__packagename__+"/__main__.py",
             ],
             dry_run=self.dry_run)
 
         if version:
             time.sleep(3)
-            SetVersion("./dist/youtube-dl-gui.exe", version)
+            SetVersion("./dist/youtube-dlg.exe", version)
 
 
 pyinstaller_console = [

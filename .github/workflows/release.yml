@@ -1,0 +1,105 @@
+name: Upload Release Asset
+
+on: 
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build_windows_exe:
+    runs-on: windows-latest
+    outputs:
+      youtube-dlg_version: ${{ steps.dump_version.outputs.youtube-dlg_version }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      sha2_windows: ${{ steps.sha2_file.outputs.sha2_windows }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7.7
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.7.7'
+          architecture: 'x64'
+    - name: Install Requirements
+      run: pip install -r requirements.txt
+    - name: Build PyInstaller
+      run: python setup.py pyinstaller
+    - name: Dump version
+      id: dump_version
+      shell: python
+      run: |
+        import json
+        import re
+        
+        exec(compile(open('youtube_dl_gui/version.py').read(), 'youtube_dl_gui/version.py', 'exec'))
+        print('::set-output name=youtube-dlg_version::' + __version__)
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: youtube-dlg ${{ steps.dump_version.outputs.youtube-dlg_version }}
+        draft: false
+        prerelease: false
+    - name: Upload Executable youtube-dlg.exe
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/youtube-dlg.exe
+        asset_name: youtube-dlg.exe
+        asset_content_type: application/octet-stream
+    - name: Get SHA2-256SUMS for youtube-dlg.exe
+      id: sha2_file
+      env:
+        SHA2: ${{ hashFiles('dist/youtube-dlg.exe') }}
+      run: echo "::set-output name=sha2_windows::${env:SHA2}"
+  build_ubuntu_bdist:
+    needs: build_windows_exe
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7.7
+      uses: actions/setup-python@v2
+      with:
+          python-version: '3.7.7'
+          architecture: 'x64'
+    - name: Build Binary using PyInstaller ManyLinux 2014 Docker Action
+      uses: oleksis/pyinstaller-manylinux@v1
+      with:
+        pyinstaller-params: "['-w', '-F', '--add-data=youtube_dl_gui/data:youtube_dl_gui/data', '--add-data=youtube_dl_gui/locale:youtube_dl_gui/locale', '--exclude-module=tests', '--name=youtube-dlg', 'youtube_dl_gui/__main__.py']"
+    - name: Upload Binary Distribution to Release
+      id: upload-release-binary 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.build_windows_exe.outputs.upload_url }}
+        asset_path: ./dist/youtube-dlg
+        asset_name: youtube-dlg
+        asset_content_type: application/octet-stream
+    - name: Get SHA2-256SUMS for youtube-dlg
+      id: sha2_file_binary
+      env:
+        SHA2: ${{ hashFiles('dist/youtube-dlg') }}
+      run: echo "::set-output name=sha2_linux::$SHA2"
+    - name: Make SHA2-256SUMS file
+      env:
+        SHA2_WINDOWS: ${{ needs.build_windows_exe.outputs.sha2_windows }}
+        SHA2_LINUX_BINARY: ${{ steps.sha2_file_binary.outputs.sha2_linux }}
+      run: |
+        echo "$SHA2_WINDOWS youtube-dlg.exe" > SHA2-256SUMS
+        echo "$SHA2_LINUX_BINARY youtube-dlg" >> SHA2-256SUMS
+    - name: Upload SHA2-256SUMS to Release
+      id: upload-release-sha2 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.build_windows_exe.outputs.upload_url }}
+        asset_path: ./SHA2-256SUMS
+        asset_name: SHA2-256SUMS
+        asset_content_type: text/plain

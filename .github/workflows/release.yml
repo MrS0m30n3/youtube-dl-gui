@@ -21,6 +21,8 @@ jobs:
           architecture: 'x64'
     - name: Install Requirements
       run: pip install -r requirements.txt
+    - name: Build Translations
+      run: python setup.py build_trans
     - name: Build PyInstaller
       run: python setup.py pyinstaller
     - name: Dump version

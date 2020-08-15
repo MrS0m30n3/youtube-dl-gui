@@ -21,6 +21,7 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 * [Arch AUR](https://aur.archlinux.org/packages/youtube-dl-gui-git/)
 * [Slackware SlackBuild](https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/)
 * [openSUSE](https://software.opensuse.org/package/youtube-dl-gui)
+* [Guix](https://hpc.guix.info/package/youtube-dl-gui)
 * [Windows Installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-setup.zip)
 * [Windows Portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-portable.zip)
 

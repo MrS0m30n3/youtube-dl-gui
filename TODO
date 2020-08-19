@@ -47,8 +47,12 @@ Extras
 * Prerequisites
 
     gcc-c++, make, gtk3-devel, webkit2gtk3-devel, gstreamer-plugins-base-devel,
-    libtiff-devel, libjpeg-devel, libpng-devel, SDL2-devel, libSM-devel,
-    python3-devel, zlib-devel, libexpat-devel, glu-devel
+    libtiff-devel, libjpeg{62}-devel, libpng{16}-devel, libSDL-devel, libSM-devel,
+    python3-devel, zlib-devel, libexpat-devel, glu-devel, libnotify-devel, 
+    libsecret-devel, libXtst-devel
+
+* Recomended
+    git-core
 
 * https://www.wxpython.org/blog/2017-08-17-builds-for-linux-with-pip/index.html
 * https://github.com/wxWidgets/Phoenix/blob/master/README.rst#prerequisites
@@ -67,8 +71,8 @@ Others
       * https://extras.wxpython.org/wxPython4/extras/4.1.0/
 
 
-NOTES: Compile wxPython from GitHub source
-=========================================
+# Compile wxPython from GitHub source
+
 git clone https://github.com/wxWidgets/Phoenix
 cd Phoenix
 
@@ -82,8 +86,22 @@ git clone https://github.com/wxWidgets/Catch.git ./ext/wxWidgets/3rdparty/catch
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
-python build.py dox etg --nodoc sip build
+python build.py clean
+
+
+python build.py dox etg --nodoc sip build -v
 
 OR
 
+python build.py dox etg --nodoc sip build_wx -v
+
+## Create simbolic link to build/wxbld/gtk3/lib64
+
+ln -s lib build/wxbld/gtk3/lib64
+
+## Continue with build for Python
+
 python build.py build_py -v
+
+**Good Luck!**
+

@@ -76,6 +76,20 @@ except IOError:
 _ = lang.gettext
 OUTPUT_FORMATS, DEFAULT_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS, FORMATS = reload_strings(_)
 
+# wx.Locale
+locale = {
+    'ar_SA': wx.LANGUAGE_ARABIC,
+    'cs_CZ': wx.LANGUAGE_CZECH,
+    'en_US': wx.LANGUAGE_ENGLISH_US,
+    'fr_FR': wx.LANGUAGE_FRENCH,
+    'es_CU': wx.LANGUAGE_SPANISH,
+    'it_IT': wx.LANGUAGE_ITALIAN,
+    'ja_JP': wx.LANGUAGE_JAPANESE,
+    'ko_KR': wx.LANGUAGE_KOREAN,
+    'pt_BR': wx.LANGUAGE_PORTUGUESE_BRAZILIAN,
+    'ru_RU': wx.LANGUAGE_RUSSIAN,
+    'es_ES': wx.LANGUAGE_SPANISH
+}
 
 from .mainframe import MainFrame
 
@@ -85,6 +99,10 @@ def main():
     youtubedl_path = os.path.join(opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
 
     app = wx.App()
+    # Set wx.Locale
+    app.locale = wx.Locale(
+        locale.get(opt_manager.options['locale_name'], wx.LANGUAGE_ENGLISH_US)
+    )
     frame = MainFrame(opt_manager, log_manager)
     frame.Show()
 

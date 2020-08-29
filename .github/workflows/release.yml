@@ -14,10 +14,10 @@ jobs:
       sha2_windows: ${{ steps.sha2_file.outputs.sha2_windows }}
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7.7
+    - name: Set up Python 3.8.3
       uses: actions/setup-python@v2
       with:
-          python-version: '3.7.7'
+          python-version: '3.8.3'
           architecture: 'x64'
     - name: Install Requirements
       run: pip install -r requirements.txt
@@ -64,10 +64,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7.7
+    - name: Set up Python 3.8.3
       uses: actions/setup-python@v2
       with:
-          python-version: '3.7.7'
+          python-version: '3.8.3'
           architecture: 'x64'
     - name: Build Binary using PyInstaller ManyLinux 2014 Docker Action
       uses: oleksis/pyinstaller-manylinux@v1

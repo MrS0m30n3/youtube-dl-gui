@@ -11,6 +11,7 @@ for downloading the video files.
 import os
 import signal
 import subprocess
+import sys
 
 from time import sleep
 from queue import Queue
@@ -335,7 +336,7 @@ class YoutubeDLDownloader(object):
             self._proc = subprocess.Popen(cmd,
                                           stdin=subprocess.PIPE,
                                           stdout=subprocess.PIPE,
-                                          stderr=subprocess.STDOUT,
+                                          stderr=subprocess.PIPE,
                                           startupinfo=info,
                                           start_new_session=True)
         except (ValueError, OSError, FileNotFoundError) as error:

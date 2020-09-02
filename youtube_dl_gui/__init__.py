@@ -15,6 +15,7 @@ Example:
 """
 
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import sys
 import gettext
@@ -23,7 +24,7 @@ import os.path
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 __packagename__ = "youtube_dl_gui"

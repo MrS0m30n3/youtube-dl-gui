@@ -4,6 +4,7 @@
 """Contains test cases for the widgets.py module."""
 
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import sys
 import os.path
@@ -23,7 +24,7 @@ try:
         ListBoxPopup
     )
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 

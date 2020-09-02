@@ -2,13 +2,14 @@
 # -*- coding: UTF-8 -*-
 
 from __future__ import unicode_literals
+from __future__ import print_function
 
 import sys
 
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 

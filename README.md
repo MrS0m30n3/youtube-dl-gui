@@ -52,5 +52,5 @@ The [Public Domain License](LICENSE)
 See [FAQs](docs/faqs.md) file
 
 ## Thank you 
-Thanks to readings this and get me a star for yhe YouTube Video Downloader. And I am always make this type of amazing project keep support me..
+Thanks to readings this and get me a star for the YouTube Video Downloader. And I am always make this type of amazing project keep support me..
 

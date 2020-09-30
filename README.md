@@ -51,5 +51,6 @@ The [Public Domain License](LICENSE)
 ## Frequently Asked Questions
 See [FAQs](docs/faqs.md) file
 
-## Thanks
-Thanks to everyone who contributed to this project and to [@philipzae](https://github.com/philipzae) for designing the new UI layout.
+## Thank you 
+Thanks to readings this and get me a star for yhe YouTube Video Downloader. And I am always make this type of amazing project keep support me..
+

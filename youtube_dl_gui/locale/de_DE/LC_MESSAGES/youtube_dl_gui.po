@@ -1,0 +1,600 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Stefan Baer<stef@nbaer.de>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2020-10-15 17:42+CEST\n"
+"PO-Revision-Date: 2020-10-15 17:14+CEST\n"
+"Last-Translator: Stefan Baer <stef@nbaer.de>\n"
+"Language-Team: de\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Fehler"
+msgstr ""
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Kann youtube-dl nicht finden und die Updates sind deaktiviert"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
+msgid "ID"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/mainframe.py:140
+msgid "Titel"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
+msgid "Titel + ID"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
+msgid "Titel + Qualität"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
+msgid "Titel + ID + Qualität"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
+msgid "Benutzerdefiniert"
+msgstr ""
+
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
+msgid "voreingestellt"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:97
+msgid "URLs eingeben"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Optionen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
+msgid "Stop"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:102
+msgid "Willkommen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warnung"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:105
+msgid "Hinzufügen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:106
+msgid "Downloadliste"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Löschen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:108
+msgid "Abspielen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:109
+msgid "Aufwärts"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:110
+msgid "Abwärts"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:111
+msgid "Neu laden"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
+msgid "Start"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:114
+msgid "Über"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:115
+msgid "Log anzeigen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:117
+msgid "{0} URL(s) in {1} Tag(en) {2} Stunde(n) {3} Minute(n) {4} Sekunde(n) erfolgreich heruntergeladen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:119
+msgid "Download abgeschlossen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:120
+msgid "Gesamtfortschritt: {0:.1f}% | In der Warteschlange ({1}) Pausiert ({2}) Aktiv ({3}) Abgeschlossen ({4}) Fehlerhaft ({5})"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:121
+msgid "Downloads werden angehalten"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads angehalten"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "Es muss mindestens eine URL angegeben werden"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads gestartet"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:125
+msgid "Verzeichnis auswählen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download noch aktiv. Bitte auf den Abschluss aller Donwloads warten."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update bereits angestossen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Letzte youtube-dl Version wird heruntergeladen. Bitte warten..."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl Download fehlgeschlagen [{0}]"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Youtube-dl Download erfolgreich"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Kann das Verzeichnis nicht öffnen: '{dir}'. Der angegebene Pfad existiert nicht"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Fehler beim Herunterfahren. Bitte das Passwort überprüfen."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "System wird heruntergefahren"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Erweiterung"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Größe"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Prozent"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Geschwindigkeit"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "URL (Get)"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get Befehl"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Ziel öffnen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Wiederbetreten"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Wiederaufnehmen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Nichts ausgewählt. Bitte eine Aktion auswählen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Alle entfernen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Entfernen abgeschlossen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Ausgewählte Einträge wirklich entfernen?"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Eintrag ist noch aktiv und kann daher nicht entfernt werden"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Eintrag nicht abgeschlossen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update bereits angestossen. Bitte waren bis es abgeschlossen ist."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging ist deaktiviert"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Herunterfahren"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Herunterfahren in {0} Sekunde(n)"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "Keine Einträge zum Herunterladen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1040
+msgid "Updates für dieses System sind deaktiviert. Bitte den Paket-Manager des Systems verwenden, um youtube-dl zu aktualisieren."
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Wirklich beenden?"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Beenden"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
+msgid "Abbrechen"
+msgstr ""
+
+#: youtube_dl_gui/mainframe.py:1455
+msgid "OK"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Zurücksetzen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Schließen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "Allgemein"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formate"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Erweitert"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:310
+msgid "Sprache"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:313
+msgid "Dateinamensformat"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Dateinamensoptionen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:319
+msgid "Dateinamen auf ASCII beschränken"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:321
+msgid "Weitere Optionen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:322
+msgid "Beenden bestätigen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Löschen bestätigen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Über dasa Fertigstellen eines Downloads informieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "Herunterfahren nach Abschluss der Downloads"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:337
+msgid "SUDO Passwort"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
+msgid "Um die Änderungen wirksam zu machen, muss die Anwendung neugestartet werden {0}"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
+msgid "Neustart"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "hoch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "niedrig"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "mittel"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "Videoformate"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:471
+msgid "Audioformate"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:474
+msgid "Post-Prozess Optionen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:475
+msgid "Originaldatei behalten"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Audio aus Video extrahieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:477
+msgid "Thumbnail in Audio integrieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:478
+msgid "Metadaten zur Datei hinzufügen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Audioqualität"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:538
+msgid "Englisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:539
+msgid "Französisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:540
+msgid "Deutsch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:541
+msgid "Grieschisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:542
+msgid "Hebräisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "Italienisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "Portugisisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "Russisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Spanisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Schwedisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Türkisch"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:564
+msgid "Keine"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:565
+msgid "Automatische Untertitel (NUR YOUTUBE)"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:566
+msgid "Alle verfügbaren Untertitel"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:567
+msgid "Untertitel nach Sprache"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:573
+msgid "Untertitel"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:577
+msgid "Untertiteloptionen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Untertitel in Videodateien einbetten (NUR mp4)"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:580
+msgid "Abspielliste"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
+msgid "Max"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:589
+msgid "Dateigröße"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Min"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:723
+msgid "Versuche"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:726
+msgid "Authentifizierung"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Benutzername"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:730
+msgid "Passwort"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:732
+msgid "Video Passwort"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Netzwerk"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Proxy"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:739
+msgid "User agent"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:741
+msgid "Referer"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "Logging"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Log aktivieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:747
+msgid "Ansicht"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:748
+msgid "Leeren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:858
+msgid "Youtube-dl Kommandozeilenoption (z.B. --help)"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:861
+msgid "Extra Optionen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Debug youtube-dl"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:864
+msgid "Fehler ignorieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:865
+msgid "youtube-dl Konfiguration ignorieren"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "Keine mtime"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:867
+msgid "Natives HLS bevorzugen"
+msgstr ""
+
+#: youtube_dl_gui/optionsframe.py:928
+msgid "Logbetrachter"
+msgstr ""

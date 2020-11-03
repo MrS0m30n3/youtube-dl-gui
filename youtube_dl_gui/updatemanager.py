@@ -45,7 +45,7 @@ class UpdateThread(Thread):
 
     """
 
-    LATEST_YOUTUBE_DL = 'https://yt-dl.org/latest/'
+    LATEST_YOUTUBE_DL = 'https://youtube-dl.org/downloads/latest/'
     DOWNLOAD_TIMEOUT = 10
 
     def __init__(self, download_path, quiet=False):

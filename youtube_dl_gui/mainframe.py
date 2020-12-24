@@ -72,7 +72,7 @@ class MainFrame(wx.Frame):
     and binding the events.
 
     Attributes:
-        FRAMES_MIN_SIZE (tuple): Tuple that contains the minumum width, height of the frame.
+        FRAMES_MIN_SIZE (tuple): Tuple that contains the minimum width, height of the frame.
 
         Labels area (strings): Strings for the widgets labels.
 
@@ -1212,7 +1212,7 @@ class ListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
             # If the column width obtained from wxLIST_AUTOSIZE_USEHEADER
             # is smaller than the minimum allowed column width
-            # then set the column width to the minumum allowed size
+            # then set the column width to the minimum allowed size
             if self.GetColumnWidth(column_item[0]) < column_item[2]:
                 self.SetColumnWidth(column_item[0], column_item[2])
 

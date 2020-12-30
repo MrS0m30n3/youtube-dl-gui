@@ -55,8 +55,9 @@ class PipeReader(Thread):
 
         while self._running:
             if self._filedescriptor is not None:
-                for line in iter(self._filedescriptor.readline, str('')):
-                    line = bytes(line).decode(encoding=get_encoding(), errors='ignore')
+                pipedata = self._filedescriptor.read()
+                pipedata = bytes(pipedata).decode(encoding=get_encoding(), errors='ignore')
+                for line in pipedata.splitlines():
                     # Ignore ffmpeg stderr
                     if str('ffmpeg version') in line:
                         ignore_line = True

@@ -7,13 +7,12 @@
 import sys
 import os.path
 import unittest
+from unittest import mock
 
 PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
-    import mock
-
     from youtube_dl_gui import utils
 except ImportError as error:
     print(error)
@@ -112,14 +111,9 @@ class TestConvertItem(unittest.TestCase):
     """Test case for the convert_item function."""
 
     def setUp(self):
-        self.input_list_u = ["v1", "v2", "v3"]
-        self.input_list_s = [str("v1"), str("v2"), str("v3")]
-
-        self.input_tuple_u = ("v1", "v2", "v3")
-        self.input_tuple_s = (str("v1"), str("v2"), str("v3"))
-
-        self.input_dict_u = {"k1": "v1", "k2": "v2"}
-        self.input_dict_s = {str("k1"): str("v1"), str("k2"): str("v2")}
+        self.input_list_s = self.input_list_u = ["v1", "v2", "v3"]
+        self.input_tuple_s= self.input_tuple_u = ("v1", "v2", "v3")
+        self.input_dict_s = self.input_dict_u = {"k1": "v1", "k2": "v2"}
 
     def check_iter(self, iterable, iter_type, is_unicode):
         check_type = str

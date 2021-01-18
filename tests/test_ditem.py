@@ -348,7 +348,7 @@ class TestUpdateStats(unittest.TestCase):
         )
 
     def test_update_stats_not_string(self):
-        self.ditem.update_stats({"filename": None, "status": 1234, "eta": False})
+        self.ditem.update_stats({"filename": None, "status": None, "eta": False})
 
         self.assertEqual(self.ditem.progress_stats["filename"], "url")
         self.assertEqual(self.ditem.progress_stats["status"], "Queued")

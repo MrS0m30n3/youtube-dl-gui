@@ -58,20 +58,20 @@ def convert_item(item, to_unicode=False):
     """
     if to_unicode and isinstance(item, str):
         # Convert str to unicode
-        return str(bytes(item), encoding=get_encoding(), errors="ignore")
+        return str(item)
 
     if not to_unicode and isinstance(item, bytes):
         # Convert bytes to str
         return bytes(item).decode(encoding=get_encoding(), errors="ignore")
 
-    if hasattr(item, '__iter__'):
+    if isinstance(item, dict) or isinstance(item, list) or isinstance(item, tuple):
         # Handle iterables
         temp_list = []
 
         for sub_item in item:
             if isinstance(item, dict):
                 temp_list.append((convert_item(sub_item, to_unicode), convert_item(item[sub_item], to_unicode)))
-            else:
+            elif isinstance(item, list) or isinstance(item, tuple):
                 temp_list.append(convert_item(sub_item, to_unicode))
 
         return type(item)(temp_list)

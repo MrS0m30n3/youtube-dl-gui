@@ -27,7 +27,7 @@ class TestParse(unittest.TestCase):
         self.options_dict = {item.name: item.default_value for item in OptionsParser()._ydl_options}
 
         # Add extra options used by the OptionsParser.parse method
-        self.options_dict["save_path"] = "/home/user/Workplace/test/youtube"
+        self.options_dict["save_path"] = "/home/user/Workplace/test/youtube/"
         self.options_dict["cmd_args"] = ""
         self.options_dict["output_format"] = 1  # Title
         self.options_dict["second_video_format"] = "0"
@@ -37,7 +37,7 @@ class TestParse(unittest.TestCase):
     def check_options_parse(self, expected_options):
         options_parser = OptionsParser()
 
-        self.assertItemsEqual(options_parser.parse(self.options_dict), expected_options)
+        self.assertListEqual(sorted(options_parser.parse(self.options_dict)), sorted(expected_options))
 
     def test_parse_to_audio_requirement_bug(self):
         """Test case for the 'to_audio' requirement."""

@@ -18,7 +18,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 - Imports for Internationalization with gettext
 - Fix bug set wx.Locale for Python 3.8
 - Fix bug subprocess for Windows ([WinError 6] Handler no valid)
-  Set stderr to PIPE
+  - Set stderr to PIPE
+- Do not interpret output [debug] as an error in the Logs
+- Get all Logs except "ffmpeg version"
+- Do not send messages to the GUI if the app does not exist (Destroy)
 
 ### Changed
 - Migration to Python 3.*

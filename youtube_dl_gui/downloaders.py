@@ -46,7 +46,6 @@ class PipeReader(Thread):
         self._filedescriptor = None
         self._running = True
         self._queue = queue
-
         self.start()
 
     def run(self):
@@ -59,15 +58,11 @@ class PipeReader(Thread):
                 pipedata = bytes(pipedata).decode(encoding=get_encoding(), errors='ignore')
                 for line in pipedata.splitlines():
                     # Ignore ffmpeg stderr
-                    if str('ffmpeg version') in line:
+                    if 'ffmpeg version' in line:
                         ignore_line = True
-
                     if not ignore_line and line != "":
                         self._queue.put_nowait(line)
-
-                self._filedescriptor = None
                 ignore_line = False
-
             sleep(self.WAIT_TIME)
 
     def attach_filedescriptor(self, filedesc):
@@ -181,8 +176,6 @@ class YoutubeDLDownloader(object):
 
             if self._is_warning(stderr):
                 self._set_returncode(self.WARNING)
-            else:
-                self._set_returncode(self.ERROR)
 
         # Set return code to ERROR if we could not start the download process
         # or the childs return code is greater than zero
@@ -232,7 +225,8 @@ class YoutubeDLDownloader(object):
 
     @staticmethod
     def _is_warning(stderr):
-        return str(stderr).split(':')[0] == 'WARNING'
+        warning_error = str(stderr).split(':')[0] 
+        return warning_error == 'WARNING' or warning_error == 'ERROR'
 
     def _last_data_hook(self):
         """Set the last data information based on the return code. """
@@ -295,7 +289,6 @@ class YoutubeDLDownloader(object):
         """Returns True if self._proc is alive else False. """
         if self._proc is None:
             return False
-
         return self._proc.poll() is None
 
     def _get_cmd(self, url, options):
@@ -322,24 +315,23 @@ class YoutubeDLDownloader(object):
         """
         info = None
 
+        kwargs = dict(stdin=subprocess.PIPE,
+                     stdout=subprocess.PIPE,
+                     stderr=subprocess.PIPE)
+
         if os.name == 'nt':
             # Hide subprocess window
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
             info.wShowWindow = subprocess.SW_HIDE
 
-        # Encode command for subprocess
-        # Refer to http://stackoverflow.com/a/9951851/35070
-        # if sys.version_info < (3, 0):
-        #    cmd = convert_item(cmd, to_unicode=False)
+            kwargs['startupinfo'] = info
+            kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP
+        else:
+            kwargs['start_new_session'] = True
 
         try:
-            self._proc = subprocess.Popen(cmd,
-                                          stdin=subprocess.PIPE,
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE,
-                                          startupinfo=info,
-                                          start_new_session=True)
+            self._proc = subprocess.Popen(cmd, **kwargs)
         except (ValueError, OSError, FileNotFoundError) as error:
             self._log('Failed to start process: {}'.format(str(cmd)))
             self._log(str(error))

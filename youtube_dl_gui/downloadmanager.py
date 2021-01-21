@@ -27,6 +27,7 @@ from threading import (
     RLock
 )
 
+import wx
 from wx import CallAfter
 # noinspection PyPep8Naming
 from pubsub import pub as Publisher
@@ -501,7 +502,10 @@ class DownloadManager(Thread):
                     downloads using the active() method.
 
         """
-        CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, signal=signal, data=data)
+        app = wx.GetApp()
+
+        if app is not None:
+            CallAfter(Publisher.sendMessage, MANAGER_PUB_TOPIC, signal=signal, data=data)
 
     def _check_youtubedl(self):
         """Check if youtube-dl binary exists. If not try to download it. """
@@ -559,17 +563,19 @@ class Worker(Thread):
         """
 
     WAIT_TIME = 0.1
+    worker_count = 0
 
     def __init__(self, opt_manager, youtubedl, log_manager=None, worker=None):
         super(Worker, self).__init__()
         # Use Daemon ?
         # self.setDaemon(True)
+        Worker.worker_count += 1
         self.opt_manager = opt_manager
         self.log_manager = log_manager
         if worker:
             self.worker = worker
         else:
-            self.worker = 1
+            self.worker = Worker.worker_count
 
         self.setName("Worker_" + str(worker))
 
@@ -638,8 +644,8 @@ class Worker(Thread):
 
     def close(self):
         """Kill the worker after stopping the download process. """
+        self.stop_download()
         self._running = False
-        self._downloader.stop()
 
     def available(self):
         """Return True if the worker has no job else False. """
@@ -752,5 +758,8 @@ class Worker(Thread):
 
         if signal == 'receive':
             self._wait_for_reply = True
+        
+        app = wx.GetApp()
 
-        CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, signal=signal, data=data)
+        if app is not None:
+            CallAfter(Publisher.sendMessage, WORKER_PUB_TOPIC, signal=signal, data=data)

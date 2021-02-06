@@ -53,7 +53,7 @@ class PipeReader(Thread):
         ignore_line = False
 
         while self._running:
-            if self._filedescriptor is not None:
+            if self._filedescriptor is not None and not self._filedescriptor.closed:
                 pipedata = self._filedescriptor.read()
                 pipedata = bytes(pipedata).decode(encoding=get_encoding(), errors='ignore')
                 for line in pipedata.splitlines():
@@ -160,7 +160,9 @@ class YoutubeDLDownloader(object):
             self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
-            stdout = self._proc.stdout.readline().rstrip()
+            stdout = ""
+            if not self._proc.stdout.closed:
+                stdout = self._proc.stdout.readline().rstrip()
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -197,6 +199,8 @@ class YoutubeDLDownloader(object):
     def stop(self):
         """Stop the download process and set return code to STOPPED. """
         if self._proc_is_alive():
+            self._proc.stdout.close()
+            self._proc.stderr.close()
 
             if os.name == 'nt':
                 # os.killpg is not available on Windows

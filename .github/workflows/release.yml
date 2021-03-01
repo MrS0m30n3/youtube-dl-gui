@@ -56,9 +56,7 @@ jobs:
         asset_content_type: application/octet-stream
     - name: Get SHA2-256SUMS for youtube-dlg.exe
       id: sha2_file
-      env:
-        SHA2: ${{ hashFiles('dist/youtube-dlg.exe') }}
-      run: echo "::set-output name=sha2_windows::${env:SHA2}"
+      run: echo "::set-output name=sha2_windows::$(Get-FileHash dist\youtube-dlg.exe -Algorithm SHA256).Hash.ToLower()"
   build_ubuntu_bdist:
     needs: build_windows_exe
     runs-on: ubuntu-latest
@@ -85,16 +83,14 @@ jobs:
         asset_content_type: application/octet-stream
     - name: Get SHA2-256SUMS for youtube-dlg
       id: sha2_file_binary
-      env:
-        SHA2: ${{ hashFiles('dist/youtube-dlg') }}
-      run: echo "::set-output name=sha2_linux::$SHA2"
+      run: echo "::set-output name=sha2_linux::$(sha256sum dist/youtube-dlg | awk '{print $1}')"
     - name: Make SHA2-256SUMS file
       env:
         SHA2_WINDOWS: ${{ needs.build_windows_exe.outputs.sha2_windows }}
         SHA2_LINUX_BINARY: ${{ steps.sha2_file_binary.outputs.sha2_linux }}
       run: |
-        echo "$SHA2_WINDOWS youtube-dlg.exe" > SHA2-256SUMS
-        echo "$SHA2_LINUX_BINARY youtube-dlg" >> SHA2-256SUMS
+        echo "$SHA2_WINDOWS  youtube-dlg.exe" > SHA2-256SUMS
+        echo "$SHA2_LINUX_BINARY  youtube-dlg" >> SHA2-256SUMS
     - name: Upload SHA2-256SUMS to Release
       id: upload-release-sha2 
       uses: actions/upload-release-asset@v1

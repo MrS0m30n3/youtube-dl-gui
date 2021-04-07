@@ -1,0 +1,602 @@
+# Youtube-dlG localization file.
+# FIRST AUTHOR: Sotiris Papadopoulos <ytubedlg@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: youtube-dlg 0.4\n"
+"POT-Creation-Date: 2018-01-15 16:42+EET\n"
+"PO-Revision-Date: 2021-04-07 15:04+0300\n"
+"Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
+"Language-Team: sq\n"
+"Language: sq\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Error"
+msgstr "Gabim"
+
+#: youtube_dl_gui/__init__.py:91
+msgid "Failed to locate youtube-dl and updates are disabled"
+msgstr "S’u arrit të lokalizohet youtube-dl dhe përditësimet janë çaktivizuar"
+
+#: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
+msgid "ID"
+msgstr "ID"
+
+#: youtube_dl_gui/formats.py:10 youtube_dl_gui/formats.py:110
+#: youtube_dl_gui/mainframe.py:140
+msgid "Title"
+msgstr "Titull"
+
+#: youtube_dl_gui/formats.py:11 youtube_dl_gui/formats.py:111
+msgid "Title + ID"
+msgstr "Titull + ID"
+
+#: youtube_dl_gui/formats.py:12 youtube_dl_gui/formats.py:112
+msgid "Title + Quality"
+msgstr "Titull + Cilësi"
+
+#: youtube_dl_gui/formats.py:13 youtube_dl_gui/formats.py:113
+msgid "Title + ID + Quality"
+msgstr "Titull + ID + Cilësi"
+
+#: youtube_dl_gui/formats.py:14 youtube_dl_gui/formats.py:114
+msgid "Custom"
+msgstr "Vetjake"
+
+#: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
+#: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
+msgid "default"
+msgstr "parazgjedhje"
+
+#: youtube_dl_gui/mainframe.py:97
+msgid "Enter URLs below"
+msgstr "Jepini URL-të më poshtë"
+
+#: youtube_dl_gui/mainframe.py:98
+msgid "Update"
+msgstr "Përditësoje"
+
+#: youtube_dl_gui/mainframe.py:99 youtube_dl_gui/optionsframe.py:41
+msgid "Options"
+msgstr "Mundësi"
+
+#: youtube_dl_gui/mainframe.py:100 youtube_dl_gui/optionsframe.py:584
+msgid "Stop"
+msgstr "Ndale"
+
+#: youtube_dl_gui/mainframe.py:101
+msgid "Info"
+msgstr "Info"
+
+#: youtube_dl_gui/mainframe.py:102
+msgid "Welcome"
+msgstr "Mirë se vini"
+
+#: youtube_dl_gui/mainframe.py:103
+msgid "Warning"
+msgstr "Sinjalizim"
+
+#: youtube_dl_gui/mainframe.py:105
+msgid "Add"
+msgstr "Shto"
+
+#: youtube_dl_gui/mainframe.py:106
+msgid "Download list"
+msgstr "Listë shkarkimesh"
+
+#: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
+#: youtube_dl_gui/mainframe.py:534
+msgid "Delete"
+msgstr "Fshije"
+
+#: youtube_dl_gui/mainframe.py:108
+msgid "Play"
+msgstr "Luaje"
+
+#: youtube_dl_gui/mainframe.py:109
+msgid "Up"
+msgstr "Sipër"
+
+#: youtube_dl_gui/mainframe.py:110
+msgid "Down"
+msgstr "Poshtë"
+
+#: youtube_dl_gui/mainframe.py:111
+msgid "Reload"
+msgstr "Ringarkoje"
+
+#: youtube_dl_gui/mainframe.py:112 youtube_dl_gui/mainframe.py:448
+#: youtube_dl_gui/mainframe.py:649
+msgid "Pause"
+msgstr "Pauzë"
+
+#: youtube_dl_gui/mainframe.py:113 youtube_dl_gui/mainframe.py:865
+#: youtube_dl_gui/mainframe.py:866 youtube_dl_gui/optionsframe.py:582
+msgid "Start"
+msgstr "Nise"
+
+#: youtube_dl_gui/mainframe.py:114
+msgid "About"
+msgstr "Mbi"
+
+#: youtube_dl_gui/mainframe.py:115
+msgid "View Log"
+msgstr "Shihni Regjistër"
+
+#: youtube_dl_gui/mainframe.py:117
+msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
+msgstr "Janë shkarkuar me sukses {0} URL(ra) në {1} ditë {2} orë {3} minutë(a) {4} sekondë(a)"
+
+#: youtube_dl_gui/mainframe.py:119
+msgid "Downloads completed"
+msgstr "Shkarkim i plotësuar"
+
+#: youtube_dl_gui/mainframe.py:120
+msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
+msgstr "Ecuri Gjithsej: {0:.1f}% | Në radhë ({1}) Të ndalur ({2}) Aktive ({3}) Të plotësuar ({4}) Gabim ({5})"
+
+#: youtube_dl_gui/mainframe.py:121
+msgid "Stopping downloads"
+msgstr "Po ndalen shkarkimet"
+
+#: youtube_dl_gui/mainframe.py:122
+msgid "Downloads stopped"
+msgstr "Shkarkimet u ndalën"
+
+#: youtube_dl_gui/mainframe.py:123
+msgid "You need to provide at least one URL"
+msgstr "Lypset të jepni të paktën një URL"
+
+#: youtube_dl_gui/mainframe.py:124
+msgid "Downloads started"
+msgstr "Shkarkimet nisën"
+
+#: youtube_dl_gui/mainframe.py:125
+msgid "Choose Directory"
+msgstr "Zgjidhni Drejtori"
+
+#: youtube_dl_gui/mainframe.py:127
+msgid "Download in progress. Please wait for all downloads to complete"
+msgstr "Shkarkim në ecuri e sipër. Ju lutemi, pritni që të plotësohen krejt shkarkimet"
+
+#: youtube_dl_gui/mainframe.py:128
+msgid "Update already in progress"
+msgstr "Përditësim tashmë në ecuri e sipër"
+
+#: youtube_dl_gui/mainframe.py:130
+msgid "Downloading latest youtube-dl. Please wait..."
+msgstr "Po shkarkohet youtube-dl më i ri. Ju lutemi, pritni…"
+
+#: youtube_dl_gui/mainframe.py:131
+msgid "Youtube-dl download failed [{0}]"
+msgstr "Shkarkimi i youtube-dl-it dështoi [{0}]"
+
+#: youtube_dl_gui/mainframe.py:132
+msgid "Successfully downloaded youtube-dl"
+msgstr "youtube-dl u shkarkua me sukses"
+
+#: youtube_dl_gui/mainframe.py:134
+msgid "Unable to open directory: '{dir}'. The specified path does not exist"
+msgstr "S’arrihet të hapet drejtoria: '{dir}'. Shtegu i dhënë nuk ekziston"
+
+#: youtube_dl_gui/mainframe.py:136
+msgid "Error while shutting down. Make sure you typed the correct password"
+msgstr "Gabim gjatë fikjes. Sigurohuni se e shtypët saktë fjalëkalimin"
+
+#: youtube_dl_gui/mainframe.py:138
+msgid "Shutting down system"
+msgstr "Po fiket sistemi"
+
+#: youtube_dl_gui/mainframe.py:141
+msgid "Extension"
+msgstr "Zgjerim"
+
+#: youtube_dl_gui/mainframe.py:142
+msgid "Size"
+msgstr "Madhësi"
+
+#: youtube_dl_gui/mainframe.py:143
+msgid "Percent"
+msgstr "Përqind"
+
+#: youtube_dl_gui/mainframe.py:144
+msgid "ETA"
+msgstr "ETA"
+
+#: youtube_dl_gui/mainframe.py:145
+msgid "Speed"
+msgstr "Shpejtësi"
+
+#: youtube_dl_gui/mainframe.py:146
+msgid "Status"
+msgstr "Gjendje"
+
+#: youtube_dl_gui/mainframe.py:235
+msgid "Get URL"
+msgstr "Merrni URL"
+
+#: youtube_dl_gui/mainframe.py:236
+msgid "Get command"
+msgstr "Merrni urdhër"
+
+#: youtube_dl_gui/mainframe.py:237
+msgid "Open destination"
+msgstr "Hap vendmbërritje"
+
+#: youtube_dl_gui/mainframe.py:238
+msgid "Re-enter"
+msgstr "Rijepeni"
+
+#: youtube_dl_gui/mainframe.py:458
+msgid "Resume"
+msgstr "Rimerre"
+
+#: youtube_dl_gui/mainframe.py:480
+msgid "Video"
+msgstr "Video"
+
+#: youtube_dl_gui/mainframe.py:484
+msgid "Audio"
+msgstr "Audio"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "No items selected. Please pick an action"
+msgstr "S’u përzgjodhën objekte. Ju lutemi, zgjidhni një veprim"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove all"
+msgstr "Hiqi krejt"
+
+#: youtube_dl_gui/mainframe.py:516
+msgid "Remove completed"
+msgstr "Hiq të përfunduarat"
+
+#: youtube_dl_gui/mainframe.py:534
+msgid "Are you sure you want to remove selected items?"
+msgstr "Jeni i sigurt se doni të hiqen objektet e përzgjedhur?"
+
+#: youtube_dl_gui/mainframe.py:546
+msgid "Item is active, cannot remove"
+msgstr "Objekti është aktiv, s’mund të hiqet"
+
+#: youtube_dl_gui/mainframe.py:579
+msgid "Item is not completed"
+msgstr "Objekti s’është i përfunduar"
+
+#: youtube_dl_gui/mainframe.py:668
+msgid "Update in progress. Please wait for the update to complete"
+msgstr "Përditësim në ecuri e sipër. Ju lutemi, pritni të përfundojë përditësimi"
+
+#: youtube_dl_gui/mainframe.py:716
+msgid "Logging is disabled"
+msgstr "Regjistrimi është i çaktivizuar"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutdown"
+msgstr "Fike"
+
+#: youtube_dl_gui/mainframe.py:891
+msgid "Shutting down in {0} second(s)"
+msgstr "Do të fiket për {0} sekondë(a)"
+
+#: youtube_dl_gui/mainframe.py:980
+msgid "No items to download"
+msgstr "S’ka objekte për shkarkim"
+
+#: youtube_dl_gui/mainframe.py:1040
+msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
+msgstr "Për sistemin tuaj janë çaktivizuar përditësimet. Ju lutemi, për të përditësuar youtube-dl-in, përdorni përgjegjës paketash të vetë sistemit."
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Are you sure you want to exit?"
+msgstr "Jeni i sigurt se doni të dilet?"
+
+#: youtube_dl_gui/mainframe.py:1065
+msgid "Exit"
+msgstr "Dalje"
+
+#: youtube_dl_gui/mainframe.py:1306 youtube_dl_gui/mainframe.py:1456
+msgid "Cancel"
+msgstr "Anuloje"
+
+#: youtube_dl_gui/mainframe.py:1455
+msgid "OK"
+msgstr "OK"
+
+#: youtube_dl_gui/optionsframe.py:65
+msgid "Reset"
+msgstr "Ktheje te parazgjedhjet"
+
+#: youtube_dl_gui/optionsframe.py:66
+msgid "Close"
+msgstr "Mbylle"
+
+#: youtube_dl_gui/optionsframe.py:72
+msgid "General"
+msgstr "Të përgjithshme"
+
+#: youtube_dl_gui/optionsframe.py:73
+msgid "Formats"
+msgstr "Formate"
+
+#: youtube_dl_gui/optionsframe.py:74
+msgid "Downloads"
+msgstr "Shkarkime"
+
+#: youtube_dl_gui/optionsframe.py:75
+msgid "Advanced"
+msgstr "Të mëtejshme"
+
+#: youtube_dl_gui/optionsframe.py:76
+msgid "Extra"
+msgstr "Ekstra"
+
+#: youtube_dl_gui/optionsframe.py:310
+msgid "Language"
+msgstr "Gjuhë"
+
+#: youtube_dl_gui/optionsframe.py:313
+msgid "Filename format"
+msgstr "Format emrash kartelash"
+
+#: youtube_dl_gui/optionsframe.py:318
+msgid "Filename options"
+msgstr "Mundësi emrash kartelash"
+
+#: youtube_dl_gui/optionsframe.py:319
+msgid "Restrict filenames to ASCII"
+msgstr "Emrat e kartelave kufizoji në ASCII"
+
+#: youtube_dl_gui/optionsframe.py:321
+msgid "More options"
+msgstr "Më tepër mundësi"
+
+#: youtube_dl_gui/optionsframe.py:322
+msgid "Confirm on exit"
+msgstr "Ripohoje gjatë daljes"
+
+#: youtube_dl_gui/optionsframe.py:323
+msgid "Confirm item deletion"
+msgstr "Ripohoni fshirje objekti"
+
+#: youtube_dl_gui/optionsframe.py:324
+msgid "Inform me on download completion"
+msgstr "Njoftomë, kur të plotësohet shkarkimi"
+
+#: youtube_dl_gui/optionsframe.py:326
+msgid "Shutdown on download completion"
+msgstr "Fike, kur të jetë plotësuar shkarkimi"
+
+#: youtube_dl_gui/optionsframe.py:337
+msgid "SUDO password"
+msgstr "Fjalëkalim SUDO"
+
+#: youtube_dl_gui/optionsframe.py:415 youtube_dl_gui/optionsframe.py:816
+msgid "In order for the changes to take effect please restart {0}"
+msgstr "Që të hyjnë në fuqi ndryshimet, ju lutemi, rinisni {0}"
+
+#: youtube_dl_gui/optionsframe.py:416 youtube_dl_gui/optionsframe.py:817
+msgid "Restart"
+msgstr "Rinise"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "high"
+msgstr "e lartë"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "low"
+msgstr "e ulët"
+
+#: youtube_dl_gui/optionsframe.py:463
+msgid "mid"
+msgstr "e mesme"
+
+#: youtube_dl_gui/optionsframe.py:468
+msgid "Video formats"
+msgstr "Formate video"
+
+#: youtube_dl_gui/optionsframe.py:471
+msgid "Audio formats"
+msgstr "Formate audio"
+
+#: youtube_dl_gui/optionsframe.py:474
+msgid "Post-Process options"
+msgstr "Mundësi për pas kryerjes"
+
+#: youtube_dl_gui/optionsframe.py:475
+msgid "Keep original files"
+msgstr "Mbaj kartelat origjinale"
+
+#: youtube_dl_gui/optionsframe.py:476
+msgid "Extract audio from video file"
+msgstr "Përfto audio prej kartele video"
+
+#: youtube_dl_gui/optionsframe.py:477
+msgid "Embed thumbnail in audio file"
+msgstr "Trupëzo miniaturë në kartelë audio"
+
+#: youtube_dl_gui/optionsframe.py:478
+msgid "Add metadata to file"
+msgstr "Shtoni tejtëdhëna te kartelë"
+
+#: youtube_dl_gui/optionsframe.py:480
+msgid "Audio quality"
+msgstr "Cilësi Audio"
+
+#: youtube_dl_gui/optionsframe.py:538
+msgid "English"
+msgstr "Anglisht"
+
+#: youtube_dl_gui/optionsframe.py:539
+msgid "French"
+msgstr "Frëngjisht"
+
+#: youtube_dl_gui/optionsframe.py:540
+msgid "German"
+msgstr "Gjermanisht"
+
+#: youtube_dl_gui/optionsframe.py:541
+msgid "Greek"
+msgstr "Greqisht"
+
+#: youtube_dl_gui/optionsframe.py:542
+msgid "Hebrew"
+msgstr "Hebraisht"
+
+#: youtube_dl_gui/optionsframe.py:543
+msgid "Italian"
+msgstr "Italisht"
+
+#: youtube_dl_gui/optionsframe.py:544
+msgid "Portuguese"
+msgstr "Portugalisht"
+
+#: youtube_dl_gui/optionsframe.py:545
+msgid "Russian"
+msgstr "Rusisht"
+
+#: youtube_dl_gui/optionsframe.py:546
+msgid "Spanish"
+msgstr "Spanjisht"
+
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Swedish"
+msgstr "Suedisht"
+
+#: youtube_dl_gui/optionsframe.py:548
+msgid "Turkish"
+msgstr "Turqisht"
+
+#: youtube_dl_gui/optionsframe.py:564
+msgid "None"
+msgstr "Asnjë"
+
+#: youtube_dl_gui/optionsframe.py:565
+msgid "Automatic subtitles (YOUTUBE ONLY)"
+msgstr "Titra të automatizuar (VETËM PËR YOUTUBE)"
+
+#: youtube_dl_gui/optionsframe.py:566
+msgid "All available subtitles"
+msgstr "Krejt titrat e gatshëm"
+
+#: youtube_dl_gui/optionsframe.py:567
+msgid "Subtitles by language"
+msgstr "Titra sipas gjuhësh"
+
+#: youtube_dl_gui/optionsframe.py:573
+msgid "Subtitles"
+msgstr "Titra"
+
+#: youtube_dl_gui/optionsframe.py:577
+msgid "Subtitles options"
+msgstr "Mundësi titrash"
+
+#: youtube_dl_gui/optionsframe.py:578
+msgid "Embed subtitles into video file (mp4 ONLY)"
+msgstr "Trupëzo titra në kartelë video file (VETËM për mp4)"
+
+#: youtube_dl_gui/optionsframe.py:580
+msgid "Playlist"
+msgstr "Luajlistë"
+
+#: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
+msgid "Max"
+msgstr "Maks."
+
+#: youtube_dl_gui/optionsframe.py:589
+msgid "Filesize"
+msgstr "Madhësi kartele"
+
+#: youtube_dl_gui/optionsframe.py:594
+msgid "Min"
+msgstr "Min."
+
+#: youtube_dl_gui/optionsframe.py:723
+msgid "Retries"
+msgstr "Prova"
+
+#: youtube_dl_gui/optionsframe.py:726
+msgid "Authentication"
+msgstr "Mirëfilltësim"
+
+#: youtube_dl_gui/optionsframe.py:728
+msgid "Username"
+msgstr "Emër përdoruesi"
+
+#: youtube_dl_gui/optionsframe.py:730
+msgid "Password"
+msgstr "Fjalëkalim"
+
+#: youtube_dl_gui/optionsframe.py:732
+msgid "Video password"
+msgstr "Fjalëkalim videoje"
+
+#: youtube_dl_gui/optionsframe.py:735
+msgid "Network"
+msgstr "Rrjet"
+
+#: youtube_dl_gui/optionsframe.py:737
+msgid "Proxy"
+msgstr "Ndërmjetës"
+
+#: youtube_dl_gui/optionsframe.py:739
+msgid "User agent"
+msgstr "Agjent përdoruesi"
+
+#: youtube_dl_gui/optionsframe.py:741
+msgid "Referer"
+msgstr "Referues"
+
+#: youtube_dl_gui/optionsframe.py:744
+msgid "Logging"
+msgstr "Regjistrim"
+
+#: youtube_dl_gui/optionsframe.py:746
+msgid "Enable log"
+msgstr "Aktivizo regjistër"
+
+#: youtube_dl_gui/optionsframe.py:747
+msgid "View"
+msgstr "Parje"
+
+#: youtube_dl_gui/optionsframe.py:748
+msgid "Clear"
+msgstr "Spastroje"
+
+#: youtube_dl_gui/optionsframe.py:858
+msgid "Youtube-dl command line options (e.g. --help)"
+msgstr "Mundësi rreshti urdhrash për youtube-dl (p.sh., --help)"
+
+#: youtube_dl_gui/optionsframe.py:861
+msgid "Extra options"
+msgstr "Mundësi ekstra"
+
+#: youtube_dl_gui/optionsframe.py:863
+msgid "Debug youtube-dl"
+msgstr "Diagnostikoni youtube-dl"
+
+#: youtube_dl_gui/optionsframe.py:864
+msgid "Ignore errors"
+msgstr "Shpërfilli gabimet"
+
+#: youtube_dl_gui/optionsframe.py:865
+msgid "Ignore youtube-dl config"
+msgstr "Shpërfill formësim youtube-dl-je"
+
+#: youtube_dl_gui/optionsframe.py:866
+msgid "No mtime"
+msgstr "S’ka mtime"
+
+#: youtube_dl_gui/optionsframe.py:867
+msgid "Prefer native HLS"
+msgstr "Parapëlqe HLS nga sistemi"
+
+#: youtube_dl_gui/optionsframe.py:928
+msgid "Log Viewer"
+msgstr "Parës Regjistri"

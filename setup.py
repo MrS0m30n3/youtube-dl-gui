@@ -1,12 +1,11 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtube-dlg setup file.
 
 Examples:
-    Windows::
+    Windows/Linux::
 
-        python setup.py py2exe
+        python setup.py pyinstaller
 
     Linux::
 
@@ -26,17 +25,8 @@ Examples:
 
     Build with updates disabled::
 
-        python setup.py build --no-updates
+        python setup.py no_updates
 
-Requirements:
-
-    * GNU gettext utilities
-
-Notes:
-    If you get 'TypeError: decoding Unicode is not supported' when you run
-    py2exe then apply the following patch::
-
-        http://sourceforge.net/p/py2exe/patches/28/
 
     Basic steps of the setup::
 
@@ -51,39 +41,43 @@ Notes:
 
 """
 
-from distutils import cmd, log
-from distutils.core import setup
-from distutils.command.build import build
-
+import glob
 import os
 import sys
-import glob
-from shutil import copyfile
-from subprocess import call
+from setuptools import setup, Command
+from distutils import log
+from distutils.spawn import spawn
+import time
 
-PY2EXE = len(sys.argv) >= 2 and sys.argv[1] == "py2exe"
+import polib
 
-if PY2EXE:
-    try:
-        import py2exe
-    except ImportError as error:
-        print(error)
-        sys.exit(1)
 
-from youtube_dl_gui import (
-    __author__,
-    __appname__,
-    __contact__,
-    __version__,
-    __license__,
-    __projecturl__,
-    __description__,
-    __packagename__,
-    __descriptionfull__
-)
+__packagename__ = "youtube_dl_gui"
 
-# Setup can not handle unicode
-__packagename__ = str(__packagename__)
+PYINSTALLER = len(sys.argv) >= 2 and sys.argv[1] == "pyinstaller"
+
+try:
+    from PyInstaller import compat as pyi_compat
+
+    if pyi_compat.is_win:
+        # noinspection PyUnresolvedReferences
+        from PyInstaller.utils.win32.versioninfo import (
+            VarStruct, VarFileInfo, StringStruct, StringTable,
+            StringFileInfo, FixedFileInfo, VSVersionInfo, SetVersion,
+        )
+except ImportError:
+    pyi_compat = None
+    if PYINSTALLER:
+        print("Cannot import pyinstaller", file=sys.stderr)
+        exit(1)
+
+# Get the version from youtube_dl_gui/version.py without importing the package
+exec(compile(open(__packagename__+"/version.py").read(), __packagename__+"/version.py", "exec"))
+# Get the info from youtube_dl_gui/info.py without importing the package
+exec(compile(open(__packagename__+"/info.py").read(), __packagename__+"/info.py", "exec"))
+
+DESCRIPTION = __description__
+LONG_DESCRIPTION = __descriptionfull__
 
 
 def on_windows():
@@ -91,93 +85,79 @@ def on_windows():
     return os.name == "nt"
 
 
-class BuildBin(cmd.Command):
+def version2tuple(commit=0):
+    version_list = str(__version__).split(".")
+    if len(version_list) > 3:
+        _commit = int(version_list[3])
+        del version_list[3]
+    else:
+        _commit = commit
 
-    description = "build the youtube-dl-gui binary file"
+    _year, _month, _day = [int(value) for value in version_list]
+    return _year, _month, _day, _commit
+
+
+def version2str(commit=0):
+    version_tuple = version2tuple(commit)
+    return "%s.%s.%s.%s" % version_tuple
+
+
+# noinspection PyAttributeOutsideInit,PyArgumentList
+class BuildTranslations(Command):
+    description = "Build the translation files"
     user_options = []
 
     def initialize_options(self):
-        self.scripts_dir = None
-
-    def finalize_options(self):
-        self.scripts_dir = os.path.join("build", "_scripts")
-
-    def run(self):
-        if not os.path.exists(self.scripts_dir):
-            os.makedirs(self.scripts_dir)
-
-        copyfile(os.path.join(__packagename__, "__main__.py"),
-                 os.path.join(self.scripts_dir, "youtube-dl-gui"))
-
-
-class BuildTranslations(cmd.Command):
-
-    description = "build the translation files"
-    user_options = []
-
-    def initialize_options(self):
-        self.exec_name = None
         self.search_pattern = None
 
     def finalize_options(self):
-        if on_windows():
-            self.exec_name = "msgfmt.exe"
-        else:
-            self.exec_name = "msgfmt"
-
         self.search_pattern = os.path.join(__packagename__, "locale", "*", "LC_MESSAGES", "youtube_dl_gui.po")
 
     def run(self):
-        for po_file in glob.glob(self.search_pattern):
-            mo_file = po_file.replace(".po", ".mo")
+        po_file = ""
 
-            try:
-                log.info("building MO file for '{}'".format(po_file))
-                call([self.exec_name, "-o", mo_file, po_file])
-            except OSError:
-                log.error("could not locate file '{}', exiting...".format(self.exec_name))
-                sys.exit(1)
+        try:
+            for po_file in glob.glob(self.search_pattern):
+                mo_file = po_file.replace('.po', '.mo')
+                po = polib.pofile(po_file)
+
+                log.info("Building MO file for '{}'".format(po_file))
+                po.save_as_mofile(mo_file)
+        except IOError:
+            log.error("Error process locate file '{}', exiting...".format(po_file))
+            sys.exit(1)
 
 
-class Build(build):
-
-    """Overwrite the default 'build' behaviour."""
-
-    sub_commands = [
-        ("build_bin", None),
-        ("build_trans", None)
-    ] + build.sub_commands
-
-    build.user_options.append(("no-updates", None, "build with updates disabled"))
+# noinspection PyAttributeOutsideInit,PyArgumentList
+class BuildNoUpdate(Command):
+    description = "Build with updates disabled"
+    user_options = []
 
     def initialize_options(self):
-        build.initialize_options(self)
-        self.no_updates = None
+        self.build_lib = os.path.dirname(os.path.abspath(__file__))
+
+    def finalize_options(self):
+        pass
 
     def run(self):
-        build.run(self)
-
-        if self.no_updates:
-            self.__disable_updates()
+        self.__disable_updates()
 
     def __disable_updates(self):
         lib_dir = os.path.join(self.build_lib, __packagename__)
         target_file = "optionsmanager.py"
-
         # Options file should be available from previous build commands
         optionsfile = os.path.join(lib_dir, target_file)
-        data = None
 
         with open(optionsfile, "r") as input_file:
             data = input_file.readlines()
 
         if data is None:
-            log.error("building with updates disabled failed!")
+            log.error("Building with updates disabled failed!")
             sys.exit(1)
 
         for index, line in enumerate(data):
             if "'disable_update': False" in line:
-                log.info("disabling updates")
+                log.info("Disabling updates...")
                 data[index] = line.replace("False", "True")
                 break
 
@@ -185,19 +165,100 @@ class Build(build):
             output_file.writelines(data)
 
 
-# Overwrite cmds
+class BuildPyinstallerBin(Command):
+    description = "Build the executable"
+    user_options = []
+    version_file = None
+    if pyi_compat and pyi_compat.is_win:
+        version_file = VSVersionInfo(
+            ffi=FixedFileInfo(
+                filevers=version2tuple(),
+                prodvers=version2tuple(),
+                mask=0x3F,
+                flags=0x0,
+                OS=0x4,
+                fileType=0x1,
+                subtype=0x0,
+                date=(0, 0),
+            ),
+            kids=[
+                VarFileInfo([VarStruct("Translation", [0, 1200])]),
+                StringFileInfo(
+                    [
+                        StringTable(
+                            "000004b0",
+                            [
+                                StringStruct("CompanyName", __maintainer_contact__),
+                                StringStruct("FileDescription", DESCRIPTION),
+                                StringStruct("FileVersion", version2str()),
+                                StringStruct("InternalName", "youtube-dl-gui.exe"),
+                                StringStruct(
+                                    "LegalCopyright",
+                                    __projecturl__ + "LICENSE",
+                                ),
+                                StringStruct("OriginalFilename", "youtube-dl-gui.exe"),
+                                StringStruct("ProductName", __appname__),
+                                StringStruct("ProductVersion", version2str()),
+                            ],
+                        )
+                    ]
+                ),
+            ],
+        )
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self, version=version_file):
+        """Run pyinstaller"""
+        if on_windows():
+            path_sep = ";"
+        else:
+            path_sep = ":"
+        
+        spawn(
+            [
+                "pyinstaller",
+                "-w",
+                "-F",
+                "--icon="+__packagename__+"/data/pixmaps/youtube-dl-gui.ico",
+                "--add-data="+__packagename__+"/data"+path_sep+__packagename__+"/data",
+                "--add-data="+__packagename__+"/locale"+path_sep+__packagename__+"/locale",
+                "--exclude-module=tests",
+                "--name=youtube-dlg",
+                ""+__packagename__+"/__main__.py",
+            ],
+            dry_run=self.dry_run)
+
+        if version:
+            time.sleep(3)
+            SetVersion("./dist/youtube-dlg.exe", version)
+
+
+pyinstaller_console = [
+    {
+        "script": "./"+__packagename__+"/__main__.py",
+        "dest_base": __packagename__,
+        "version": __version__,
+        "description": DESCRIPTION,
+        "comments": LONG_DESCRIPTION,
+        "product_name": __appname__,
+        "product_version": __version__,
+    }
+]
+
 cmdclass = {
-    "build": Build,
-    "build_bin": BuildBin,
-    "build_trans": BuildTranslations
+    "build_trans": BuildTranslations,
+    "no_updates": BuildNoUpdate,
 }
 
 
-def linux_setup():
-    scripts = []
-    data_files = []
-    package_data = {}
-
+def setup_linux():
+    """Setup params for Linux"""
+    data_files_linux = []
     # Add hicolor icons
     for path in glob.glob("youtube_dl_gui/data/icons/hicolor/*x*"):
         size = os.path.basename(path)
@@ -205,120 +266,85 @@ def linux_setup():
         dst = "share/icons/hicolor/{size}/apps".format(size=size)
         src = "{icon_path}/apps/youtube-dl-gui.png".format(icon_path=path)
 
-        data_files.append((dst, [src]))
-
+        data_files_linux.append((dst, [src]))
     # Add fallback icon, see issue #14
-    data_files.append(
+    data_files_linux.append(
         ("share/pixmaps", ["youtube_dl_gui/data/pixmaps/youtube-dl-gui.png"])
     )
-
     # Add man page
-    data_files.append(
+    data_files_linux.append(
         ("share/man/man1", ["youtube-dl-gui.1"])
     )
-
     # Add pixmaps icons (*.png) & i18n files
-    package_data[__packagename__] = [
+    package_data_linux = {__packagename__: [
         "data/pixmaps/*.png",
         "locale/*/LC_MESSAGES/*.mo"
-    ]
-
-    # Add scripts
-    scripts.append("build/_scripts/youtube-dl-gui")
-
+    ]}
     setup_params = {
-        "scripts": scripts,
-        "data_files": data_files,
-        "package_data": package_data
+        "data_files": data_files_linux,
+        "package_data": package_data_linux,
     }
 
     return setup_params
 
 
-def windows_setup():
-    def normal_setup():
-        package_data = {}
+def setup_windows():
+    """Setup params for Windows"""
+    package_data_windows = {__packagename__: [
+        "data\\pixmaps\\*.png",
+        "locale\\*\\LC_MESSAGES\\*.mo"
+    ]}
+    # Add pixmaps icons (*.png) & i18n files
+    setup_params = {
+        "package_data": package_data_windows,
+    }
 
-        # Add pixmaps icons (*.png) & i18n files
-        package_data[__packagename__] = [
-            "data\\pixmaps\\*.png",
-            "locale\\*\\LC_MESSAGES\\*.mo"
-        ]
-
-        setup_params = {
-            "package_data": package_data
-        }
-
-        return setup_params
-
-    def py2exe_setup():
-        windows = []
-        data_files = []
-
-        # py2exe dependencies & options
-        # TODO change directory for ffmpeg.exe & ffprobe.exe
-        dependencies = [
-            "C:\\Windows\\System32\\ffmpeg.exe",
-            "C:\\Windows\\System32\\ffprobe.exe",
-            "C:\\python27\\DLLs\\MSVCP90.dll"
-        ]
-
-        options = {
-            "includes": ["wx.lib.pubsub.*",
-                         "wx.lib.pubsub.core.*",
-                         "wx.lib.pubsub.core.arg1.*"]
-        }
-        #############################################
-
-        # Add py2exe deps & pixmaps icons (*.png)
-        data_files.extend([
-            ("", dependencies),
-            ("data\\pixmaps", glob.glob("youtube_dl_gui\\data\\pixmaps\\*.png")),
-        ])
-
-        # We have to manually add the translation files since py2exe cant do it
-        for lang in os.listdir("youtube_dl_gui\\locale"):
-            dst = os.path.join("locale", lang, "LC_MESSAGES")
-            src = os.path.join("youtube_dl_gui", dst, "youtube_dl_gui.mo")
-
-            data_files.append((dst, [src]))
-
-        # Add GUI executable details
-        windows.append({
-            "script": "build\\_scripts\\youtube-dl-gui",
-            "icon_resources": [(0, "youtube_dl_gui\\data\\pixmaps\\youtube-dl-gui.ico")]
-        })
-
-        setup_params = {
-            "windows": windows,
-            "data_files": data_files,
-            "options": {"py2exe": options}
-        }
-
-        return setup_params
-
-    if PY2EXE:
-        return py2exe_setup()
-
-    return normal_setup()
+    return setup_params
 
 
-if on_windows():
-    params = windows_setup()
+params = dict()
+
+if PYINSTALLER:
+    cmdclass.update({"pyinstaller": BuildPyinstallerBin})
 else:
-    params = linux_setup()
+    if on_windows():
+        params = setup_windows()
+    else:
+        params = setup_linux()
+
+    params["entry_points"] = {
+        "console_scripts": ["youtube-dl-gui = " + __packagename__ + ":main"]
+    }
+
 
 setup(
-    author              = __author__,
-    name                = __appname__,
-    version             = __version__,
-    license             = __license__,
-    author_email        = __contact__,
-    url                 = __projecturl__,
-    description         = __description__,
-    long_description    = __descriptionfull__,
-    packages            = [__packagename__],
-    cmdclass            = cmdclass,
-
+    name=__packagename__,
+    version=__version__,
+    description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
+    url=__projecturl__,
+    author=__author__,
+    author_email=__contact__,
+    maintainer=__maintainer__,
+    maintainer_email=__maintainer_contact__,
+    license=__license__,
+    packages=[__packagename__],
+    classifiers=[
+        "Topic :: Multimedia :: Video :: User Interfaces",
+        "Development Status :: 5 - Production/Stable",
+        "Environment :: MacOS X :: Cocoa",
+        "Environment :: Win32 (MS Windows)",
+        "Environment :: X11 Applications :: GTK",
+        "License :: Public Domain",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: Implementation",
+        "Programming Language :: Python :: Implementation :: CPython",
+    ],
+    cmdclass=cmdclass,
     **params
 )

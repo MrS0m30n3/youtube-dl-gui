@@ -4,3 +4,9 @@ MANIFEST
 
 dist/
 build/
+env/
+
+.idea
+.vscode
+*.spec
+*.egg-info

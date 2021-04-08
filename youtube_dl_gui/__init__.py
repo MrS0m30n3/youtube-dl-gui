@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Youtubedlg __init__ file.
@@ -14,21 +13,18 @@ Example:
 
 """
 
-from __future__ import unicode_literals
-
+from gettext import translation
 import sys
-import gettext
-import os.path
+import os
+
 
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
-__packagename__ = "youtube_dl_gui"
-
-# For package use
+from .formats import *
 from .version import __version__
 from .info import (
     __author__,
@@ -41,12 +37,8 @@ from .info import (
     __descriptionfull__,
 )
 
-gettext.install(__packagename__)
-from .formats import reload_strings
-
 from .logmanager import LogManager
 from .optionsmanager import OptionsManager
-
 from .utils import (
     get_config_path,
     get_locale_file,
@@ -54,6 +46,7 @@ from .utils import (
     YOUTUBEDL_BIN
 )
 
+__packagename__ = "youtube_dl_gui"
 
 # Set config path and create options and log managers
 config_path = get_config_path()
@@ -69,12 +62,34 @@ if opt_manager.options['enable_log']:
 locale_dir = get_locale_file()
 
 try:
-    gettext.translation(__packagename__, locale_dir, [opt_manager.options['locale_name']]).install(unicode=True)
+    lang = translation(__packagename__,
+                       locale_dir,
+                       [opt_manager.options['locale_name']])
 except IOError:
     opt_manager.options['locale_name'] = 'en_US'
-    gettext.install(__packagename__)
+    lang = translation(__packagename__,
+                       locale_dir,
+                       [opt_manager.options['locale_name']])
 
-reload_strings()
+
+# Redefine _ to gettext in builtins
+_ = lang.gettext
+OUTPUT_FORMATS, DEFAULT_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS, FORMATS = reload_strings(_)
+
+# wx.Locale
+locale = {
+    'ar_SA': wx.LANGUAGE_ARABIC,
+    'cs_CZ': wx.LANGUAGE_CZECH,
+    'en_US': wx.LANGUAGE_ENGLISH_US,
+    'fr_FR': wx.LANGUAGE_FRENCH,
+    'es_CU': wx.LANGUAGE_SPANISH,
+    'it_IT': wx.LANGUAGE_ITALIAN,
+    'ja_JP': wx.LANGUAGE_JAPANESE,
+    'ko_KR': wx.LANGUAGE_KOREAN,
+    'pt_BR': wx.LANGUAGE_PORTUGUESE_BRAZILIAN,
+    'ru_RU': wx.LANGUAGE_RUSSIAN,
+    'es_ES': wx.LANGUAGE_SPANISH
+}
 
 from .mainframe import MainFrame
 
@@ -84,6 +99,10 @@ def main():
     youtubedl_path = os.path.join(opt_manager.options["youtubedl_path"], YOUTUBEDL_BIN)
 
     app = wx.App()
+    # Set wx.Locale
+    app.locale = wx.Locale(
+        locale.get(opt_manager.options['locale_name'], wx.LANGUAGE_ENGLISH_US)
+    )
     frame = MainFrame(opt_manager, log_manager)
     frame.Show()
 

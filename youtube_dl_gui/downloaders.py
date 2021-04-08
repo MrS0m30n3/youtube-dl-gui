@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 """Python module to download videos.
@@ -8,39 +7,37 @@ for downloading the video files.
 
 """
 
-from __future__ import unicode_literals
 
-import re
 import os
-import sys
-import locale
 import signal
 import subprocess
+import sys
 
 from time import sleep
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 
-from .utils import convert_item
+from .utils import get_encoding
 
 
 class PipeReader(Thread):
+    # noinspection PyUnresolvedReferences
     """Helper class to avoid deadlocks when reading from subprocess pipes.
 
-    This class uses python threads and queues in order to read from subprocess
-    pipes in an asynchronous way.
+        This class uses python threads and queues in order to read from subprocess
+        pipes in an asynchronous way.
 
-    Attributes:
-        WAIT_TIME (float): Time in seconds to sleep.
+        Attributes:
+            WAIT_TIME (float): Time in seconds to sleep.
 
-    Args:
-        queue (Queue.Queue): Python queue to store the output of the subprocess.
+        Args:
+            queue (Queue.Queue): Python queue to store the output of the subprocess.
 
-    Warnings:
-        All the operations are based on 'str' types. The caller has to convert
-        the queued items back to 'unicode' if he needs to.
+        Warnings:
+            All the operations are based on 'str' types. The caller has to convert
+            the queued items back to 'unicode' if he needs to.
 
-    """
+        """
 
     WAIT_TIME = 0.1
 
@@ -49,7 +46,6 @@ class PipeReader(Thread):
         self._filedescriptor = None
         self._running = True
         self._queue = queue
-
         self.start()
 
     def run(self):
@@ -57,18 +53,16 @@ class PipeReader(Thread):
         ignore_line = False
 
         while self._running:
-            if self._filedescriptor is not None:
-                for line in iter(self._filedescriptor.readline, str('')):
+            if self._filedescriptor is not None and not self._filedescriptor.closed:
+                pipedata = self._filedescriptor.read()
+                pipedata = bytes(pipedata).decode(encoding=get_encoding(), errors='ignore')
+                for line in pipedata.splitlines():
                     # Ignore ffmpeg stderr
-                    if str('ffmpeg version') in line:
+                    if 'ffmpeg version' in line:
                         ignore_line = True
-
-                    if not ignore_line:
+                    if not ignore_line and line != "":
                         self._queue.put_nowait(line)
-
-                self._filedescriptor = None
                 ignore_line = False
-
             sleep(self.WAIT_TIME)
 
     def attach_filedescriptor(self, filedesc):
@@ -166,8 +160,9 @@ class YoutubeDLDownloader(object):
             self._stderr_reader.attach_filedescriptor(self._proc.stderr)
 
         while self._proc_is_alive():
-            stdout = self._proc.stdout.readline().rstrip()
-            stdout = convert_item(stdout, to_unicode=True)
+            stdout = ""
+            if not self._proc.stdout.closed:
+                stdout = self._proc.stdout.readline().rstrip()
 
             if stdout:
                 data_dict = extract_data(stdout)
@@ -177,15 +172,12 @@ class YoutubeDLDownloader(object):
         # Read stderr after download process has been completed
         # We don't need to read stderr in real time
         while not self._stderr_queue.empty():
-            stderr = self._stderr_queue.get_nowait().rstrip()
-            stderr = convert_item(stderr, to_unicode=True)
+            stderr = str(self._stderr_queue.get_nowait()).rstrip()
 
             self._log(stderr)
 
             if self._is_warning(stderr):
                 self._set_returncode(self.WARNING)
-            else:
-                self._set_returncode(self.ERROR)
 
         # Set return code to ERROR if we could not start the download process
         # or the childs return code is greater than zero
@@ -207,6 +199,8 @@ class YoutubeDLDownloader(object):
     def stop(self):
         """Stop the download process and set return code to STOPPED. """
         if self._proc_is_alive():
+            self._proc.stdout.close()
+            self._proc.stderr.close()
 
             if os.name == 'nt':
                 # os.killpg is not available on Windows
@@ -233,8 +227,10 @@ class YoutubeDLDownloader(object):
         if code >= self._return_code:
             self._return_code = code
 
-    def _is_warning(self, stderr):
-        return stderr.split(':')[0] == 'WARNING'
+    @staticmethod
+    def _is_warning(stderr):
+        warning_error = str(stderr).split(':')[0] 
+        return warning_error == 'WARNING' or warning_error == 'ERROR'
 
     def _last_data_hook(self):
         """Set the last data information based on the return code. """
@@ -297,7 +293,6 @@ class YoutubeDLDownloader(object):
         """Returns True if self._proc is alive else False. """
         if self._proc is None:
             return False
-
         return self._proc.poll() is None
 
     def _get_cmd(self, url, options):
@@ -311,10 +306,7 @@ class YoutubeDLDownloader(object):
             Python list that contains the command to execute.
 
         """
-        if os.name == 'nt':
-            cmd = [self.youtubedl_path] + options + [url]
-        else:
-            cmd = ['python', self.youtubedl_path] + options + [url]
+        cmd = [self.youtubedl_path] + options + [url]
 
         return cmd
 
@@ -325,34 +317,28 @@ class YoutubeDLDownloader(object):
             cmd (list): Python list that contains the command to execute.
 
         """
-        info = preexec = None
+        info = None
 
-        # Keep a unicode copy of cmd for the log
-        ucmd = cmd
+        kwargs = dict(stdin=subprocess.PIPE,
+                     stdout=subprocess.PIPE,
+                     stderr=subprocess.PIPE)
 
         if os.name == 'nt':
             # Hide subprocess window
             info = subprocess.STARTUPINFO()
             info.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        else:
-            # Make subprocess the process group leader
-            # in order to kill the whole process group with os.killpg
-            preexec = os.setsid
+            info.wShowWindow = subprocess.SW_HIDE
 
-        # Encode command for subprocess
-        # Refer to http://stackoverflow.com/a/9951851/35070
-        if sys.version_info < (3, 0):
-            cmd = convert_item(cmd, to_unicode=False)
+            kwargs['startupinfo'] = info
+            kwargs['creationflags'] = subprocess.CREATE_NEW_PROCESS_GROUP
+        else:
+            kwargs['start_new_session'] = True
 
         try:
-            self._proc = subprocess.Popen(cmd,
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE,
-                                          preexec_fn=preexec,
-                                          startupinfo=info)
-        except (ValueError, OSError) as error:
-            self._log('Failed to start process: {}'.format(ucmd))
-            self._log(convert_item(str(error), to_unicode=True))
+            self._proc = subprocess.Popen(cmd, **kwargs)
+        except (ValueError, OSError, FileNotFoundError) as error:
+            self._log('Failed to start process: {}'.format(str(cmd)))
+            self._log(str(error))
 
 
 def extract_data(stdout):
@@ -379,6 +365,7 @@ def extract_data(stdout):
 
     """
     # REFACTOR
+    # noinspection PyShadowingNames
     def extract_filename(input_data):
         path, fullname = os.path.split(input_data.strip("\""))
         filename, extension = os.path.splitext(fullname)
@@ -393,6 +380,7 @@ def extract_data(stdout):
     # We want to keep the spaces in order to extract filenames with
     # multiple whitespaces correctly. We also keep a copy of the old
     # 'stdout' for backward compatibility with the old code
+    stdout = bytes(stdout).decode(encoding=get_encoding(), errors='ignore')
     stdout_with_spaces = stdout.split(' ')
     stdout = stdout.split()
 
@@ -428,7 +416,7 @@ def extract_data(stdout):
             data_dictionary['playlist_size'] = stdout[5]
 
         # Remove the 'and merged' part from stdout when using ffmpeg to merge the formats
-        if stdout[-3] == 'downloaded' and stdout [-1] == 'merged':
+        if stdout[-3] == 'downloaded' and stdout[-1] == 'merged':
             stdout = stdout[:-2]
             stdout_with_spaces = stdout_with_spaces[:-2]
 

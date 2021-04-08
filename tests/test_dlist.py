@@ -3,20 +3,19 @@
 
 """Contains test cases for the DownloadList object."""
 
-from __future__ import unicode_literals
 
 import sys
 import os.path
 import unittest
+from unittest import mock
 
 PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
-    import mock
     from youtube_dl_gui.downloadmanager import DownloadList, synchronized
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 

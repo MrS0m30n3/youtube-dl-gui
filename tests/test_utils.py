@@ -3,26 +3,23 @@
 
 """Contains test cases for the utils.py module."""
 
-from __future__ import unicode_literals
 
 import sys
 import os.path
 import unittest
+from unittest import mock
 
 PATH = os.path.realpath(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 
 try:
-    import mock
-
     from youtube_dl_gui import utils
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
 class TestToBytes(unittest.TestCase):
-
     """Test case for the to_bytes method."""
 
     def test_to_bytes_bytes(self):
@@ -46,7 +43,6 @@ class TestToBytes(unittest.TestCase):
 
 
 class TestFormatBytes(unittest.TestCase):
-
     """Test case for the format_bytes method."""
 
     def test_format_bytes_bytes(self):
@@ -66,7 +62,6 @@ class TestFormatBytes(unittest.TestCase):
 
 
 class TestBuildCommand(unittest.TestCase):
-
     """Test case for the build_command method."""
 
     def setUp(self):
@@ -113,21 +108,15 @@ class TestBuildCommand(unittest.TestCase):
 
 
 class TestConvertItem(unittest.TestCase):
-
     """Test case for the convert_item function."""
 
     def setUp(self):
-        self.input_list_u = ["v1", "v2", "v3"]
-        self.input_list_s = [str("v1"), str("v2"), str("v3")]
-
-        self.input_tuple_u = ("v1", "v2", "v3")
-        self.input_tuple_s = (str("v1"), str("v2"), str("v3"))
-
-        self.input_dict_u = {"k1": "v1", "k2": "v2"}
-        self.input_dict_s = {str("k1"): str("v1"), str("k2"): str("v2")}
+        self.input_list_s = self.input_list_u = ["v1", "v2", "v3"]
+        self.input_tuple_s= self.input_tuple_u = ("v1", "v2", "v3")
+        self.input_dict_s = self.input_dict_u = {"k1": "v1", "k2": "v2"}
 
     def check_iter(self, iterable, iter_type, is_unicode):
-        check_type = unicode if is_unicode else str
+        check_type = str
 
         iterable = utils.convert_item(iterable, is_unicode)
 
@@ -143,10 +132,10 @@ class TestConvertItem(unittest.TestCase):
         self.assertIsInstance(utils.convert_item("test"), str)
 
     def test_convert_item_unicode_unicode(self):
-        self.assertIsInstance(utils.convert_item("test", True), unicode)
+        self.assertIsInstance(utils.convert_item("test", True), str)
 
     def test_convert_item_str_unicode(self):
-        self.assertIsInstance(utils.convert_item(str("test"), True), unicode)
+        self.assertIsInstance(utils.convert_item(str("test"), True), str)
 
     def test_convert_item_str_str(self):
         self.assertIsInstance(utils.convert_item(str("test")), str)
@@ -177,7 +166,6 @@ class TestConvertItem(unittest.TestCase):
 
 
 class TestGetDefaultLang(unittest.TestCase):
-
     """Test case for the get_default_lang function."""
 
     @mock.patch("youtube_dl_gui.utils.locale_getdefaultlocale")

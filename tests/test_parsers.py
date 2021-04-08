@@ -3,7 +3,6 @@
 
 """Contains test cases for the parsers module."""
 
-from __future__ import unicode_literals
 
 import sys
 import os.path
@@ -15,21 +14,20 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 try:
     from youtube_dl_gui.parsers import OptionsParser
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
 class TestParse(unittest.TestCase):
-
     """Test case for OptionsParser parse method."""
 
     def setUp(self):
         # Create the options_dict based on the OptionHolder
         # items inside the OptionsParser object
-        self.options_dict = {item.name:item.default_value for item in OptionsParser()._ydl_options}
+        self.options_dict = {item.name: item.default_value for item in OptionsParser()._ydl_options}
 
         # Add extra options used by the OptionsParser.parse method
-        self.options_dict["save_path"] = "/home/user/Workplace/test/youtube"
+        self.options_dict["save_path"] = "/home/user/Workplace/test/youtube/"
         self.options_dict["cmd_args"] = ""
         self.options_dict["output_format"] = 1  # Title
         self.options_dict["second_video_format"] = "0"
@@ -39,7 +37,7 @@ class TestParse(unittest.TestCase):
     def check_options_parse(self, expected_options):
         options_parser = OptionsParser()
 
-        self.assertItemsEqual(options_parser.parse(self.options_dict), expected_options)
+        self.assertListEqual(sorted(options_parser.parse(self.options_dict)), sorted(expected_options))
 
     def test_parse_to_audio_requirement_bug(self):
         """Test case for the 'to_audio' requirement."""
@@ -90,7 +88,6 @@ class TestParse(unittest.TestCase):
 
         self.check_options_parse(expected_cmd_list)
 
-
         # Test with two quoted 'cmd_args'
         self.options_dict["cmd_args"] = "--postprocessor-args \"-y -report\""
 
@@ -103,7 +100,6 @@ class TestParse(unittest.TestCase):
                              "-y -report"]
 
         self.check_options_parse(expected_cmd_list)
-
 
         # Test with one quoted 'cmd_arg' followed by other cmd line args
         self.options_dict["cmd_args"] = "--postprocessor-args \"-y\" -v"
@@ -118,7 +114,6 @@ class TestParse(unittest.TestCase):
                              "-v"]
 
         self.check_options_parse(expected_cmd_list)
-
 
         # Test the example presented in issue #54
         self.options_dict["cmd_args"] = "-f \"(mp4)[width<1300]\""

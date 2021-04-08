@@ -1,0 +1,120 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'PipeReader', 'x':975, 'y':161, 'width':178, 'height':186, 'attrs': 'WAIT_TIME|_filedescriptor|_queue|_running', 'meths': '__init__|attach_filedescriptor|join|run'}
+{'type':'umlshape', 'id':'YoutubeDLDownloader', 'x':716, 'y':100, 'width':200, 'height':474, 'attrs': 'ALREADY|ERROR|FILESIZE_ABORT|OK|STOPPED|WARNING|_proc|_return_code|_stderr_queue|_stderr_reader|data_hook|log_data|youtubedl_path', 'meths': '__init__|_create_process|_extract_info|_get_cmd|_hook_data|_is_warning|_last_data_hook|_log|_proc_is_alive|_set_returncode|close|download|stop'}
+{'type':'umlshape', 'id':'Thread', 'x':1298, 'y':107, 'width':70, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'object', 'x':416, 'y':313, 'width':70, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'subprocess.Popen', 'x':777, 'y':19, 'width':170, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'Queue', 'x':692, 'y':20, 'width':60, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'DownloadItem', 'x':201, 'y':659, 'width':186, 'height':410, 'attrs': 'ACTIVE_STAGES|COMPLETED_STAGES|ERROR_STAGES|STAGES|_stage|default_values|extensions|filenames|filesizes|object_id|options|path|playlist_index_changed|progress_stats|stage|url', 'meths': '__eq__|__init__|_set_stage|get_files|reset|update_stats'}
+{'type':'umlshape', 'id':'DownloadList', 'x':430, 'y':663, 'width':130, 'height':314, 'attrs': '_items_dict|_items_list', 'meths': '__init__|__len__|_swap|change_stage|clear|fetch_next|get_item|get_items|has_item|index|insert|move_down|move_up|remove'}
+{'type':'umlshape', 'id':'DownloadManager', 'x':1538, 'y':189, 'width':160, 'height':410, 'attrs': 'WAIT_TIME|_running|_successful|_time_it_took|_workers|download_list|log_manager|opt_manager|parent|successful|time_it_took', 'meths': '__init__|_check_youtubedl|_get_worker|_jobs_done|_talk_to_gui|_youtubedl_path|active|add_url|run|send_to_worker|stop_downloads'}
+{'type':'umlshape', 'id':'Worker', 'x':1071, 'y':657, 'width':130, 'height':458, 'attrs': 'WAIT_TIME|_data|_downloader|_options|_options_parser|_running|_successful|_wait_for_reply|log_manager|opt_manager|successful|worker|worker_count', 'meths': '__init__|_data_hook|_log_data|_reset|_talk_to_gui|available|close|download|has_index|run|stop_download|update_data'}
+{'type':'umlshape', 'id':'time.time', 'x':1754, 'y':379, 'width':100, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'OptionsParser', 'x':847, 'y':850, 'width':154, 'height':154, 'attrs': '_ydl_options', 'meths': '__init__|_build_filesizes|_build_savepath|_build_videoformat|parse'}
+{'type':'umlshape', 'id':'UpdateThread', 'x':1273, 'y':656, 'width':178, 'height':218, 'attrs': 'DOWNLOAD_TIMEOUT|GITHUB_API|LATEST_YOUTUBE_DL|LATEST_YOUTUBE_DL_API|download_path|quiet', 'meths': '__init__|_talk_to_gui|get_latest_sourcefile|run'}
+{'type':'umlshape', 'id':'LogManager', 'x':40, 'y':161, 'width':110, 'height':250, 'attrs': 'LOG_FILENAME|MAX_LOGSIZE|_encoding|add_time|config_path|handler|log_file|logger', 'meths': '__init__|clear|log|log_size'}
+{'type':'umlshape', 'id':'os.path.join', 'x':181, 'y':227, 'width':130, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'RotatingFileHandler', 'x':20, 'y':15, 'width':200, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'logging.getLogger', 'x':178, 'y':74, 'width':180, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'MainFrame', 'x':1382, 'y':1584, 'width':234, 'height':1930, 'attrs': 'ABOUT_LABEL|ADD_LABEL|CHOOSE_DIRECTORY|CLOSED_MSG|CLOSING_MSG|DELETE_LABEL|DL_COMPLETED_MSG|DOWNLOAD_ACTIVE|DOWNLOAD_LIST_LABEL|DOWNLOAD_STARTED|DOWN_LABEL|ETA_LABEL|EXTENSION_LABEL|FRAMES_MIN_SIZE|INFO_LABEL|OPEN_DIR_ERR|OPTIONS_LABEL|PAUSE_LABEL|PERCENT_LABEL|PLAY_LABEL|PROVIDE_URL_MSG|RELOAD_LABEL|SHUTDOWN_ERR|SHUTDOWN_MSG|SIZE_LABEL|SPEED_LABEL|START_LABEL|STATUSLIST_COLUMNS|STATUS_LABEL|STOP_LABEL|SUCC_REPORT_MSG|UPDATE_ACTIVE|UPDATE_ERR_MSG|UPDATE_LABEL|UPDATE_SUCC_MSG|UPDATING_MSG|UP_LABEL|URLS_LABEL|URL_REPORT_MSG|VIDEO_LABEL|VIEWLOG_LABEL|WARNING_LABEL|WELCOME_MSG|_app_timer|_bitmaps|_buttons|_download_list|_download_text|_folder_icon|_options_frame|_options_parser|_panel|_path_combobox|_pixmaps_path|_settings_button|_settings_menu|_status_bar|_status_list|_statuslist_menu|_url_list|_url_text|_videoformat_combobox|app_icon|download_manager|log_manager|opt_manager|update_thread', 'meths': '__init__|_after_download|_create_bitmap_button|_create_menu_item|_create_popup|_create_static_bitmap|_create_statictext|_create_textctrl|_download_manager_handler|_download_worker_handler|_get_urls|_on_about|_on_add|_on_arrow_down|_on_arrow_up|_on_close|_on_delete|_on_getcmd|_on_geturl|_on_open_dest|_on_open_path|_on_options|_on_pause|_on_play|_on_reenter|_on_reload|_on_savepath|_on_settings|_on_start|_on_statuslist_right_click|_on_timer|_on_update|_on_urllist_edit|_on_viewlog|_paste_from_clipboard|_print_stats|_reset_widgets|_set_layout|_set_publisher|_start_download|_status_bar_write|_update_handler|_update_pause_button|_update_savepath|_update_videoformat|_update_videoformat_combobox|_update_youtubedl|close|reset|win_ctrla_eventhandler'}
+{'type':'umlshape', 'id':'ListCtrl', 'x':1889, 'y':2270, 'width':147, 'height':378, 'attrs': '_list_index|_map_id|_url_list|columns', 'meths': 'GetItemData|__init__|_move_item|_set_columns|_update_from_item|bind_item|clear|deselect_all|get_all_selected|get_next_selected|get_selected|has_url|is_empty|move_item_down|move_item_up|remove_row'}
+{'type':'umlshape', 'id':'ExtComboBox', 'x':1894, 'y':2781, 'width':120, 'height':138, 'attrs': 'max_items', 'meths': 'Append|LoadMultiple|SetValue|__init__'}
+{'type':'umlshape', 'id':'DoubleStageButton', 'x':880, 'y':1882, 'width':180, 'height':186, 'attrs': '_stage|bitmap_pos|bitmaps|labels', 'meths': '__init__|_set_layout|change_stage|set_stage'}
+{'type':'umlshape', 'id':'ButtonsChoiceDialog', 'x':1157, 'y':3186, 'width':200, 'height':122, 'attrs': 'BORDER|STYLE', 'meths': '__init__|_on_close'}
+{'type':'umlshape', 'id':'ButtonsGroup', 'x':448, 'y':21, 'width':130, 'height':234, 'attrs': 'HEIGHT|WIDTH|_buttons_list|_squared', 'meths': '__init__|add|bind_event|create_sizer|disable_all|enable_all|set_size'}
+{'type':'umlshape', 'id':'ShutdownDialog', 'x':980, 'y':3184, 'width':150, 'height':234, 'attrs': 'BORDER|STYLE|TIMER_INTERVAL|message|msg_text|timeout|timer', 'meths': 'Destroy|__init__|_get_message|_on_timer'}
+{'type':'umlshape', 'id':'wx.Dialog', 'x':1148, 'y':3103, 'width':100, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'ListCtrlAutoWidthMixin', 'x':1838, 'y':2097, 'width':230, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Frame', 'x':1452, 'y':1196, 'width':90, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.ComboBox', 'x':1895, 'y':2697, 'width':120, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Button', 'x':1010, 'y':1599, 'width':100, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.ListCtrl', 'x':1820, 'y':2146, 'width':120, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Icon', 'x':1666, 'y':1739, 'width':80, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Bitmap', 'x':1683, 'y':2090, 'width':100, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Timer', 'x':1146, 'y':2950, 'width':90, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Panel', 'x':685, 'y':1341, 'width':90, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.StaticText', 'x':818, 'y':3184, 'width':140, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'CustomComboBox', 'x':676, 'y':1678, 'width':170, 'height':618, 'attrs': 'CB_READONLY|NAME|button|listbox|textctrl', 'meths': 'Append|AppendItems|Clear|Delete|Dismiss|FindString|GetCount|GetCurrentSelection|GetInsertionPoint|GetSelection|GetString|GetStringSelection|GetTextSelection|GetValue|IsListEmpty|IsTextEmpty|Popup|SetSelection|SetString|SetStringSelection|SetTextSelection|SetValue|__init__|_calc_popup_position|_calc_popup_size|_on_button|_propagate|add_header|add_item|add_items'}
+{'type':'umlshape', 'id':'OptionsFrame', 'x':1636, 'y':1311, 'width':138, 'height':378, 'attrs': 'FRAMES_MIN_SIZE|FRAME_TITLE|_was_shown|app_icon|close_button|log_manager|notebook|opt_manager|panel|reset_button|separator_line|tabs', 'meths': 'Show|__init__|_on_close|_on_reset|_set_layout|load_all_options|reset|save_all_options'}
+{'type':'umlshape', 'id':'TabPanel', 'x':416, 'y':1677, 'width':162, 'height':394, 'attrs': 'BUTTONS_SIZE|CHECKBOX_SIZE|CHECKLISTBOX_SIZE|LISTBOX_SIZE|SPINCTRL_SIZE|TEXTCTRL_SIZE|app_icon|log_manager|opt_manager|reset_handler', 'meths': '__init__|crt_bitmap_combobox|crt_button|crt_checkbox|crt_checklistbox|crt_combobox|crt_listbox|crt_spinctrl|crt_staticbox|crt_statictext|crt_textctrl'}
+{'type':'umlshape', 'id':'GeneralTab', 'x':26, 'y':2451, 'width':250, 'height':522, 'attrs': 'BUTTONS_SIZE|LOCALE_NAMES|OUTPUT_TEMPLATES|confirm_deletion_checkbox|confirm_exit_checkbox|custom_format_menu|filename_ascii_checkbox|filename_custom_format|filename_custom_format_button|filename_format_combobox|filename_format_label|filename_opts_label|language_combobox|language_label|more_opts_label|opt_manager|show_completion_popup_checkbox|shutdown_checkbox|sudo_textctrl', 'meths': '__init__|_build_custom_format_menu|_on_filename|_on_format|_on_language|_on_shutdown|_on_template|_set_layout|load_options|save_options'}
+{'type':'umlshape', 'id':'FormatsTab', 'x':307, 'y':2553, 'width':218, 'height':330, 'attrs': 'AUDIO_QUALITY|add_metadata_checkbox|audio_formats_checklistbox|audio_formats_label|audio_quality_combobox|audio_quality_label|embed_thumbnail_checkbox|extract_audio_checkbox|keep_video_checkbox|opt_manager|post_proc_opts_label|video_formats_checklistbox|video_formats_label', 'meths': '__init__|_set_layout|load_options|save_options'}
+{'type':'umlshape', 'id':'DownloadsTab', 'x':34, 'y':1816, 'width':250, 'height':538, 'attrs': 'FILESIZES|SUBS_CHOICES|SUBS_LANG|embed_subs_checkbox|filesize_box|filesize_max_label|filesize_max_sizeunit_combobox|filesize_max_spinctrl|filesize_min_label|filesize_min_sizeunit_combobox|filesize_min_spinctrl|opt_manager|playlist_box|playlist_max_label|playlist_max_spinctrl|playlist_start_label|playlist_start_spinctrl|playlist_stop_label|playlist_stop_spinctrl|subtitles_combobox|subtitles_label|subtitles_lang_listbox|subtitles_opts_label', 'meths': '__init__|_build_filesize_sizer|_build_playlist_sizer|_on_subtitles|_set_layout|load_options|save_options'}
+{'type':'umlshape', 'id':'AdvancedTab', 'x':91, 'y':1276, 'width':162, 'height':522, 'attrs': 'TEXTCTRL_SIZE|auth_label|clear_log_button|enable_log_checkbox|logging_label|network_label|opt_manager|password_label|password_textctrl|proxy_label|proxy_textctrl|referer_label|referer_textctrl|retries_label|retries_spinctrl|useragent_label|useragent_textctrl|username_label|username_textctrl|video_pass_label|video_pass_textctrl|view_log_button', 'meths': '__init__|_on_clear|_on_enable_log|_on_view|_set_layout|load_options|save_options'}
+{'type':'umlshape', 'id':'ExtraTab', 'x':542, 'y':2553, 'width':210, 'height':266, 'attrs': 'cmdline_args_label|cmdline_args_textctrl|extra_opts_label|ignore_config_checkbox|ignore_errors_checkbox|native_hls_checkbox|no_mtime_checkbox|opt_manager|youtube_dl_debug_checkbox', 'meths': '__init__|_set_layout|load_options|save_options'}
+{'type':'umlshape', 'id':'LogGUI', 'x':1268, 'y':1289, 'width':90, 'height':138, 'attrs': 'FRAME_SIZE|TITLE|_text_area', 'meths': '__init__|load'}
+{'type':'umlshape', 'id':'wx.TextCtrl', 'x':755, 'y':1599, 'width':120, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.Notebook', 'x':1818, 'y':1325, 'width':120, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.StaticLine', 'x':1818, 'y':1434, 'width':140, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'OptionsManager', 'x':15, 'y':662, 'width':162, 'height':234, 'attrs': 'SENSITIVE_KEYS|SETTINGS_FILENAME|config_path|options|settings_file', 'meths': '__init__|_get_options|_settings_are_valid|load_default|load_from_file|save_to_file'}
+{'type':'umlshape', 'id':'OptionHolder', 'x':14, 'y':440, 'width':154, 'height':170, 'attrs': 'default_value|flag|name|requirements', 'meths': '__init__|check_requirements|is_boolean'}
+{'type':'umlshape', 'id':'ListBoxWithHeaders', 'x':810, 'y':2554, 'width':210, 'height':410, 'attrs': 'EVENTS|NAME|TEXT_PREFIX|__headers', 'meths': 'AppendItems|Clear|Delete|FindString|GetString|GetStringSelection|InsertItems|SetSelection|SetString|SetStringSelection|__init__|_add_prefix|_disable_header_selection|_on_listbox|_remove_prefix|add_header|add_item|add_items'}
+{'type':'umlshape', 'id':'ListBoxPopup', 'x':1074, 'y':2549, 'width':130, 'height':282, 'attrs': 'EVENTS_TABLE|__listbox|curitem|value', 'meths': 'Create|GetAdjustedSize|GetControl|GetStringValue|Init|OnDismiss|Popup|__init__|_on_left_down|_on_motion'}
+{'type':'umlshape', 'id':'wx.PopupTransientWindow', 'x':1019, 'y':2412, 'width':240, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'umlshape', 'id':'wx.ListBox', 'x':857, 'y':2404, 'width':110, 'height':28, 'attrs': '', 'meths': ''}
+{'type':'edge', 'id':'PipeReader_to_Thread', 'source':'PipeReader', 'target':'Thread', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'YoutubeDLDownloader_to_object', 'source':'YoutubeDLDownloader', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'subprocess.Popen_to_YoutubeDLDownloader', 'source':'subprocess.Popen', 'target':'YoutubeDLDownloader', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'PipeReader_to_YoutubeDLDownloader', 'source':'PipeReader', 'target':'YoutubeDLDownloader', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Queue_to_YoutubeDLDownloader', 'source':'Queue', 'target':'YoutubeDLDownloader', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Worker_to_Thread', 'source':'Worker', 'target':'Thread', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'DownloadManager_to_Thread', 'source':'DownloadManager', 'target':'Thread', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'DownloadItem_to_object', 'source':'DownloadItem', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'DownloadList_to_object', 'source':'DownloadList', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'time.time_to_DownloadManager', 'source':'time.time', 'target':'DownloadManager', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Worker_to_Worker', 'source':'Worker', 'target':'Worker', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'OptionsParser_to_Worker', 'source':'OptionsParser', 'target':'Worker', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'UpdateThread_to_DownloadManager', 'source':'UpdateThread', 'target':'DownloadManager', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'YoutubeDLDownloader_to_Worker', 'source':'YoutubeDLDownloader', 'target':'Worker', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'LogManager_to_object', 'source':'LogManager', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'os.path.join_to_LogManager', 'source':'os.path.join', 'target':'LogManager', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'RotatingFileHandler_to_LogManager', 'source':'RotatingFileHandler', 'target':'LogManager', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'logging.getLogger_to_LogManager', 'source':'logging.getLogger', 'target':'LogManager', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ShutdownDialog_to_wx.Dialog', 'source':'ShutdownDialog', 'target':'wx.Dialog', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ListCtrl_to_ListCtrlAutoWidthMixin', 'source':'ListCtrl', 'target':'ListCtrlAutoWidthMixin', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ButtonsGroup_to_object', 'source':'ButtonsGroup', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'MainFrame_to_wx.Frame', 'source':'MainFrame', 'target':'wx.Frame', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ExtComboBox_to_wx.ComboBox', 'source':'ExtComboBox', 'target':'wx.ComboBox', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ButtonsChoiceDialog_to_wx.Dialog', 'source':'ButtonsChoiceDialog', 'target':'wx.Dialog', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'DoubleStageButton_to_wx.Button', 'source':'DoubleStageButton', 'target':'wx.Button', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ListCtrl_to_wx.ListCtrl', 'source':'ListCtrl', 'target':'wx.ListCtrl', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'wx.Icon_to_MainFrame', 'source':'wx.Icon', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Bitmap_to_MainFrame', 'source':'wx.Bitmap', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Timer_to_MainFrame', 'source':'wx.Timer', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'OptionsParser_to_MainFrame', 'source':'OptionsParser', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ExtComboBox_to_MainFrame', 'source':'ExtComboBox', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Panel_to_MainFrame', 'source':'wx.Panel', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.StaticText_to_ShutdownDialog', 'source':'wx.StaticText', 'target':'ShutdownDialog', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ListCtrl_to_MainFrame', 'source':'ListCtrl', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'UpdateThread_to_MainFrame', 'source':'UpdateThread', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Timer_to_ShutdownDialog', 'source':'wx.Timer', 'target':'ShutdownDialog', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'DownloadManager_to_MainFrame', 'source':'DownloadManager', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'CustomComboBox_to_MainFrame', 'source':'CustomComboBox', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'OptionsFrame_to_MainFrame', 'source':'OptionsFrame', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'DownloadList_to_MainFrame', 'source':'DownloadList', 'target':'MainFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'FormatsTab_to_TabPanel', 'source':'FormatsTab', 'target':'TabPanel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'AdvancedTab_to_TabPanel', 'source':'AdvancedTab', 'target':'TabPanel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'TabPanel_to_wx.Panel', 'source':'TabPanel', 'target':'wx.Panel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'OptionsFrame_to_wx.Frame', 'source':'OptionsFrame', 'target':'wx.Frame', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'GeneralTab_to_TabPanel', 'source':'GeneralTab', 'target':'TabPanel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'DownloadsTab_to_TabPanel', 'source':'DownloadsTab', 'target':'TabPanel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'LogGUI_to_wx.Frame', 'source':'LogGUI', 'target':'wx.Frame', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ExtraTab_to_TabPanel', 'source':'ExtraTab', 'target':'TabPanel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'wx.Button_to_OptionsFrame', 'source':'wx.Button', 'target':'OptionsFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.TextCtrl_to_LogGUI', 'source':'wx.TextCtrl', 'target':'LogGUI', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Notebook_to_OptionsFrame', 'source':'wx.Notebook', 'target':'OptionsFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Panel_to_OptionsFrame', 'source':'wx.Panel', 'target':'OptionsFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Icon_to_OptionsFrame', 'source':'wx.Icon', 'target':'OptionsFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.StaticLine_to_OptionsFrame', 'source':'wx.StaticLine', 'target':'OptionsFrame', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'OptionsManager_to_object', 'source':'OptionsManager', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'OptionsParser_to_object', 'source':'OptionsParser', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'OptionHolder_to_object', 'source':'OptionHolder', 'target':'object', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'UpdateThread_to_Thread', 'source':'UpdateThread', 'target':'Thread', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'CustomComboBox_to_wx.Panel', 'source':'CustomComboBox', 'target':'wx.Panel', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ListBoxPopup_to_wx.PopupTransientWindow', 'source':'ListBoxPopup', 'target':'wx.PopupTransientWindow', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ListBoxWithHeaders_to_wx.ListBox', 'source':'ListBoxWithHeaders', 'target':'wx.ListBox', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ListBoxWithHeaders_to_ListBoxPopup', 'source':'ListBoxWithHeaders', 'target':'ListBoxPopup', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'ListBoxPopup_to_CustomComboBox', 'source':'ListBoxPopup', 'target':'CustomComboBox', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.Button_to_CustomComboBox', 'source':'wx.Button', 'target':'CustomComboBox', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'wx.TextCtrl_to_CustomComboBox', 'source':'wx.TextCtrl', 'target':'CustomComboBox', 'uml_edge_type': 'composition'}

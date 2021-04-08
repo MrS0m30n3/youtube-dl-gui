@@ -1,14 +1,12 @@
-#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-from __future__ import unicode_literals
 
 import sys
 
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -18,18 +16,18 @@ def crt_command_event(event_type, event_id=0):
 
 
 class ListBoxWithHeaders(wx.ListBox):
-
+    # noinspection PyUnresolvedReferences
     """Custom ListBox object that supports 'headers'.
 
-    Attributes:
-        NAME (string): Default name for the name argument of the __init__.
+        Attributes:
+            NAME (string): Default name for the name argument of the __init__.
 
-        TEXT_PREFIX (string): Text to add before normal items in order to
-            distinguish them (normal items) from headers.
+            TEXT_PREFIX (string): Text to add before normal items in order to
+                distinguish them (normal items) from headers.
 
-        EVENTS (list): List with events to overwrite to avoid header selection.
+            EVENTS (list): List with events to overwrite to avoid header selection.
 
-    """
+        """
 
     NAME = "listBoxWithHeaders"
 
@@ -45,8 +43,10 @@ class ListBoxWithHeaders(wx.ListBox):
     ]
 
     def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
+                 size=wx.DefaultSize, choices=None, style=0, validator=wx.DefaultValidator, name=NAME):
         super(ListBoxWithHeaders, self).__init__(parent, id, pos, size, [], style, validator, name)
+        if choices is None:
+            choices = []
         self.__headers = set()
 
         # Ignore all key events i'm bored to handle the header selection
@@ -54,8 +54,8 @@ class ListBoxWithHeaders(wx.ListBox):
 
         # Make sure that a header is never selected
         self.Bind(wx.EVT_LISTBOX, self._on_listbox)
-        for event in self.EVENTS:
-            self.Bind(event, self._disable_header_selection)
+        for _event in self.EVENTS:
+            self.Bind(_event, self._disable_header_selection)
 
         # Append the items in our own way in order to add the TEXT_PREFIX
         self.AppendItems(choices)
@@ -86,12 +86,12 @@ class ListBoxWithHeaders(wx.ListBox):
 
     # wx.ListBox methods
 
-    def FindString(self, string):
-        index = super(ListBoxWithHeaders, self).FindString(string)
+    def FindString(self, string, **kwargs):
+        index = super(ListBoxWithHeaders, self).FindString(string, **kwargs)
 
         if index == wx.NOT_FOUND:
             # This time try with prefix
-            index = super(ListBoxWithHeaders, self).FindString(self._add_prefix(string))
+            index = super(ListBoxWithHeaders, self).FindString(self._add_prefix(string), **kwargs)
 
         return index
 
@@ -130,13 +130,10 @@ class ListBoxWithHeaders(wx.ListBox):
         if string in self.__headers:
             return False
 
-        self.SetSelection(self.FindString(string))
+        self.SetSelection(self.FindString(string, ))
         return True
 
     # wx.ItemContainer methods
-
-    def Append(self, string):
-        super(ListBoxWithHeaders, self).Append(self._add_prefix(string))
 
     def AppendItems(self, strings):
         strings = [self._add_prefix(string) for string in strings]
@@ -173,22 +170,23 @@ class ListBoxWithHeaders(wx.ListBox):
         super(ListBoxWithHeaders, self).AppendItems(items)
 
 
+# noinspection PyPep8Naming
 class ListBoxPopup(wx.PopupTransientWindow):
-
+    # noinspection PyUnresolvedReferences
     """ListBoxWithHeaders as a popup.
 
-    This class uses the wx.PopupTransientWindow to create the popup and the
-    API is based on the wx.combo.ComboPopup class.
+        This class uses the wx.PopupTransientWindow to create the popup and the
+        API is based on the wx.combo.ComboPopup class.
 
-    Attributes:
-        EVENTS_TABLE (dict): Dictionary that contains all the events
-            that this class emits.
+        Attributes:
+            EVENTS_TABLE (dict): Dictionary that contains all the events
+                that this class emits.
 
-    """
+        """
 
     EVENTS_TABLE = {
         "EVT_COMBOBOX": crt_command_event(wx.EVT_COMBOBOX),
-        "EVT_COMBOBOX_DROPDOWN" : crt_command_event(wx.EVT_COMBOBOX_DROPDOWN),
+        "EVT_COMBOBOX_DROPDOWN": crt_command_event(wx.EVT_COMBOBOX_DROPDOWN),
         "EVT_COMBOBOX_CLOSEUP": crt_command_event(wx.EVT_COMBOBOX_CLOSEUP)
     }
 
@@ -205,6 +203,7 @@ class ListBoxPopup(wx.PopupTransientWindow):
             if self.__listbox.IsSelected(row):
                 self.curitem = row
 
+    # noinspection PyUnusedLocal
     def _on_left_down(self, event):
         self.value = self.curitem
         self.Dismiss()
@@ -212,8 +211,8 @@ class ListBoxPopup(wx.PopupTransientWindow):
         # Send EVT_COMBOBOX to inform the parent for changes
         wx.PostEvent(self, self.EVENTS_TABLE["EVT_COMBOBOX"])
 
-    def Popup(self):
-        super(ListBoxPopup, self).Popup()
+    def Popup(self, **kwargs):
+        super(ListBoxPopup, self).Popup(**kwargs)
         wx.PostEvent(self, self.EVENTS_TABLE["EVT_COMBOBOX_DROPDOWN"])
 
     def OnDismiss(self):
@@ -221,10 +220,11 @@ class ListBoxPopup(wx.PopupTransientWindow):
 
     # wx.combo.ComboPopup methods
 
+    # noinspection PyAttributeOutsideInit
     def Init(self):
         self.value = self.curitem = -1
 
-    def Create(self, parent):
+    def Create(self, parent, **kwargs):
         self.__listbox = ListBoxWithHeaders(parent, style=wx.LB_SINGLE)
 
         self.__listbox.Bind(wx.EVT_MOTION, self._on_motion)
@@ -255,32 +255,35 @@ class ListBoxPopup(wx.PopupTransientWindow):
     def GetStringValue(self):
         return self.__listbox.GetString(self.value)
 
-    #def SetStringValue(self, string):
-        #self.__listbox.SetStringSelection(string)
+    # def SetStringValue(self, string):
+    # self.__listbox.SetStringSelection(string)
 
 
+# noinspection PyPep8Naming
 class CustomComboBox(wx.Panel):
-
+    # noinspection PyUnresolvedReferences
     """Custom combobox.
 
-    Attributes:
-        CB_READONLY (long): Read-only style. The only one supported from the
-            wx.ComboBox styles.
+        Attributes:
+            CB_READONLY (long): Read-only style. The only one supported from the
+                wx.ComboBox styles.
 
-        NAME (string): Default name for the name argument of the __init__.
+            NAME (string): Default name for the name argument of the __init__.
 
-    """
-    #NOTE wx.ComboBox does not support EVT_MOTION inside the popup
-    #NOTE Tried with ComboCtrl but i was not able to draw the button
+        """
+    # NOTE wx.ComboBox does not support EVT_MOTION inside the popup
+    # NOTE Tried with ComboCtrl but i was not able to draw the button
 
     CB_READONLY = wx.TE_READONLY
 
     NAME = "customComboBox"
 
     def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
-            size=wx.DefaultSize, choices=[], style=0, validator=wx.DefaultValidator, name=NAME):
+                 size=wx.DefaultSize, choices=None, style=0, validator=wx.DefaultValidator, name=NAME):
         super(CustomComboBox, self).__init__(parent, id, pos, size, 0, name)
 
+        if choices is None:
+            choices = []
         assert style == self.CB_READONLY or style == 0
 
         # Create components
@@ -292,7 +295,7 @@ class CustomComboBox(wx.Panel):
         # Create the ListBoxPopup in two steps
         self.listbox = ListBoxPopup(self)
         self.listbox.Init()
-        self.listbox.Create(self.listbox)
+        self.listbox.Create(self.listbox, )
 
         # Set layout
         sizer = wx.BoxSizer()
@@ -316,6 +319,7 @@ class CustomComboBox(wx.Panel):
 
         wx.PostEvent(self, event)
 
+    # noinspection PyUnusedLocal
     def _on_button(self, event):
         self.Popup()
 
@@ -342,9 +346,10 @@ class CustomComboBox(wx.Panel):
     def Dismiss(self):
         self.listbox.Dismiss()
 
+    # noinspection PyUnusedLocal
     def FindString(self, string, caseSensitive=False):
-        #TODO handle caseSensitive
-        return self.listbox.GetControl().FindString(string)
+        # TODO handle caseSensitive
+        return self.listbox.GetControl().FindString(string, )
 
     def GetCount(self):
         return self.listbox.GetControl().GetCount()
@@ -392,7 +397,7 @@ class CustomComboBox(wx.Panel):
         self.textctrl.SetSelection(from_, to_)
 
     def SetStringSelection(self, string):
-        index = self.listbox.GetControl().FindString(string)
+        index = self.listbox.GetControl().FindString(string, )
         self.listbox.GetControl().SetSelection(index)
 
         if index != wx.NOT_FOUND and self.listbox.GetControl().GetSelection() == index:

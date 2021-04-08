@@ -1,5 +1,3 @@
-[![Donations Badge](https://yourdonation.rocks/images/badge.svg)](https://mrs0m30n3.github.io/youtube-dl-gui/donate.html)
-
 # youtube-dlG
 A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io/youtube-dl/) media downloader written in wxPython. [Supported sites](https://rg3.github.io/youtube-dl/supportedsites.html)
 
@@ -7,40 +5,83 @@ A cross platform front-end GUI of the popular [youtube-dl](https://rg3.github.io
 ![youtube-dl-gui main window](https://raw.githubusercontent.com/MrS0m30n3/youtube-dl-gui/gh-pages/images/ydlg_ui.gif)
 
 ## Requirements
-* [Python 2.7.3+](https://www.python.org/downloads)
-* [wxPython 3](https://wxpython.org/download.php)
-* [TwoDict](https://pypi.python.org/pypi/twodict)
-* [GNU gettext](https://www.gnu.org/software/gettext/) (to build the package)
-* [FFmpeg](https://ffmpeg.org/download.html) (optional, to post process video files)
+* [Python 3](https://www.python.org/downloads)
+* [wxPython 4 Phoenix](https://wxpython.org/download.php)
+* [TwoDict](https://pypi.org/project/twodict)
+* [PyPubSub](https://pypi.org/project/PyPubSub)
+* [polib](https://pypi.org/project/polib)
+* [FFmpeg](https://ffmpeg.org/download.html) (optional, to postprocess video files)
+
+### Requirement for build Binaries/Executables
+* [PyInstaller](https://www.pyinstaller.org/)
+
+### Optionals
+* [GNU gettext](https://www.gnu.org/software/gettext/)
 
 ## Downloads
-* [Source (.zip)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.zip)
-* [Source (.tar.gz)](https://github.com/MrS0m30n3/youtube-dl-gui/archive/0.4.tar.gz)
-* [PyPi](https://pypi.python.org/pypi/youtube-dlg/0.4)
-* [Ubuntu PPA](http://ppa.launchpad.net/nilarimogard/webupd8/ubuntu/pool/main/y/youtube-dlg/)
-* [Arch AUR](https://aur.archlinux.org/packages/youtube-dl-gui-git/)
-* [Slackware SlackBuild](https://slackbuilds.org/repository/14.2/network/youtube-dl-gui/)
-* [openSUSE](https://software.opensuse.org/package/youtube-dl-gui)
-* [Windows Installer](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-setup.zip)
-* [Windows Portable](https://github.com/MrS0m30n3/youtube-dl-gui/releases/download/0.4/youtube-dl-gui-0.4-win-portable.zip)
+* [SHA2-256SUMS](https://github.com/oleksis/youtube-dl-gui/releases/download/v1.1.4/SHA2-256SUMS)
+* [youtube-dlg](https://github.com/oleksis/youtube-dl-gui/releases/download/v1.1.4/youtube-dlg)
+* [youtube-dlg.exe](https://github.com/oleksis/youtube-dl-gui/releases/download/v1.1.4/youtube-dlg.exe)
+* [Source (.zip)](https://github.com/oleksis/youtube-dl-gui/archive/v1.1.4.zip)
+* [Source (.tar.gz)](https://github.com/oleksis/youtube-dl-gui/archive/v1.1.4.tar.gz)
 
 ## Installation
 
 ### Install From Source
-1. Download & extract the source
-2. Change directory into *youtube-dl-gui-0.4*
-3. Run `python setup.py install`
+* Download & extract the source
+* Change directory into *youtube-dl-gui-1.1.4*
+* Create virtual environment 
+```
+python3 -m venv env
+```
+* Activate virtual environment
+```
+source env/bin/activate
+```
+* Install requirements, build translations and install
+```
+pip install -r requirements.txt
+python setup.py build_trans
+python setup.py install
+```
 
-### Install PyPi
-1. Run `pip install youtube-dlg`
+## Binaries
+Create binaries using [PyInstaller](https://www.pyinstaller.org/)
+* Create virtual environment
+```
+python3 -m venv env
+```
+* Activate virtual environment
+```
+source env/bin/activate
+```
+* Install requirements, build translations and create binaries
+```
+pip install -r requirements.txt
+python setup.py build_trans
+python setup.py pyinstaller
+```
 
-### Install Windows Installer
-1. Download & extract the Windows installer
-2. Run the `setup.exe` file
+## Run Youtube-DLG
+* Activate virtual environment and run
+```
+source env/bin/activate
+youtube-dl-gui
+```
+
+## Notes
+An alternative to install wxPython 4 **Phoenix** from the Extras section
+
+For Ubuntu 20.04
+
+```
+wget https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-20.04/wxPython-4.1.0-cp38-cp38-linux_x86_64.whl
+pip3 install wxPython-4.1.0-cp38-cp38-linux_x86_64.whl 
+```
 
 ## Contributing
 * **Add support for new language:** See [localization howto](docs/localization_howto.md)
-* **Report a bug:** See [issues](https://github.com/MrS0m30n3/youtube-dl-gui/issues)
+* **Report a bug:** See [issues](https://github.com/oleksis/youtube-dl-gui/issues)
 
 ## Authors
 See [AUTHORS](AUTHORS) file

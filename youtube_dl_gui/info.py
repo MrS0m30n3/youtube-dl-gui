@@ -8,11 +8,12 @@ Note:
 
 """
 
-from __future__ import unicode_literals
 
 __author__ = 'Sotiris Papadopoulos'
 __contact__ = 'ytubedlg@gmail.com'
-__projecturl__ = 'https://mrs0m30n3.github.io/youtube-dl-gui/'
+__maintainer__ = 'Oleksis Fraga'
+__maintainer_contact__ = 'oleksis.fraga@gmail.com'
+__projecturl__ = 'https://github.com/oleksis/youtube-dl-gui/'
 
 __appname__ = 'Youtube-DLG'
 __license__ = 'UNLICENSE'
@@ -20,7 +21,7 @@ __license__ = 'UNLICENSE'
 __description__ = 'Youtube-dl GUI'
 
 __descriptionfull__ = '''A cross platform front-end GUI of the popular
-youtube-dl written in wxPython'''
+youtube-dl written in wxPython Phoenix'''
 
 __licensefull__ = '''
 This is free and unencumbered software released into the public domain.

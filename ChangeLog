@@ -7,19 +7,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Added
 - ChangeLog
-- 'flac' in available audio formats (#234)
-- French translation (#203)
-- Japanese translation (#226)
-- Italian translation (#231)
-- Czech translation (#233)
-- Automatic locale detection during first run (#235)
-- Man page (#259)
-- Option to disable youtube-dl updates (#21)
+- Man page
+- Add locale (.mo) es_CU
+- Add flagart module
+  - Add Flag art for Cuba
+- Add Logging system using the Python 'logging' module
+- Release for Python 3.8.3
 
 ### Fixed
-- Bug in utils.convert_item function
-- Bug in downloaders.YoutubeDLDownloader (#244)
+- Imports for Internationalization with gettext
+- Fix bug set wx.Locale for Python 3.8
+- Fix bug subprocess for Windows ([WinError 6] Handler no valid)
+  - Set stderr to PIPE
+- Do not interpret output [debug] as an error in the Logs
+- Get all Logs except "ffmpeg version"
+- Do not send messages to the GUI if the app does not exist (Destroy)
+- Close properly the file descriptors
 
 ### Changed
-- Update timeout from 20 to 10 seconds (#244)
-
+- Migration to Python 3.*
+- Update requirements.txt
+- README.md
+- Refactored setup.py
+  - Build the translation files (*.mo) using polib
+  - Build the binaries using PyInstaller. Fix path sep for each OS
+  - Build with updates disabled
+  - Set up for Windows/Linux

@@ -2,8 +2,10 @@
 
 import gettext
 
+# noinspection PyPep8Naming
 from .utils import TwoWayOrderedDict as tdict
 
+_ = gettext.gettext
 
 OUTPUT_FORMATS = tdict([
     (0, _("ID")),
@@ -14,11 +16,9 @@ OUTPUT_FORMATS = tdict([
     (3, _("Custom"))
 ])
 
-
 DEFAULT_FORMATS = tdict([
     ("0", _("default"))
 ])
-
 
 VIDEO_FORMATS = tdict([
     ("3gp", "3gp"),
@@ -67,7 +67,6 @@ VIDEO_FORMATS = tdict([
     ("172", "webm 256k (DASH Audio)")
 ])
 
-
 AUDIO_FORMATS = tdict([
     ("mp3", "mp3"),
     ("wav", "wav"),
@@ -78,13 +77,13 @@ AUDIO_FORMATS = tdict([
     ("flac", "flac")
 ])
 
-
 FORMATS = DEFAULT_FORMATS.copy()
 FORMATS.update(VIDEO_FORMATS)
 FORMATS.update(AUDIO_FORMATS)
 
 
-def reload_strings():
+# noinspection PyPep8Naming
+def reload_strings(func):
     # IF YOU DONT WANT YOUR EYES TO BLEED STOP HERE
     # YOU HAVE BEEN WARNED
     # DO NOT LOOK THE CODE BELOW
@@ -96,14 +95,10 @@ def reload_strings():
     #
     #
     #
-    #NOTE Remove
+    # NOTE Remove
     # Code is so messed up that i need to reload strings else
     # the translations wont work on the about gettext tags
-    global OUTPUT_FORMATS
-    global DEFAULT_FORMATS
-    global VIDEO_FORMATS
-    global AUDIO_FORMATS
-    global FORMATS
+    _ = func
 
     OUTPUT_FORMATS = tdict([
         (0, _("ID")),
@@ -114,11 +109,9 @@ def reload_strings():
         (3, _("Custom"))
     ])
 
-
     DEFAULT_FORMATS = tdict([
         ("0", _("default"))
     ])
-
 
     VIDEO_FORMATS = tdict([
         ("3gp", "3gp"),
@@ -167,7 +160,6 @@ def reload_strings():
         ("172", "webm 256k (DASH Audio)")
     ])
 
-
     AUDIO_FORMATS = tdict([
         ("mp3", "mp3"),
         ("wav", "wav"),
@@ -178,7 +170,8 @@ def reload_strings():
         ("flac", "flac")
     ])
 
-
     FORMATS = DEFAULT_FORMATS.copy()
     FORMATS.update(VIDEO_FORMATS)
     FORMATS.update(AUDIO_FORMATS)
+
+    return OUTPUT_FORMATS, DEFAULT_FORMATS, AUDIO_FORMATS, VIDEO_FORMATS, FORMATS

@@ -56,7 +56,7 @@ jobs:
         asset_content_type: application/octet-stream
     - name: Get SHA2-256SUMS for youtube-dlg.exe
       id: sha2_file
-      run: echo "::set-output name=sha2_windows::$(Get-FileHash dist\youtube-dlg.exe -Algorithm SHA256).Hash.ToLower()"
+      run: echo "::set-output name=sha2_windows::$((Get-FileHash dist\youtube-dlg.exe -Algorithm SHA256).Hash.ToLower())"
   build_ubuntu_bdist:
     needs: build_windows_exe
     runs-on: ubuntu-latest

@@ -474,6 +474,10 @@ msgstr "Sueco"
 msgid "Turkish"
 msgstr "Turco"
 
+#: youtube_dl_gui/optionsframe.py:547
+msgid "Traditional Chinese"
+msgstr "chino tradicional"
+
 #: youtube_dl_gui/optionsframe.py:564
 msgid "None"
 msgstr "Ninguno"

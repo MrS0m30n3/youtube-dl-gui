@@ -545,7 +545,8 @@ class DownloadsTab(TabPanel):
         ("ru", _("Russian")),
         ("es", _("Spanish")),
         ("sv", _("Swedish")),
-        ("tr", _("Turkish"))
+        ("tr", _("Turkish")),
+        ("zh", _("Traditional Chinese"))
     ])
 
     FILESIZES = twodict([

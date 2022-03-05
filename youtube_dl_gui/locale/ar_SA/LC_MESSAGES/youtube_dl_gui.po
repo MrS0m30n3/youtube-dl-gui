@@ -473,6 +473,10 @@ msgstr "السويدية"
 msgid "Turkish"
 msgstr "التركية"
 
+#: youtube_dl_gui/optionsframe.py:549
+msgid "Traditional Chinese"
+msgstr "الصينية التقليدية"
+
 #: youtube_dl_gui/optionsframe.py:564
 msgid "None"
 msgstr "لاشيء"

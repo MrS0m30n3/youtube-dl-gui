@@ -471,6 +471,10 @@ msgstr ""
 msgid "Turkish"
 msgstr ""
 
+#: youtube_dl_gui/optionsframe.py:549
+msgid "Traditional Chinese"
+msgstr ""
+
 #: youtube_dl_gui/optionsframe.py:564
 msgid "None"
 msgstr ""

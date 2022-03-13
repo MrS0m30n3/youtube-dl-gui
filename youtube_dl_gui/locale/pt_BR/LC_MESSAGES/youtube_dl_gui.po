@@ -5,24 +5,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: youtube-dlg 0.4\n"
 "POT-Creation-Date: 2018-01-15 16:42+EET\n"
-"PO-Revision-Date: 2017-06-16 11:27-0300\n"
-"Last-Translator: Cleiton Meurer <cleitonme@gmail.com>\n"
+"PO-Revision-Date: 2022-03-12 21:02-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: pt_BR\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: pygettext.py 1.5\n"
-"X-Generator: Poedit 2.0.2\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 #: youtube_dl_gui/__init__.py:91
 msgid "Failed to locate youtube-dl and updates are disabled"
-msgstr ""
+msgstr "Falha ao localizar youtube-dl e atualizações estão desabilitadas"
 
 #: youtube_dl_gui/formats.py:9 youtube_dl_gui/formats.py:109
 msgid "ID"
@@ -52,7 +52,7 @@ msgstr "Personalizar"
 #: youtube_dl_gui/formats.py:19 youtube_dl_gui/formats.py:119
 #: youtube_dl_gui/mainframe.py:503 youtube_dl_gui/mainframe.py:506
 msgid "default"
-msgstr "Padrão"
+msgstr "padrão"
 
 #: youtube_dl_gui/mainframe.py:97
 msgid "Enter URLs below"
@@ -76,7 +76,7 @@ msgstr "Informações"
 
 #: youtube_dl_gui/mainframe.py:102
 msgid "Welcome"
-msgstr "Bem Vindo"
+msgstr "Bem-vindo(a)"
 
 #: youtube_dl_gui/mainframe.py:103
 msgid "Warning"
@@ -88,7 +88,7 @@ msgstr "Adicionar"
 
 #: youtube_dl_gui/mainframe.py:106
 msgid "Download list"
-msgstr "Lista de Download"
+msgstr "Lista de download"
 
 #: youtube_dl_gui/mainframe.py:107 youtube_dl_gui/mainframe.py:516
 #: youtube_dl_gui/mainframe.py:534
@@ -127,15 +127,15 @@ msgstr "Sobre"
 
 #: youtube_dl_gui/mainframe.py:115
 msgid "View Log"
-msgstr "Ver Log"
+msgstr "Ver log"
 
 #: youtube_dl_gui/mainframe.py:117
 msgid "Successfully downloaded {0} URL(s) in {1} day(s) {2} hour(s) {3} minute(s) {4} second(s)"
-msgstr "Baixado com sucesso {0} url(s) em {1} dia(s) {2} hora(s) {3} minuto(s) {4} segundo(s)"
+msgstr "Baixado(s) com sucesso {0} URL(s) em {1} dia(s) {2} hora(s) {3} minuto(s) {4} segundo(s)"
 
 #: youtube_dl_gui/mainframe.py:119
 msgid "Downloads completed"
-msgstr "Downloads completo"
+msgstr "Downloads concluídos"
 
 #: youtube_dl_gui/mainframe.py:120
 msgid "Total Progress: {0:.1f}% | Queued ({1}) Paused ({2}) Active ({3}) Completed ({4}) Error ({5})"
@@ -143,7 +143,7 @@ msgstr "Progresso total: {0:.1f}% | Fila ({1}) Pausado ({2}) Ativo ({3}) Complet
 
 #: youtube_dl_gui/mainframe.py:121
 msgid "Stopping downloads"
-msgstr "Parar downloads"
+msgstr "Parando downloads"
 
 #: youtube_dl_gui/mainframe.py:122
 msgid "Downloads stopped"
@@ -151,7 +151,7 @@ msgstr "Downloads parados"
 
 #: youtube_dl_gui/mainframe.py:123
 msgid "You need to provide at least one URL"
-msgstr "Você precisa fornecer pelo menos um endereço"
+msgstr "Você precisa fornecer pelo menos um URL"
 
 #: youtube_dl_gui/mainframe.py:124
 msgid "Downloads started"
@@ -175,11 +175,11 @@ msgstr "Atualizando para ultima versão youtube-dl. Aguarde..."
 
 #: youtube_dl_gui/mainframe.py:131
 msgid "Youtube-dl download failed [{0}]"
-msgstr "Youtube-dl download falhou [{0}]"
+msgstr "Youtube-dl falhou em baixar [{0}]"
 
 #: youtube_dl_gui/mainframe.py:132
 msgid "Successfully downloaded youtube-dl"
-msgstr "Baixado com sucesso do youtube-dl"
+msgstr "Baixado youtube-dl com sucesso"
 
 #: youtube_dl_gui/mainframe.py:134
 msgid "Unable to open directory: '{dir}'. The specified path does not exist"
@@ -191,7 +191,7 @@ msgstr "Erro ao desligar. Certifique-se de que você digitou a senha correta"
 
 #: youtube_dl_gui/mainframe.py:138
 msgid "Shutting down system"
-msgstr "Desligar sistema"
+msgstr "Desligando o sistema"
 
 #: youtube_dl_gui/mainframe.py:141
 msgid "Extension"
@@ -223,7 +223,7 @@ msgstr "Obter URL"
 
 #: youtube_dl_gui/mainframe.py:236
 msgid "Get command"
-msgstr "Comandos"
+msgstr "Obter comandos"
 
 #: youtube_dl_gui/mainframe.py:237
 msgid "Open destination"
@@ -231,7 +231,7 @@ msgstr "Abrir pasta de destino"
 
 #: youtube_dl_gui/mainframe.py:238
 msgid "Re-enter"
-msgstr "Re-abrir"
+msgstr "Inserir novamente"
 
 #: youtube_dl_gui/mainframe.py:458
 msgid "Resume"
@@ -239,11 +239,11 @@ msgstr "Resumir"
 
 #: youtube_dl_gui/mainframe.py:480
 msgid "Video"
-msgstr "Video"
+msgstr "Vídeo"
 
 #: youtube_dl_gui/mainframe.py:484
 msgid "Audio"
-msgstr "Audio"
+msgstr "Áudio"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "No items selected. Please pick an action"
@@ -255,7 +255,7 @@ msgstr "Apagar tudo"
 
 #: youtube_dl_gui/mainframe.py:516
 msgid "Remove completed"
-msgstr "Remover completo"
+msgstr "Remover concluídos"
 
 #: youtube_dl_gui/mainframe.py:534
 msgid "Are you sure you want to remove selected items?"
@@ -263,7 +263,7 @@ msgstr "Tem certeza de que deseja remover itens selecionados?"
 
 #: youtube_dl_gui/mainframe.py:546
 msgid "Item is active, cannot remove"
-msgstr "O item está ativo, não pode remover"
+msgstr "O item está ativo, não é possível remover"
 
 #: youtube_dl_gui/mainframe.py:579
 msgid "Item is not completed"
@@ -275,7 +275,7 @@ msgstr "Atualização em andamento. Aguarde até a atualização ser concluída"
 
 #: youtube_dl_gui/mainframe.py:716
 msgid "Logging is disabled"
-msgstr "O log está desativado"
+msgstr "O log está desabilitado"
 
 #: youtube_dl_gui/mainframe.py:891
 msgid "Shutdown"
@@ -287,11 +287,11 @@ msgstr "Desligando em {0} segundo(s)"
 
 #: youtube_dl_gui/mainframe.py:980
 msgid "No items to download"
-msgstr "Nenhum item para download"
+msgstr "Nenhum item para baixar"
 
 #: youtube_dl_gui/mainframe.py:1040
 msgid "Updates are disabled for your system. Please use the system's package manager to update youtube-dl."
-msgstr ""
+msgstr "Atualizações estão desabilitadas para seu sistema. Use o gerenciador de pacotes do sistema para atualizar o youtube-dl."
 
 #: youtube_dl_gui/mainframe.py:1065
 msgid "Are you sure you want to exit?"
@@ -311,7 +311,7 @@ msgstr "OK"
 
 #: youtube_dl_gui/optionsframe.py:65
 msgid "Reset"
-msgstr "Reset"
+msgstr "Redefinir"
 
 #: youtube_dl_gui/optionsframe.py:66
 msgid "Close"
@@ -343,7 +343,7 @@ msgstr "Idiomas"
 
 #: youtube_dl_gui/optionsframe.py:313
 msgid "Filename format"
-msgstr "Nome do Arquivo"
+msgstr "Nome do arquivo"
 
 #: youtube_dl_gui/optionsframe.py:318
 msgid "Filename options"
@@ -359,7 +359,7 @@ msgstr "Mais opções"
 
 #: youtube_dl_gui/optionsframe.py:322
 msgid "Confirm on exit"
-msgstr "Confirme antes de sair"
+msgstr "Confirmar antes de sair"
 
 #: youtube_dl_gui/optionsframe.py:323
 msgid "Confirm item deletion"
@@ -387,23 +387,23 @@ msgstr "Reiniciar"
 
 #: youtube_dl_gui/optionsframe.py:463
 msgid "high"
-msgstr "Alto"
+msgstr "alto"
 
 #: youtube_dl_gui/optionsframe.py:463
 msgid "low"
-msgstr "Baixo"
+msgstr "baixo"
 
 #: youtube_dl_gui/optionsframe.py:463
 msgid "mid"
-msgstr "Medio"
+msgstr "médio"
 
 #: youtube_dl_gui/optionsframe.py:468
 msgid "Video formats"
-msgstr "Formato do Video"
+msgstr "Formato do vídeo"
 
 #: youtube_dl_gui/optionsframe.py:471
 msgid "Audio formats"
-msgstr "Formato do Audio"
+msgstr "Formato do áudio"
 
 #: youtube_dl_gui/optionsframe.py:474
 msgid "Post-Process options"
@@ -415,7 +415,7 @@ msgstr "Manter arquivos originais"
 
 #: youtube_dl_gui/optionsframe.py:476
 msgid "Extract audio from video file"
-msgstr "Extraia áudio do arquivo de vídeo"
+msgstr "Extrair áudio do arquivo de vídeo"
 
 #: youtube_dl_gui/optionsframe.py:477
 msgid "Embed thumbnail in audio file"
@@ -427,7 +427,7 @@ msgstr "Adicionar metadados ao arquivo"
 
 #: youtube_dl_gui/optionsframe.py:480
 msgid "Audio quality"
-msgstr "Qualidade do Audio"
+msgstr "Qualidade do áudio"
 
 #: youtube_dl_gui/optionsframe.py:538
 msgid "English"
@@ -479,7 +479,7 @@ msgstr "Nenhum"
 
 #: youtube_dl_gui/optionsframe.py:565
 msgid "Automatic subtitles (YOUTUBE ONLY)"
-msgstr "Baixar arquivos de legendas automáticamente (YOUTUBE SOMENTE)"
+msgstr "Baixar arquivos de legendas automaticamente (YOUTUBE SOMENTE)"
 
 #: youtube_dl_gui/optionsframe.py:566
 msgid "All available subtitles"
@@ -491,7 +491,7 @@ msgstr "Legendas por idioma"
 
 #: youtube_dl_gui/optionsframe.py:573
 msgid "Subtitles"
-msgstr "Legenda"
+msgstr "Legendas"
 
 #: youtube_dl_gui/optionsframe.py:577
 msgid "Subtitles options"
@@ -507,15 +507,15 @@ msgstr "Playlist"
 
 #: youtube_dl_gui/optionsframe.py:586 youtube_dl_gui/optionsframe.py:591
 msgid "Max"
-msgstr "Max"
+msgstr "Máx"
 
 #: youtube_dl_gui/optionsframe.py:589
 msgid "Filesize"
-msgstr "Tamanho"
+msgstr "Tamanho de arquivo"
 
 #: youtube_dl_gui/optionsframe.py:594
 msgid "Min"
-msgstr "Min"
+msgstr "Mín"
 
 #: youtube_dl_gui/optionsframe.py:723
 msgid "Retries"
@@ -527,7 +527,7 @@ msgstr "Autenticação"
 
 #: youtube_dl_gui/optionsframe.py:728
 msgid "Username"
-msgstr "Usuario"
+msgstr "Usuário"
 
 #: youtube_dl_gui/optionsframe.py:730
 msgid "Password"
@@ -535,7 +535,7 @@ msgstr "Senha"
 
 #: youtube_dl_gui/optionsframe.py:732
 msgid "Video password"
-msgstr "Senha do Video"
+msgstr "Senha do vídeo"
 
 #: youtube_dl_gui/optionsframe.py:735
 msgid "Network"
@@ -551,7 +551,7 @@ msgstr "User Agent"
 
 #: youtube_dl_gui/optionsframe.py:741
 msgid "Referer"
-msgstr "Referente"
+msgstr "Referer"
 
 #: youtube_dl_gui/optionsframe.py:744
 msgid "Logging"
@@ -559,19 +559,19 @@ msgstr "Log"
 
 #: youtube_dl_gui/optionsframe.py:746
 msgid "Enable log"
-msgstr "Habilitar Log"
+msgstr "Habilitar log"
 
 #: youtube_dl_gui/optionsframe.py:747
 msgid "View"
-msgstr "Ver Log"
+msgstr "Ver log"
 
 #: youtube_dl_gui/optionsframe.py:748
 msgid "Clear"
-msgstr "Limpar Log"
+msgstr "Limpar log"
 
 #: youtube_dl_gui/optionsframe.py:858
 msgid "Youtube-dl command line options (e.g. --help)"
-msgstr "Argumentos da linha de comando (e.x. --help)"
+msgstr "Argumentos da linha de comando (ex., --help)"
 
 #: youtube_dl_gui/optionsframe.py:861
 msgid "Extra options"

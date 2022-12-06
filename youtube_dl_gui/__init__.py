@@ -23,7 +23,7 @@ import os.path
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 __packagename__ = "youtube_dl_gui"
